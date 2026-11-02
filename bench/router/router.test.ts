@@ -294,3 +294,13 @@ test("past, recorded-embed and sr-weighted variants run deterministically on the
 	)) as { algo: string };
 	expect(tuned.algo).toBe("sr-x");
 });
+
+test("parseSplitRule: hash by default, time cut for one conversation", async () => {
+	const { parseSplitRule } = await import("./data.ts");
+	const { isContextual } = await import("./round2.ts");
+	expect(parseSplitRule(undefined)).toEqual({ kind: "sha" });
+	expect(parseSplitRule("main:0.4")).toEqual({ kind: "time", conversation: "main", devShare: 0.4 });
+	expect(() => parseSplitRule("main:1.5")).toThrow("split_rule_invalid");
+	expect(isContextual("それをもう一度")).toBe(true);
+	expect(isContextual("天気を教えて")).toBe(false);
+});

@@ -8,6 +8,7 @@
 import type { Database } from "bun:sqlite";
 import { dot } from "../../src/index.ts";
 import type { Utterance } from "./data.ts";
+import { isContextual } from "./round2.ts";
 
 export type CandidateCard = {
 	id: string;
@@ -163,8 +164,11 @@ function bigrams(text: string): Set<string> {
 	return out;
 }
 
+
 export type SrOptions = {
-	weights: { sem: number; lex: number; proto: number; name: number; hist: number; prior: number };
+	weights: { sem: number; lex: number; proto: number; name: number; hist: number; prior: number; prev?: number };
+	/** When the previous-turn feature applies: only to turns that lean on context, or always. */
+	prevGate?: "contextual" | "always";
 	/** The conversation's fixed score: below it, no toolchain is chosen. */
 	minCombined: number;
 	/** Prototype mix: w·best + (1−w)·mean of the top M passages. */
@@ -201,7 +205,7 @@ const RESOURCE_WORDS: Record<string, string[]> = {
 export function srWeighted(name: string, options: SrOptions, useVectors: boolean): Algorithm {
 	return {
 		name,
-		needsEmbeddings: useVectors && (options.weights.sem > 0 || options.weights.proto > 0),
+		needsEmbeddings: useVectors && (options.weights.sem > 0 || options.weights.proto > 0 || (options.weights.prev ?? 0) > 0),
 		score: ({ utterance, candidates }, env) => {
 			const w = { ...options.weights };
 			if (!useVectors) {
@@ -239,10 +243,28 @@ export function srWeighted(name: string, options: SrOptions, useVectors: boolean
 			};
 			const semU = band(sem);
 			const protoU = band(proto);
+			// Previous-turn carry (no past production choices): how well the previous user
+			// turn matches each card, as a band-normalized prototype score.
+			const prevU = new Map<string, number>();
+			const prevOn =
+				(w.prev ?? 0) > 0 &&
+				!!utterance.previousUser &&
+				(options.prevGate === "always" || isContextual(utterance.text));
+			if (!prevOn) w.prev = 0;
+			if (prevOn) {
+				const q = env.vector(utterance.previousUser!);
+				const m = new Map<string, number>();
+				for (const c of tools) {
+					const sims = c.passages.map((p) => dot(q, env.vector(p))).sort((a, b) => b - a);
+					if (sims.length) m.set(c.id, sims[0]!);
+				}
+				for (const [k, v] of band(m)) prevU.set(k, v);
+			}
 			const grams = bigrams(utterance.text);
 			const prev = env.history?.previous(utterance.id) ?? null;
 			const kind = utterance.hints.referencedResource?.kind ?? null;
-			const total = Object.values(w).reduce((s, v) => s + v, 0) || 1;
+			// The previous-turn feature is an additive bonus: it does not dilute the other features.
+			const total = Object.entries(w).reduce((s, [k, v]) => (k === "prev" ? s : s + v), 0) || 1;
 			const out = new Map<string, number>();
 			for (const c of tools) {
 				const lex = Math.max(lexNow.get(c.id) ?? 0, options.context * (lexCtx.get(c.id) ?? 0));
@@ -270,7 +292,8 @@ export function srWeighted(name: string, options: SrOptions, useVectors: boolean
 					w.proto * (protoU.get(c.id) ?? 0) +
 					w.name * nameHit +
 					w.hist * hist +
-					w.prior * prior;
+					w.prior * prior +
+					(w.prev ?? 0) * (prevU.get(c.id) ?? 0);
 				out.set(c.id, f / total);
 			}
 			if (candidates.some((c) => c.id === CONVERSATION_ID)) out.set(CONVERSATION_ID, options.minCombined);

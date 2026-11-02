@@ -45,6 +45,8 @@ export type RunOptions = {
 	temperature: number;
 	/** Use reviewed corrections (labels with `wrong`) of the other split. */
 	feedback: boolean;
+	/** Which split the corrections come from: the other one (default) or the same one (self-fix). */
+	feedbackFrom?: "other" | "same";
 	out: string;
 };
 
@@ -132,7 +134,10 @@ export function run(db: Database, options: RunOptions) {
 	});
 	const corrections = options.feedback
 		? [...labels.values()].filter(
-				(l) => l.status === "reviewed" && l.wrong && l.split !== options.split,
+				(l) =>
+					l.status === "reviewed" &&
+					l.wrong &&
+					(options.feedbackFrom === "same" ? l.split === options.split : l.split !== options.split),
 			)
 		: [];
 	const textOf = new Map(loadUtterances(db).map((u) => [u.id, u.text]));

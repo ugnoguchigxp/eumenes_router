@@ -202,14 +202,47 @@ export function splitOf(
 	return bucket < testShare ? "test" : "dev";
 }
 
+/**
+ * How labels are split. `sha`: whole conversations by hash. `time`: one conversation is
+ * cut by time order — its first `devShare` of utterances go to dev, the rest to test —
+ * and the other conversations keep the hash rule.
+ */
+export type SplitRule =
+	| { kind: "sha" }
+	| { kind: "time"; conversation: string; devShare: number };
+
+export function parseSplitRule(text: string | undefined): SplitRule {
+	if (!text) return { kind: "sha" };
+	const [conversation, share] = text.split(":");
+	const devShare = Number(share);
+	if (!conversation || !(devShare > 0 && devShare < 1))
+		throw new Error(`split_rule_invalid: ${text}`);
+	return { kind: "time", conversation, devShare };
+}
+
 export function importLabels(
 	db: Database,
 	path: string,
+	rule: SplitRule = { kind: "sha" },
 ): { reviewed: number; hold: number } {
 	const rows = readRecords<Label>(path);
 	const conversation = db.query(
 		"SELECT conversation_id AS c FROM bench_utterances WHERE id=?",
 	);
+	const cut = new Map<string, "dev" | "test">();
+	if (rule.kind === "time") {
+		const ids = (
+			db
+				.query(
+					"SELECT id FROM bench_utterances WHERE conversation_id=? ORDER BY seq, id",
+				)
+				.all(rule.conversation) as Array<{ id: string }>
+		).map((r) => r.id);
+		const labeled = new Set(rows.map((r) => r.id));
+		const order = ids.filter((id) => labeled.has(id));
+		const devCount = Math.round(order.length * rule.devShare);
+		order.forEach((id, i) => cut.set(id, i < devCount ? "dev" : "test"));
+	}
 	const counts = { reviewed: 0, hold: 0 };
 	db.transaction(() => {
 		rows.forEach((label, index) => {
@@ -224,7 +257,7 @@ export function importLabels(
 			db.query(
 				`INSERT INTO bench_labels(utterance_id, split, status, label_json) VALUES (?,?,?,?)
 ON CONFLICT(utterance_id) DO UPDATE SET split=excluded.split, status=excluded.status, label_json=excluded.label_json`,
-			).run(label.id, splitOf(row.c), label.status, JSON.stringify(label));
+			).run(label.id, cut.get(label.id) ?? splitOf(row.c), label.status, JSON.stringify(label));
 		});
 	})();
 	return counts;

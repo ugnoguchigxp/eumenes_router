@@ -3,7 +3,7 @@
  *
  *   import   --db <file> [--export <router-export dir>] [--cards <json|jsonl>] [--utterances <jsonl>] [--choices <jsonl>] [--labels <jsonl>]
  *   label    export --db <file> --out <sheet.jsonl> [--md <sheet.md>] [--model <m>] [--limit N]
- *   label    import --db <file> --labels <jsonl>
+ *   label    import --db <file> --labels <jsonl> [--split-time <conversation>:<devShare>]
  *   label    stats  --db <file>
  *   embed    --db <file> (--provider fake | --provider http --url <base> --model <m>)
  *   run      --db <file> --algo fts|embed|hybrid|past|recorded-embed|sr-weighted[-noembed|-nohist|-noproto] [--sr <json>] [--model <m>] [--split test|dev|any] [--feedback] [--out <dir>]
@@ -22,6 +22,7 @@ import {
 	importChoices,
 	importExportEmbeddings,
 	importLabels,
+	parseSplitRule,
 	importUtterances,
 	loadLabels,
 	loadUtterances,
@@ -40,6 +41,7 @@ const OPTIONS = {
 	utterances: { type: "string" },
 	choices: { type: "string" },
 	labels: { type: "string" },
+	"split-time": { type: "string" },
 	export: { type: "string" },
 	out: { type: "string" },
 	md: { type: "string" },
@@ -104,7 +106,7 @@ export async function main(
 		case "label": {
 			const bench = db();
 			if (sub === "import") {
-				const counts = importLabels(bench, need(v.labels, "labels"));
+				const counts = importLabels(bench, need(v.labels, "labels"), parseSplitRule(v["split-time"]));
 				print(JSON.stringify(counts));
 				return counts;
 			}
@@ -161,7 +163,7 @@ export async function main(
 							})();
 			const texts = [
 				...[...passagesByCard(bench).values()].flat(),
-				...loadUtterances(bench).map((u) => u.text),
+				...loadUtterances(bench).flatMap((u) => [u.text, ...(u.previousUser ? [u.previousUser] : [])]),
 			];
 			const result = {
 				model: provider.model,
