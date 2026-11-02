@@ -29,7 +29,8 @@
 		"format:check": "oxfmt --check",
 		"typecheck": "tsc --noEmit",
 		"test": "bun test",
-		"bench:score": "bun bench/score.ts"
+		"bench:score": "bun bench/score.ts",
+		"router": "bun bench/router/main.ts"
 	},
 	"devDependencies": {
 		"@types/bun": "1.3.14",

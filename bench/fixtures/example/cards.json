@@ -1,0 +1,92 @@
+[
+	{
+		"id": "conversation.respond",
+		"kind": "general",
+		"title": "会話",
+		"summary": "雑談・質問への直接の返答",
+		"useWhen": ["道具を使わずに答えられる質問", "あいさつや感想"],
+		"examples": ["こんにちは", "ありがとう"],
+		"impact": "none"
+	},
+	{
+		"id": "github.issues",
+		"kind": "dedicated",
+		"title": "GitHub Issue 検索",
+		"summary": "GitHub リポジトリの Issue を検索・要約する",
+		"useWhen": ["Issue を調べる", "バグ報告を探す"],
+		"examples": ["Issue を調査して", "未解決のIssueを一覧にして"],
+		"impact": "none"
+	},
+	{
+		"id": "github.repo",
+		"kind": "dedicated",
+		"title": "GitHub リポジトリ閲覧",
+		"summary": "GitHub のリポジトリのコードや README を読む",
+		"useWhen": ["リポジトリの中身を見る", "README を読む"],
+		"examples": ["このリポジトリを見て", "コードを読んで説明して"],
+		"impact": "none"
+	},
+	{
+		"id": "web.search",
+		"kind": "dedicated",
+		"title": "Web 検索",
+		"summary": "インターネットを検索して最新情報を調べる",
+		"useWhen": ["ニュースや最新情報を調べる", "製品の評判を調べる"],
+		"examples": ["最新のニュースを調べて", "評判を検索して"],
+		"impact": "none"
+	},
+	{
+		"id": "docs.pdf",
+		"kind": "read",
+		"title": "PDF 閲覧",
+		"summary": "PDF 文書を読み、要約する",
+		"useWhen": ["PDF を読む", "資料を要約する"],
+		"examples": ["このPDFを要約して", "資料を読んで"],
+		"impact": "none"
+	},
+	{
+		"id": "image.analyze",
+		"kind": "read",
+		"title": "画像解析",
+		"summary": "画像の内容を説明・解析する",
+		"useWhen": ["写真を説明する", "スクリーンショットを読む"],
+		"examples": ["この画像を見て", "写真に何が写ってる？"],
+		"impact": "none"
+	},
+	{
+		"id": "music.create",
+		"kind": "dedicated",
+		"title": "作曲",
+		"summary": "曲やメロディを作る",
+		"useWhen": ["新しい曲を作る", "メロディを作曲する"],
+		"examples": ["曲を作って", "明るいメロディを作曲して"],
+		"impact": "none"
+	},
+	{
+		"id": "code.edit",
+		"kind": "dedicated",
+		"title": "コード編集",
+		"summary": "リポジトリのコードを修正・実装する",
+		"useWhen": ["バグを直す", "機能を実装する"],
+		"examples": ["このバグを直して", "テストを追加して"],
+		"impact": "modify_existing"
+	},
+	{
+		"id": "calendar.schedule",
+		"kind": "dedicated",
+		"title": "予定登録",
+		"summary": "カレンダーに予定を登録・変更する",
+		"useWhen": ["会議を入れる", "予定を変更する"],
+		"examples": ["明日10時に会議を入れて", "予定をずらして"],
+		"impact": "modify_existing"
+	},
+	{
+		"id": "files.delete",
+		"kind": "dedicated",
+		"title": "ファイル削除",
+		"summary": "ファイルを削除する",
+		"useWhen": ["不要なファイルを消す"],
+		"examples": ["このファイルを消して"],
+		"impact": "irreversible"
+	}
+]

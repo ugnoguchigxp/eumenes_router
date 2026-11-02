@@ -77,3 +77,18 @@ inspector/  未作成。正解付けの画面（M1）
 ## ライセンス
 
 [MIT](LICENSE) です。`package.json` の `license` も `MIT` です。
+
+## 評価の土台（`bun run router`）
+
+Eumenes なしで、担当の選び方（アルゴリズム）を同じ物差しで比べるための CLI。生成モデルは呼ばない。正解付けはレビュー担当がシートを読んで行う。
+
+| コマンド | すること |
+| --- | --- |
+| `import --db b.db --cards … --utterances … --choices … --labels …` | カード・発言・過去の選択・正解を独立した SQLite に入れる（FTS5 trigram の索引も作る） |
+| `label export --db b.db --out sheet.jsonl --md sheet.md [--model m]` | 未ラベルの発言を、迷いやすい順に正解付けシートとして書き出す |
+| `label import --db b.db --labels labels.jsonl` / `label stats` | 正解（`gold`・`acceptable`・`none`・`status: reviewed|hold`・`wrong`）を入れる。split は会話単位で決まる |
+| `embed --db b.db --provider http --url <base> --model <m>` | 利用者が動かしている OpenAI 互換 `/v1/embeddings` を呼ぶ。model＋本文の hash で SQLite にキャッシュ。`--provider fake` はテスト用の決定的なベクトル |
+| `run --db b.db --algo fts\|embed\|hybrid [--model m] [--split test] [--feedback]` | 共通の経路（候補 8 件＋会話、softmax、訂正、製品の決定表）で採点し、`out/<日時>-<algo>/` に `summary.json`・`report.md`・`predictions.jsonl` を書く |
+| `score --run <dir>` / `compare [--root out]` | 1 回分の要約／複数回の比較表 |
+
+アルゴリズムは `bench/router/algorithms.ts` の `Algorithm`（発言・文脈ヒント・候補 → 候補ごとの点数）を足すだけで差し込める。`bench/fixtures/example/` は配線確認用の合成データで、そこでの値は精度ではない。

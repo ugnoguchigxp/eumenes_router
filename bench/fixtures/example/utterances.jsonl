@@ -1,0 +1,26 @@
+{"id": "ex01", "conversationId": "c1", "seq": 0, "text": "おはよう", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex02", "conversationId": "c1", "seq": 1, "text": "Issueを調査して", "previousUser": "おはよう", "previousAgent": "おはようございます", "hints": {}}
+{"id": "ex03", "conversationId": "c1", "seq": 2, "text": "未解決のバグ報告を探して", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex04", "conversationId": "c1", "seq": 3, "text": "これを見て", "previousUser": "https://github.com/foo/bar を開いた", "previousAgent": "リポジトリを開きました", "hints": {"referencedResource": {"kind": "github"}}}
+{"id": "ex05", "conversationId": "c2", "seq": 0, "text": "この資料を読んで要約して", "previousUser": null, "previousAgent": null, "hints": {"referencedResource": {"kind": "pdf"}}}
+{"id": "ex06", "conversationId": "c2", "seq": 1, "text": "これを見て", "previousUser": "report.pdf を添付", "previousAgent": "PDF を受け取りました", "hints": {"referencedResource": {"kind": "pdf"}}}
+{"id": "ex07", "conversationId": "c2", "seq": 2, "text": "ありがとう、助かった", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex08", "conversationId": "c3", "seq": 0, "text": "この写真に何が写ってる？", "previousUser": null, "previousAgent": null, "hints": {"referencedResource": {"kind": "image"}}}
+{"id": "ex09", "conversationId": "c3", "seq": 1, "text": "これを見て", "previousUser": "screenshot.png を添付", "previousAgent": "画像を受け取りました", "hints": {"referencedResource": {"kind": "image"}}}
+{"id": "ex10", "conversationId": "c3", "seq": 2, "text": "スクショの文字を読んで", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex11", "conversationId": "c4", "seq": 0, "text": "明るい曲を作って", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex12", "conversationId": "c4", "seq": 1, "text": "続きをやって", "previousUser": "明るい曲を作って", "previousAgent": "1番まで作りました", "hints": {"activeToolchainId": "music.create"}}
+{"id": "ex13", "conversationId": "c4", "seq": 2, "text": "メロディをもう少し切なく", "previousUser": null, "previousAgent": null, "hints": {"activeToolchainId": "music.create"}}
+{"id": "ex14", "conversationId": "c5", "seq": 0, "text": "ログインのバグを直して", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex15", "conversationId": "c5", "seq": 1, "text": "続きをやって", "previousUser": "ログインのバグを直して", "previousAgent": "原因を特定しました", "hints": {"activeToolchainId": "code.edit"}}
+{"id": "ex16", "conversationId": "c5", "seq": 2, "text": "テストを追加しておいて", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex17", "conversationId": "c6", "seq": 0, "text": "明日10時に会議を入れて", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex18", "conversationId": "c6", "seq": 1, "text": "やっぱり11時にずらして", "previousUser": null, "previousAgent": null, "hints": {"activeToolchainId": "calendar.schedule"}}
+{"id": "ex19", "conversationId": "c6", "seq": 2, "text": "来週の天気はどう？", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex20", "conversationId": "c7", "seq": 0, "text": "最新のAIニュースを調べて", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex21", "conversationId": "c7", "seq": 1, "text": "このイヤホンの評判を検索して", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex22", "conversationId": "c7", "seq": 2, "text": "なるほどね", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex23", "conversationId": "c8", "seq": 0, "text": "古いログファイルを消して", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex24", "conversationId": "c8", "seq": 1, "text": "バグ報告のIssueを確認して", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex25", "conversationId": "c8", "seq": 2, "text": "READMEを読んで説明して", "previousUser": null, "previousAgent": null, "hints": {}}
+{"id": "ex26", "conversationId": "c8", "seq": 3, "text": "今日は疲れたよ", "previousUser": null, "previousAgent": null, "hints": {}}
