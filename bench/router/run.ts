@@ -28,6 +28,7 @@ import {
 	CONVERSATION,
 	loadCards,
 	loadLabels,
+	loadHistory,
 	loadUtterances,
 	passagesByCard,
 	type StoredLabel,
@@ -114,7 +115,12 @@ export function run(db: Database, options: RunOptions) {
 		: () => {
 				throw new Error("embedding_not_available");
 			};
-	const env: AlgorithmEnv = { fts: ftsSearch(db), vector };
+	const env: AlgorithmEnv = {
+		fts: ftsSearch(db),
+		vector,
+		history: loadHistory(db),
+		cardText: new Map(cards.map((c) => [c.id, { title: c.title, summary: c.summary }])),
+	};
 	const all: CandidateCard[] = cards.map((c) => ({
 		id: c.id,
 		kind: c.kind,

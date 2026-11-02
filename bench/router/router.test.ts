@@ -272,3 +272,25 @@ test("a trigram query quotes grams and is empty under three characters", () => {
 	expect(trigramQuery("ab")).toBeNull();
 	expect(trigramQuery('a"bc')).toBe('"a""b" OR """bc"');
 });
+
+test("past, recorded-embed and sr-weighted variants run deterministically on the fixture", async () => {
+	const db = await fresh("sr");
+	for (const algo of ["past", "recorded-embed", "sr-weighted", "sr-weighted-noembed", "sr-weighted-nohist"]) {
+		const runs: Array<Record<string, unknown>> = [];
+		for (const k of [1, 2])
+			runs.push(
+				strip(
+					(await main(
+						["run", "--db", db, "--algo", algo, "--model", MODEL, "--split", "any", "--out", join(dir, `${algo}-${k}`)],
+						quiet,
+					)) as Record<string, unknown>,
+				),
+			);
+		expect(runs[0]).toEqual(runs[1]!);
+	}
+	const tuned = (await main(
+		["run", "--db", db, "--algo", "sr-x", "--sr", '{"weights":{"hist":0},"minCombined":0.9}', "--model", MODEL, "--split", "any", "--out", join(dir, "sr-x")],
+		quiet,
+	)) as { algo: string };
+	expect(tuned.algo).toBe("sr-x");
+});

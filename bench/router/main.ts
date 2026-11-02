@@ -1,12 +1,12 @@
 /**
  * `bun run router <command>`: the evaluation bench, independent of Eumenes.
  *
- *   import   --db <file> [--cards <json|jsonl>] [--utterances <jsonl>] [--choices <jsonl>] [--labels <jsonl>]
+ *   import   --db <file> [--export <router-export dir>] [--cards <json|jsonl>] [--utterances <jsonl>] [--choices <jsonl>] [--labels <jsonl>]
  *   label    export --db <file> --out <sheet.jsonl> [--md <sheet.md>] [--model <m>] [--limit N]
  *   label    import --db <file> --labels <jsonl>
  *   label    stats  --db <file>
  *   embed    --db <file> (--provider fake | --provider http --url <base> --model <m>)
- *   run      --db <file> --algo fts|embed|hybrid [--model <m>] [--split test|dev|any] [--feedback] [--out <dir>]
+ *   run      --db <file> --algo fts|embed|hybrid|past|recorded-embed|sr-weighted[-noembed|-nohist|-noproto] [--sr <json>] [--model <m>] [--split test|dev|any] [--feedback] [--out <dir>]
  *   score    --run <dir>             (prints the run's summary)
  *   compare  [<run dir> ...] [--root out]
  *
@@ -20,6 +20,7 @@ import { compareTable, runDirs } from "./compare.ts";
 import {
 	importCards,
 	importChoices,
+	importExportEmbeddings,
 	importLabels,
 	importUtterances,
 	loadLabels,
@@ -31,6 +32,7 @@ import { fakeProvider, fillCache, httpProvider } from "./embed.ts";
 import { jsonl } from "./io.ts";
 import { reviewSheet, sheetMarkdown } from "./label.ts";
 import { RUN_DEFAULTS, run } from "./run.ts";
+import { registerSr, SR_DEFAULTS, type SrOptions } from "./algorithms.ts";
 
 const OPTIONS = {
 	db: { type: "string" },
@@ -38,6 +40,7 @@ const OPTIONS = {
 	utterances: { type: "string" },
 	choices: { type: "string" },
 	labels: { type: "string" },
+	export: { type: "string" },
 	out: { type: "string" },
 	md: { type: "string" },
 	model: { type: "string" },
@@ -50,6 +53,7 @@ const OPTIONS = {
 	offer: { type: "string" },
 	temperature: { type: "string" },
 	feedback: { type: "boolean" },
+	sr: { type: "string" },
 	run: { type: "string" },
 	root: { type: "string" },
 } as const;
@@ -77,6 +81,18 @@ export async function main(
 		case "import": {
 			const bench = db();
 			const counts: Record<string, unknown> = {};
+			if (v.export) {
+				const dir = v.export;
+				counts["cards"] = importCards(bench, join(dir, "cards.jsonl"));
+				counts["utterances"] = importUtterances(bench, join(dir, "utterances.jsonl"));
+				counts["choices"] = importChoices(bench, join(dir, "choices.jsonl"));
+				const emb = join(dir, "embeddings.jsonl.gz");
+				if (existsSync(emb)) counts["embeddings"] = importExportEmbeddings(bench, emb);
+				const manifest = JSON.parse(readFileSync(join(dir, "manifest.json"), "utf8")) as {
+					counts: Record<string, number>;
+				};
+				counts["manifest"] = manifest.counts;
+			}
 			if (v.cards) counts["cards"] = importCards(bench, v.cards);
 			if (v.utterances)
 				counts["utterances"] = importUtterances(bench, v.utterances);
@@ -156,6 +172,15 @@ export async function main(
 		}
 		case "run": {
 			const algo = need(v.algo, "algo");
+			if (v.sr) {
+				// A tuned sr-weighted variant: `{ "vectors": bool, ...partial SrOptions }`.
+				const o = JSON.parse(v.sr) as Partial<SrOptions> & { vectors?: boolean };
+				registerSr(
+					algo,
+					{ ...SR_DEFAULTS, ...o, weights: { ...SR_DEFAULTS.weights, ...(o.weights ?? {}) } },
+					o.vectors !== false,
+				);
+			}
 			const out = v.out ?? join("out", `${stamp()}-${algo}`);
 			if (existsSync(out)) throw new Error(`out_exists: ${out}`);
 			const summary = run(db(), {
