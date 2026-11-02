@@ -9,6 +9,6 @@ for (const [n, c] of Object.entries(cfg)) {
   const r = go("/tmp/r2/scale2000.db", n, "test", c ?? undefined, { tag: "s-" + n });
   const h = hits("/tmp/r2/scale2000.db", r.preds, "test");
   const lat = Object.values(r.preds).map((p: any) => p.durationMs).sort((a: number, b: number) => a - b);
-  const lost = Object.keys(h).filter((id) => H[n][id].hit && !h[id].hit).length;
+  const lost = Object.keys(h).filter((id) => H[n]?.[id]?.hit && !h[id]!.hit).length;
   console.log(n, "top1", (agg(h).top1 * 100).toFixed(1), "p50", lat[Math.floor(lat.length / 2)], "p95", lat[Math.floor(lat.length * 0.95)], "lost", lost);
 }
