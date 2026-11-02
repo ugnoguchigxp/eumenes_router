@@ -93,7 +93,7 @@ type Item = { id: string; text: string; gold: string; acceptable: readonly strin
 
 export type ExperimentOptions = {
 	db: string; out: string; variants?: string | undefined; controls?: string | undefined; corrections?: string | undefined;
-	url: string; model?: string | undefined; python?: string | undefined; rerankers?: string[]; thetas?: number[] | undefined;
+	url: string; model?: string | undefined; python?: string | undefined; rerankers?: string[]; thetas?: number[] | undefined; deferThresholds?: Record<string, number> | undefined;
 	print?: (s: string) => void;
 };
 
@@ -147,7 +147,11 @@ export async function correctionExperiment(o: ExperimentOptions) {
 	for (const s of synth) s.past = s.source ? past[s.source]?.[0]?.[0] : undefined;
 	const items = [...real, ...synth];
 	// Cross-encoder scores (cached by text + candidates).
-	const tags = o.rerankers ?? [];
+	const tags = (o.rerankers ?? []).map((t) => {
+		const [tag, model] = t.split("=");
+		if (model) RERANKERS[tag!] = { model, w: RERANKERS["ruri"]!.w, conv: RERANKERS["ruri"]!.conv };
+		return tag!;
+	});
 	const rr: Record<string, Record<string, Record<string, number>>> = {};
 	const cards = Object.fromEntries([...passagesByCard(db)].map(([id, p]) => [id, { passages: p }]));
 	const keyOf = (it: Item) => it.text + "\x00" + sr[it.id]!.map(([c]) => c).join("|");
@@ -170,7 +174,7 @@ export async function correctionExperiment(o: ExperimentOptions) {
 	const thOf: Record<string, number> = {};
 	for (const tag of tags) {
 		const dm = real.filter((r) => r.split === "dev").map((r) => margin(front(tag, r))).sort((a, b) => a - b);
-		thOf[tag] = dm[Math.floor(dm.length * 0.2) - 1]! + 1e-9;
+		thOf[tag] = o.deferThresholds?.[tag] ?? dm[Math.floor(dm.length * 0.2) - 1]! + 1e-9;
 	}
 	const ok = (it: Item, t: string | undefined) => t !== undefined && (t === it.gold || it.acceptable.includes(t));
 	type Pick = { top: string | undefined; frontTop: string; deferred: boolean; near: number };

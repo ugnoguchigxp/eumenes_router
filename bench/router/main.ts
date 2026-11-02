@@ -10,7 +10,8 @@
  *   score    --run <dir>             (prints the run's summary)
  *   compare  [<run dir> ...] [--root out]
  *   correct  --db <file> [--variants <jsonl>] [--controls <jsonl>] [--corrections <jsonl>] [--url <embed server>]
- *            [--rerank ruri,xs --python <venv python>] [--theta 0.95[,0.9]] [--out <dir>]
+ *            [--rerank ruri,xs --python <venv python>] [--theta 0.95[,0.9]] [--defer-th tag=0.12]
+ *            --rerank accepts tag=<model dir> (fused with ruri's w/conv), e.g. ft=/tmp/ft/k10-real-s0 [--out <dir>]
  *            (user corrections through the router's feedback store, then variants/controls)
  *
  * No command calls a generative model. `embed --provider http` calls the server the
@@ -67,6 +68,7 @@ const OPTIONS = {
 	python: { type: "string" },
 	rerank: { type: "string" },
 	theta: { type: "string" },
+	"defer-th": { type: "string" },
 } as const;
 
 const stamp = () =>
@@ -221,6 +223,7 @@ export async function main(
 				variants: v.variants, controls: v.controls, corrections: v.corrections,
 				url: v.url ?? "http://127.0.0.1:8765", model: v.model, python: v.python,
 				rerankers: v.rerank ? v.rerank.split(",") : [],
+				deferThresholds: v["defer-th"] ? Object.fromEntries(v["defer-th"].split(",").map((kv) => { const [k, x] = kv.split("="); return [k!, Number(x)]; })) : undefined,
 				thetas: v.theta ? v.theta.split(",").map(Number) : undefined, print,
 			});
 		}

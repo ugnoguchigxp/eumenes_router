@@ -1,0 +1,5 @@
+# torch is installed separately (ROCm or CPU wheel); see README
+transformers>=4.48,<5
+sentencepiece
+protobuf
+safetensors
