@@ -9,6 +9,9 @@
  *   run      --db <file> --algo fts|embed|hybrid|past|recorded-embed|sr-weighted[-noembed|-nohist|-noproto] [--sr <json>] [--model <m>] [--split test|dev|any] [--feedback] [--out <dir>]
  *   score    --run <dir>             (prints the run's summary)
  *   compare  [<run dir> ...] [--root out]
+ *   correct  --db <file> [--variants <jsonl>] [--controls <jsonl>] [--corrections <jsonl>] [--url <embed server>]
+ *            [--rerank ruri,xs --python <venv python>] [--theta 0.95[,0.9]] [--out <dir>]
+ *            (user corrections through the router's feedback store, then variants/controls)
  *
  * No command calls a generative model. `embed --provider http` calls the server the
  * user runs; the bench does not start one.
@@ -58,6 +61,12 @@ const OPTIONS = {
 	sr: { type: "string" },
 	run: { type: "string" },
 	root: { type: "string" },
+	variants: { type: "string" },
+	controls: { type: "string" },
+	corrections: { type: "string" },
+	python: { type: "string" },
+	rerank: { type: "string" },
+	theta: { type: "string" },
 } as const;
 
 const stamp = () =>
@@ -204,6 +213,16 @@ export async function main(
 			);
 			print(text);
 			return JSON.parse(text) as unknown;
+		}
+		case "correct": {
+			const { correctionExperiment } = await import("./correction.ts");
+			return correctionExperiment({
+				db: need(v.db, "db"), out: v.out ?? `out/correct-${stamp()}`,
+				variants: v.variants, controls: v.controls, corrections: v.corrections,
+				url: v.url ?? "http://127.0.0.1:8765", model: v.model, python: v.python,
+				rerankers: v.rerank ? v.rerank.split(",") : [],
+				thetas: v.theta ? v.theta.split(",").map(Number) : undefined, print,
+			});
 		}
 		case "compare": {
 			const table = compareTable(
