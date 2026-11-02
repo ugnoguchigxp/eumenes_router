@@ -173,6 +173,7 @@ Eumenes からパッケージに渡す、振り分け用のカード（bundle �
 
 ```text
 eumenes-router/
+  README.md
   AGENTS.md
   plan.md
   src/            出荷する（contracts / retrieval / decision / db。公開口は index.ts と sqlite.ts）
