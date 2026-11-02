@@ -34,6 +34,7 @@ test("a card whose Recall@1 falls by 0.02 or more is refused", () => {
 			n: 2,
 			recallAtFrame: 0.5,
 			recallAt1: 0.5,
+			recallAtSet: null,
 			delta: 0.5,
 		},
 		{
@@ -41,6 +42,7 @@ test("a card whose Recall@1 falls by 0.02 or more is refused", () => {
 			n: 2,
 			recallAtFrame: 1,
 			recallAt1: 0.5,
+			recallAtSet: null,
 			delta: 0,
 		},
 	]);
@@ -59,7 +61,50 @@ test("a card with no cases is not a regression", () => {
 	expect(report.byCard[0]).toMatchObject({
 		n: 0,
 		recallAt1: null,
+		recallAtSet: null,
 		delta: null,
 	});
 	expect(report.refused).toBe(false);
+});
+
+test("Recall@set counts cases whose prediction set contains the card", () => {
+	const report = checkReachability({
+		cards: [{ id: "music.create" }],
+		eval: [
+			{
+				cardId: "music.create",
+				offered: ["music.create"],
+				top1: "music.create",
+				set: ["music.create", "conversation.respond"],
+			},
+			{
+				cardId: "music.create",
+				offered: [],
+				top1: "conversation.respond",
+				set: ["conversation.respond"],
+			},
+		],
+	});
+	expect(report.byCard[0]?.recallAtSet).toBe(0.5);
+	expect(report.refused).toBe(false);
+});
+
+test("one case without a prediction set leaves Recall@set unset", () => {
+	const report = checkReachability({
+		cards: [{ id: "music.create" }],
+		eval: [
+			{
+				cardId: "music.create",
+				offered: ["music.create"],
+				top1: "music.create",
+				set: ["music.create"],
+			},
+			{
+				cardId: "music.create",
+				offered: ["music.create"],
+				top1: "music.create",
+			},
+		],
+	});
+	expect(report.byCard[0]?.recallAtSet).toBeNull();
 });

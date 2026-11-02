@@ -99,6 +99,66 @@ test("changed passages are pending, saved vectors are searched, a disabled card 
 	}
 });
 
+test("an empty index returns every available card except read tools", () => {
+	const { db, close } = open();
+	try {
+		const music = card("music.create");
+		const image = card("image.create");
+		const readBody = { ...card("readMemory"), kind: "read" as const };
+		const read = { ...readBody, digest: cardDigest(readBody) };
+		syncCardsInTransaction(db, [music, image, read], space);
+		const query = {
+			vector: { space, values: [1, 0] },
+			available: () => true,
+		};
+		const found = candidatesInTransaction(db, query);
+		expect(found.map((row) => row.id)).toEqual([
+			"image.create",
+			"music.create",
+		]);
+		expect(found.every((row) => row.similarity === null)).toBe(true);
+		expect(found.every((row) => row.fromHistory === false)).toBe(true);
+		expect(
+			candidatesInTransaction(db, {
+				...query,
+				available: (id) => id !== "image.create",
+			}).map((row) => row.id),
+		).toEqual(["music.create"]);
+		expect(candidatesInTransaction(db, { ...query, strict: true })).toEqual([]);
+	} finally {
+		close();
+	}
+});
+
+test("fromHistory marks a past choice and does not change the rank", () => {
+	const { db, close } = open();
+	try {
+		const music = card("music.create");
+		const image = card("image.create");
+		const pending = syncCardsInTransaction(db, [music, image], space);
+		saveVectorsInTransaction(
+			db,
+			space,
+			pending.pending.map((row) => ({
+				...row,
+				vector: row.id === "music.create" ? [1, 0] : [0, 1],
+			})),
+		);
+		const found = candidatesInTransaction(db, {
+			vector: { space, values: [1, 0] },
+			available: () => true,
+			fromHistory: ["image.create"],
+		});
+		expect(found.map((row) => row.id)).toEqual([
+			"music.create",
+			"image.create",
+		]);
+		expect(found.map((row) => row.fromHistory)).toEqual([false, true]);
+	} finally {
+		close();
+	}
+});
+
 test("choice slots drop a pipeline farther than `near` from the closest", () => {
 	const { db, close } = open();
 	try {

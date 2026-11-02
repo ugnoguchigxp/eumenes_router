@@ -203,14 +203,35 @@ export function candidatesInTransaction(
 		return [{ id: row.card_id, values: unpackVector(row.vector) }];
 	});
 	const similarity = closestSimilarities(passages, input.vector.values, active);
-	const ranked = rankBy(cards, similarity);
+	const history = new Set(input.fromHistory ?? []);
 	const slots = input.slots === "choice" ? CANDIDATE_SLOTS : ROUTER_SLOTS;
-	return slotted(
-		ranked,
-		(card) => similarity.get(card.id)!,
-		(card) => slotKind(card.kind),
-		slots,
-	).map((card, index) => ({
+	const chosen = similarity.size
+		? slotted(
+				rankBy(cards, similarity),
+				(card) => similarity.get(card.id)!,
+				(card) => slotKind(card.kind),
+				slots,
+			)
+		: input.strict
+			? []
+			: cards.filter((card) => card.kind !== "read");
+	return chosen.map((card, index) =>
+		toCandidate(
+			card,
+			index + 1,
+			similarity.get(card.id) ?? null,
+			history.has(card.id),
+		),
+	);
+}
+
+function toCandidate(
+	card: CardRow,
+	rank: number,
+	similarity: number | null,
+	fromHistory: boolean,
+): Candidate {
+	return {
 		id: card.id,
 		revision: card.revision,
 		kind: card.kind,
@@ -218,8 +239,9 @@ export function candidatesInTransaction(
 		summary: card.summary,
 		useWhen: JSON.parse(card.use_when_json) as string[],
 		impact: card.impact,
-		similarity: similarity.get(card.id) ?? null,
-		rank: index + 1,
+		similarity,
+		rank,
 		ftsRank: null,
-	}));
+		fromHistory,
+	};
 }

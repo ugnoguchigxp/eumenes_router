@@ -1,13 +1,18 @@
 /**
  * Registration check (spec §3.8). The host has already searched: each case is one
- * example or one evaluated utterance of a card, with the frame it landed in and the
- * first place. This function does not embed and does not score.
+ * example or one evaluated utterance of a card, with the frame it landed in, the
+ * first place, and, when the host has it, the prediction set. This function does
+ * not embed and does not score.
  * A card whose Recall@1 falls by 0.02 or more against `before` is a regression.
+ * Recall@set is the share of that card's cases whose set contains the card. It is
+ * null when the card has no cases, or any of its cases omits `set`.
  */
 export type ReachabilityCase = {
 	cardId: string;
 	offered: readonly string[];
 	top1: string;
+	/** The prediction set for this case. Omit it and Recall@set stays null. */
+	set?: readonly string[];
 };
 
 export type ReachabilityCard = {
@@ -15,6 +20,8 @@ export type ReachabilityCard = {
 	n: number;
 	recallAtFrame: number | null;
 	recallAt1: number | null;
+	/** Share of cases whose prediction set contains the card. */
+	recallAtSet: number | null;
 	/** `before` minus Recall@1, when both exist. */
 	delta: number | null;
 };
@@ -47,6 +54,10 @@ export function checkReachability(input: {
 		const recallAt1 = n
 			? rows.filter((row) => row.top1 === id).length / n
 			: null;
+		const recallAtSet =
+			n && rows.every((row) => row.set !== undefined)
+				? rows.filter((row) => (row.set ?? []).includes(id)).length / n
+				: null;
 		const previous = input.before?.[id];
 		const delta =
 			recallAt1 !== null && typeof previous === "number"
@@ -58,7 +69,7 @@ export function checkReachability(input: {
 			previous - recallAt1 >= REGRESSION
 		)
 			regressions.push({ id, before: previous, after: recallAt1 });
-		byCard.push({ id, n, recallAtFrame, recallAt1, delta });
+		byCard.push({ id, n, recallAtFrame, recallAt1, recallAtSet, delta });
 	}
 	return { byCard, regressions, refused: regressions.length > 0 };
 }

@@ -1,6 +1,6 @@
 # eumenes-router 計画（2026-11-02）
 
-状態: M0 を実装した（2026-11-02）。判断一式と採点は `bun test`（33件）で検証済み。正解付け・方式の比較・出荷は未着手。Eumenes 側のカードと状態の書き出しはまだない。この文書が作業の入口。作業規則は同じ場所の `AGENTS.md`。
+状態: M0 を実装した（2026-11-02）。判断一式と採点は `bun test` で検証済み。正解付け・方式の比較・出荷は未着手。Eumenes 側のカードと状態の書き出しはまだない。408件の決定の一致は未了。この文書が作業の入口。作業規則は同じ場所の `AGENTS.md`。
 
 一言で: Eumenes の「担当の振り分け（Toolchain Router）」を研究用の独立プロジェクトに切り出す。正解付きの評価データで方式を実測して決め、勝った方式を tarball で Eumenes に戻す。Router の完成品は目指さない。
 
@@ -105,7 +105,9 @@ type Score = (input: RouteInput) => Promise<RouteAnswer>;
 migrateInTransaction(db): void
 syncCardsInTransaction(db, cards, space): { pending: Passage[] } // その space で、文の digest が変わった分だけ
 saveVectorsInTransaction(db, space, rows): void                  // rows は { id, revision, item, text, vector }
-candidatesInTransaction(db, { vector, available, slots }): Candidate[] // slots は "router" | "choice"。ftsRank は null
+candidatesInTransaction(db, { vector, available, slots, fromHistory?, strict? }): Candidate[]
+// slots は "router" | "choice"。ftsRank は null。fromHistory は順位も枠も変えない印。
+// その space にベクトルが一件も無いとき、strict でなければ read 以外の有効なカードを id 順に返す（similarity は null）
 nearFeedback(db, { vector, space, threshold, limit? }): NearFeedback[] // 既定 limit 5、新しい 500 件を走査
 recordFeedbackInTransaction(db, feedback): void                  // id と at はホストが渡す
 setFeedbackStateInTransaction(db, id, state, at): boolean
@@ -114,11 +116,16 @@ forgetInTransaction(db, messageIds): number
 // eumenes-router（Eumenes と bench が同じ関数を使い、流れのずれを作らない）
 const result = await route(
   { embed, score, read: { candidates, nearFeedback }, settings, log },
-  { state: { text, previousAgent, previousUser }, dynamic, available, instructions, asked, signals: { intentChat: 0.12 } },
+  { state: { text, previousAgent, previousUser }, dynamic, passages?: { conversation, memory }, fromHistory?, available, instructions, asked, signals: { intentChat: 0.12 } },
 );
+// passages を渡したとき、dynamic に無い conversation.respond と memory.request を、その文で足す。文はホストが書く
 // result: { candidates（検索の枠）, answer, corrected, decision, explain }
+// answer は、候補が無ければ null。そのときの決定は行 8（会話）で、採点は呼ばない
+// explain.conflicts は、補正が衝突した訂正の id。パッケージは状態を書かない。ホストが setFeedbackStateInTransaction で conflict にする
+// 説明が空白、または候補が 128 を超えるときは、採点の前に larm_invalid_route_request
 checkReachability({ cards, eval, before? }): ReachabilityReport
-// eval の1件は { cardId, offered, top1 }。ホストが検索まで済ませた結果。この関数は埋め込みもモデルも呼ばない
+// eval の1件は { cardId, offered, top1, set? }。ホストが検索まで済ませた結果。この関数は埋め込みもモデルも呼ばない
+// set をそのカードの全件に渡したとき recallAtSet（予測集合に正解が入る割合）。一件でも省くと null
 ```
 
 案からの差分（M0）:
@@ -130,8 +137,13 @@ checkReachability({ cards, eval, before? }): ReachabilityReport
 | `nearFeedback` の θ | 呼び出し側が `threshold` を渡す。`route()` は設定の `feedbackNear`（既定 0.95）を渡す |
 | 時計・乱数 | 訂正の `id` と `at` はホストが渡す。状態変更も `at` を受け取る |
 | 忘却 | 消した行数を返す。対象は `router_feedback` だけ（`router_traces` は持ってこない） |
-| 到達性 | `before` の Recall@1 から 0.02 以上下がったカードを `regressions` に入れる。`refused` はその有無 |
+| 到達性 | Recall@枠と Recall@1。`set` を全件渡したカードは Recall@集合。`before` の Recall@1 から 0.02 以上下がったカードを `regressions` に入れる。`refused` はその有無 |
 | passage の主キー | `(card_id, item, space)`。`revision` 列は残す。カード id が安定で、版が変わっても行を取り違えないため |
+| 衝突 | `explain.conflicts` は、補正が衝突したときに読んだ訂正の id。行の状態はホストが `conflict` にする |
+| 会話と記憶 | 文はホストが `passages` か `dynamic` で渡す。`passages` のとき、足りない二つを足す。空の offer は行 8 で、採点しない |
+| 索引が空 | ベクトルが無いとき、read 以外の有効なカードを id 順に返す。`strict` なら空。`fromHistory` は印だけで順位も枠も変えない |
+| 候補の上限 | 安定した候補は 128 で切らない。超えた、または説明が空白なら採点の前に `larm_invalid_route_request`。動的な候補は枠が足りないとき pending を残して落とす |
+| カードの形 | id、空でない revision と title、kind、impact、digest。useWhen と examples の件数と文字数では拒まない |
 
 Eumenes からパッケージに渡す、振り分け用のカード（bundle から作る）:
 
@@ -280,9 +292,11 @@ eumenes-router/
 | 決定表・訂正・予測集合・採点（`bench/score.ts`） | 実装済み。Eumenes の `score.ts` と同じ予測（確率の形）202件で `decisionOf` が一致。`correctProbabilities`・`decide`・`predictionSet` も同じ入力で一致 |
 | 評価スナップショット | `data/router-eval/2026-11-01-snapshot/` に写した（Git 管理外）。408件はすべて `review.status` が `unreviewed`、`gold.primary` は空、予測に確率が無い。採点の一致の入力ではない |
 | カードと、その回の仕事・確認待ち | 未了。Eumenes のセッションで書き出しを足す（§7） |
+| レビューで揃えた契約 | 実装済み。衝突した訂正の id、空の offer は行 8、`passages`、索引が空のときの全カード、`fromHistory`、Recall@集合、空白と 128 超は採点前に拒否、カードの件数上限は外した（§4） |
 | inspector、方式の比較、出荷 | 未着手（M1 以降） |
+| 408件の決定の一致 | 未了。スナップショットに確率が無く、`route()` と Eumenes の `routerTurn` も比べていない |
 
-`bun test` は 33件成功（2026-11-02、この作業の中）。live と本番機の計測は始めていない。
+`bun test` は 45件成功（2026-11-02）。live と本番機の計測は始めていない。
 
 ## 11 確かめていないこと・決まっていないこと
 

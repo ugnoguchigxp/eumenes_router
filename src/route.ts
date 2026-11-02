@@ -3,6 +3,7 @@ import type { NearFeedback } from "./contracts/feedback.ts";
 import {
 	assertRouteAnswer,
 	ROUTE_LIMITS,
+	routeCriterionName,
 	routeErrors,
 	type RouteAnswer,
 	type RouteInput,
@@ -14,7 +15,7 @@ import type {
 	RouteCandidate,
 	RouteDecision,
 } from "./decision/decide.ts";
-import { decide } from "./decision/decide.ts";
+import { CONVERSATION_ID, decide, MEMORY_ID } from "./decision/decide.ts";
 import { offerCandidates, type Skipped } from "./decision/offer.ts";
 import { correctProbabilities } from "./decision/correct.ts";
 import { routerPassage } from "./retrieval/passages.ts";
@@ -34,6 +35,8 @@ export type Candidate = {
 	similarity: number | null;
 	rank: number;
 	ftsRank: null;
+	/** A past choice. It does not change rank or slots. */
+	fromHistory: boolean;
 };
 
 export type Embed = (
@@ -47,6 +50,10 @@ export type CandidateQuery = {
 	available: (id: string) => boolean;
 	/** `"router"` is the wide frame. `"choice"` is the narrower one. */
 	slots?: "router" | "choice";
+	/** Past choices. They mark candidates and do not change rank or slots. */
+	fromHistory?: readonly string[];
+	/** When set, an empty index stays empty instead of returning every card. */
+	strict?: boolean;
 };
 
 export type FeedbackQuery = {
@@ -83,10 +90,18 @@ export type RouteTurn = {
 		previousUser: string | null;
 	};
 	/**
-	 * Candidates the host builds: the conversation, a memory request, work, pending
-	 * questions and redirects. Search hits are not repeated here.
+	 * Candidates the host builds: work, pending questions and redirects. The
+	 * conversation and a memory request may be here, or in `passages`. Search hits
+	 * are not repeated here.
 	 */
 	dynamic: readonly RouteCandidate[];
+	/**
+	 * Sentences for the conversation and a memory request. Each one missing from
+	 * `dynamic` is added. The host writes the sentences; this package does not.
+	 */
+	passages?: { conversation: string; memory: string };
+	/** Past choices, forwarded to the search. They do not change rank or slots. */
+	fromHistory?: readonly string[];
 	available: (id: string) => boolean;
 	/** The host's instructions for the choice. This package does not write them. */
 	instructions: string;
@@ -99,7 +114,8 @@ export type RouteTurn = {
 export type RouteResult = {
 	/** The search frame, in slot order. */
 	candidates: readonly Candidate[];
-	answer: RouteAnswer;
+	/** Null when nothing was offered, so the scorer was not called. */
+	answer: RouteAnswer | null;
 	/** The offer after correction, best probability first. */
 	corrected: readonly Ranked[];
 	decision: RouteDecision;
@@ -107,6 +123,8 @@ export type RouteResult = {
 		offered: readonly string[];
 		skipped: readonly Skipped[];
 		conflict: boolean;
+		/** Ids of the corrections that disagreed, in the order they were read. */
+		conflicts: readonly string[];
 		intentChat: number | null;
 	};
 };
@@ -136,7 +154,7 @@ function retrievedCandidate(row: Candidate, rank: number): RouteCandidate {
 			ftsRank: null,
 			similarity:
 				row.similarity === null ? null : Number(row.similarity.toFixed(4)),
-			fromHistory: false,
+			fromHistory: row.fromHistory,
 		},
 	};
 	const choice = { id: row.id, title: row.title };
@@ -163,12 +181,16 @@ function intentOf(signals: RouteTurn["signals"]): number | null {
  * Search, one score, the correction, then the decision table.
  * `read` runs after `embed` and before `score`, both calls synchronous, so the host
  * must not keep a transaction open across either await.
+ * An empty offer is decision row 8 and does not call `score`. A blank description,
+ * or more criteria than the scorer accepts, is `larm_invalid_route_request`.
+ * Conflict ids are returned. This function does not write them.
  */
 export async function route(
 	ports: RoutePorts,
 	turn: RouteTurn,
 ): Promise<RouteResult> {
 	const settings = routeSettings(ports.settings);
+	const intentChat = intentOf(turn.signals);
 	const state = bounded(turn.state);
 	const embedded = await ports.embed([state.text]);
 	const vector = embedded.vectors[0];
@@ -179,6 +201,9 @@ export async function route(
 		vector: { space: embedded.space, values: vector },
 		available: turn.available,
 		slots: "router",
+		...(turn.fromHistory !== undefined
+			? { fromHistory: turn.fromHistory }
+			: {}),
 	});
 	const near = ports.read.nearFeedback({
 		vector,
@@ -188,10 +213,35 @@ export async function route(
 	const skipped: Skipped[] = [];
 	const offered = offerCandidates({
 		searched: retrieved.map((row, index) => retrievedCandidate(row, index + 1)),
-		dynamic: turn.dynamic,
+		dynamic: withPassages(turn.dynamic, turn.passages),
 		skipped,
 	});
-	if (!offered.length) throw new Error(routeErrors.invalidRequest);
+	if (!offered.length) {
+		const decision = decide([], settings);
+		ports.log?.({
+			name: "router.decided",
+			fields: {
+				row: decision.row,
+				candidates: 0,
+				skipped: skipped.length,
+				conflict: 0,
+			},
+		});
+		return {
+			candidates: retrieved,
+			answer: null,
+			corrected: [],
+			decision,
+			explain: {
+				offered: [],
+				skipped,
+				conflict: false,
+				conflicts: [],
+				intentChat,
+			},
+		};
+	}
+	assertSendable(offered);
 	const criteria = offered.map((candidate) => ({
 		name: candidate.id,
 		description: candidate.passage,
@@ -221,7 +271,7 @@ export async function route(
 	}));
 	ranked.sort((a, b) => b.p - a.p);
 	const decision = decide(ranked, settings, turn.asked ?? null);
-	const intentChat = intentOf(turn.signals);
+	const conflicts = corrected.conflict ? near.map((row) => row.id) : [];
 	ports.log?.({
 		name: "router.decided",
 		fields: {
@@ -240,7 +290,47 @@ export async function route(
 			offered: offered.map((candidate) => candidate.id),
 			skipped,
 			conflict: corrected.conflict,
+			conflicts,
 			intentChat,
 		},
 	};
+}
+
+function withPassages(
+	dynamic: readonly RouteCandidate[],
+	passages: RouteTurn["passages"],
+): readonly RouteCandidate[] {
+	if (!passages) return dynamic;
+	const ids = new Set(dynamic.map((candidate) => candidate.id));
+	const extra: RouteCandidate[] = [];
+	if (!ids.has(CONVERSATION_ID))
+		extra.push({
+			id: CONVERSATION_ID,
+			kind: "conversation",
+			passage: passages.conversation,
+		});
+	if (!ids.has(MEMORY_ID))
+		extra.push({
+			id: MEMORY_ID,
+			kind: "memory",
+			passage: passages.memory,
+		});
+	return extra.length ? [...extra, ...dynamic] : dynamic;
+}
+
+/** A set the scorer would refuse as a whole: too many, or a blank description. */
+function assertSendable(offered: readonly RouteCandidate[]): void {
+	if (offered.length > ROUTE_LIMITS.criteria)
+		throw new Error(routeErrors.invalidRequest);
+	const seen = new Set<string>();
+	for (const candidate of offered) {
+		if (
+			seen.has(candidate.id) ||
+			!routeCriterionName.test(candidate.id) ||
+			candidate.passage.length > ROUTE_LIMITS.description ||
+			!candidate.passage.trim()
+		)
+			throw new Error(routeErrors.invalidRequest);
+		seen.add(candidate.id);
+	}
 }

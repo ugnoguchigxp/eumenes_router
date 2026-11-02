@@ -12,8 +12,10 @@ const isStable = (candidate: RouteCandidate) =>
 
 /**
  * Search hits, the conversation and a memory request, sorted by id, then the host's
- * dynamic candidates in the order given. A name or a description the scorer would refuse
- * is left out. When the offer is full, dynamic candidates give way, pending ones last.
+ * dynamic candidates in the order given. A name the scorer would refuse, or a
+ * description longer than the limit, is left out. A blank description stays, and the
+ * caller rejects the whole request. Stable candidates are not cut to fit. When the
+ * offer is full, dynamic candidates give way, pending ones last.
  */
 export function offerCandidates(input: {
 	searched: readonly RouteCandidate[];
@@ -25,8 +27,7 @@ export function offerCandidates(input: {
 		candidates.filter((candidate) => {
 			const reason = !routeCriterionName.test(candidate.id)
 				? "invalid_name"
-				: candidate.passage.length > ROUTE_LIMITS.description ||
-					  !candidate.passage.trim()
+				: candidate.passage.length > ROUTE_LIMITS.description
 					? "description_too_long"
 					: null;
 			if (reason) skipped?.push({ id: candidate.id, reason });
@@ -43,11 +44,6 @@ export function offerCandidates(input: {
 		...input.dynamic.filter(isStable),
 	]).filter(take);
 	stable.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
-	if (stable.length > ROUTE_LIMITS.criteria) {
-		for (const candidate of stable.slice(ROUTE_LIMITS.criteria))
-			skipped?.push({ id: candidate.id, reason: "criteria_limit" });
-		stable.length = ROUTE_LIMITS.criteria;
-	}
 	const dynamic = admit(
 		input.dynamic.filter((candidate) => !isStable(candidate)),
 	).filter(take);

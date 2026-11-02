@@ -59,32 +59,32 @@ function cardBody(card: Omit<Card, "digest">) {
 	};
 }
 
-function strings(value: unknown, max: number): readonly string[] | null {
-	if (!Array.isArray(value) || value.length > max) return null;
+function strings(value: unknown): readonly string[] | null {
+	if (!Array.isArray(value)) return null;
 	const out: string[] = [];
 	for (const item of value) {
-		if (typeof item !== "string" || item.length > 8000) return null;
+		if (typeof item !== "string") return null;
 		out.push(item);
 	}
 	return out;
 }
 
-/** The card, or an error when it breaks the contract or its digest does not match. */
+/**
+ * The card, or an error when the shape, the id, or the digest is wrong.
+ * Counts and string lengths are not capped: a published card is not rejected for size.
+ */
 export function parseCard(value: Card): Card {
-	const useWhen = strings(value.useWhen, 32);
-	const examples = strings(value.examples, 64);
+	const useWhen = strings(value.useWhen);
+	const examples = strings(value.examples);
 	if (
 		typeof value.id !== "string" ||
 		!routeCriterionName.test(value.id) ||
 		typeof value.revision !== "string" ||
 		value.revision.length < 1 ||
-		value.revision.length > 200 ||
 		!kindSet.has(value.kind) ||
 		typeof value.title !== "string" ||
 		value.title.length < 1 ||
-		value.title.length > 500 ||
 		typeof value.summary !== "string" ||
-		value.summary.length > 4000 ||
 		!useWhen ||
 		!examples ||
 		!impactSet.has(value.impact)
