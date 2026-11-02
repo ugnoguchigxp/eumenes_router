@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "eumenes-router",
+      "name": "eumenes_router",
       "devDependencies": {
         "@types/bun": "1.3.14",
         "@types/node": "25.9.3",

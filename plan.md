@@ -1,4 +1,4 @@
-# eumenes-router 計画（2026-11-02）
+# eumenes_router 計画（2026-11-02）
 
 状態: M0 を実装した（2026-11-02）。判断一式と採点は `bun test` で検証済み。正解付け・方式の比較・出荷は未着手。Eumenes 側のカードと状態の書き出しはまだない。408件の決定の一致は未了。この文書が作業の入口。作業規則は同じ場所の `AGENTS.md`。
 
@@ -9,7 +9,7 @@
 | 日付 | こと |
 | --- | --- |
 | 2026-11-01 | Eumenes の設計書 `/Users/y.noguchi/Code/eumenes/spec/toolchain-router-redesign-2026-11-01.md`（以下「設計書」）で、統合 Router を設計し合意（設計書 §11）。R1〜R3 を Eumenes に実装済み。fixture 検証だけで、既定は `router.mode: off`（設計書 §12） |
-| 2026-11-02 | 利用者の判断: 試行錯誤が要る domain は、memory（`../eumenes_memory`）・world model（`../eumenes_world_model`）と同じく外に出して、検証しやすい単位にする。Reranker・Transformer・LtR のどれが正しいか分からないので、実測で決める。切り出す粒度は §3（「判断一式」）。名前は `eumenes-router` |
+| 2026-11-02 | 利用者の判断: 試行錯誤が要る domain は、memory（`../eumenes_memory`）・world model（`../eumenes_world_model`）と同じく外に出して、検証しやすい単位にする。Reranker・Transformer・LtR のどれが正しいか分からないので、実測で決める。切り出す粒度は §3（「判断一式」）。名前は `eumenes_router` |
 
 設計書 §11 の決定（このプロジェクトでも守る）:
 
@@ -32,7 +32,7 @@
 | 問い | 生成 LLM を使わずに、今の Embedding 検索より明確に賢い振り分けができるか。どの採点方式が、精度・遅延・資源・会話 LLM への干渉で勝つか |
 | 成果物 1 | 正解付きの評価データ（400件以上） |
 | 成果物 2 | 方式ごとの実測の比較（精度・遅延・資源を、同じデータ・同じ判定で） |
-| 成果物 3 | 勝った方式を含む出荷パッケージ `eumenes-router`（tarball） |
+| 成果物 3 | 勝った方式を含む出荷パッケージ `eumenes_router`（tarball） |
 | しないこと | Eumenes の実行・TODO・画面・bundle 登録の作り直し。勝たなかった方式の出荷 |
 
 ## 2 Eumenes の現状（事実。設計書 §1・§12 から）
@@ -91,8 +91,8 @@
 
 | 公開口 | 中身 | 依存してよいもの |
 | --- | --- | --- |
-| `eumenes-router` | 契約の型、候補の融合と枠、訂正の補正、決定表、予測集合、全体の流れ `route()` | なし（DB・時計・乱数・ネットワーク・モデルに直接依存しない。必要なものは引数で受ける） |
-| `eumenes-router/sqlite` | 表・migration・読み書きの関数 | ホストから借りた同期接続だけ。open/close・transaction・PRAGMA・独自 writer を持たない。書込みは `*InTransaction` で、ホストの transaction の中で呼ばれる |
+| `eumenes_router` | 契約の型、候補の融合と枠、訂正の補正、決定表、予測集合、全体の流れ `route()` | なし（DB・時計・乱数・ネットワーク・モデルに直接依存しない。必要なものは引数で受ける） |
+| `eumenes_router/sqlite` | 表・migration・読み書きの関数 | ホストから借りた同期接続だけ。open/close・transaction・PRAGMA・独自 writer を持たない。書込みは `*InTransaction` で、ホストの transaction の中で呼ばれる |
 
 形（M0 で確定。案からの差分は下の表）:
 
@@ -101,7 +101,7 @@
 type Embed = (texts: readonly string[]) => Promise<{ space: VectorSpace; vectors: number[][] }>;
 type Score = (input: RouteInput) => Promise<RouteAnswer>;
 
-// eumenes-router/sqlite（ホストの transaction の中で）
+// eumenes_router/sqlite（ホストの transaction の中で）
 migrateInTransaction(db): void
 syncCardsInTransaction(db, cards, space): { pending: Passage[] } // その space で、文の digest が変わった分だけ
 saveVectorsInTransaction(db, space, rows): void                  // rows は { id, revision, item, text, vector }
@@ -113,7 +113,7 @@ recordFeedbackInTransaction(db, feedback): void                  // id と at �
 setFeedbackStateInTransaction(db, id, state, at): boolean
 forgetInTransaction(db, messageIds): number
 
-// eumenes-router（Eumenes と bench が同じ関数を使い、流れのずれを作らない）
+// eumenes_router（Eumenes と bench が同じ関数を使い、流れのずれを作らない）
 const result = await route(
   { embed, score, read: { candidates, nearFeedback }, settings, log },
   { state: { text, previousAgent, previousUser }, dynamic, passages?: { conversation, memory }, fromHistory?, available, instructions, asked, signals: { intentChat: 0.12 } },
@@ -172,7 +172,7 @@ Eumenes からパッケージに渡す、振り分け用のカード（bundle �
 ## 6 リポの構成
 
 ```text
-eumenes-router/
+eumenes_router/
   README.md
   AGENTS.md
   plan.md
@@ -281,7 +281,7 @@ eumenes-router/
 | M0 | `git init`、`.gitignore`（`data/`・`node_modules/`・`dist/`）、Bun の雛形。§3.2 の部品をコピーし、§4 の形に分ける。`score.ts` を移す。Eumenes 側のカードと状態の書き出しを利用者に依頼する | 同じ評価データ・同じ予測で、パッケージの決定が Eumenes の `score.ts` の決定と100%一致する（parity）。`bun test` が通る |
 | M1 | inspector（正解付けの画面）を作る。正解付けは利用者が行う | §7 の区分の件数を満たし、split を固定する |
 | M2 | §8 の方式を比べる。オフラインで精度、合図の後に live と本番機で速度・資源 | §9 の合否で採る方式を決め、結果を記録する |
-| M3 | 出荷する: `eumenes-router-0.0.1-<sha256の先頭12>.tgz`、`.sha256`、`manifest.json` を作る。Eumenes 側（Eumenes のセッション）で `vendor/router/` に置き、移した部品を Eumenes から消してパッケージ呼出しに置き換える | Eumenes で `bun run verify -- --domain capabilities --domain dialogue --domain toolchain-history --domain larm` が通る。shadow で製品の経路と比べる |
+| M3 | 出荷する: `eumenes_router-0.0.1-<sha256の先頭12>.tgz`、`.sha256`、`manifest.json` を作る。Eumenes 側（Eumenes のセッション）で `vendor/router/` に置き、移した部品を Eumenes から消してパッケージ呼出しに置き換える | Eumenes で `bun run verify -- --domain capabilities --domain dialogue --domain toolchain-history --domain larm` が通る。shadow で製品の経路と比べる |
 
 版: 0.0.1 から始め、Eumenes に取り込むたびにパッチ番号だけを上げる。bun は tgz の中身をパスでキャッシュするので、取り込むたびに新しい名前にする。
 
@@ -289,7 +289,7 @@ eumenes-router/
 
 | 項目 | 状態 |
 | --- | --- |
-| `git init`（main）、`.gitignore`、Bun の雛形、`src/` と `eumenes-router/sqlite` | 実装済み |
+| `git init`（main）、`.gitignore`、Bun の雛形、`src/` と `eumenes_router/sqlite` | 実装済み |
 | 決定表・訂正・予測集合・採点（`bench/score.ts`） | 実装済み。Eumenes の `score.ts` と同じ予測（確率の形）202件で `decisionOf` が一致。`correctProbabilities`・`decide`・`predictionSet` も同じ入力で一致 |
 | 評価スナップショット | `data/router-eval/2026-11-01-snapshot/` に写した（Git 管理外）。408件はすべて `review.status` が `unreviewed`、`gold.primary` は空、予測に確率が無い。採点の一致の入力ではない |
 | カードと、その回の仕事・確認待ち | 未了。Eumenes のセッションで書き出しを足す（§7） |

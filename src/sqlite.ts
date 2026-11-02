@@ -1,5 +1,5 @@
 /**
- * `eumenes-router/sqlite`. Synchronous reads and writes on a connection the host lends.
+ * `eumenes_router/sqlite`. Synchronous reads and writes on a connection the host lends.
  * The host opens, closes, and wraps the call in a transaction. This module does none of that.
  */
 export type { RouterDb, SqlValue } from "./db/connection.ts";

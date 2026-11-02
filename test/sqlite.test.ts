@@ -37,7 +37,7 @@ function card(id: string, examples: string[] = ["例"]): Card {
 }
 
 function open() {
-	const dir = mkdtempSync(join(tmpdir(), "eumenes-router-"));
+	const dir = mkdtempSync(join(tmpdir(), "eumenes_router-"));
 	const db = new Database(join(dir, "router.sqlite"));
 	db.exec("PRAGMA journal_mode = WAL");
 	migrateInTransaction(db);
