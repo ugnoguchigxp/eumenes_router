@@ -7,5 +7,10 @@
 	"rules": {
 		"unicorn/prefer-array-flat-map": "error"
 	},
-	"ignorePatterns": ["node_modules/**", "dist/**", "data/**"]
+	"ignorePatterns": [
+		"node_modules/**",
+		"dist/**",
+		"data/**",
+		"bench/fixtures/eumenes/**"
+	]
 }

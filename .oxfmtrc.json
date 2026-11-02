@@ -12,5 +12,11 @@
 	"bracketSameLine": false,
 	"bracketSpacing": true,
 	"sortPackageJson": false,
-	"ignorePatterns": ["**/*.md", "node_modules/**", "dist/**", "data/**"]
+	"ignorePatterns": [
+		"**/*.md",
+		"node_modules/**",
+		"dist/**",
+		"data/**",
+		"bench/fixtures/eumenes/**"
+	]
 }

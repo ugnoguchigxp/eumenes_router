@@ -12,14 +12,14 @@ import {
 	type RouteCandidate,
 } from "../src/index.ts";
 
-const eumenesScorePath =
-	"/Users/y.noguchi/Code/eumenes/scripts/router-bench/score.ts";
-const eumenesRoutePath =
-	"/Users/y.noguchi/Code/eumenes/api/domains/dialogue/service/routed-route.ts";
-const eumenesScore = (await import(eumenesScorePath)) as {
+// Copies of the Eumenes files (bench/fixtures/eumenes/README.md), so the test needs no checkout.
+import * as eumenesScoreModule from "./fixtures/eumenes/score.ts";
+import * as eumenesRouteModule from "./fixtures/eumenes/routed-route.ts";
+
+const eumenesScore = eumenesScoreModule as unknown as {
 	decisionOf: typeof ours;
 };
-const eumenesRoute = (await import(eumenesRoutePath)) as {
+const eumenesRoute = eumenesRouteModule as unknown as {
 	correctProbabilities: typeof ourCorrect;
 	decide: (
 		ranked: readonly Ranked[],
