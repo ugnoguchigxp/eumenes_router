@@ -173,6 +173,7 @@ Eumenes からパッケージに渡す、振り分け用のカード（bundle �
 
 ```text
 eumenes_router/
+  LICENSE
   README.md
   AGENTS.md
   plan.md

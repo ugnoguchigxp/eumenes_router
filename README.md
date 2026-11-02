@@ -73,3 +73,7 @@ test/       bun test
 data/       Git 管理外。評価データ、カードの写し、埋め込み、実行結果
 inspector/  未作成。正解付けの画面（M1）
 ```
+
+## ライセンス
+
+[MIT](LICENSE) です。`package.json` の `license` も `MIT` です。
