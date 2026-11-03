@@ -7,3 +7,5 @@ data/
 coverage/
 out/
 __pycache__/
+.env
+examples/larm-context/config.json

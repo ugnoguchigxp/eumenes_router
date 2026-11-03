@@ -215,7 +215,13 @@ export function candidatesInTransaction(
 		: input.strict
 			? []
 			: cards.filter((card) => card.kind !== "read");
-	return chosen.map((card, index) =>
+	const inFrame = new Set(chosen.map((card) => card.id));
+	const include = new Set(input.include ?? []);
+	const offered = [
+		...chosen,
+		...cards.filter((card) => include.has(card.id) && !inFrame.has(card.id)),
+	];
+	return offered.map((card, index) =>
 		toCandidate(
 			card,
 			index + 1,

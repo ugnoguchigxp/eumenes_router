@@ -51,7 +51,7 @@ bun run format
 
 配布物は `bun run build` で `dist/` を作る。`prepack` も同じことをする。研究用の採点は `bun run bench:score`（`bench/score.ts`）で、予測をこのパッケージの `decide` に通す。
 
-`data/` は会話の本文を含む。Git に入れず、ログや外部にも出さない。LARM・Eumenes・推論サーバーは、このリポジトリから起動しない。
+`data/` は会話の本文を含む。Git に入れず、ログにも出さない。LARM・Eumenes・推論サーバーは、このリポジトリから起動しない。
 
 ## 公開口
 

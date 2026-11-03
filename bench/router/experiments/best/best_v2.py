@@ -5,6 +5,7 @@
   python best_v2.py export  --corr DIR --artifact OUT [--cfg best-v2]        versioned artifact (model.json + memory.npz)
   python best_v2.py predict --artifact OUT [--in rows.jsonl | --row JSON] [--ruri MODEL]   one or many utterances, no retraining
   python best_v2.py export-verify --corr DIR --out items.jsonl     deferred test items for tokens.py verify
+  python best_v2.py export-ranked --corr DIR --out ranked.jsonl    every item's ranked candidates, for correction.ts --external
   python best_v2.py leak-check --corr DIR [--ft FTDIR ...] [--pairs pairs.jsonl ...]   test labels never reach training
 
 Pipeline (per utterance):
@@ -182,6 +183,14 @@ def cmd_eval(a):
                         misfire_rest=round(100 * np.mean([not ok(x, dec(x, R2)) for x in rest if ok(x, dec(x, R))]), 1),
                         controls_front_changed=sum(R[x['id']]['P'][0][0] != R2[x['id']]['P'][0][0] for x in ctl), controls_acc_before=round(100 * np.mean([ok(x, R[x['id']]['P'][0][0]) for x in ctl]), 1), controls_acc_after=round(100 * np.mean([ok(x, R2[x['id']]['P'][0][0]) for x in ctl]), 1),
                         all_variants_before=round(100 * np.mean(b(var, R)), 1), test_after=round(100 * np.mean(b(test, R2)), 1))
+        # ---- variant robustness (before corrections, no LLM): the variant's own top-1 against its test source's ----
+        front = lambda x: R[x['id']]['P'][0][0]; byid = {x['id']: x for x in test}; rows = [x for x in var if x['src'] in byid]
+        def vstat(xs):
+            src_ok = [ok(byid[x['src']], front(byid[x['src']])) for x in xs]
+            return dict(n=len(xs), sources=len({x['src'] for x in xs}), front_top1=round(100 * np.mean([ok(x, front(x)) for x in xs]), 1), source_front_top1=round(100 * np.mean(src_ok), 1),
+                        defer=round(100 * np.mean([R[x['id']]['defer'] for x in xs]), 1), same_as_source=round(100 * np.mean([front(x) == front(byid[x['src']]) for x in xs]), 1),
+                        broke=round(100 * np.mean([not ok(x, front(x)) for x, s in zip(xs, src_ok) if s] or [0]), 1))
+        if rows: REP.setdefault('variants', {})[name] = dict(all=vstat(rows), **{t: vstat([x for x in rows if x['vtype'] == t]) for t in sorted({x['vtype'] for x in rows})})
         REP['phaseB'] = PB; save(); print('phaseB', name, PB[name], file=sys.stderr)
     # ---- latency of the post-ruri stages (box CPU, per utterance) ----
     cfg = CFGS['best-v2+tbl']; f = FITS['best-v2+tbl']; lat = {}
@@ -287,6 +296,15 @@ def cmd_export_verify(a):
                 cs = [c for c, _ in R[x['id']]['P'][:4]]; n += 1
                 o.write(json.dumps(dict(id=x['id'], text=x['text'], cands=cs, docs={c: doc(c) for c in cs}, gold=x['gold'], acceptable=sorted(x['acc']), past=x['past']), ensure_ascii=False) + '\n')
     print(json.dumps(dict(out=a.out, deferred=n, of=len(test))))
+def cmd_export_ranked(a):
+    """Every item's ranked candidates (dev in-sample, test, variants, controls), for bench/router/correction.ts --external,
+    which puts the product's correction (nearFeedback -> correctProbabilities) on top and takes the corrected top-1."""
+    items, _ = load(a.corr); EXTRA = B.ensure_extra(items, a.corr, a.python); real, var, ctl = setup(items, a.variants)
+    dev = [x for x in real if x['split'] == 'dev']; cfg = CFGS[a.cfg]; xs = real + var + ctl
+    tau = B.tune_tau([dict(key=x['key'], gold=x['gold']) for x in dev]); f = fit(dev, cfg, tau, EXTRA); R = apply(f, xs, dev, cfg, tau, EXTRA)
+    with open(a.out, 'w') as o:
+        for x in xs: o.write(json.dumps(dict(id=x['id'], ranked=[[c, float(p)] for c, p in R[x['id']]['P']]), ensure_ascii=False) + '\n')
+    print(json.dumps(dict(out=a.out, n=len(xs), C=f['C'], th=f['th'])))
 def cmd_leak_check(a):
     """No test label may reach training: FT train ids ⊆ dev, and (optionally) a pairs jsonl carries no test-only utterance text or test id."""
     import sqlite3, unicodedata
@@ -306,8 +324,8 @@ def cmd_leak_check(a):
     rep['note'] = f'{len(test_ids)} test ids; {len(test_ids) - len(test_only)} test texts also occur in dev (legitimate dev memory, not a leak)'; rep['pass'] = not bad
     print(json.dumps(rep, ensure_ascii=False, indent=1)); sys.exit(0 if not bad else 1)
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument('cmd', choices=['eval', 'export', 'predict', 'export-verify', 'leak-check']); ap.add_argument('--corr'); ap.add_argument('--out'); ap.add_argument('--python', default=sys.executable)
+    ap = argparse.ArgumentParser(); ap.add_argument('cmd', choices=['eval', 'export', 'predict', 'export-verify', 'export-ranked', 'leak-check']); ap.add_argument('--corr'); ap.add_argument('--out'); ap.add_argument('--python', default=sys.executable)
     ap.add_argument('--variants', default=os.path.join(HERE, '..', 'correction', 'variants.jsonl')); ap.add_argument('--rerank', action='append', default=[]); ap.add_argument('--skip-robust', action='store_true')
     ap.add_argument('--artifact'); ap.add_argument('--cfg', default='best-v2'); ap.add_argument('--in', dest='inp'); ap.add_argument('--row'); ap.add_argument('--ruri'); ap.add_argument('--e5'); ap.add_argument('--ft', action='append', default=[]); ap.add_argument('--pairs', action='append', default=[]); a = ap.parse_args()
-    {'eval': cmd_eval, 'export': cmd_export, 'predict': cmd_predict, 'export-verify': cmd_export_verify, 'leak-check': cmd_leak_check}[a.cmd](a)
+    {'eval': cmd_eval, 'export': cmd_export, 'predict': cmd_predict, 'export-verify': cmd_export_verify, 'export-ranked': cmd_export_ranked, 'leak-check': cmd_leak_check}[a.cmd](a)
 if __name__ == '__main__': main()

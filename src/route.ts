@@ -54,6 +54,12 @@ export type CandidateQuery = {
 	fromHistory?: readonly string[];
 	/** When set, an empty index stays empty instead of returning every card. */
 	strict?: boolean;
+	/**
+	 * Cards offered even outside the frame: the right answers of corrections
+	 * near this utterance. They come after the frame and do not take its slots;
+	 * ids that are not enabled, available cards are left out.
+	 */
+	include?: readonly string[];
 };
 
 export type FeedbackQuery = {
@@ -197,6 +203,14 @@ export async function route(
 	if (embedded.vectors.length !== 1 || !vector)
 		throw new Error(routeErrors.invalidResponse);
 	assertVector(embedded.space, vector);
+	const near = ports.read.nearFeedback({
+		vector,
+		space: embedded.space,
+		threshold: settings.feedbackNear,
+	});
+	// A correction can only move a candidate that is offered, so the right
+	// answers of near corrections are offered even when the frame missed them.
+	const include = [...new Set(near.map((row) => row.rightId))];
 	const retrieved = ports.read.candidates({
 		vector: { space: embedded.space, values: vector },
 		available: turn.available,
@@ -204,11 +218,7 @@ export async function route(
 		...(turn.fromHistory !== undefined
 			? { fromHistory: turn.fromHistory }
 			: {}),
-	});
-	const near = ports.read.nearFeedback({
-		vector,
-		space: embedded.space,
-		threshold: settings.feedbackNear,
+		...(include.length ? { include } : {}),
 	});
 	const skipped: Skipped[] = [];
 	const offered = offerCandidates({

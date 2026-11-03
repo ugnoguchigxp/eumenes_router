@@ -13,7 +13,10 @@
  *            [--python <venv python>] [--url <e5 server>]   best-v2 routing of new utterances (tool, scores, defer, latency)
  *            `run --algo best-v2 --text … | --in …` is the same command.
  *   correct  --db <file> [--variants <jsonl>] [--controls <jsonl>] [--corrections <jsonl>] [--url <embed server>]
- *            [--rerank ruri,xs --python <venv python>] [--theta 0.95[,0.9]] [--defer-th tag=0.12]
+ *            [--rerank ruri,xs --python <venv python>] [--theta dev|0.95[,0.9]] [--beta 2[,1]] [--defer-th tag=0.12]
+ *            [--external tag=<ranked.jsonl>[,…]]   outside rankers (best_v2.py export-ranked): the product's correction on top, corrected top-1
+ *            [--rerank-all tag=<every-card scores.json>]   adds <tag>+inj: near corrections' right answers join the offer, as route() does
+ *            [--split dev|test]   where the wrong answers are corrected and measured (dev: choose β without test)
  *            [--table [--table-max-false 0.02]]   variant-aware rule table (+tbl configs; readings via --python + pykakasi)
  *            --rerank accepts tag=<model dir> (fused with ruri's w/conv), e.g. ft=/tmp/ft/k10-real-s0 [--out <dir>]
  *            (user corrections through the router's feedback store, then variants/controls)
@@ -72,6 +75,9 @@ const OPTIONS = {
 	python: { type: "string" },
 	rerank: { type: "string" },
 	theta: { type: "string" },
+	beta: { type: "string" },
+	external: { type: "string" },
+	"rerank-all": { type: "string" },
 	"defer-th": { type: "string" },
 	table: { type: "boolean" },
 	"table-max-false": { type: "string" },
@@ -247,7 +253,11 @@ export async function main(
 				url: v.url ?? "http://127.0.0.1:8765", model: v.model, python: v.python,
 				rerankers: v.rerank ? v.rerank.split(",") : [],
 				deferThresholds: v["defer-th"] ? Object.fromEntries(v["defer-th"].split(",").map((kv) => { const [k, x] = kv.split("="); return [k!, Number(x)]; })) : undefined,
-				thetas: v.theta ? v.theta.split(",").map(Number) : undefined, print,
+				thetas: v.theta ? v.theta.split(",").map((t) => (t === "dev" ? ("dev" as const) : Number(t))) : undefined,
+				betas: v.beta ? v.beta.split(",").map(Number) : undefined,
+				external: v.external ? Object.fromEntries(v.external.split(",").map((kv) => { const [k, f] = kv.split("="); return [k!, f!]; })) : undefined,
+				split: v.split === "dev" ? "dev" : v.split === undefined || v.split === "test" ? undefined : (() => { throw new Error("split must be dev or test"); })(),
+				rerankAll: v["rerank-all"] ? Object.fromEntries(v["rerank-all"].split(",").map((kv) => { const [k, f] = kv.split("="); return [k!, f!]; })) : undefined, print,
 				table: v.table, tableMaxFalse: v["table-max-false"] ? Number(v["table-max-false"]) : undefined,
 			});
 		}

@@ -1,0 +1,13 @@
+{
+	"url": "",
+	"profile": "ornith1.5Strix",
+	"provider": "context-judgment",
+	"capability": "decision.context",
+	"audience": "",
+	"client": "eumenes-router-bench",
+	"ttlSeconds": 600,
+	"readyTimeoutSeconds": 120,
+	"extraHosts": [],
+	"candidates": 8,
+	"retry": { "maxAttempts": 6, "baseMs": 500, "maxMs": 8000 }
+}

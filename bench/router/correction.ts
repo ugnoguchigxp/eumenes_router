@@ -21,7 +21,7 @@ import { nearFeedback, recordFeedbackInTransaction } from "../../src/db/feedback
 import { correctProbabilities } from "../../src/decision/correct.ts";
 import { routeSettings } from "../../src/contracts/settings.ts";
 import type { VectorSpace } from "../../src/vector.ts";
-import { CONVERSATION, loadLabels, loadUtterances, passagesByCard } from "./data.ts";
+import { CONVERSATION, loadLabels, loadUtterances, passagesByCard, type Utterance } from "./data.ts";
 import { cachedVectors, fillCache, httpProvider } from "./embed.ts";
 import { registerSr, SR_DEFAULTS, type SrOptions } from "./algorithms.ts";
 import { run } from "./run.ts";
@@ -41,11 +41,11 @@ export const RERANKERS: Record<string, { model: string; w: number; conv: number 
 };
 
 /** The router's correction store, in memory, in the bench's vector space. */
-export function correctionStore(model: string, dimension: number, table?: { tau: number }) {
+export function correctionStore(model: string, dimension: number, table?: { tau: number }, beta?: number) {
 	const db = new Database(":memory:");
 	migrateInTransaction(db as never);
 	const space: VectorSpace = { modelId: model, revision: "bench", artifactDigest: "bench", dimension };
-	const settings = routeSettings({});
+	const settings = routeSettings(beta === undefined ? {} : { feedbackWeight: beta });
 	let n = 0;
 	const keyed: Array<{ id: string; key: Keyed; right: string; wrong: string | null }> = [];
 	return {
@@ -105,7 +105,15 @@ type Item = { id: string; text: string; gold: string; acceptable: readonly strin
 
 export type ExperimentOptions = {
 	db: string; out: string; variants?: string | undefined; controls?: string | undefined; corrections?: string | undefined;
-	url: string; model?: string | undefined; python?: string | undefined; rerankers?: string[]; thetas?: number[] | undefined; deferThresholds?: Record<string, number> | undefined;
+	url: string; model?: string | undefined; python?: string | undefined; rerankers?: string[]; deferThresholds?: Record<string, number> | undefined;
+	/** θ values to run; "dev" = at most 1% of different-gold dev pairs are that similar (design §5.4). β = feedbackWeight. */
+	thetas?: Array<number | "dev"> | undefined; betas?: number[] | undefined;
+	/** Outside rankers: tag → JSONL of {id, ranked} for every item (best_v2.py export-ranked). The corrected top-1 is taken, no defer. */
+	external?: Record<string, string> | undefined;
+	/** Every-card reranker scores: tag → JSON {text: {card: score}}. Adds `<tag>+inj`: the right answers of near corrections join the offer, as route() asks read.candidates to include them. */
+	rerankAll?: Record<string, string> | undefined;
+	/** Where corrections come from and are measured (default test). */
+	split?: "dev" | "test" | undefined;
 	/** Add `<cfg>+tbl` configurations: the variant-aware rule table (needs `python` with pykakasi for readings). */
 	table?: boolean | undefined; tableMaxFalse?: number | undefined;
 	print?: (s: string) => void;
@@ -128,17 +136,18 @@ export async function correctionExperiment(o: ExperimentOptions) {
 	const insU = db.query("INSERT INTO bench_utterances(id,conversation_id,seq,utterance_json) VALUES (?,?,?,?)");
 	const insL = db.query("INSERT INTO bench_labels(utterance_id,split,status,label_json) VALUES (?,?,?,?)");
 	const synth: Item[] = [];
-	const add = (id: string, text: string, gold: string, hints: unknown, extra: Partial<Item>) => {
-		insU.run(id, "synthetic", synth.length, JSON.stringify({ id, conversationId: "synthetic", seq: synth.length, text, previousUser: null, previousAgent: null, hints: hints ?? {} }));
+	// A variant is said in its source's context (previous turns and hints), so only the wording differs.
+	const add = (id: string, text: string, gold: string, ctx: Utterance | undefined, extra: Partial<Item>) => {
+		insU.run(id, "synthetic", synth.length, JSON.stringify({ id, conversationId: "synthetic", seq: synth.length, text, previousUser: ctx?.previousUser ?? null, previousAgent: ctx?.previousAgent ?? null, hints: ctx?.hints ?? {} }));
 		insL.run(id, "test", "reviewed", JSON.stringify({ id, gold: gold === CONVERSATION ? null : gold, acceptable: [], none: gold === CONVERSATION, status: "reviewed", split: "test", labeler: "grok-bot-self-inference" }));
 		synth.push({ id, text, gold, acceptable: [], split: "test", kind: "control", ...extra });
 	};
 	variants.forEach((v, i) => {
 		const src = byPrefix(v.source);
 		if (!src) throw new Error(`variant_source_unknown: ${v.source}`);
-		add(`var-${i}`, v.text, v.gold ?? goldOf(src.id), src.hints, { kind: "variant", type: v.type, source: src.id, acceptable: labels.get(src.id)?.acceptable ?? [] });
+		add(`var-${i}`, v.text, v.gold ?? goldOf(src.id), src, { kind: "variant", type: v.type, source: src.id, acceptable: labels.get(src.id)?.acceptable ?? [] });
 	});
-	controls.forEach((c, i) => add(c.id ?? `ctl-${i}`, c.text, c.gold, {}, { kind: "control" }));
+	controls.forEach((c, i) => add(c.id ?? `ctl-${i}`, c.text, c.gold, undefined, { kind: "control" }));
 	const texts = loadUtterances(db).map((u) => u.text);
 	const emb = await fillCache(db, httpProvider({ baseUrl: o.url, model }), texts);
 	print(`embedded ${emb.added} new of ${emb.total}`);
@@ -181,8 +190,13 @@ export async function correctionExperiment(o: ExperimentOptions) {
 			rr[tag] = JSON.parse(readFileSync(file, "utf8"));
 		}
 	}
+	const rrAll: Record<string, Record<string, Record<string, number>>> = {};
+	for (const [tag, file] of Object.entries(o.rerankAll ?? {})) rrAll[tag] = JSON.parse(readFileSync(file, "utf8"));
+	const ext: Record<string, Record<string, Ranked>> = {};
+	for (const [tag, file] of Object.entries(o.external ?? {})) ext[tag] = Object.fromEntries(readJsonl<{ id: string; ranked: Ranked }>(file).map((r) => [r.id, r.ranked]));
 	const front = (cfg: string, it: Item): Ranked => {
 		if (cfg === "sr") return sr[it.id]!;
+		if (ext[cfg]) { const r = ext[cfg][it.id]; if (!r) throw new Error(`external_missing: ${cfg} ${it.id}`); return r; }
 		const t = RERANKERS[cfg]!; return fuse(sr[it.id]!, rr[cfg]![keyOf(it)]!, t.w, t.conv);
 	};
 	const thOf: Record<string, number> = {};
@@ -206,25 +220,51 @@ export async function correctionExperiment(o: ExperimentOptions) {
 	const ok = (it: Item, t: string | undefined) => t !== undefined && (t === it.gold || it.acceptable.includes(t));
 	type Pick = { top: string | undefined; frontTop: string; deferred: boolean; near: number };
 	const hasTbl = (cfg: string) => /\+tbl(pin)?$/.test(cfg);
+	// route(): the right answers of near corrections join the offer; here they get the reranker's every-card score, fused like the rest.
+	const withRight = (base: string, it: Item, r: Ranked, near: NearFeedback[]): Ranked => {
+		const all = rrAll[base]?.[it.text];
+		if (!all) return r;
+		const have = new Set(r.map(([c]) => c));
+		const extra = [...new Set(near.map((n) => n.rightId))].filter((id) => !have.has(id) && all[id] !== undefined);
+		if (!extra.length) return r;
+		const t = RERANKERS[base]!;
+		return fuse(sr[it.id]!, { ...rr[base]![keyOf(it)]!, ...Object.fromEntries(extra.map((id) => [id, all[id]!])) }, t.w, t.conv);
+	};
 	const decide = (cfg: string, it: Item, store: ReturnType<typeof correctionStore> | null, theta?: number): Pick => {
-		const base = cfg.replace(/\+(pin|tblpin|tbl)$/, "");
+		const base = cfg.replace(/\+(pin|tblpin|tbl|inj)$/, "");
 		let r = front(base, it); let near = 0; let tbl = 0;
+		if (store && cfg.endsWith("+inj")) r = withRight(base, it, r, store.near(vec(it.text), theta));
 		if (store) { const c = store.correct(r, vec(it.text), theta, hasTbl(cfg) ? kOf(it.text) : undefined); r = c.ranked; near = c.near; tbl = c.tableHits; }
-		if (base === "sr") return { top: r[0]![0], frontTop: r[0]![0], deferred: false, near };
+		if (base === "sr" || ext[base]) return { top: r[0]![0], frontTop: r[0]![0], deferred: false, near };
 		const defer = margin(r) < thOf[base]! && !(cfg.endsWith("+pin") && near > 0) && !(cfg.endsWith("+tblpin") && tbl > 0);
 		return { top: defer ? it.past : r[0]![0], frontTop: r[0]![0], deferred: defer, near };
 	};
-	const configs = ["sr", ...tags, ...tags.map((t) => `${t}+pin`), ...(o.table ? ["sr+tbl", ...tags.map((t) => `${t}+tbl`), ...tags.map((t) => `${t}+tblpin`)] : [])];
-	const test = real.filter((r) => r.split === "test");
+	const configs = ["sr", ...tags, ...tags.map((t) => `${t}+pin`), ...Object.keys(ext), ...tags.filter((t) => rrAll[t]).map((t) => `${t}+inj`), ...(o.table ? ["sr+tbl", ...tags.map((t) => `${t}+tbl`), ...tags.map((t) => `${t}+tblpin`)] : [])];
+	// The split whose wrong answers are corrected and measured (dev chooses β without looking at test).
+	const test = real.filter((r) => r.split === (o.split ?? "test"));
 	const userCorr = o.corrections ? readJsonl<Correction>(o.corrections) : null;
-	const report: Record<string, unknown> = { model, theta: routeSettings({}).feedbackNear, beta: routeSettings({}).feedbackWeight, deferThreshold: thOf, table: o.table ? { tau, maxFalse: o.tableMaxFalse ?? 0.02, devCurve: tauCurve } : null, counts: { test: test.length, variants: variants.length, controls: controls.length }, configs: {} };
+	// θ from dev only (design §5.4): the smallest similarity that at most 1% of different-gold dev pairs reach.
+	const dv = real.filter((r) => r.split === "dev").map((r) => ({ v: vec(r.text), gold: r.gold }));
+	const diffSims: number[] = [];
+	for (let i = 0; i < dv.length; i++) for (let j = i + 1; j < dv.length; j++) {
+		if (dv[i]!.gold === dv[j]!.gold) continue;
+		let d = 0; const a = dv[i]!.v, b = dv[j]!.v;
+		for (let k = 0; k < a.length; k++) d += a[k]! * b[k]!;
+		diffSims.push(d);
+	}
+	diffSims.sort((a, b) => b - a);
+	const thetaDev = Math.min(1, diffSims[Math.floor(diffSims.length * 0.01)]! + 1e-6);
+	const thetas = (o.thetas ?? [routeSettings({}).feedbackNear]).map((t) => (t === "dev" ? thetaDev : t));
+	const betas = o.betas ?? [routeSettings({}).feedbackWeight];
+	print(`θ(dev, ≤1% of ${diffSims.length} different-gold pairs) = ${thetaDev.toFixed(4)}`);
+	const report: Record<string, unknown> = { model, split: o.split ?? "test", theta: routeSettings({}).feedbackNear, beta: routeSettings({}).feedbackWeight, thetaDev, deferThreshold: thOf, table: o.table ? { tau, maxFalse: o.tableMaxFalse ?? 0.02, devCurve: tauCurve } : null, counts: { test: test.length, variants: variants.length, controls: controls.length }, configs: {} };
 	const pct = (b: ReturnType<typeof bootMean>) => ({ rate: +(b.mean * 100).toFixed(1), lo: +(b.lo * 100).toFixed(1), hi: +(b.hi * 100).toFixed(1), n: b.n });
-	for (const cfg of configs) for (const theta of o.thetas ?? [routeSettings({}).feedbackNear]) {
+	for (const cfg of configs) for (const theta of thetas) for (const beta of betas) {
 		const before = new Map(items.map((it) => [it.id, decide(cfg, it, null)]));
 		// Corrections: the user fixes each wrong test answer of this configuration (or the given JSONL).
 		const corrected = test.filter((it) => !ok(it, before.get(it.id)!.top));
 		const corrections: Correction[] = userCorr ?? corrected.map((it) => ({ id: `c-${it.id}`, text: it.text, right: it.gold, wrong: before.get(it.id)!.top ?? null }));
-		const store = correctionStore(model, vec(items[0]!.text).length, hasTbl(cfg) ? { tau } : undefined);
+		const store = correctionStore(model, vec(items[0]!.text).length, hasTbl(cfg) ? { tau } : undefined, beta);
 		for (const c of corrections) store.add(c, vec(c.text), hasTbl(cfg) ? kOf(c.text) : undefined);
 		const after = new Map(items.map((it) => [it.id, decide(cfg, it, store, theta)]));
 		const hit = (m: Map<string, Pick>, it: Item) => (ok(it, m.get(it.id)!.top) ? 1 : 0);
@@ -244,12 +284,12 @@ export async function correctionExperiment(o: ExperimentOptions) {
 		}
 		const diff = bootMean(test.map((it) => hit(after, it) - hit(before, it)));
 		const frontChanged = (xs: Item[]) => xs.filter((x) => before.get(x.id)!.frontTop !== after.get(x.id)!.frontTop).length;
-		const key = (o.thetas?.length ?? 0) > 1 ? `${cfg}@θ${theta}` : cfg;
+		const key = cfg + (thetas.length > 1 ? `@θ${+theta.toFixed(4)}` : "") + (betas.length > 1 ? `@β${beta}` : "");
 		(report["configs"] as Record<string, unknown>)[key] = {
 			corrections: corrections.length,
 			exactFront: frontFix(corrected), exact: fix(userCorr ? test.filter((it) => corrections.some((c) => c.text === it.text)) : corrected),
 			testTop1: { before: acc(before, test), after: acc(after, test), diff: { d: +(diff.mean * 100).toFixed(1), lo: +(diff.lo * 100).toFixed(1), hi: +(diff.hi * 100).toFixed(1) } },
-			rest: { n: rest.length, before: acc(before, rest), after: acc(after, rest), misfire: broke(rest), frontChanged: frontChanged(rest) },
+			rest: { n: rest.length, before: acc(before, rest), after: acc(after, rest), misfire: broke(rest), frontChanged: frontChanged(rest), frontMisfire: pct(bootMean(rest.filter((it) => hit(fb, it)).map((it) => 1 - hit(fa, it)))) },
 			variants: { n: vs.length, sources: new Set(vs.map((v) => v.source)).size, misfireOther: broke(vsAll.filter((v) => !vs.includes(v))), before: acc(before, vs), after: acc(after, vs), fix: fix(vs), frontBefore: acc(fb, vs), frontAfter: acc(fa, vs), frontFix: frontFix(vs), inCandidates: vs.filter((v) => sr[v.id]!.some(([c]) => c === v.gold || v.acceptable.includes(c))).length, wrongBefore: vs.filter((v) => !hit(before, v)).length, nearHit: +(100 * vs.filter((x) => after.get(x.id)!.near > 0).length / vs.length).toFixed(1), byType },
 			controls: { n: cs.length, nearHit: cs.filter((x) => after.get(x.id)!.near > 0).length, frontChanged: frontChanged(cs), frontMisfire: cs.filter((x) => x.gold === before.get(x.id)!.frontTop && x.gold !== after.get(x.id)!.frontTop).length, frontBefore: acc(new Map(cs.map((x) => [x.id, { ...before.get(x.id)!, top: before.get(x.id)!.frontTop }])), cs), deferBefore: cs.filter((x) => before.get(x.id)!.deferred).length, deferAfter: cs.filter((x) => after.get(x.id)!.deferred).length },
 			deferRate: { before: +(100 * test.filter((x) => before.get(x.id)!.deferred).length / test.length).toFixed(1), after: +(100 * test.filter((x) => after.get(x.id)!.deferred).length / test.length).toFixed(1) },

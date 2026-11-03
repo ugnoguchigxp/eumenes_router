@@ -159,6 +159,50 @@ test("fromHistory marks a past choice and does not change the rank", () => {
 	}
 });
 
+test("include offers cards outside the frame after it, once, and only when available", () => {
+	const { db, close } = open();
+	try {
+		const ids = ["a.one", "b.two", "c.three", "d.four", "e.five"];
+		const pending = syncCardsInTransaction(
+			db,
+			ids.map((id) => card(id)),
+			space,
+		);
+		const angle = (id: string) => ids.indexOf(id) * 0.2;
+		saveVectorsInTransaction(
+			db,
+			space,
+			pending.pending.map((row) => ({
+				...row,
+				vector: [Math.cos(angle(row.id)), Math.sin(angle(row.id))],
+			})),
+		);
+		const query = {
+			vector: { space, values: [1, 0] },
+			available: (id: string) => id !== "d.four",
+			slots: "choice" as const,
+		};
+		expect(candidatesInTransaction(db, query).map((row) => row.id)).toEqual([
+			"a.one",
+			"b.two",
+			"c.three",
+		]);
+		const found = candidatesInTransaction(db, {
+			...query,
+			include: ["e.five", "a.one", "d.four", "conversation.respond"],
+		});
+		expect(found.map((row) => row.id)).toEqual([
+			"a.one",
+			"b.two",
+			"c.three",
+			"e.five",
+		]);
+		expect(found.map((row) => row.rank)).toEqual([1, 2, 3, 4]);
+	} finally {
+		close();
+	}
+});
+
 test("choice slots drop a pipeline farther than `near` from the closest", () => {
 	const { db, close } = open();
 	try {

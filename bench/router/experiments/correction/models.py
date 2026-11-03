@@ -23,7 +23,7 @@ def serve(port):
             data = json.dumps({'data': [{'index': i, 'embedding': v} for i, v in enumerate(emb(inp))]}).encode()
             self.send_response(200); self.send_header('content-type', 'application/json'); self.end_headers(); self.wfile.write(data)
         def log_message(self, *a): pass
-    print('ready', flush=True); HTTPServer(('127.0.0.1', port), H).serve_forever()
+    srv = HTTPServer(('127.0.0.1', port), H); print('ready', flush=True); srv.serve_forever()  # ready only once the port is bound
 def rerank(inp, outp, name, tag):
     import time, torch
     from transformers import AutoTokenizer, AutoModelForSequenceClassification

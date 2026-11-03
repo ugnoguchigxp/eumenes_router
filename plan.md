@@ -10,6 +10,11 @@
 | --- | --- |
 | 2026-11-01 | Eumenes の設計書 `/Users/y.noguchi/Code/eumenes/spec/toolchain-router-redesign-2026-11-01.md`（以下「設計書」）で、統合 Router を設計し合意（設計書 §11）。R1〜R3 を Eumenes に実装済み。fixture 検証だけで、既定は `router.mode: off`（設計書 §12） |
 | 2026-11-02 | 利用者の判断: 試行錯誤が要る domain は、memory（`../eumenes_memory`）・world model（`../eumenes_world_model`）と同じく外に出して、検証しやすい単位にする。Reranker・Transformer・LtR のどれが正しいか分からないので、実測で決める。切り出す粒度は §3（「判断一式」）。名前は `eumenes_router` |
+| 2026-11-03 | 利用者の判断: LLM に回した回は、LLM が判断に要したトークン消費を見るために測る（§9「LLM の判断トークン」、少ないほど良い）。計測にはクラウドの API（現行で最も弱いモデル、`.env` で指定）を使ってよい。評価データの外部への送信を禁じる規則は削除した |
+| 2026-11-03 | 利用者の判断: LARM に配備された文脈判定（通常 profile の `decision.context`）は試す。本流（best-v2）とは別に、`examples/larm-context/`（パッケージに入れない、設定ファイルで動かす）で bench の正解付きデータに当てて測る。会話へ戻す条件は dev で決め、scenario・network に結び付ける。Eumenes への組み込みは Eumenes のセッションで行う |
+| 2026-11-03 | 利用者の説明: 配備済みの `ruri-conv20-s0-fp32-v1` は、bench の FT と同じ学習セット（dev split だけ）を少し改良し、AI MAX 395 で学習したもの。ツールごとに10件、会話は20件だけ。test と、test から作った言い換え（`data/variants-v2/`）は学習に使わない。学習に使った id の一覧はまだ受け取っていない |
+| 2026-11-03 | 利用者の判断: すぐ効く訂正（訂正の記憶）は bench で測って θ・β を決める。近い訂正の正解を候補に足す（上の契約）。reranker の学習し直し（月1回程度）は、学習なしで回るならしない。効くと見込めるときだけ行う（§9「学習し直しの判断」） |
+| 2026-11-03 | 訂正の記憶の設定を決めた（bench、e5 small の空間、LARM の文脈判定の点数を検索と融合した Router）。θ = 0.9177（dev の意図の違う組の 1% 以下しか超えない値）、β = 1.5（dev で訂正を入れ、関係ない dev 発話の崩れの 95% 上限が 1% 以下の最大。dev は LARM の学習に一部使われ崩れにくく出るので上限で決めた）、正解を候補に足す。test で1回: 訂正した発話 85.7%、その言い換え 70.9% が直る、関係ない発話の崩れ 0%（166件）、ほかの言い換え 0.7%、対照 1/40。回復率 ≥ 90% は未達。ホストはこの空間で `feedbackNear` 0.9177・`feedbackWeight` 1.5 を渡す（パッケージの既定値は変えない） |
 
 設計書 §11 の決定（このプロジェクトでも守る）:
 
@@ -105,7 +110,8 @@ type Score = (input: RouteInput) => Promise<RouteAnswer>;
 migrateInTransaction(db): void
 syncCardsInTransaction(db, cards, space): { pending: Passage[] } // その space で、文の digest が変わった分だけ
 saveVectorsInTransaction(db, space, rows): void                  // rows は { id, revision, item, text, vector }
-candidatesInTransaction(db, { vector, available, slots, fromHistory?, strict? }): Candidate[]
+candidatesInTransaction(db, { vector, available, slots, fromHistory?, strict?, include? }): Candidate[]
+// include は、近い訂正の正解。枠の外でも、枠の後ろに足す（枠を使わない）。有効で available なカードだけ
 // slots は "router" | "choice"。ftsRank は null。fromHistory は順位も枠も変えない印。
 // その space にベクトルが一件も無いとき、strict でなければ read 以外の有効なカードを id 順に返す（similarity は null）
 nearFeedback(db, { vector, space, threshold, limit? }): NearFeedback[] // 既定 limit 5、新しい 500 件を走査
@@ -134,7 +140,8 @@ checkReachability({ cards, eval, before? }): ReachabilityReport
 | --- | --- |
 | `syncCardsInTransaction` の空間 | 引数に `space` を足した。その空間でベクトルが無い、または文が変わった passage だけを返す |
 | 検索の `text` | 受け取らない。FTS（基準0）は M2。`ftsRank` は製品と同じく null |
-| `nearFeedback` の θ | 呼び出し側が `threshold` を渡す。`route()` は設定の `feedbackNear`（既定 0.95）を渡す |
+| `nearFeedback` の θ | 呼び出し側が `threshold` を渡す。`route()` は設定の `feedbackNear`（既定 0.95）を渡す。値は embedding の空間ごとに dev だけで決める（意図の違う dev の組の 1% 以下しか超えない値。bench の `correct --theta dev`） |
+| 訂正の正解を候補に足す（2026-11-03） | `route()` は採点の前に `nearFeedback` を読み、その正解（`rightId`）を `read.candidates` の `include` に渡す。補正は候補の中でしか効かないので、検索の枠が正解を落としても採点させる |
 | 時計・乱数 | 訂正の `id` と `at` はホストが渡す。状態変更も `at` を受け取る |
 | 忘却 | 消した行数を返す。対象は `router_feedback` だけ（`router_traces` は持ってこない） |
 | 到達性 | Recall@枠と Recall@1。`set` を全件渡したカードは Recall@集合。`before` の Recall@1 から 0.02 以上下がったカードを `regressions` に入れる。`refused` はその有無 |
@@ -200,12 +207,13 @@ eumenes_router/
 | 項目 | 中身 |
 | --- | --- |
 | 元 | `/Users/y.noguchi/Code/eumenes/data/router-eval/2026-11-01-snapshot/`（`items.jsonl` 408件、`predictions.jsonl`、`README.md`）。`data/` に写して使う |
-| 扱い | 会話の本文を含む。Git・ログ・外部への送信に出さない |
+| 扱い | 会話の本文を含む。Git・ログに出さない |
 | 1件の形 | `{id, group, split, state:{previous_agent, previous_user, text}, gold:{primary, acceptable[]}, tags[], review:{status, note}}` |
 | 正解の id | `conversation.respond`、担当の id、`read_memory` などの読む道具、`memory.request`、`work.check/amend/cancel`（番号なし）、`redirect:<担当 id>`、`pending.approve/decline/answer`、`ask`。詳細は元の `README.md` |
 | 予測（当時） | `predictions.jsonl`: 当時の検索の候補・順位・類似度、選ばれた担当、`outcome`、Ruri の判定。正解を付けるときは見ない（引っ張られる） |
 | カードの元 | `/Users/y.noguchi/Code/eumenes/spec/assets/router-criteria-2026-11-01.json`（`stable` 33件: id・kind・説明。`dynamicExamples`: 動的な候補の形）。検索に要る全文（`useWhen`・`examples` の全部）は入っていない |
 | 正解付け | 利用者が付ける（モデルの選択を正解にしない）。付け終えたら、会話（`group`）の単位で train・calibration・test に分け、test は固定する |
+| 言い換えの評価セット（2026-11-03） | 表現の揺らぎへの強さを測る。元は test のうち dev と同文でない発話（200字以下、同文はまとめる）155件。8種（`paraphrase`・`casual`・`keigo`・`indirect`・`fragment`・`verbose`・`asr`・`mixed`）を人手（Claude のセッション）で書き、正解のツールと説明文は書き手に見せない。正解は元の発話から継ぎ、文脈（直前の発言・hints）も元と同じにする。意味が変わっていないかを Haiku に別に判定させ、「違う」とされたものは見直して直すか捨てる。置き場所は `data/variants-v2/`。値は「言い換えでの値」として test の精度と分けて報告し、これを見て構成を選び直さない |
 
 目標の件数（設計書 §7.1。足りない区分は人が書く。担当の `examples` の写しは入れない）:
 
@@ -255,6 +263,7 @@ eumenes_router/
 | 訂正からの回復率 / 副作用 | 訂正を1件入れた後、同じ発言・言い換えが正しくなる割合 / test の無関係な発言の決定が変わった割合 |
 | 担当の追加の回帰 | leave-one-toolchain-out: 1担当を学習から外して登録し直したときの、その担当の Recall@1（cold start）と、ほかの担当の Recall@1 の変化 |
 | 速度・資源 | 採点の P50・P95（warmup 10回の後、各100回以上、候補数20・40・64・128）、ロード時間、RSS、CPU 時間、会話 LLM を動かしたままの token/s の低下 |
+| LLM の判断トークン | LLM に回した回で、LLM が判断に使った総トークン（入力＋思考＋出力）。思考を分けて取れないときは消費トークンから見積もる。少ないほど良い |
 
 | 合否（測る前に決めておく） | 基準 |
 | --- | --- |
@@ -272,6 +281,18 @@ eumenes_router/
 | 本番機 | AI MAX+ 395、会話 LLM を動かしたまま（利用者の合図の後だけ） |
 
 精度の最終値は、本番と同じ埋め込み（LARM）で取る。MacBook の別の埋め込みでの値は、方式の比較の目安にとどめる。
+
+学習し直しの判断（2026-11-03、利用者の判断）: reranker の学習し直しは、学習なし（訂正の記憶）で回るならしない。量を増やすこと自体を目的にしない。
+
+| 項目 | 決め |
+| --- | --- |
+| 学習を検討する合図 | 訂正の記憶で直らない誤りがたまる（同じ誤りの組の訂正が、θ より遠い発言どうしで繰り返される）／訂正の記憶が `nearFeedback` の走査（新しい 500 件）からあふれる／新しい担当の cold start の Recall@1 が 70% 未満／定期の評価で担当ごとの Recall・誤起動率が基準を割る。件数が増えただけでは学習しない |
+| 正解の出どころ | 利用者の訂正（redirect・聞き返しへの答え・画面での選び直し）と人のレビューだけ。Router 自身の選択は使わない。訂正なしの完了は弱い正例（重み 0.3、割合に上限） |
+| 偏りを抑える | 担当ごとに上限・下限の件数（学習曲線 3・5・10・20 件で伸びが止まる所）。正規化した文と埋め込みの近さ（θ 以上）で重複をまとめ、1つの会話から取る数に上限。動作確認・CLI の発言は出どころの印で分ける |
+| 学習に入れないもの | test と、test から作った言い換え（`data/variants-v2/`）。test と θ 以上に近い発言。正解が動的な候補（仕事・確認・redirect）か指示語だけの短い発言（文だけでは学べない）。食い違う訂正（保留）。消えた担当のラベル |
+| 足りない言い方 | 音声入力風・遠回し・省略は、dev から作った言い換えで補う（全体に占める割合に上限） |
+| 効くと見込めるとき | 候補の版を作り、「今の版＋訂正の記憶」と同じ固定の評価（test・言い換え・対照・担当ごとの最小 Recall・leave-one-toolchain-out）で比べる。CI の下限が 0 を超えて良くなり、どの担当も下がらないときだけ LARM の版を切り替える。届かなければ捨てる |
+| 毎回の報告 | 担当ごとの件数と利用の割合、正解の出どころの内訳、重複の割合、会話と担当の比、点数の分布の変化 |
 
 合成のカタログ（100・500・1,000・2,000件）: 速度・メモリ・検索の Recall@枠の下がり方と、紛らわしい担当を足したときの回帰だけを測る。合成した発言は説明文と語彙が重なって精度が良く見えるので、精度としては報告しない。
 

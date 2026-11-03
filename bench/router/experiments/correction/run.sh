@@ -6,8 +6,9 @@ set -euo pipefail
 cd "$(dirname "$0")/../../../.."
 PY=${PY:-/tmp/cvenv/bin/python}; OUT=${OUT:-out/correct-$(date +%Y%m%d-%H%M%S)}
 DIR=bench/router/experiments/correction
-"$PY" $DIR/models.py serve 8765 > /tmp/corr-embed.log 2>&1 & SERVER=$!; trap 'kill $SERVER' EXIT
-until grep -q ready /tmp/corr-embed.log; do sleep 1; done
-bun run router correct --db ${DB:-data/bench-r2.db} --variants ${VARIANTS:-$DIR/variants.jsonl} --controls ${CONTROLS:-$DIR/controls.jsonl} \
-  ${CORRECTIONS:+--corrections $CORRECTIONS} --rerank ${RERANK:-ruri,xs} --python "$PY" ${THETA:+--theta $THETA} --out "$OUT"
+PORT=${PORT:-8765}; LOG=$(mktemp)
+"$PY" $DIR/models.py serve "$PORT" > "$LOG" 2>&1 & SERVER=$!; trap 'kill $SERVER 2>/dev/null; rm -f "$LOG"' EXIT
+until grep -q ready "$LOG"; do kill -0 $SERVER 2>/dev/null || { cat "$LOG"; exit 1; }; sleep 1; done
+bun run router correct --url "http://127.0.0.1:$PORT" --db ${DB:-data/bench-r2.db} --variants ${VARIANTS:-$DIR/variants.jsonl} --controls ${CONTROLS:-$DIR/controls.jsonl} \
+  ${CORRECTIONS:+--corrections $CORRECTIONS} --rerank ${RERANK:-ruri,xs} --python "$PY" ${THETA:+--theta $THETA} ${TABLE:+--table} --out "$OUT"
 echo "report: $OUT/report.json"

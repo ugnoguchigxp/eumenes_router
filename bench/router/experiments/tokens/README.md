@@ -1,4 +1,4 @@
-# LLM token accounting (local endpoint only)
+# LLM token accounting (local endpoint or Anthropic API)
 
 The export `eumenes-20261102-2f8b03c7` has no token usage, and there are no LARM logs: choices only carry `route: "llm"`. This tool measures token use per call on the user's machine instead.
 
@@ -21,5 +21,19 @@ Where the reasoning-token count comes from, in priority order:
 2. `reasoning_content` / `reasoning`, tokenized with `/tokenize`
 3. `<think>` content in the reply
 4. A character-count estimate (marked with `:est`)
+
+## Anthropic API (`--provider anthropic`)
+
+Copy `.env.example` to `.env` at the repo root and fill in `ANTHROPIC_API_KEY` and `ROUTER_LLM_MODEL` (`ROUTER_LLM_EFFORT` is optional). The `anthropic` package is only needed for this provider:
+
+```bash
+uv run --no-project --with anthropic==2.4.0 python bench/router/experiments/tokens/tokens.py verify --provider anthropic \
+  --items <verify-items.jsonl> [--effort low] --out out/verify-<model>.jsonl
+uv run --no-project --with anthropic==2.4.0 python bench/router/experiments/tokens/tokens.py selftest   # mock only, no API call
+```
+
+`verify` has two protocols over the top `--max-cands` candidates. `--mode yesno` (default) makes one call per candidate down the ranking and stops at the first yes. `--mode list` makes one call with the numbered candidates, and the answer `0` means none of them. The utterance is cut to `--max-chars` (default 400, the same cut as the router's ruri input). `verify-stats --items <verify-items.jsonl>` adds the decisions by what an all-no item falls back to (ask / ranker top-1 / recorded past LLM) and same-item references.
+
+This sends the utterance text to the Anthropic API. No sampling parameters are sent; thinking uses the model default, and `--effort` sets `output_config.effort`. Thinking tokens come from `usage.output_tokens_details.thinking_tokens`. When the response has no such field, `reasoning_src` is `unreported` and the thinking stays counted inside `completion`. An API error stops the run without writing the failed call, so rerunning the same command resumes.
 
 The default system prompt is a minimal stand-in. For tokens comparable to the real old LLM route, pass the Eumenes system prompt and tool definitions with `--system-file`.

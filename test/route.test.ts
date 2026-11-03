@@ -156,6 +156,73 @@ test("corrections that disagree leave the probabilities as the scorer gave them"
 	expect(result.corrected[0]?.p).toBeCloseTo(0.7);
 });
 
+test("the right answer of a near correction is asked for even when the frame missed it", async () => {
+	const asked: Array<readonly string[] | undefined> = [];
+	const run = (near: NearFeedback[]) =>
+		route(
+			{
+				embed: async () => ({ space, vectors: [[1, 0]] }),
+				score: async (input) => {
+					const probabilities: Record<string, number> = {
+						"conversation.respond": 1,
+					};
+					if (input.criteria.some((c) => c.name === "music.create"))
+						Object.assign(probabilities, {
+							"conversation.respond": 0.6,
+							"music.create": 0.4,
+						});
+					return {
+						choice: "conversation.respond",
+						probabilities,
+						scores: null,
+						model: "scorer",
+						headRevision: null,
+						calibrationRevision: null,
+					};
+				},
+				read: {
+					candidates: (query) => {
+						asked.push(query.include);
+						return query.include?.includes("music.create") ? [music] : [];
+					},
+					nearFeedback: () => near,
+				},
+				settings: {
+					accept: 0.6,
+					low: 0.3,
+					margin: 0.15,
+					approve: 0.85,
+					multi: 0.5,
+					feedbackNear: 0.9,
+					feedbackWeight: 2,
+				},
+			},
+			{
+				state: { text: "曲を作って", previousAgent: null, previousUser: null },
+				dynamic: [conversation],
+				available: () => true,
+				instructions: "",
+			},
+		);
+	const corrected = await run([
+		{
+			id: "f1",
+			wrongId: CONVERSATION_ID,
+			rightId: "music.create",
+			similarity: 0.99,
+		},
+	]);
+	expect(asked[0]).toEqual(["music.create"]);
+	expect(corrected.explain.offered).toEqual([
+		"conversation.respond",
+		"music.create",
+	]);
+	expect(corrected.corrected[0]?.candidate.id).toBe("music.create");
+	const plain = await run([]);
+	expect(asked[1]).toBeUndefined();
+	expect(plain.explain.offered).toEqual(["conversation.respond"]);
+});
+
 const settings = {
 	accept: 0.6,
 	low: 0.3,
