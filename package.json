@@ -22,6 +22,7 @@
 	},
 	"scripts": {
 		"best-v1": "bash bench/router/experiments/best/run.sh",
+		"best-v2": "${BEST_PYTHON:-/tmp/cvenv/bin/python} bench/router/experiments/best/best_v2.py",
 		"build": "rm -rf dist && tsc -p tsconfig.build.json",
 		"prepack": "bun run build",
 		"lint": "oxlint --deny-warnings",

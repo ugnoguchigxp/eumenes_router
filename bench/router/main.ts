@@ -9,6 +9,9 @@
  *   run      --db <file> --algo fts|embed|hybrid|past|recorded-embed|sr-weighted[-noembed|-nohist|-noproto] [--sr <json>] [--model <m>] [--split test|dev|any] [--feedback] [--out <dir>]
  *   score    --run <dir>             (prints the run's summary)
  *   compare  [<run dir> ...] [--root out]
+ *   route    --db <corr.db> --artifact <best-v2 dir> (--text <utt> [--prev <turn>] [--hints <json>] | --in <jsonl> [--out <jsonl>])
+ *            [--python <venv python>] [--url <e5 server>]   best-v2 routing of new utterances (tool, scores, defer, latency)
+ *            `run --algo best-v2 --text … | --in …` is the same command.
  *   correct  --db <file> [--variants <jsonl>] [--controls <jsonl>] [--corrections <jsonl>] [--url <embed server>]
  *            [--rerank ruri,xs --python <venv python>] [--theta 0.95[,0.9]] [--defer-th tag=0.12]
  *            [--table [--table-max-false 0.02]]   variant-aware rule table (+tbl configs; readings via --python + pykakasi)
@@ -72,6 +75,11 @@ const OPTIONS = {
 	"defer-th": { type: "string" },
 	table: { type: "boolean" },
 	"table-max-false": { type: "string" },
+	artifact: { type: "string" },
+	text: { type: "string" },
+	prev: { type: "string" },
+	hints: { type: "string" },
+	in: { type: "string" },
 } as const;
 
 const stamp = () =>
@@ -91,7 +99,9 @@ export async function main(
 		options: OPTIONS,
 		allowPositionals: true,
 	});
-	const [command, sub] = positionals;
+	const [given, sub] = positionals;
+	// `run --algo best-v2 --text … | --in …` routes new utterances with the exported artifact (same as `route`).
+	const command = given === "run" && v.algo === "best-v2" ? "route" : given;
 	const db = () => openBench(need(v.db, "db"));
 	switch (command) {
 		case "import": {
@@ -218,6 +228,16 @@ export async function main(
 			);
 			print(text);
 			return JSON.parse(text) as unknown;
+		}
+		case "route": {
+			const { route } = await import("./route.ts");
+			const rows = v.in
+				? readFileSync(v.in, "utf8").split("\n").filter((l) => l.trim()).map((l) => JSON.parse(l) as { text: string })
+				: [{ text: need(v.text, "text"), prev: v.prev ?? null, hints: v.hints ? JSON.parse(v.hints) : {} }];
+			const out = await route({ db: need(v.db, "db"), artifact: need(v.artifact, "artifact"), rows, python: v.python, url: v.url, model: v.model });
+			const text = out.map((r) => JSON.stringify(r)).join("\n");
+			if (v.out) writeFileSync(v.out, text + "\n"); else print(text);
+			return out;
 		}
 		case "correct": {
 			const { correctionExperiment } = await import("./correction.ts");
