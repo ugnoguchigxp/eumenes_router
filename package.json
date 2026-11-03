@@ -21,6 +21,7 @@
 		"./package.json": "./package.json"
 	},
 	"scripts": {
+		"best-v1": "bash bench/router/experiments/best/run.sh",
 		"build": "rm -rf dist && tsc -p tsconfig.build.json",
 		"prepack": "bun run build",
 		"lint": "oxlint --deny-warnings",
