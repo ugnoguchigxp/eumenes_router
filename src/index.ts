@@ -67,6 +67,21 @@ export type {
 	ReachabilityReport,
 } from "./reachability.ts";
 export { route } from "./route.ts";
+export {
+	BEST_V2_FEATURES,
+	BEST_V2_FORMAT,
+	BEST_V2_MEMORY_FORMAT,
+	loadBestV2,
+	scoreBestV2,
+} from "./scoring/best-v2.ts";
+export { BEST_V2_PARAMS } from "./scoring/best-v2.params.ts";
+export type {
+	BestV2Input,
+	BestV2Memory,
+	BestV2Model,
+	BestV2Params,
+	BestV2Result,
+} from "./scoring/best-v2.ts";
 export type {
 	Candidate,
 	CandidateQuery,

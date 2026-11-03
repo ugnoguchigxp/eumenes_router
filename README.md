@@ -4,14 +4,34 @@ Eumenes の担当の振り分け（Toolchain Router）から、判断一式を�
 
 パッケージ名・リポジトリ・フォルダは `eumenes_router` です。作業の入口は [plan.md](plan.md)、作業規則は [AGENTS.md](AGENTS.md) です。
 
-## 状態（2026-11-02）
+## 状態（2026-11-03）
 
 | 項目 | 状態 |
 | --- | --- |
 | M0 判断一式と採点 | 実装済み。検査の内訳は下の「検証結果」 |
-| 正解付け、方式の比較、出荷 | 未着手（M1 以降） |
+| メインの判断の実装 | **best-v2**。判定（`loadBestV2`・`scoreBestV2`）と学習済みの数値（`BEST_V2_PARAMS`）をパッケージに入れた。`route()` への組み込みは未決（plan.md M3a） |
+| M2 方式の比較 | 途中。オフラインの精度・言い換え・訂正は測った。本番機の速度と会話 LLM への干渉、新しい担当の cold start は未測定 |
+| 検証して採らなかった実装 | `archive/`（ARCHIVED。LLM による確認、LARM の文脈判定の単体利用、言い換えの意味の Haiku 判定）。結論と実測は [docs/reports/router_verifications_2026-11-03.md](docs/reports/router_verifications_2026-11-03.md) |
+| 正解付け（M1）、出荷（M3） | 未着手。bench の正解ラベルは grok-bot の推論由来で、人の確認はまだ |
 | 408件・58会話のスナップショット | `data/` にある（Git 管理外）。正解は 0件。予測に候補ごとの確率は無いので、決定の一致も精度もこのファイルだけでは出せない |
 | カード全文と、その回の仕事・確認待ち | 未了。書き出しは Eumenes のセッションで足す |
+
+## 検証結果（2026-11-03）
+
+test 217件（評価は1回）と、test から作った言い換え 1,215件。正解ラベルは grok-bot の推論由来（人の確認はまだ）。詳細は [docs/reports/router_verifications_2026-11-03.md](docs/reports/router_verifications_2026-11-03.md)、実測データ（本文なし）は `docs/reports/data/2026-11-03/` と `archive/*/results/`。
+
+| 構成（LLM なし、1位を採る） | test top1 | LLM に回す率 | 言い換え top1 |
+| --- | --- | --- | --- |
+| 今の構成（baseline） | 70.0 | 29.5% | — |
+| best-v2（学習なしの ruri） | 84.3 | 25.8% | 77.2 |
+| **best-v2（LARM の ruri の点数）** | **86.6** | **23.0%** | **80.2** |
+| LARM の文脈判定だけ（不採用） | 83.2 | — | 74.5 |
+
+| 検証 | 結果 |
+| --- | --- |
+| best-v2 の TS 移植と `best_v2.py` の一致 | test＋言い換え 1,432件で、並びと回す判定がすべて一致。確率の差 ≤ 3.6×10⁻⁸。1件 0.094 ms |
+| 訂正の記憶（θ 0.9177・β 1.5・正解を候補に足す） | 訂正した発話 85.7%、その言い換え 70.9% が直る。関係ない発話の崩れ 0%（166件）。回復率 ≥ 90% は未達 |
+| LLM（Haiku）による確認（不採用） | LARM 版の best-v2 に足すと 86.6 → 88.0%、19,572 トークン（217回で 1回 90） |
 
 ## 検証結果（2026-11-02）
 
@@ -28,13 +48,25 @@ Eumenes の担当の振り分け（Toolchain Router）から、判断一式を�
 
 ## 採用している方式
 
-製品の新しい経路を写している。検索の順位は埋め込みの最大内積で、そのあとにホストが渡す採点を1回、訂正、決定表、と進む。plan.md §8 の採点方式はまだ比べておらず、勝った方式はない。
+メインの判断は **best-v2**（`src/scoring/best-v2.ts`）。劣る方式（best-v1、algo4、round2/3、LLM による確認、LARM の文脈判定の単体利用、検索と reranker の単純な融合）はパッケージに入れない。
 
-| 段 | 今の実装 |
+| best-v2 の段 | 中身 |
+| --- | --- |
+| 候補 | 検索の上位 8件のうち reranker の点数がある担当と、会話 |
+| 融合 | softmax（検索の確率 ＋ 2 × reranker の点数。会話は 0.18 を足す） |
+| 特徴 | 検索の確率・順位・生の点数、reranker の点数・順位・1位との差、融合の確率・順位、会話か、記憶の近傍の票（近い 10件、e5 の内積） |
+| 判定 | 標準化 ＋ ロジスティック回帰（dev で学習、C 0.03）。1位と2位の確率の差が 0.3222 未満なら回す |
+| 学習済みの数値 | `BEST_V2_PARAMS`（`src/scoring/best-v2.params.ts`、`best_v2.py export-package` が書く）。発話から作ったものは入っていない |
+| 記憶 | ホストが渡す（`BestV2Memory`: 正解の id ＋ float32 のベクトル）。dev の発話から作るので、パッケージにも Git にも入れない。数値と同じ `source` の記憶でないと拒む |
+
+`route()` は製品の新しい経路を写している（best-v2 はまだ組み込んでいない）。
+
+| `route()` の段 | 今の実装 |
 | --- | --- |
 | 検索 | 発言の先頭 2000字を埋め込む。カードの文（「名前: 説明」、`useWhen`、`examples`）との内積の最大で順位を付ける。`route()` の枠は dedicated 10、pipeline 4、general 4。読む担当は dedicated の枠を使う。近いものだけに切らない。FTS は使わず、`ftsRank` は null。その空間にベクトルが無いときは、`read` 以外の有効なカードを id 順に返す |
+| 訂正の近傍と候補 | 採点の前に近い訂正を読み、その正解を `include` で候補に足す（枠の外でも。枠は使わない） |
 | 採点 | ホストが渡す1回の choice。このパッケージはモデルを持たない |
-| 訂正 | 類似度が θ 以上の訂正だけを使う（既定 0.95）。対数確率の移動は、1候補あたり β まで（既定 2）。正解の id が食い違う訂正は、どれも適用しない |
+| 訂正 | 類似度が θ 以上の訂正だけを使う（既定 0.95）。対数確率の移動は、1候補あたり β まで（既定 2）。正解の id が食い違う訂正は、どれも適用しない。e5 small の空間で測った値は θ 0.9177・β 1.5（ホストが `feedbackNear`・`feedbackWeight` で渡す） |
 | 決定 | 行 1〜9 の決定表。既定は accept 0.6、low 0.3、margin 0.15、approve 0.85、multi 0.5。空の候補は行 8（会話） |
 
 ## 開発
@@ -59,18 +91,22 @@ bun run format
 
 | import | 内容 |
 | --- | --- |
-| `eumenes_router` | `route`、`decide`、`correctProbabilities`、`predictionSet`、`offerCandidates`、`checkReachability`。DB・時計・乱数・ネットワーク・モデルには触らない |
+| `eumenes_router` | `route`、`decide`、`correctProbabilities`、`predictionSet`、`offerCandidates`、`checkReachability`、`loadBestV2`・`scoreBestV2`・`BEST_V2_PARAMS`（best-v2）。DB・時計・乱数・ネットワーク・モデルには触らない |
 | `eumenes_router/sqlite` | 借りた同期接続への `migrateInTransaction`、`syncCardsInTransaction`、`saveVectorsInTransaction`、`candidatesInTransaction`、`nearFeedback`、`recordFeedbackInTransaction`、`setFeedbackStateInTransaction`、`forgetInTransaction`。open/close・transaction はしない |
+
+best-v2 は `loadBestV2(BEST_V2_PARAMS, memory)` で読み、`scoreBestV2(model, { retrieval, retrievalScores, rerank, vector })` で1発言を判定する。`retrieval` は検索の候補と確率（会話を含む）、`retrievalScores` は検索の生の点数、`rerank` は reranker（LARM）の候補ごとの点数、`vector` は記憶と同じ空間の発言のベクトル（正規化済み）。返すのは確率の順の候補、1位と2位の差、回すかどうか。
 
 `route()` は、ホストが渡した埋め込みと採点を順に呼び、そのあいだで検索と近傍訂正を同期で読む。空の候補は行 8（会話）で、採点は呼ばない。補正が衝突した訂正の id は `explain.conflicts` に入る。行を `conflict` にするのはホストである。会話と記憶の文は `passages` か `dynamic` で渡す。このパッケージは文を作らない。
 
 ## リポジトリ
 
 ```text
-src/        出荷する。公開口は index.ts と sqlite.ts
+src/        出荷する。公開口は index.ts と sqlite.ts。best-v2 は src/scoring/
 bench/      研究専用。評価の採点。出荷しない
+archive/    ARCHIVED。検証して採らなかった実装と、その実測データ（本文なし）。出荷しない
+docs/       報告。docs/reports/data/ は実測データ（本文なし）
 test/       bun test
-data/       Git 管理外。評価データ、カードの写し、埋め込み、実行結果
+data/       Git 管理外。評価データ、カードの写し、埋め込み、実行結果、best-v2 の記憶
 inspector/  未作成。正解付けの画面（M1）
 ```
 

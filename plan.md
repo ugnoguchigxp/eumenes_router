@@ -322,6 +322,15 @@ eumenes_router/
 
 `bun test` は 45件成功（2026-11-02）。live と本番機の計測は始めていない。
 
+### M3a best-v2 をパッケージに入れる（2026-11-03、利用者の判断）
+
+| 項目 | 状態 |
+| --- | --- |
+| 判定（融合・特徴・標準化＋LR・回す判定・記憶の kNN） | 実装済み `src/scoring/best-v2.ts`（`loadBestV2`・`scoreBestV2`、純粋）。`best_v2.py` の predict と test 217件＋言い換え 1,215件で一致（並びと回す判定が全件一致、確率の差 ≤ 3.6×10⁻⁸）。1件 0.094 ms。`test/best-v2.test.ts`（一致の確認は `data/best-v2-parity/` があるときだけ） |
+| 成果物（利用者の判断: A） | `best_v2.py export-package` が2つに分けて書く。学習済みの数値（係数・標準化・閾値・融合の定数・kNN の件数と次元）は `src/scoring/best-v2.params.ts`（`BEST_V2_PARAMS`）としてパッケージと Git に入れる。発話から作ったものは入らない。記憶（dev の発話のベクトル 177件と正解の id）は `BestV2Memory` としてホストが持ち、`loadBestV2(params, memory)` で渡す。リポジトリが公開なので、記憶はパッケージにも Git にも入れない（`data/` だけ）。記憶の `source` が数値の `source` と違えば拒む（kNN の特徴はその記憶で学習した）。今の版は LARM の ruri の点数で dev から学習したもの（source `40b7de92010fa24f`） |
+| 公開済みのデータ | 以前のコミットの `bench/router/experiments/correction/variants.jsonl`・`controls.jsonl`・`round2/para.json`（test の発話を書き換えた文など）は、利用者の判断でそのまま残す |
+| `route()` への組み込み | 未決。検索（sr-corr: 意味・典型・全文検索・種類の手がかり）をパッケージに移すか、best-v2 の回す判定と決定表の関係、記憶の置き場所（成果物か DB か）、reranker の port が候補ごとの `scores` を返すこと、訂正の正解を候補に足すこととの組み合わせ |
+
 ## 11 確かめていないこと・決まっていないこと
 
 | こと | 状態 |
