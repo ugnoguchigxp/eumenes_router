@@ -27,11 +27,12 @@ import {
 // The whole package path on the evaluation data, without Python: cards and passage vectors synced into a package
 // database, the memory imported into it, then lexical index → sr-corr → kind slots → top 8 → reranker scores (LARM,
 // as recorded) → best-v2. Every test item and variant must give best_v2.py's ranking, and the totals the report's.
-// The inputs are evaluation data (data/, outside Git): data/larm-context/corr-larm, data/best-v2-parity/memory.json,
-// and the recorded ranking docs/reports/data/2026-11-03/best-v2-larm.ranked.jsonl.
-const corr = "data/larm-context/corr-larm";
+// The inputs are evaluation data (data/, outside Git): data/larm-context/corr-larm2 (the scores of the LARM network
+// the shipped numbers were trained on), data/best-v2-parity/memory.json, and the recorded ranking
+// docs/reports/data/2026-11-03/best-v2-larm2.ranked.jsonl.
+const corr = "data/larm-context/corr-larm2";
 const memoryFile = "data/best-v2-parity/memory.json";
-const rankedFile = "docs/reports/data/2026-11-03/best-v2-larm.ranked.jsonl";
+const rankedFile = "docs/reports/data/2026-11-03/best-v2-larm2.ranked.jsonl";
 const ready =
 	existsSync(`${corr}/corr.db`) &&
 	existsSync(`${corr}/rerank-ruri.json`) &&
@@ -193,12 +194,12 @@ test.skipIf(!ready)(
 		expect(compared).toBeGreaterThan(1400);
 		expect(order).toEqual([]);
 		expect(worst).toBeLessThan(1e-6);
-		// best-v2 (LARM ruri), no LLM, the top candidate taken: the report's 86.6% top-1 and 23.0% deferral on the test.
+		// best-v2 (LARM ruri), no LLM, the top candidate taken: the report's 85.7% top-1 and 20.7% deferral on the test.
 		expect(tally.test.n).toBe(217);
-		expect(+((100 * tally.test.top1) / tally.test.n).toFixed(1)).toBe(86.6);
-		expect(+((100 * tally.test.defer) / tally.test.n).toFixed(1)).toBe(23.0);
+		expect(+((100 * tally.test.top1) / tally.test.n).toFixed(1)).toBe(85.7);
+		expect(+((100 * tally.test.defer) / tally.test.n).toFixed(1)).toBe(20.7);
 		expect(+((100 * tally.variant.top1) / tally.variant.n).toFixed(1)).toBe(
-			80.2,
+			81.0,
 		);
 	},
 );

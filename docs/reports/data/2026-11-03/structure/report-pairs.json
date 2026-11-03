@@ -74,9 +74,9 @@
         "fallback": 0
       },
       "real:single": {
-        "n": 7,
+        "n": 9,
         "right": 7,
-        "routeRight": 7,
+        "routeRight": 9,
         "countRight": 0,
         "referenceSide": 0,
         "toPipeline": 0,
@@ -97,15 +97,6 @@
         "routeRight": 4,
         "countRight": 0,
         "referenceSide": 2,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-same-tool": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 2,
-        "countRight": 0,
-        "referenceSide": 0,
         "toPipeline": 0,
         "fallback": 0
       }
@@ -292,9 +283,9 @@
         "fallback": 0
       },
       "real:B": {
-        "n": 7,
+        "n": 9,
         "right": 7,
-        "routeRight": 7,
+        "routeRight": 9,
         "countRight": 0,
         "referenceSide": 0,
         "toPipeline": 0,
@@ -315,15 +306,6 @@
         "routeRight": 2,
         "countRight": 0,
         "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:S": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 2,
-        "countRight": 0,
-        "referenceSide": 0,
         "toPipeline": 0,
         "fallback": 0
       },
@@ -968,9 +950,9 @@
         "fallback": 0
       },
       "real:single": {
-        "n": 7,
+        "n": 9,
         "right": 7,
-        "routeRight": 7,
+        "routeRight": 9,
         "countRight": 0,
         "referenceSide": 0,
         "toPipeline": 0,
@@ -991,15 +973,6 @@
         "routeRight": 4,
         "countRight": 0,
         "referenceSide": 2,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-same-tool": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 2,
-        "countRight": 0,
-        "referenceSide": 0,
         "toPipeline": 0,
         "fallback": 0
       }
@@ -1186,9 +1159,9 @@
         "fallback": 0
       },
       "real:B": {
-        "n": 7,
+        "n": 9,
         "right": 7,
-        "routeRight": 7,
+        "routeRight": 9,
         "countRight": 0,
         "referenceSide": 0,
         "toPipeline": 0,
@@ -1209,15 +1182,6 @@
         "routeRight": 2,
         "countRight": 0,
         "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:S": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 2,
-        "countRight": 0,
-        "referenceSide": 0,
         "toPipeline": 0,
         "fallback": 0
       },
@@ -1957,10 +1921,10 @@
         "fallback": 0
       },
       "real:single": {
-        "n": 7,
+        "n": 9,
         "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
+        "routeRight": 9,
+        "countRight": 9,
         "referenceSide": 0,
         "toPipeline": 0,
         "fallback": 0
@@ -1981,15 +1945,6 @@
         "countRight": 4,
         "referenceSide": 1,
         "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-same-tool": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 2,
         "fallback": 0
       }
     },
@@ -2175,10 +2130,10 @@
         "fallback": 0
       },
       "real:B": {
-        "n": 7,
+        "n": 9,
         "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
+        "routeRight": 9,
+        "countRight": 9,
         "referenceSide": 0,
         "toPipeline": 0,
         "fallback": 0
@@ -2199,15 +2154,6 @@
         "countRight": 2,
         "referenceSide": 0,
         "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:S": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 2,
         "fallback": 0
       },
       "real:A5": {
@@ -2372,12 +2318,12 @@
       {
         "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
         "gold": "browser.operate",
-        "got": "pipeline:web.search+task.execute"
+        "got": "task.execute"
       },
       {
         "id": "b0172159-d918-40b2-abe5-e39594b228e1",
         "gold": "browser.operate",
-        "got": "pipeline:web.service-search+music.library"
+        "got": "web.service-search"
       },
       {
         "id": "be996408-9303-41b0-b55f-da418b74f712",
@@ -2462,10 +2408,10 @@
         "fallback": 0
       },
       "real:single": {
-        "n": 7,
+        "n": 9,
         "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
+        "routeRight": 9,
+        "countRight": 9,
         "referenceSide": 0,
         "toPipeline": 0,
         "fallback": 0
@@ -2486,15 +2432,6 @@
         "countRight": 4,
         "referenceSide": 1,
         "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-same-tool": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 2,
         "fallback": 0
       }
     },
@@ -2680,10 +2617,10 @@
         "fallback": 0
       },
       "real:B": {
-        "n": 7,
+        "n": 9,
         "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
+        "routeRight": 9,
+        "countRight": 9,
         "referenceSide": 0,
         "toPipeline": 0,
         "fallback": 0
@@ -2704,15 +2641,6 @@
         "countRight": 2,
         "referenceSide": 0,
         "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:S": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 2,
         "fallback": 0
       },
       "real:A5": {
@@ -2847,12 +2775,12 @@
       {
         "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
         "gold": "browser.operate",
-        "got": "pipeline:web.search+task.execute"
+        "got": "task.execute"
       },
       {
         "id": "b0172159-d918-40b2-abe5-e39594b228e1",
         "gold": "browser.operate",
-        "got": "pipeline:web.service-search+music.library"
+        "got": "web.service-search"
       },
       {
         "id": "be996408-9303-41b0-b55f-da418b74f712",
@@ -2937,10 +2865,10 @@
         "fallback": 0
       },
       "real:single": {
-        "n": 7,
+        "n": 9,
         "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
+        "routeRight": 9,
+        "countRight": 9,
         "referenceSide": 0,
         "toPipeline": 0,
         "fallback": 0
@@ -2961,15 +2889,6 @@
         "countRight": 4,
         "referenceSide": 1,
         "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-same-tool": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 2,
         "fallback": 0
       }
     },
@@ -3155,10 +3074,10 @@
         "fallback": 0
       },
       "real:B": {
-        "n": 7,
+        "n": 9,
         "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
+        "routeRight": 9,
+        "countRight": 9,
         "referenceSide": 0,
         "toPipeline": 0,
         "fallback": 0
@@ -3179,15 +3098,6 @@
         "countRight": 2,
         "referenceSide": 0,
         "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:S": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 2,
         "fallback": 0
       },
       "real:A5": {
@@ -3307,12 +3217,12 @@
       {
         "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
         "gold": "browser.operate",
-        "got": "pipeline:web.search+task.execute"
+        "got": "task.execute"
       },
       {
         "id": "b0172159-d918-40b2-abe5-e39594b228e1",
         "gold": "browser.operate",
-        "got": "pipeline:web.service-search+music.library"
+        "got": "web.service-search"
       },
       {
         "id": "be996408-9303-41b0-b55f-da418b74f712",
@@ -3397,12 +3307,12 @@
         "fallback": 0
       },
       "real:single": {
-        "n": 7,
+        "n": 9,
         "right": 7,
         "routeRight": 7,
         "countRight": 5,
         "referenceSide": 0,
-        "toPipeline": 0,
+        "toPipeline": 2,
         "fallback": 2
       },
       "real:single-modifier": {
@@ -3421,15 +3331,6 @@
         "countRight": 4,
         "referenceSide": 1,
         "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-same-tool": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 1,
-        "referenceSide": 0,
-        "toPipeline": 2,
         "fallback": 0
       }
     },
@@ -3615,12 +3516,12 @@
         "fallback": 0
       },
       "real:B": {
-        "n": 7,
+        "n": 9,
         "right": 7,
         "routeRight": 7,
         "countRight": 5,
         "referenceSide": 0,
-        "toPipeline": 0,
+        "toPipeline": 2,
         "fallback": 2
       },
       "real:B2": {
@@ -3639,15 +3540,6 @@
         "countRight": 2,
         "referenceSide": 0,
         "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:S": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 1,
-        "referenceSide": 0,
-        "toPipeline": 2,
         "fallback": 0
       },
       "real:A5": {
@@ -3957,12 +3849,12 @@
         "fallback": 0
       },
       "real:single": {
-        "n": 7,
+        "n": 9,
         "right": 7,
         "routeRight": 7,
         "countRight": 5,
         "referenceSide": 0,
-        "toPipeline": 0,
+        "toPipeline": 2,
         "fallback": 2
       },
       "real:single-modifier": {
@@ -3981,15 +3873,6 @@
         "countRight": 4,
         "referenceSide": 1,
         "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-same-tool": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 1,
-        "referenceSide": 0,
-        "toPipeline": 2,
         "fallback": 0
       }
     },
@@ -4175,12 +4058,12 @@
         "fallback": 0
       },
       "real:B": {
-        "n": 7,
+        "n": 9,
         "right": 7,
         "routeRight": 7,
         "countRight": 5,
         "referenceSide": 0,
-        "toPipeline": 0,
+        "toPipeline": 2,
         "fallback": 2
       },
       "real:B2": {
@@ -4199,15 +4082,6 @@
         "countRight": 2,
         "referenceSide": 0,
         "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:S": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 1,
-        "referenceSide": 0,
-        "toPipeline": 2,
         "fallback": 0
       },
       "real:A5": {
@@ -4517,12 +4391,12 @@
         "fallback": 0
       },
       "real:single": {
-        "n": 7,
+        "n": 9,
         "right": 7,
         "routeRight": 7,
         "countRight": 5,
         "referenceSide": 0,
-        "toPipeline": 0,
+        "toPipeline": 2,
         "fallback": 2
       },
       "real:single-modifier": {
@@ -4541,15 +4415,6 @@
         "countRight": 4,
         "referenceSide": 1,
         "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-same-tool": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 1,
-        "referenceSide": 0,
-        "toPipeline": 2,
         "fallback": 0
       }
     },
@@ -4735,12 +4600,12 @@
         "fallback": 0
       },
       "real:B": {
-        "n": 7,
+        "n": 9,
         "right": 7,
         "routeRight": 7,
         "countRight": 5,
         "referenceSide": 0,
-        "toPipeline": 0,
+        "toPipeline": 2,
         "fallback": 2
       },
       "real:B2": {
@@ -4759,15 +4624,6 @@
         "countRight": 2,
         "referenceSide": 0,
         "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:S": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 1,
-        "referenceSide": 0,
-        "toPipeline": 2,
         "fallback": 0
       },
       "real:A5": {
