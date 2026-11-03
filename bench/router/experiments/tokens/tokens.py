@@ -5,6 +5,8 @@ Stdlib only. Never calls external APIs: refuses non-local hosts unless --allow-r
   python tokens.py run   --report out/correct-x/report.json --export data/export/eumenes-... \
                          --url http://127.0.0.1:8080/v1 --model <name> [--system-file prompt.txt] [--limit N] --out tokens.jsonl
   python tokens.py stats --calls tokens.jsonl --report out/correct-x/report.json [--boot 4000]
+  python tokens.py verify --items verify-items.jsonl --url http://127.0.0.1:8080/v1 --model <name> [--max-cands 3] --out verify.jsonl
+  python tokens.py verify-stats --calls verify.jsonl [--boot 4000]
   python tokens.py selftest            # mock server, checks usage / reasoning_tokens / <think> fallback parsing
 
 Per call it logs prompt / completion / reasoning tokens. Reasoning source, in order:
@@ -52,7 +54,7 @@ def call(base, model, messages, max_tokens):
             rt, how = count_tokens(base, model, rtext); src += ":" + how
         else: rt, src = 0, "none"
     return {"prompt": u.get("prompt_tokens"), "completion": u.get("completion_tokens"), "reasoning": rt, "reasoning_src": src,
-            "finish": (r.get("choices") or [{}])[0].get("finish_reason"), "seconds": round(dt, 3)}
+            "finish": (r.get("choices") or [{}])[0].get("finish_reason"), "seconds": round(dt, 3), "_content": THINK.sub("", content).strip()}
 
 def local(url):
     h = urllib.parse.urlparse(url).hostname or ""
@@ -78,10 +80,47 @@ def run(a):
             if d.get("previousUser"): msgs.append({"role": "user", "content": d["previousUser"]})
             if d.get("previousAgent"): msgs.append({"role": "assistant", "content": d["previousAgent"]})
             msgs.append({"role": "user", "content": tests[i]})
-            try: rec = call(a.url, a.model, msgs, a.max_tokens)
+            try: rec = call(a.url, a.model, msgs, a.max_tokens); rec.pop("_content", None)
             except Exception as e: rec = {"error": str(e)[:200]}
             rec.update(id=i, model=a.model); f.write(json.dumps(rec, ensure_ascii=False) + "\n"); f.flush()
             print(n + 1, len(ids), rec.get("prompt"), rec.get("reasoning"), rec.get("completion"), rec.get("reasoning_src"), file=sys.stderr)
+
+VERIFY_SYSTEM = ("あなたはツール選択の検証係です。ユーザーの発話と、候補ツールの説明が与えられます。"
+                 "この発話にこのツールが適切なら「はい」、そうでなければ「いいえ」だけを答えてください。")
+YES = re.compile(r"^\s*(はい|yes)", re.I)
+
+def verify(a):
+    """Procedural protocol (a): per-candidate yes/no down the ranking, stop at the first yes, at most --max-cands calls per item.
+    Items JSONL: {id, text, cands:[tool,...] (ranked), docs:{tool: card text}, gold?, acceptable?}. One line per CALL is logged
+    (id, step, cand, answer yes/no, tokens); resumable (skips ids that already have a final line)."""
+    if not local(a.url) and not a.allow_remote: sys.exit("refusing non-local endpoint (use --allow-remote for a LAN host name)")
+    items = [json.loads(l) for l in open(a.items)]; done = set()
+    try: done = {json.loads(l)["id"] for l in open(a.out) if json.loads(l).get("final")}
+    except FileNotFoundError: pass
+    with open(a.out, "a") as f:
+        for it in [i for i in items if i["id"] not in done][: a.limit or None]:
+            for step, c in enumerate(it["cands"][: a.max_cands]):
+                msgs = [{"role": "system", "content": VERIFY_SYSTEM}, {"role": "user", "content": f"発話: {it['text']}\nツール: {c}\n説明: {it.get('docs', {}).get(c, c)}\n答え（はい/いいえ）:"}]
+                try: rec = call(a.url, a.model, msgs, a.max_tokens); ans = rec.pop("_content", "")
+                except Exception as e: rec = {"error": str(e)[:200]}; ans = ""
+                yes = bool(YES.search(ans)); last = yes or step == min(a.max_cands, len(it["cands"])) - 1
+                rec.update(id=it["id"], step=step, cand=c, yes=yes, final=last, correct=(c == it.get("gold") or c in it.get("acceptable", [])) if "gold" in it else None, model=a.model)
+                f.write(json.dumps(rec, ensure_ascii=False) + "\n"); f.flush()
+                if yes: break
+
+def verify_stats(a):
+    calls = [json.loads(l) for l in open(a.calls)]; ok_calls = [c for c in calls if "error" not in c]
+    per = {}
+    for c in ok_calls: per.setdefault(c["id"], []).append(c)
+    tot = lambda c: (c.get("prompt") or 0) + (c.get("completion") or 0)
+    items = list(per.values()); n_calls = [len(v) for v in items]; tok_item = [sum(tot(c) for c in v) for v in items]
+    fy = [c for c in ok_calls if c["yes"] and c.get("correct") is False]; fn = [c for c in ok_calls if not c["yes"] and c.get("correct") is True]
+    out = {"items": len(items), "calls": len(ok_calls), "calls_per_item": round(st.mean(n_calls), 3) if items else None,
+           "tokens_per_call": round(st.mean([tot(c) for c in ok_calls]), 1) if ok_calls else None, "tokens_per_item": round(st.mean(tok_item), 1) if items else None,
+           "tokens_per_item_ci": boot(tok_item, st.mean, a.boot) if items else None,
+           "false_yes_rate": round(100 * len(fy) / max(1, sum(c.get("correct") is False for c in ok_calls)), 1), "false_no_rate": round(100 * len(fn) / max(1, sum(c.get("correct") is True for c in ok_calls)), 1),
+           "accepted_correct": sum(1 for v in items if v[-1]["yes"] and v[-1].get("correct")), "all_no": sum(1 for v in items if not v[-1]["yes"])}
+    print(json.dumps(out, ensure_ascii=False, indent=1))
 
 def pct(xs, q):
     xs = sorted(xs); k = (len(xs) - 1) * q; lo = int(k); hi = min(lo + 1, len(xs) - 1)
@@ -138,6 +177,13 @@ def selftest():
     assert (got[1]["reasoning"], got[1]["reasoning_src"]) == (20, "reasoning_field:tokenize"), got[1]
     assert (got[2]["reasoning"], got[2]["reasoning_src"]) == (10, "think_tag:tokenize"), got[2]
     assert local(base) and not local("https://api.openai.com/v1")
+    import tempfile, os
+    d = tempfile.mkdtemp(); ip = os.path.join(d, "i.jsonl"); op = os.path.join(d, "v.jsonl")
+    open(ip, "w").write(json.dumps({"id": "x", "text": "t", "cands": ["a", "b", "c", "d"], "gold": "c"}) + "\n")
+    ns = argparse.Namespace(items=ip, url=base, model="m", max_cands=3, max_tokens=16, out=op, limit=None, allow_remote=False)
+    verify(ns); v = [json.loads(l) for l in open(op)]
+    assert len(v) == 3 and v[-1]["final"] and v[0]["step"] == 0, v  # mock never says yes -> stops at max 3 calls
+    verify(ns); assert len(open(op).readlines()) == 3  # resumable
     print("selftest ok")
 
 if __name__ == "__main__":
@@ -146,5 +192,8 @@ if __name__ == "__main__":
     r.add_argument("--model", default="local"); r.add_argument("--system-file"); r.add_argument("--limit", type=int); r.add_argument("--max-tokens", type=int, default=4096)
     r.add_argument("--out", default="tokens.jsonl"); r.add_argument("--allow-remote", action="store_true")
     s = sp.add_parser("stats"); s.add_argument("--calls", required=True); s.add_argument("--report", required=True); s.add_argument("--boot", type=int, default=4000)
+    v = sp.add_parser("verify"); v.add_argument("--items", required=True); v.add_argument("--url", default="http://127.0.0.1:8080/v1"); v.add_argument("--model", default="local")
+    v.add_argument("--max-cands", type=int, default=3); v.add_argument("--max-tokens", type=int, default=1024); v.add_argument("--limit", type=int); v.add_argument("--out", default="verify.jsonl"); v.add_argument("--allow-remote", action="store_true")
+    vs = sp.add_parser("verify-stats"); vs.add_argument("--calls", required=True); vs.add_argument("--boot", type=int, default=4000)
     sp.add_parser("selftest"); a = p.parse_args()
-    {"run": run, "stats": stats, "selftest": lambda _: selftest()}[a.cmd](a) if a.cmd != "selftest" else selftest()
+    {"run": run, "stats": stats, "verify": verify, "verify-stats": verify_stats}[a.cmd](a) if a.cmd != "selftest" else selftest()

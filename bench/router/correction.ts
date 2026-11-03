@@ -11,6 +11,7 @@
  *   <tag>         sr + cross-encoder rerank, defer to the recorded LLM choice (`past`)
  *                 when the corrected margin is under the dev threshold (20th percentile)
  *   <tag>+pin     the same, but a near correction keeps the router's answer (no deferral)
+ *   <tag>+tblpin  rule table on; only a rule-table hit (exact key / reading Dice ≥ τ) pins the corrected answer (no deferral)
  */
 import { Database } from "bun:sqlite";
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
@@ -72,7 +73,7 @@ export function correctionStore(model: string, dimension: number, table?: { tau:
 			const near = [...tbl, ...emb.filter((e) => !tbl.some((t) => t.id === e.id))];
 			const out = correctProbabilities(ranked.map(([id, p]) => ({ id, p })), near, { threshold, weight: settings.feedbackWeight });
 			const r: Ranked = ranked.map(([id], i) => [id, out.p[i]!]);
-			return { ranked: r.sort((a, b) => b[1] - a[1]), near: near.length, conflict: out.conflict };
+			return { ranked: r.sort((a, b) => b[1] - a[1]), near: near.length, tableHits: tbl.length, conflict: out.conflict };
 		},
 	};
 }
@@ -204,15 +205,16 @@ export async function correctionExperiment(o: ExperimentOptions) {
 	const kOf = (text: string) => tableKey(text, readings[text]);
 	const ok = (it: Item, t: string | undefined) => t !== undefined && (t === it.gold || it.acceptable.includes(t));
 	type Pick = { top: string | undefined; frontTop: string; deferred: boolean; near: number };
+	const hasTbl = (cfg: string) => /\+tbl(pin)?$/.test(cfg);
 	const decide = (cfg: string, it: Item, store: ReturnType<typeof correctionStore> | null, theta?: number): Pick => {
-		const base = cfg.replace(/\+(pin|tbl)$/, "");
-		let r = front(base, it); let near = 0;
-		if (store) { const c = store.correct(r, vec(it.text), theta, cfg.endsWith("+tbl") ? kOf(it.text) : undefined); r = c.ranked; near = c.near; }
+		const base = cfg.replace(/\+(pin|tblpin|tbl)$/, "");
+		let r = front(base, it); let near = 0; let tbl = 0;
+		if (store) { const c = store.correct(r, vec(it.text), theta, hasTbl(cfg) ? kOf(it.text) : undefined); r = c.ranked; near = c.near; tbl = c.tableHits; }
 		if (base === "sr") return { top: r[0]![0], frontTop: r[0]![0], deferred: false, near };
-		const defer = margin(r) < thOf[base]! && !(cfg.endsWith("+pin") && near > 0);
+		const defer = margin(r) < thOf[base]! && !(cfg.endsWith("+pin") && near > 0) && !(cfg.endsWith("+tblpin") && tbl > 0);
 		return { top: defer ? it.past : r[0]![0], frontTop: r[0]![0], deferred: defer, near };
 	};
-	const configs = ["sr", ...tags, ...tags.map((t) => `${t}+pin`), ...(o.table ? ["sr+tbl", ...tags.map((t) => `${t}+tbl`)] : [])];
+	const configs = ["sr", ...tags, ...tags.map((t) => `${t}+pin`), ...(o.table ? ["sr+tbl", ...tags.map((t) => `${t}+tbl`), ...tags.map((t) => `${t}+tblpin`)] : [])];
 	const test = real.filter((r) => r.split === "test");
 	const userCorr = o.corrections ? readJsonl<Correction>(o.corrections) : null;
 	const report: Record<string, unknown> = { model, theta: routeSettings({}).feedbackNear, beta: routeSettings({}).feedbackWeight, deferThreshold: thOf, table: o.table ? { tau, maxFalse: o.tableMaxFalse ?? 0.02, devCurve: tauCurve } : null, counts: { test: test.length, variants: variants.length, controls: controls.length }, configs: {} };
@@ -222,8 +224,8 @@ export async function correctionExperiment(o: ExperimentOptions) {
 		// Corrections: the user fixes each wrong test answer of this configuration (or the given JSONL).
 		const corrected = test.filter((it) => !ok(it, before.get(it.id)!.top));
 		const corrections: Correction[] = userCorr ?? corrected.map((it) => ({ id: `c-${it.id}`, text: it.text, right: it.gold, wrong: before.get(it.id)!.top ?? null }));
-		const store = correctionStore(model, vec(items[0]!.text).length, cfg.endsWith("+tbl") ? { tau } : undefined);
-		for (const c of corrections) store.add(c, vec(c.text), cfg.endsWith("+tbl") ? kOf(c.text) : undefined);
+		const store = correctionStore(model, vec(items[0]!.text).length, hasTbl(cfg) ? { tau } : undefined);
+		for (const c of corrections) store.add(c, vec(c.text), hasTbl(cfg) ? kOf(c.text) : undefined);
 		const after = new Map(items.map((it) => [it.id, decide(cfg, it, store, theta)]));
 		const hit = (m: Map<string, Pick>, it: Item) => (ok(it, m.get(it.id)!.top) ? 1 : 0);
 		const fix = (xs: Item[]) => pct(bootMean(xs.filter((it) => !hit(before, it)).map((it) => hit(after, it))));
