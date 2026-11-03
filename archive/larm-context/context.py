@@ -4,14 +4,14 @@ router (best-v2). Stdlib only and not part of the package. The control Bearer is
 repo-root .env); everything else, including the control origin `url`, comes from --config (copy config.example.json to config.json).
 Calls run one at a time; credentials are never written to records or logs.
 
-  python examples/larm-context/context.py probe --config examples/larm-context/config.json [--text "明日の天気は？"]
-  python examples/larm-context/context.py run   --config examples/larm-context/config.json --corr data/variants-v2/corr \
+  python archive/larm-context/context.py probe --config archive/larm-context/config.json [--text "明日の天気は？"]
+  python archive/larm-context/context.py run   --config archive/larm-context/config.json --corr data/variants-v2/corr \
       [--variants data/variants-v2/variants.final.jsonl] --out data/larm-context/judged.jsonl
-  python examples/larm-context/context.py swap  --config ... --corr data/variants-v2/corr --variants ... --judged data/larm-context/judged.jsonl \
+  python archive/larm-context/context.py swap  --config ... --corr data/variants-v2/corr --variants ... --judged data/larm-context/judged.jsonl \
       --out data/larm-context/corr-larm      # best-v2 with this provider's scores in place of its reranker: then best_v2.py eval --corr <out>
-  python examples/larm-context/context.py fit   --judged data/larm-context/judged.jsonl --out data/larm-context/rule.json   # dev only
-  python examples/larm-context/context.py eval  --judged data/larm-context/judged.jsonl --rule data/larm-context/rule.json  # test + variants
-  python examples/larm-context/context.py selftest
+  python archive/larm-context/context.py fit   --judged data/larm-context/judged.jsonl --out data/larm-context/rule.json   # dev only
+  python archive/larm-context/context.py eval  --judged data/larm-context/judged.jsonl --rule data/larm-context/rule.json  # test + variants
+  python archive/larm-context/context.py selftest
 
 The provider returns per-candidate scores but no conversation class, so `fit` learns on dev when to fall back to
 conversation (top score and top-1/top-2 margin), bound to the scenario/network it was fitted on; `eval` refuses records
@@ -21,7 +21,7 @@ import argparse, json, os, random, re, sqlite3, sys, time, urllib.error, urllib.
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = next(p for p in Path(__file__).resolve().parents if (p / "package.json").exists())  # the repo root
 CONV = "conversation.respond"
 ID_RE = re.compile(r"^[A-Za-z0-9.:_-]{1,96}$")
 LIMITS = {"text_chars": 400, "candidates": 128, "description_chars": 4096, "request_bytes": 2 * 1024 * 1024}

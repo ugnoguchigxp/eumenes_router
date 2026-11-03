@@ -1,0 +1,49 @@
+{
+ "mode": {
+  "list": 56
+ },
+ "items": 56,
+ "calls": 56,
+ "calls_per_item": 1,
+ "tokens_per_call": 834.1,
+ "tokens_per_item": 834.1,
+ "tokens_per_item_ci": [
+  804.8,
+  864.8
+ ],
+ "false_yes_rate": null,
+ "false_no_rate": null,
+ "accepted_correct": 26,
+ "all_no": 14,
+ "invalid_answers": 0,
+ "finish": {
+  "end_turn": 56
+ },
+ "totals": {
+  "prompt": 45966,
+  "completion": 744,
+  "reasoning": 454
+ },
+ "reasoning_per_item": 8.1,
+ "tokens_per_item_p50_p95": [
+  834.5,
+  1058.5
+ ],
+ "seconds_per_item_p50_p95": [
+  0.8,
+  1.22
+ ],
+ "outcome": {
+  "accepted_wrong": 16,
+  "correct_if_all_no": {
+   "ask": 26,
+   "top1": 34,
+   "past": 39
+  },
+  "reference": {
+   "ranker_top1": 30,
+   "past": 47,
+   "gold_in_top4": 44
+  }
+ }
+}

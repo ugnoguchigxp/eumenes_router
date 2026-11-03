@@ -1,6 +1,6 @@
 node_modules/
 dist/
-data/
+/data/
 *.tgz
 .DS_Store
 *.log
@@ -8,4 +8,4 @@ coverage/
 out/
 __pycache__/
 .env
-examples/larm-context/config.json
+archive/larm-context/config.json

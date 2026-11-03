@@ -3,16 +3,16 @@
 conditions), or still chit-chat / a reply. One LLM call per variant, through tokens.py's providers. Resumable; one line
 per variant: {i (line index in --variants), source, type, same (True / False / None = unparsed), tokens...}.
 
-  uv run --no-project --with anthropic==2.4.0 python bench/router/experiments/variants/check.py run --provider anthropic --effort low \
+  uv run --no-project --with anthropic==2.4.0 python archive/variants-check/check.py run --provider anthropic --effort low \
       --sources data/variants-v2/sources.jsonl --variants data/variants-v2/variants.jsonl --out data/variants-v2/check.jsonl
-  python bench/router/experiments/variants/check.py stats --check data/variants-v2/check.jsonl
+  python archive/variants-check/check.py stats --check data/variants-v2/check.jsonl
 """
 import argparse, json, sys, threading
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tokens"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "llm-verify"))
 import tokens  # noqa: E402
 
 SYSTEM = ("あなたは言い換えの検査係です。会話の直前のやりとり、元の発話、その言い換えが与えられます。"

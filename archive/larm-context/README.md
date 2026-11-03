@@ -1,5 +1,7 @@
 # LARM の文脈判定を、本流とは別に検証する
 
+> **ARCHIVED（2026-11-03）。** 検証済み・単体の Router としては採らない（test 83.2%、best-v2 の LLM なし 84.3% とほぼ同じで、履歴と記憶を使えない）。点数は best-v2 の ruri に入れると良くなる（86.6%）。結論と数値は `archive/README.md` と `docs/reports/router_verifications_2026-11-03.md`。実測データ（本文なし）は `results/2026-11-03/`。旧 `examples/larm-context/`。
+
 LARM の通常 profile にある文脈判定の provider（`decision.context`）を、bench の正解付きデータで測る。本流の router（best-v2）とは混ぜない。パッケージ（`src/`・`dist/`）には入らない。標準ライブラリだけで動く。
 
 ## 設定
@@ -7,14 +9,14 @@ LARM の通常 profile にある文脈判定の provider（`decision.context`）
 | どこ | 何 |
 | --- | --- |
 | 環境変数（なければリポジトリ直下の `.env`） | `LARM_API_TOKEN`（control の Bearer）。Eumenes の設定からは写さない |
-| `examples/larm-context/config.json` | `config.example.json` を写して使う（Git 管理外）。`url`（control の origin）と `audience` は必ず入れる（`same-host` は LARM と同じ機械のときだけ） |
+| `archive/larm-context/config.json` | `config.example.json` を写して使う（Git 管理外）。`url`（control の origin）と `audience` は必ず入れる（`same-host` は LARM と同じ機械のときだけ） |
 
 `candidates` は、各発話に渡す候補の数（本流の検索 sr の上位 k 件。`"all"` なら全カード）。説明文は本流が reranker に渡すものと同じ（カードの説明＋例5件）。会話（`conversation.respond`）は候補に入れない。provider は会話のクラスを返さないので、会話へ戻す条件は dev で決める。
 
 ## 手順
 
 ```bash
-P=examples/larm-context/context.py; C=examples/larm-context/config.json
+P=archive/larm-context/context.py; C=archive/larm-context/config.json
 python3 $P selftest                                   # モックだけ。LARM は呼ばない
 python3 $P probe --config $C [--text "明日の天気は？"]   # profile → 接続 → claim → api の内容（と1回の判定）→ 解放
 python3 $P run   --config $C --corr data/variants-v2/corr --variants data/variants-v2/variants.final.jsonl --out data/larm-context/judged.jsonl

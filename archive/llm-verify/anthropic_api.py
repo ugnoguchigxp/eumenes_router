@@ -1,5 +1,5 @@
 """Anthropic Messages API backend for tokens.py (`--provider anthropic`). Needs the `anthropic` package, e.g.
-  uv run --no-project --with anthropic==2.4.0 python bench/router/experiments/tokens/tokens.py verify --provider anthropic ...
+  uv run --no-project --with anthropic==2.4.0 python archive/llm-verify/tokens.py verify --provider anthropic ...
 Settings come from the environment, else from the repo-root .env (already-set variables win):
   ANTHROPIC_API_KEY   required
   ROUTER_LLM_MODEL    model id (--model overrides)
@@ -9,7 +9,7 @@ import os, sys, time
 from pathlib import Path
 import anthropic
 
-ENV = Path(__file__).resolve().parents[4] / ".env"
+ENV = next(p for p in Path(__file__).resolve().parents if (p / "package.json").exists()) / ".env"  # the repo root
 
 
 def load_env(path=ENV):

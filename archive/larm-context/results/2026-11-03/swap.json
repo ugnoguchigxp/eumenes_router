@@ -1,0 +1,11 @@
+{
+ "source": "data/variants-v2/corr",
+ "scenario": "tool-routing-v1",
+ "network": "ruri-conv20-s0-fp32-v1",
+ "precision": "fp32",
+ "candidates": 8,
+ "rerank_keys_replaced": 1503,
+ "rerank_keys_kept_original": 44,
+ "extra_rows_scored": 727,
+ "extra_rows_kept_original": 2
+}
