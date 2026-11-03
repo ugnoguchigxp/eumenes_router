@@ -329,7 +329,19 @@ eumenes_router/
 | 判定（融合・特徴・標準化＋LR・回す判定・記憶の kNN） | 実装済み `src/scoring/best-v2.ts`（`loadBestV2`・`scoreBestV2`、純粋）。`best_v2.py` の predict と test 217件＋言い換え 1,215件で一致（並びと回す判定が全件一致、確率の差 ≤ 3.6×10⁻⁸）。1件 0.094 ms。`test/best-v2.test.ts`（一致の確認は `data/best-v2-parity/` があるときだけ） |
 | 成果物（利用者の判断: A） | `best_v2.py export-package` が2つに分けて書く。学習済みの数値（係数・標準化・閾値・融合の定数・kNN の件数と次元）は `src/scoring/best-v2.params.ts`（`BEST_V2_PARAMS`）としてパッケージと Git に入れる。発話から作ったものは入らない。記憶（dev の発話のベクトル 177件と正解の id）は `BestV2Memory` としてホストが持ち、`loadBestV2(params, memory)` で渡す。リポジトリが公開なので、記憶はパッケージにも Git にも入れない（`data/` だけ）。記憶の `source` が数値の `source` と違えば拒む（kNN の特徴はその記憶で学習した）。今の版は LARM の ruri の点数で dev から学習したもの（source `40b7de92010fa24f`） |
 | 公開済みのデータ | 以前のコミットの `bench/router/experiments/correction/variants.jsonl`・`controls.jsonl`・`round2/para.json`（test の発話を書き換えた文など）は、利用者の判断でそのまま残す |
-| `route()` への組み込み | 未決。検索（sr-corr: 意味・典型・全文検索・種類の手がかり）をパッケージに移すか、best-v2 の回す判定と決定表の関係、記憶の置き場所（成果物か DB か）、reranker の port が候補ごとの `scores` を返すこと、訂正の正解を候補に足すこととの組み合わせ |
+| `route()` への組み込み（2026-11-03、利用者と合意） | 下の表の形で入れる。段階: ① SQLite（記憶の表・全文検索の索引）と sr-corr の移植 → ② `route()` を best-v2 にする → ③ 訂正の θ・β を best-v2 の上で dev から決め直す |
+
+| 組み込みの決め | 中身 |
+| --- | --- |
+| 記憶 | SQLite の `router_examples`（正解の付いた例。ベクトル・正解の id・学習の版 `source`・空間）。ホストが `BestV2Memory` を1回取り込む。best-v2 は判定のたびに読む |
+| 検索（sr-corr）をパッケージに移す | カードごとに、意味の近さ（発言とカードの文の内積の最大）・典型の近さ（0.7×最大＋0.3×上位3つの平均）・全文検索（3文字の重なりの bm25）・種類の手がかり（参照している物の種類の語をカードが含むか）の平均。意味と典型は候補の中で 0〜1 に伸ばし、全文検索は1位で割る。会話は 0.7 に固定。上位8件を1位の点数で割って softmax（温度 0.1）にし、確率と点数を小数6桁に丸める（学習時の値と同じにするため） |
+| 全文検索の索引 | `router_passages_fts`（カードの文1つを1行、trigram）。`syncCardsInTransaction` で保つ。カードの文は bench と同じ `cardPassages`（34件で一致を確認） |
+| 種類ごとの枠 | sr-corr は使える全カードに対して計算し（伸ばす計算が候補の集まりで変わるので、学習時と同じ集まりにする）、その順位に種類ごとの上限（専用10・パイプライン4・汎用4）をかけてから上位8件を取る。決定1の「種類ごとの枠」は残る |
+| 会話と記憶 | bench と同じく `conversation.respond` と `memory.request` もカードとして同期する（sr-corr と全文検索の統計を学習時と同じにするため） |
+| 回す | best-v2 の「自信あり」（1位と2位の差 ≥ 0.3222）を、決定表の「自信あり」に使う。自信なしでも1位を予告付きで実行（行3）、変更・取り消せない担当は確認（行4）、会話が1位なら会話。Router の段で LLM の確認はしない。最後は担当・会話の LLM が受け止める（利用者の判断） |
+| reranker | ホストの `score` が LARM の文脈判定を API で呼び、候補ごとの点数（`scores`、0〜1）を返す（Eumenes 側の作業）。best-v2 の経路では `scores` を必須にする |
+| ① の実施（2026-11-03） | 実装済み。`src/retrieval/sr.ts`（`srScores`・`srOffer`・`capByKind`・`trigramQuery`、純粋）、`src/db/retrieval.ts`（`lexicalInTransaction`・`srCardsInTransaction`・`importExamplesInTransaction`・`examplesInTransaction`）、表の版 2（`router_passages_fts`・`router_examples`）。bench の sr-corr と全 1,671 発言（dev・test・言い換え・対照）で、確率と点数が丸めた最後の桁まで一致（`test/sr.test.ts`、`data/` があるときだけ）。種類ごとの上限で上位8件が変わった発言は 0件。記憶は SQLite に入れて読むと元と同じ |
+| 埋め込み | 記憶は e5 small（`passage: ` を前に付ける、正規化）で作った。本番の発言とカードの文も同じ埋め込みでないと記憶と比べられない。LARM の埋め込みが同じかは M2 で確かめる |
 
 ## 11 確かめていないこと・決まっていないこと
 

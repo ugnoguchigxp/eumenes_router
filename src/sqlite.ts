@@ -11,6 +11,12 @@ export {
 } from "./db/cards.ts";
 export type { VectorRow } from "./db/cards.ts";
 export {
+	examplesInTransaction,
+	importExamplesInTransaction,
+	lexicalInTransaction,
+	srCardsInTransaction,
+} from "./db/retrieval.ts";
+export {
 	forgetInTransaction,
 	nearFeedback,
 	recordFeedbackInTransaction,

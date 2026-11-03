@@ -7,6 +7,7 @@ import { cardDigest, type Card, type VectorSpace } from "../src/index.ts";
 import {
 	candidatesInTransaction,
 	forgetInTransaction,
+	DB_SCHEMA_VERSION,
 	migrateInTransaction,
 	nearFeedback,
 	recordFeedbackInTransaction,
@@ -293,7 +294,9 @@ test("a newer schema is refused and a second migrate does nothing", () => {
 	const { db, close } = open();
 	try {
 		migrateInTransaction(db);
-		db.query("UPDATE router_schema SET version=2 WHERE id=1").run();
+		db.query("UPDATE router_schema SET version=? WHERE id=1").run(
+			DB_SCHEMA_VERSION + 1,
+		);
 		expect(() => migrateInTransaction(db)).toThrow("router_schema_newer");
 	} finally {
 		close();

@@ -75,6 +75,14 @@ export {
 	scoreBestV2,
 } from "./scoring/best-v2.ts";
 export { BEST_V2_PARAMS } from "./scoring/best-v2.params.ts";
+export {
+	SR,
+	capByKind,
+	srOffer,
+	srScores,
+	trigramQuery,
+} from "./retrieval/sr.ts";
+export type { SrCard, SrOffer } from "./retrieval/sr.ts";
 export type {
 	BestV2Input,
 	BestV2Memory,

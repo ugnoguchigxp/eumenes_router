@@ -174,3 +174,40 @@ test.skipIf(!parity)(
 		expect(worst).toBeLessThan(1e-6);
 	},
 );
+
+test("the memory goes into SQLite and comes back the same; another space or source is refused", async () => {
+	const { Database } = await import("bun:sqlite");
+	const {
+		examplesInTransaction,
+		importExamplesInTransaction,
+		migrateInTransaction,
+	} = await import("../src/sqlite.ts");
+	const db = new Database(":memory:");
+	migrateInTransaction(db);
+	const space = {
+		modelId: "embed",
+		revision: "1",
+		artifactDigest: "d",
+		dimension: 2,
+	};
+	expect(importExamplesInTransaction(db, memory, space)).toBe(2);
+	expect(importExamplesInTransaction(db, memory, space)).toBe(2); // replaces, does not add
+	const back = examplesInTransaction(db, { source: "test", space });
+	expect(back).toEqual(memory);
+	expect(examplesInTransaction(db, { source: "other", space })).toBeNull();
+	expect(() =>
+		importExamplesInTransaction(db, memory, { ...space, dimension: 3 }),
+	).toThrow(routerErrors.invalidModel);
+	expect(
+		scoreBestV2(loadBestV2(params(only("knn", 5)), back!), {
+			retrieval: [
+				["music.create", 0.5],
+				["image.create", 0.5],
+			],
+			retrievalScores: {},
+			rerank: { "music.create": 0.5, "image.create": 0.5 },
+			vector: [0, 1],
+		}).ranked[0]!.id,
+	).toBe("image.create");
+	db.close();
+});

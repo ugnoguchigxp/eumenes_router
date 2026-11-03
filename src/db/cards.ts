@@ -58,6 +58,7 @@ export function syncCardsInTransaction(
 		if (seen.has(row.id)) continue;
 		db.query("UPDATE router_cards SET enabled=0 WHERE id=?").run(row.id);
 		db.query("DELETE FROM router_passages WHERE card_id=?").run(row.id);
+		db.query("DELETE FROM router_passages_fts WHERE card_id=?").run(row.id);
 	}
 	const pending: Passage[] = [];
 	for (const card of normalized) {
@@ -85,6 +86,12 @@ ON CONFLICT(id) DO UPDATE SET
 			card.id,
 			texts.length,
 		);
+		// The lexical index: one row per passage, as the retrieval was trained on.
+		db.query("DELETE FROM router_passages_fts WHERE card_id=?").run(card.id);
+		for (const text of texts)
+			db.query(
+				"INSERT INTO router_passages_fts(card_id, text) VALUES (?,?)",
+			).run(card.id, text);
 		for (let item = 0; item < texts.length; item++) {
 			const text = texts[item]!;
 			const digest = sha256Hex(text);

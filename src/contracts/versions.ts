@@ -6,4 +6,4 @@ export const contractVersions = {
 } as const;
 
 /** `router_schema.version`. A database newer or older than this is refused. */
-export const dbSchemaVersion = 1;
+export const dbSchemaVersion = 2;
