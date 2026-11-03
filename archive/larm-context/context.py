@@ -211,6 +211,12 @@ def score_all(a):
     texts = sorted({r["text"] for r in rin["rows"]}); crit = {c: card_doc(cards, c) for c in sorted(cards) if c != CONV}
     out = Path(a.out); done = json.load(open(out)) if out.exists() else {}; over = 0
     larm = Larm(cfg); larm.connect()
+    # The scores are bound to what scored them: <out>.binding.json, and a resume under another binding is refused.
+    api = larm.p["api"]; bind = {"model": larm.p.get("model"), **{k: api.get(k) for k in ("scenario", "network", "precision")}}
+    side = Path(str(out) + ".binding.json")
+    if side.exists() and json.load(open(side)) != bind: larm.release(); sys.exit(f"{out} was scored under another binding")
+    if done and not side.exists(): larm.release(); sys.exit(f"{out} has scores without a binding")
+    json.dump(bind, open(side, "w"), ensure_ascii=False, indent=1)
     try:
         for n, t in enumerate(texts, 1):
             if t in done: continue

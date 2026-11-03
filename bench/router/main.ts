@@ -11,6 +11,7 @@
  *   compare  [<run dir> ...] [--root out]
  *   route    --db <corr.db> --artifact <best-v2 dir> (--text <utt> [--prev <turn>] [--hints <json>] | --in <jsonl> [--out <jsonl>])
  *            [--python <venv python>] [--url <e5 server>]   best-v2 routing of new utterances (tool, scores, defer, latency)
+ *            [--rr-all <every-card scores.json>]   the reranker's scores from a provider (context.py score-all) instead of the artifact's ruri
  *            `run --algo best-v2 --text … | --in …` is the same command.
  *   correct  --db <file> [--variants <jsonl>] [--controls <jsonl>] [--corrections <jsonl>] [--url <embed server>]
  *            [--rerank ruri,xs --python <venv python>] [--theta dev|0.95[,0.9]] [--beta 2[,1]] [--defer-th tag=0.12]
@@ -76,12 +77,14 @@ const OPTIONS = {
 	rerank: { type: "string" },
 	theta: { type: "string" },
 	beta: { type: "string" },
+	"near-ratio": { type: "string" },
 	external: { type: "string" },
 	"rerank-all": { type: "string" },
 	"defer-th": { type: "string" },
 	table: { type: "boolean" },
 	"table-max-false": { type: "string" },
 	artifact: { type: "string" },
+	"rr-all": { type: "string" },
 	text: { type: "string" },
 	prev: { type: "string" },
 	hints: { type: "string" },
@@ -116,11 +119,17 @@ export async function main(
 			if (v.export) {
 				const dir = v.export;
 				counts["cards"] = importCards(bench, join(dir, "cards.jsonl"));
-				counts["utterances"] = importUtterances(bench, join(dir, "utterances.jsonl"));
+				counts["utterances"] = importUtterances(
+					bench,
+					join(dir, "utterances.jsonl"),
+				);
 				counts["choices"] = importChoices(bench, join(dir, "choices.jsonl"));
 				const emb = join(dir, "embeddings.jsonl.gz");
-				if (existsSync(emb)) counts["embeddings"] = importExportEmbeddings(bench, emb);
-				const manifest = JSON.parse(readFileSync(join(dir, "manifest.json"), "utf8")) as {
+				if (existsSync(emb))
+					counts["embeddings"] = importExportEmbeddings(bench, emb);
+				const manifest = JSON.parse(
+					readFileSync(join(dir, "manifest.json"), "utf8"),
+				) as {
 					counts: Record<string, number>;
 				};
 				counts["manifest"] = manifest.counts;
@@ -136,7 +145,11 @@ export async function main(
 		case "label": {
 			const bench = db();
 			if (sub === "import") {
-				const counts = importLabels(bench, need(v.labels, "labels"), parseSplitRule(v["split-time"]));
+				const counts = importLabels(
+					bench,
+					need(v.labels, "labels"),
+					parseSplitRule(v["split-time"]),
+				);
 				print(JSON.stringify(counts));
 				return counts;
 			}
@@ -193,7 +206,10 @@ export async function main(
 							})();
 			const texts = [
 				...[...passagesByCard(bench).values()].flat(),
-				...loadUtterances(bench).flatMap((u) => [u.text, ...(u.previousUser ? [u.previousUser] : [])]),
+				...loadUtterances(bench).flatMap((u) => [
+					u.text,
+					...(u.previousUser ? [u.previousUser] : []),
+				]),
 			];
 			const result = {
 				model: provider.model,
@@ -206,10 +222,16 @@ export async function main(
 			const algo = need(v.algo, "algo");
 			if (v.sr) {
 				// A tuned sr-weighted variant: `{ "vectors": bool, ...partial SrOptions }`.
-				const o = JSON.parse(v.sr) as Partial<SrOptions> & { vectors?: boolean };
+				const o = JSON.parse(v.sr) as Partial<SrOptions> & {
+					vectors?: boolean;
+				};
 				registerSr(
 					algo,
-					{ ...SR_DEFAULTS, ...o, weights: { ...SR_DEFAULTS.weights, ...(o.weights ?? {}) } },
+					{
+						...SR_DEFAULTS,
+						...o,
+						weights: { ...SR_DEFAULTS.weights, ...o.weights },
+					},
 					o.vectors !== false,
 				);
 			}
@@ -238,27 +260,94 @@ export async function main(
 		case "route": {
 			const { route } = await import("./route.ts");
 			const rows = v.in
-				? readFileSync(v.in, "utf8").split("\n").filter((l) => l.trim()).map((l) => JSON.parse(l) as { text: string })
-				: [{ text: need(v.text, "text"), prev: v.prev ?? null, hints: v.hints ? JSON.parse(v.hints) : {} }];
-			const out = await route({ db: need(v.db, "db"), artifact: need(v.artifact, "artifact"), rows, python: v.python, url: v.url, model: v.model });
+				? readFileSync(v.in, "utf8")
+						.split("\n")
+						.filter((l) => l.trim())
+						.map((l) => JSON.parse(l) as { text: string })
+				: [
+						{
+							text: need(v.text, "text"),
+							prev: v.prev ?? null,
+							hints: v.hints ? JSON.parse(v.hints) : {},
+						},
+					];
+			const out = await route({
+				db: need(v.db, "db"),
+				artifact: need(v.artifact, "artifact"),
+				rows,
+				python: v.python,
+				url: v.url,
+				model: v.model,
+				rrAll: v["rr-all"]
+					? (JSON.parse(readFileSync(v["rr-all"], "utf8")) as Record<
+							string,
+							Record<string, number>
+						>)
+					: undefined,
+			});
 			const text = out.map((r) => JSON.stringify(r)).join("\n");
-			if (v.out) writeFileSync(v.out, text + "\n"); else print(text);
+			if (v.out) writeFileSync(v.out, text + "\n");
+			else print(text);
 			return out;
 		}
 		case "correct": {
 			const { correctionExperiment } = await import("./correction.ts");
 			return correctionExperiment({
-				db: need(v.db, "db"), out: v.out ?? `out/correct-${stamp()}`,
-				variants: v.variants, controls: v.controls, corrections: v.corrections,
-				url: v.url ?? "http://127.0.0.1:8765", model: v.model, python: v.python,
+				db: need(v.db, "db"),
+				out: v.out ?? `out/correct-${stamp()}`,
+				variants: v.variants,
+				controls: v.controls,
+				corrections: v.corrections,
+				url: v.url ?? "http://127.0.0.1:8765",
+				model: v.model,
+				python: v.python,
 				rerankers: v.rerank ? v.rerank.split(",") : [],
-				deferThresholds: v["defer-th"] ? Object.fromEntries(v["defer-th"].split(",").map((kv) => { const [k, x] = kv.split("="); return [k!, Number(x)]; })) : undefined,
-				thetas: v.theta ? v.theta.split(",").map((t) => (t === "dev" ? ("dev" as const) : Number(t))) : undefined,
+				deferThresholds: v["defer-th"]
+					? Object.fromEntries(
+							v["defer-th"].split(",").map((kv) => {
+								const [k, x] = kv.split("=");
+								return [k!, Number(x)];
+							}),
+						)
+					: undefined,
+				thetas: v.theta
+					? v.theta
+							.split(",")
+							.map((t) => (t === "dev" ? ("dev" as const) : Number(t)))
+					: undefined,
 				betas: v.beta ? v.beta.split(",").map(Number) : undefined,
-				external: v.external ? Object.fromEntries(v.external.split(",").map((kv) => { const [k, f] = kv.split("="); return [k!, f!]; })) : undefined,
-				split: v.split === "dev" ? "dev" : v.split === undefined || v.split === "test" ? undefined : (() => { throw new Error("split must be dev or test"); })(),
-				rerankAll: v["rerank-all"] ? Object.fromEntries(v["rerank-all"].split(",").map((kv) => { const [k, f] = kv.split("="); return [k!, f!]; })) : undefined, print,
-				table: v.table, tableMaxFalse: v["table-max-false"] ? Number(v["table-max-false"]) : undefined,
+				nearRatios: v["near-ratio"]
+					? v["near-ratio"].split(",").map(Number)
+					: undefined,
+				external: v.external
+					? Object.fromEntries(
+							v.external.split(",").map((kv) => {
+								const [k, f] = kv.split("=");
+								return [k!, f!];
+							}),
+						)
+					: undefined,
+				split:
+					v.split === "dev"
+						? "dev"
+						: v.split === undefined || v.split === "test"
+							? undefined
+							: (() => {
+									throw new Error("split must be dev or test");
+								})(),
+				rerankAll: v["rerank-all"]
+					? Object.fromEntries(
+							v["rerank-all"].split(",").map((kv) => {
+								const [k, f] = kv.split("=");
+								return [k!, f!];
+							}),
+						)
+					: undefined,
+				print,
+				table: v.table,
+				tableMaxFalse: v["table-max-false"]
+					? Number(v["table-max-false"])
+					: undefined,
 			});
 		}
 		case "compare": {

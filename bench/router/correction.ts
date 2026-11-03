@@ -92,6 +92,8 @@ export function correctionStore(
 	dimension: number,
 	table?: { tau: number },
 	beta?: number,
+	/** Keep only near corrections whose weight (k−θ)/(1−θ) is at least this share of the closest one's (0 keeps all). */
+	ratio = 0,
 ) {
 	const db = new Database(":memory:");
 	migrateInTransaction(db as never);
@@ -138,11 +140,16 @@ export function correctionStore(
 			});
 		},
 		near(vector: ArrayLike<number>, threshold = settings.feedbackNear) {
-			return nearFeedback(db as never, {
+			const rows = nearFeedback(db as never, {
 				vector: Array.from(vector),
 				space,
 				threshold,
 			});
+			if (!ratio || !rows.length) return rows;
+			const w = (s: number) =>
+				threshold >= 1 ? 1 : (s - threshold) / (1 - threshold);
+			const top = Math.max(...rows.map((r) => w(r.similarity)));
+			return rows.filter((r) => w(r.similarity) >= ratio * top);
 		},
 		/** Rule-table matches (exact normalized key or reading Dice ≥ τ), at full strength. */
 		tableNear(key: Keyed): NearFeedback[] {
@@ -262,6 +269,8 @@ export type ExperimentOptions = {
 	/** θ values to run; "dev" = at most 1% of different-gold dev pairs are that similar (design §5.4). β = feedbackWeight. */
 	thetas?: Array<number | "dev"> | undefined;
 	betas?: number[] | undefined;
+	/** Near-correction pruning to try (correctionStore `ratio`; 0 = the product's rule). */
+	nearRatios?: number[] | undefined;
 	/** Outside rankers: tag → JSONL of {id, ranked} for every item (best_v2.py export-ranked). The corrected top-1 is taken, no defer. */
 	external?: Record<string, string> | undefined;
 	/** Every-card reranker scores: tag → JSON {text: {card: score}}. Adds `<tag>+inj`: the right answers of near corrections join the offer, as route() asks read.candidates to include them. */
@@ -549,6 +558,8 @@ export async function correctionExperiment(o: ExperimentOptions) {
 		frontTop: string;
 		deferred: boolean;
 		near: number;
+		conflict: boolean;
+		injected: number;
 	};
 	const hasTbl = (cfg: string) => /\+tbl(pin)?$/.test(cfg);
 	// route(): the right answers of near corrections join the offer; here they get the reranker's every-card score, fused like the rest.
@@ -558,23 +569,29 @@ export async function correctionExperiment(o: ExperimentOptions) {
 		r: Ranked,
 		near: NearFeedback[],
 		weight: number,
-	): Ranked => {
+		evenInConflict: boolean,
+	): [Ranked, number] => {
 		const all = rrAll[base]?.[it.text];
 		const rights = [...new Set(near.map((n) => n.rightId))];
-		if (!all || weight <= 0 || rights.length !== 1) return r; // as route(): only when the correction applies
+		// +inj is route(): only when the correction applies. +injall (comparison only) also adds them when the corrections disagree.
+		if (!all || weight <= 0 || (rights.length !== 1 && !evenInConflict))
+			return [r, 0];
 		const have = new Set(r.map(([c]) => c));
 		const extra = rights.filter((id) => !have.has(id) && all[id] !== undefined);
-		if (!extra.length) return r;
+		if (!extra.length) return [r, 0];
 		const t = RERANKERS[base]!;
-		return fuse(
-			sr[it.id]!,
-			{
-				...rr[base]![keyOf(it)]!,
-				...Object.fromEntries(extra.map((id) => [id, all[id]!])),
-			},
-			t.w,
-			t.conv,
-		);
+		return [
+			fuse(
+				sr[it.id]!,
+				{
+					...rr[base]![keyOf(it)]!,
+					...Object.fromEntries(extra.map((id) => [id, all[id]!])),
+				},
+				t.w,
+				t.conv,
+			),
+			extra.length,
+		];
 	};
 	const decide = (
 		cfg: string,
@@ -582,17 +599,20 @@ export async function correctionExperiment(o: ExperimentOptions) {
 		store: ReturnType<typeof correctionStore> | null,
 		theta?: number,
 	): Pick => {
-		const base = cfg.replace(/\+(pin|tblpin|tbl|inj)$/, "");
+		const base = cfg.replace(/\+(pin|tblpin|tbl|injall|inj)$/, "");
 		let r = front(base, it);
 		let near = 0;
 		let tbl = 0;
-		if (store && cfg.endsWith("+inj"))
-			r = withRight(
+		let conflict = false;
+		let injected = 0;
+		if (store && /\+inj(all)?$/.test(cfg))
+			[r, injected] = withRight(
 				base,
 				it,
 				r,
 				store.near(vec(it.text), theta),
 				store.settings.feedbackWeight,
+				cfg.endsWith("+injall"),
 			);
 		if (store) {
 			const c = store.correct(
@@ -604,9 +624,17 @@ export async function correctionExperiment(o: ExperimentOptions) {
 			r = c.ranked;
 			near = c.near;
 			tbl = c.tableHits;
+			conflict = c.conflict;
 		}
 		if (base === "sr" || ext[base])
-			return { top: r[0]![0], frontTop: r[0]![0], deferred: false, near };
+			return {
+				top: r[0]![0],
+				frontTop: r[0]![0],
+				deferred: false,
+				near,
+				conflict,
+				injected,
+			};
 		const defer =
 			margin(r) < thOf[base]! &&
 			!(cfg.endsWith("+pin") && near > 0) &&
@@ -616,6 +644,8 @@ export async function correctionExperiment(o: ExperimentOptions) {
 			frontTop: r[0]![0],
 			deferred: defer,
 			near,
+			conflict,
+			injected,
 		};
 	};
 	const configs = [
@@ -623,7 +653,7 @@ export async function correctionExperiment(o: ExperimentOptions) {
 		...tags,
 		...tags.map((t) => `${t}+pin`),
 		...Object.keys(ext),
-		...tags.filter((t) => rrAll[t]).map((t) => `${t}+inj`),
+		...tags.flatMap((t) => (rrAll[t] ? [`${t}+inj`, `${t}+injall`] : [])),
 		...(o.table
 			? [
 					"sr+tbl",
@@ -658,6 +688,8 @@ export async function correctionExperiment(o: ExperimentOptions) {
 		t === "dev" ? thetaDev : t,
 	);
 	const betas = o.betas ?? [routeSettings({}).feedbackWeight];
+	const ratios = o.nearRatios ?? [0];
+	const runs = betas.flatMap((b) => ratios.map((r) => [b, r] as const));
 	print(
 		`θ(dev, ≤1% of ${diffSims.length} different-gold pairs) = ${thetaDev.toFixed(4)}`,
 	);
@@ -686,7 +718,7 @@ export async function correctionExperiment(o: ExperimentOptions) {
 	});
 	for (const cfg of configs)
 		for (const theta of thetas)
-			for (const beta of betas) {
+			for (const [beta, ratio] of runs) {
 				const before = new Map(
 					items.map((it) => [it.id, decide(cfg, it, null)]),
 				);
@@ -705,6 +737,7 @@ export async function correctionExperiment(o: ExperimentOptions) {
 					vec(items[0]!.text).length,
 					hasTbl(cfg) ? { tau } : undefined,
 					beta,
+					ratio,
 				);
 				for (const c of corrections)
 					store.add(c, vec(c.text), hasTbl(cfg) ? kOf(c.text) : undefined);
@@ -769,9 +802,35 @@ export async function correctionExperiment(o: ExperimentOptions) {
 				const key =
 					cfg +
 					(thetas.length > 1 ? `@θ${+theta.toFixed(4)}` : "") +
-					(betas.length > 1 ? `@β${beta}` : "");
+					(betas.length > 1 ? `@β${beta}` : "") +
+					(ratios.length > 1 ? `@ρ${ratio}` : "");
 				(report["configs"] as Record<string, unknown>)[key] = {
 					corrections: corrections.length,
+					// Unrelated utterances whose front went from right to wrong (no text).
+					restBroke: rest
+						.filter((it) => hit(fb, it) && !hit(fa, it))
+						.map((it) => ({
+							id: it.id,
+							gold: it.gold,
+							frontAfter: after.get(it.id)!.frontTop,
+							near: after.get(it.id)!.near,
+							injected: after.get(it.id)!.injected,
+						})),
+					// Each corrected utterance asked again (no text): its front before and after, and why.
+					perCorrection: corrected.map((it) => {
+						const b = before.get(it.id)!,
+							a = after.get(it.id)!;
+						return {
+							id: it.id,
+							gold: it.gold,
+							frontBefore: b.frontTop,
+							frontAfter: a.frontTop,
+							fixed: ok(it, a.frontTop),
+							near: a.near,
+							conflict: a.conflict,
+							injected: a.injected,
+						};
+					}),
 					exactFront: frontFix(corrected),
 					exact: fix(
 						userCorr

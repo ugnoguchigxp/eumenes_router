@@ -23,6 +23,8 @@ import { SR_CAL } from "./correction.ts";
 export type RouteRow = { id?: string; text: string; prev?: string | null; hints?: Utterance["hints"] };
 export type RouteOptions = {
 	db: string; artifact: string; rows: RouteRow[]; python?: string | undefined; url?: string | undefined; model?: string | undefined;
+	/** Reranker scores of every card per text (context.py score-all): used for the offered tools instead of the artifact's ruri. */
+	rrAll?: Record<string, Record<string, number>> | undefined;
 	offer?: number; temperature?: number;
 };
 const HERE = import.meta.dir;
@@ -58,7 +60,10 @@ export async function route(o: RouteOptions) {
 			if (!order.includes(CONVERSATION)) { if (order.length >= offer) order.pop(); order.push(CONVERSATION); }
 			const best = Math.max(0, ...order.map((id) => scores.get(id) ?? 0)); const scaled = order.map((id) => (best > 0 ? Math.max(0, scores.get(id) ?? 0) / best : 0));
 			const p = softmax(scaled, temperature); const srMs = performance.now() - t;
-			return { id: utterance.id, text: r.text, sr: order.map((id, k) => [id, Number(p[k]!.toFixed(6))]), sr_scores: Object.fromEntries(order.map((id, k) => [id, Number(scaled[k]!.toFixed(6))])), vec: [...vector(r.text)], sr_ms: srMs };
+			// A text the scores file lacks (over the provider's limit) keeps the artifact's ruri, as the corr swap does.
+			const scored = o.rrAll?.[r.text];
+			const rr = scored ? Object.fromEntries(order.filter((id) => id !== CONVERSATION).map((id) => [id, scored[id]!])) : undefined;
+			return { id: utterance.id, text: r.text, sr: order.map((id, k) => [id, Number(p[k]!.toFixed(6))]), sr_scores: Object.fromEntries(order.map((id, k) => [id, Number(scaled[k]!.toFixed(6))])), vec: [...vector(r.text)], sr_ms: srMs, ...(rr ? { rr } : {}) };
 		});
 		db.close();
 		const inp = join(tmp, "in.jsonl"); const outp = join(tmp, "out.jsonl");
@@ -67,8 +72,8 @@ export async function route(o: RouteOptions) {
 		if (pr.exitCode !== 0) throw new Error(`predict_failed: ${pr.stderr.toString().slice(-800)}`);
 		const outs = readFileSync(outp, "utf8").trim().split("\n").map((l) => JSON.parse(l) as { latency_ms: Record<string, number> } & Record<string, unknown>);
 		return outs.map((r, i) => {
-			const lat = { ...r.latency_ms, e5_ms: Number(e5Ms.toFixed(2)), sr_ms: Number(inRows[i]!.sr_ms.toFixed(2)) };
-			lat.total = Number((Object.entries(lat).filter(([k]) => k !== "total").reduce((s, [, v]) => s + v, 0)).toFixed(2));
+			const lat: Record<string, number> = { ...r.latency_ms, e5_ms: Number(e5Ms.toFixed(2)), sr_ms: Number(inRows[i]!.sr_ms.toFixed(2)) };
+			lat["total"] = Number((Object.entries(lat).filter(([k]) => k !== "total").reduce((s, [, v]) => s + v, 0)).toFixed(2));
 			return { ...r, text: inRows[i]!.text, latency_ms: lat };
 		});
 	} finally {

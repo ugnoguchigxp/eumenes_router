@@ -1,0 +1,36 @@
+{
+ "file": "pairs/structure-v1.jsonl",
+ "sentences": 63,
+ "left_out": 8,
+ "pairs": 290,
+ "positives": 63,
+ "per_gold": {
+  "image.create": 20,
+  "music.create": 16,
+  "ui.compose": 8,
+  "model3d.studio": 7,
+  "excalidraw.edit": 4,
+  "conversation.respond": 8
+ },
+ "per_family": {
+  "T1": 7,
+  "T2": 6,
+  "T3": 8,
+  "T4": 4,
+  "T5": 3,
+  "T6": 17,
+  "T7": 10,
+  "T8": 8
+ },
+ "nearest_eval_cosine_kept": {
+  "min": 0.9202,
+  "median": 0.9525,
+  "max": 0.9683
+ },
+ "nearest_eval_cosine_all_written": {
+  "min": 0.9202,
+  "median": 0.9545,
+  "max": 0.9804
+ },
+ "rule": "left out: equal to an evaluation item, or e5 cosine >= 0.97 to one"
+}

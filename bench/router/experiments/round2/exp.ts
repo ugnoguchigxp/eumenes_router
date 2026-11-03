@@ -9,7 +9,7 @@ let k = 0;
 export function go(dbPath: string, algo: string, split: "dev"|"test", sr?: Partial<SrOptions>, extra: any = {}) {
   const db = new Database(dbPath);
   let name = algo;
-  if (sr) { name = `sr-x${k++}`; registerSr(name, { ...SR_DEFAULTS, ...sr, weights: { ...SR_DEFAULTS.weights, ...(sr.weights ?? {}) } } as SrOptions, true); }
+  if (sr) { name = `sr-x${k++}`; registerSr(name, { ...SR_DEFAULTS, ...sr, weights: { ...SR_DEFAULTS.weights, ...sr.weights } } as SrOptions, true); }
   const out = `/tmp/r2/runs/${extra.tag ?? name}-${split}-${k++}`;
   if (existsSync(out)) rmSync(out, { recursive: true });
   const s: any = run(db, { algo: name, split, model: MODEL, offer: 8, temperature: 0.1, feedback: false, out, ...extra });

@@ -20,7 +20,7 @@ console.table(rows.map((r) => ({ ...r, top1: (r.top1*100).toFixed(1), ctx: (r.ct
 const base = ["fts","embed","hybrid","past","sr-r1-nohist"].sort((a, b) => agg(H[b]).top1 - agg(H[a]).top1)[0]!;
 console.log("best existing baseline:", base);
 for (const n of ["sr-cal", "hyb-proto-none", "sr-cal+prev", "sr-r1-nohist", "past", "fts"]) {
-  const f = (x: any) => x; const all = boot(H[n], H[base]); const c = boot(H[n], H[base], (x) => x.ctx);
+  const all = boot(H[n], H[base]); const c = boot(H[n], H[base], (x) => x.ctx);
   console.log(n, "vs", base, "all", JSON.stringify(all), "ctx", JSON.stringify(c));
 }
 await Bun.write("/tmp/r2/test-hits.json", JSON.stringify(H));
