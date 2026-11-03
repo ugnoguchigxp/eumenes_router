@@ -74,17 +74,17 @@ def load(corr):
 # variants: source + type from variants.jsonl order (var-i); LLM stand-in = source's past (as correction.ts)
 ok = lambda x, t: t is not None and (t == x['gold'] or t in x['acc'])
 # ---------------- kNN ----------------
-def knn_votes(x, mem, M=10):
+def knn_votes(x, mem, M=10, loo=True):
     if not mem: return []
     V = np.stack([m['vec'] for m in mem]); s = V @ x['vec']
-    idx = [j for j in np.argsort(-s) if mem[j]['id'] != x['id'] and (mem[j].get('corr') or mem[j]['text'] != x['text'])][:M]
+    idx = [j for j in np.argsort(-s) if mem[j]['id'] != x['id'] and (not loo or mem[j].get('corr') or mem[j]['text'] != x['text'])][:M]
     v = collections.defaultdict(float)
     for j in idx: v[mem[j]['gold']] += float(s[j])
     return sorted(v.items(), key=lambda kv: -kv[1])
-def tbl_scores(x, mem, tau):
+def tbl_scores(x, mem, tau, loo=True):
     t = collections.defaultdict(float)
     for m in mem:
-        if m['id'] == x['id'] or (m['text'] == x['text'] and not m.get('corr')): continue
+        if m['id'] == x['id'] or (loo and m['text'] == x['text'] and not m.get('corr')): continue
         s = tscore(x['key'], m['key'])
         if s > t[m['gold']]: t[m['gold']] = s
     return {g: s for g, s in t.items() if s >= tau}
@@ -110,7 +110,9 @@ def softmax(v): v = np.asarray(v, float); v = v - v.max(); e = np.exp(v); return
 from sklearn.linear_model import LogisticRegression
 def fit_lr(X, rows, Cc):
     Xs = np.vstack([X[r['id']][0] for r in rows]); ys = np.concatenate([[float(ok(r, c)) for c in X[r['id']][1]] for r in rows])
-    return LogisticRegression(C=Cc, max_iter=2000).fit(Xs, ys)
+    # StandardScaler is required: features live on different scales (sr_rank/9, raw kNN vote sums). Without it E2 drops 91.7 -> 88.5.
+    from sklearn.preprocessing import StandardScaler; from sklearn.pipeline import make_pipeline
+    return make_pipeline(StandardScaler(), LogisticRegression(C=Cc, max_iter=2000)).fit(Xs, ys)
 def rank_with(model, X, x):
     F, cs = X[x['id']]
     s = model.decision_function(F) if model is not None else np.log(F[:, 4] + 1e-12)
@@ -132,9 +134,10 @@ def fit_gate(kind, G, y, seed):
     from sklearn.preprocessing import StandardScaler; from sklearn.pipeline import make_pipeline
     return make_pipeline(StandardScaler(), LogisticRegression(C=0.3, max_iter=2000)).fit(G, y)
 # ---------------- whole pipeline on (train rows, eval rows) ----------------
-def prepare(x, mem, cfg, tau):
-    x['votes'] = knn_votes(x, mem) if (cfg['knn_cands'] or cfg['knn_feat']) else []
-    x['tbl'] = tbl_scores(x, mem, tau) if cfg['tbl'] else {}
+def prepare(x, mem, cfg, tau, loo=True):
+    # loo=True for training rows (self + same-text duplicates excluded); eval rows see the whole memory (a repeated dev utterance is legitimate memory)
+    x['votes'] = knn_votes(x, mem, loo=loo) if (cfg['knn_cands'] or cfg['knn_feat']) else []
+    x['tbl'] = tbl_scores(x, mem, tau, loo=loo) if cfg['tbl'] else {}
 def run_pipe(train, evals, cfg, EXTRA, tau, seed=0, inner_seed=0, mem=None):
     """train: labelled rows (memory + fit). evals: rows to route (memory = train). Returns dict id -> (ranking, gate score, front)."""
     for x in train: prepare(x, train, cfg, tau)   # leave-one-out inside knn_votes / tbl_scores (self excluded)
@@ -171,7 +174,7 @@ def run_pipe(train, evals, cfg, EXTRA, tau, seed=0, inner_seed=0, mem=None):
     th = pick_th(train, cvP, gscore_tr, cfg)
     out = {}
     for x in evals:
-        prepare(x, mem or train, cfg, tau); cs = candidates(x, cfg, EXTRA); X[x['id']] = (feats(x, cs, cfg, EXTRA), cs)
+        prepare(x, mem or train, cfg, tau, loo=False); cs = candidates(x, cfg, EXTRA); X[x['id']] = (feats(x, cs, cfg, EXTRA), cs)
         P = rank_with(model, X, x); g = gfeat(x, P, X)
         s = g[2] if gm is None else float(gm.predict_proba(np.asarray([g]))[0, 1])
         out[x['id']] = dict(P=P, s=s, defer=s < th)
@@ -233,7 +236,7 @@ def ensure_extra(items, corr, py, N=5):
     reals = [x for x in items if x['kind'] == 'real']; rows = []
     allt = tune_tau([dict(key=x['key'], gold=x['gold']) for x in reals if x['split'] == 'dev'])
     for x in items:
-        v = knn_votes(x, reals); t = tbl_scores(x, reals, allt)
+        v = knn_votes(x, reals, loo=False); t = tbl_scores(x, reals, allt, loo=False)
         ex = sorted({c for c, _ in v[:N] if c != C and c not in x['rr']} | {c for c in t if c != C and c not in x['rr']})
         if ex: rows.append(dict(text=x['text'], cands=ex))
     need = [r for r in rows if r['text'] + '\x00' + '|'.join(r['cands']) not in cache]

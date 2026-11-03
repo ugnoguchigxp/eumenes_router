@@ -107,3 +107,10 @@
 ## 再現
 - `knn.py embed|cands|rerank-in`、`algo4.py` → /tmp/a4/out.json
 - `bun run router correct ... --table 1` → `+tblpin` 構成
+
+---
+## 追記（2026-11-03）: E2 91.7 の再検証
+- 91.7 は algo4.py から完全に再現しました。**リークはありません**（kNN メモリと学習・閾値はすべて dev のみ）。
+- ただし、test を見て決めた要素が 2 つあります: ① C=0.1 を手で固定した（dev CV で選ぶと C=0.03 で **91.2**）。② E2 の 12 通りを test で並べ、最大値を見出しにした（次点 91.2）。**dev だけで決めた値は 91.2** として併記してください。
+- test 217 件のうち 41 件（19%）が dev と同文同 gold です。重複を除いた 176 件では E2 89.8 vs baseline 78.4（+11.4 [5.7, 17.6]）。
+- best_v1.py の 88.5 は標準化漏れのバグによるものでした。詳細は router_best_pipeline_report_2026-11-03.md §7。
