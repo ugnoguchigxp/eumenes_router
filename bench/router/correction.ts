@@ -24,6 +24,8 @@ import { CONVERSATION, loadLabels, loadUtterances, passagesByCard } from "./data
 import { cachedVectors, fillCache, httpProvider } from "./embed.ts";
 import { registerSr, SR_DEFAULTS, type SrOptions } from "./algorithms.ts";
 import { run } from "./run.ts";
+import { keyOf as tableKey, tableScore, tuneTau, type Keyed } from "./variant-table.ts";
+import type { NearFeedback } from "../../src/contracts/feedback.ts";
 
 export type Correction = { text: string; right: string; wrong?: string | null; id?: string };
 export type Variant = { source: string; type: string; text: string; gold?: string };
@@ -38,16 +40,18 @@ export const RERANKERS: Record<string, { model: string; w: number; conv: number 
 };
 
 /** The router's correction store, in memory, in the bench's vector space. */
-export function correctionStore(model: string, dimension: number) {
+export function correctionStore(model: string, dimension: number, table?: { tau: number }) {
 	const db = new Database(":memory:");
 	migrateInTransaction(db as never);
 	const space: VectorSpace = { modelId: model, revision: "bench", artifactDigest: "bench", dimension };
 	const settings = routeSettings({});
 	let n = 0;
+	const keyed: Array<{ id: string; key: Keyed; right: string; wrong: string | null }> = [];
 	return {
 		settings,
-		add(c: Correction, vector: ArrayLike<number>) {
+		add(c: Correction, vector: ArrayLike<number>, key?: Keyed) {
 			n++;
+			if (key) keyed.push({ id: c.id ?? `corr-${n}`, key, right: c.right, wrong: c.wrong ?? null });
 			recordFeedbackInTransaction(db as never, {
 				id: c.id ?? `corr-${n}`, conversationId: "bench", messageId: `m-${n}`, messageIds: [],
 				runId: `r-${n}`, source: "redirect", text: c.text, space, vector: Array.from(vector),
@@ -57,8 +61,15 @@ export function correctionStore(model: string, dimension: number) {
 		near(vector: ArrayLike<number>, threshold = settings.feedbackNear) {
 			return nearFeedback(db as never, { vector: Array.from(vector), space, threshold });
 		},
-		correct(ranked: Ranked, vector: ArrayLike<number>, threshold = settings.feedbackNear) {
-			const near = this.near(vector, threshold);
+		/** Rule-table matches (exact normalized key or reading Dice ≥ τ), at full strength. */
+		tableNear(key: Keyed): NearFeedback[] {
+			if (!table) return [];
+			return keyed.filter((k) => tableScore(k.key, key) >= table.tau).map((k) => ({ id: k.id, wrongId: k.wrong, rightId: k.right, similarity: 1 }));
+		},
+		correct(ranked: Ranked, vector: ArrayLike<number>, threshold = settings.feedbackNear, key?: Keyed) {
+			const emb = this.near(vector, threshold);
+			const tbl = key ? this.tableNear(key) : [];
+			const near = [...tbl, ...emb.filter((e) => !tbl.some((t) => t.id === e.id))];
 			const out = correctProbabilities(ranked.map(([id, p]) => ({ id, p })), near, { threshold, weight: settings.feedbackWeight });
 			const r: Ranked = ranked.map(([id], i) => [id, out.p[i]!]);
 			return { ranked: r.sort((a, b) => b[1] - a[1]), near: near.length, conflict: out.conflict };
@@ -94,6 +105,8 @@ type Item = { id: string; text: string; gold: string; acceptable: readonly strin
 export type ExperimentOptions = {
 	db: string; out: string; variants?: string | undefined; controls?: string | undefined; corrections?: string | undefined;
 	url: string; model?: string | undefined; python?: string | undefined; rerankers?: string[]; thetas?: number[] | undefined; deferThresholds?: Record<string, number> | undefined;
+	/** Add `<cfg>+tbl` configurations: the variant-aware rule table (needs `python` with pykakasi for readings). */
+	table?: boolean | undefined; tableMaxFalse?: number | undefined;
 	print?: (s: string) => void;
 };
 
@@ -160,7 +173,7 @@ export async function correctionExperiment(o: ExperimentOptions) {
 		writeFileSync(inp, JSON.stringify({ cards, rows: items.map((it) => ({ text: it.text, cands: sr[it.id]!.map(([c]) => c) })) }));
 		for (const tag of tags) {
 			const file = join(o.out, `rerank-${tag}.json`);
-			if (o.python) {
+			if (o.python && !existsSync(file)) { // cached scores are reused (resume-safe; delete the file to rescore)
 				const p = Bun.spawnSync([o.python, join(import.meta.dir, "experiments/correction/models.py"), "rerank", inp, file, RERANKERS[tag]!.model, tag], { stdout: "inherit", stderr: "inherit" });
 				if (p.exitCode !== 0) throw new Error(`rerank_failed: ${tag}`);
 			}
@@ -176,28 +189,41 @@ export async function correctionExperiment(o: ExperimentOptions) {
 		const dm = real.filter((r) => r.split === "dev").map((r) => margin(front(tag, r))).sort((a, b) => a - b);
 		thOf[tag] = o.deferThresholds?.[tag] ?? dm[Math.floor(dm.length * 0.2) - 1]! + 1e-9;
 	}
+	// Variant-aware table: readings from the Python preprocessor, τ tuned on dev (different-gold false-match bound).
+	const readings: Record<string, string> = {};
+	let tau = 1; let tauCurve: unknown = null;
+	if (o.table) {
+		const rin = join(o.out, "reading-in.json"), rout = join(o.out, "readings.json");
+		writeFileSync(rin, JSON.stringify([...new Set(items.map((it) => it.text))]));
+		const p = Bun.spawnSync([o.python ?? "python3", join(import.meta.dir, "experiments/correction/reading.py"), rin, rout], { stdout: "inherit", stderr: "inherit" });
+		if (p.exitCode !== 0) throw new Error("reading_failed");
+		Object.assign(readings, JSON.parse(readFileSync(rout, "utf8")));
+		const t = tuneTau(real.filter((r) => r.split === "dev").map((r) => ({ key: tableKey(r.text, readings[r.text]), gold: r.gold })), o.tableMaxFalse ?? 0.02);
+		tau = t.tau; tauCurve = t.curve; print(`table τ=${tau} (dev)`);
+	}
+	const kOf = (text: string) => tableKey(text, readings[text]);
 	const ok = (it: Item, t: string | undefined) => t !== undefined && (t === it.gold || it.acceptable.includes(t));
 	type Pick = { top: string | undefined; frontTop: string; deferred: boolean; near: number };
 	const decide = (cfg: string, it: Item, store: ReturnType<typeof correctionStore> | null, theta?: number): Pick => {
-		const base = cfg.replace(/\+pin$/, "");
+		const base = cfg.replace(/\+(pin|tbl)$/, "");
 		let r = front(base, it); let near = 0;
-		if (store) { const c = store.correct(r, vec(it.text), theta); r = c.ranked; near = c.near; }
+		if (store) { const c = store.correct(r, vec(it.text), theta, cfg.endsWith("+tbl") ? kOf(it.text) : undefined); r = c.ranked; near = c.near; }
 		if (base === "sr") return { top: r[0]![0], frontTop: r[0]![0], deferred: false, near };
 		const defer = margin(r) < thOf[base]! && !(cfg.endsWith("+pin") && near > 0);
 		return { top: defer ? it.past : r[0]![0], frontTop: r[0]![0], deferred: defer, near };
 	};
-	const configs = ["sr", ...tags, ...tags.map((t) => `${t}+pin`)];
+	const configs = ["sr", ...tags, ...tags.map((t) => `${t}+pin`), ...(o.table ? ["sr+tbl", ...tags.map((t) => `${t}+tbl`)] : [])];
 	const test = real.filter((r) => r.split === "test");
 	const userCorr = o.corrections ? readJsonl<Correction>(o.corrections) : null;
-	const report: Record<string, unknown> = { model, theta: routeSettings({}).feedbackNear, beta: routeSettings({}).feedbackWeight, deferThreshold: thOf, counts: { test: test.length, variants: variants.length, controls: controls.length }, configs: {} };
+	const report: Record<string, unknown> = { model, theta: routeSettings({}).feedbackNear, beta: routeSettings({}).feedbackWeight, deferThreshold: thOf, table: o.table ? { tau, maxFalse: o.tableMaxFalse ?? 0.02, devCurve: tauCurve } : null, counts: { test: test.length, variants: variants.length, controls: controls.length }, configs: {} };
 	const pct = (b: ReturnType<typeof bootMean>) => ({ rate: +(b.mean * 100).toFixed(1), lo: +(b.lo * 100).toFixed(1), hi: +(b.hi * 100).toFixed(1), n: b.n });
 	for (const cfg of configs) for (const theta of o.thetas ?? [routeSettings({}).feedbackNear]) {
 		const before = new Map(items.map((it) => [it.id, decide(cfg, it, null)]));
 		// Corrections: the user fixes each wrong test answer of this configuration (or the given JSONL).
 		const corrected = test.filter((it) => !ok(it, before.get(it.id)!.top));
 		const corrections: Correction[] = userCorr ?? corrected.map((it) => ({ id: `c-${it.id}`, text: it.text, right: it.gold, wrong: before.get(it.id)!.top ?? null }));
-		const store = correctionStore(model, vec(items[0]!.text).length);
-		for (const c of corrections) store.add(c, vec(c.text));
+		const store = correctionStore(model, vec(items[0]!.text).length, cfg.endsWith("+tbl") ? { tau } : undefined);
+		for (const c of corrections) store.add(c, vec(c.text), cfg.endsWith("+tbl") ? kOf(c.text) : undefined);
 		const after = new Map(items.map((it) => [it.id, decide(cfg, it, store, theta)]));
 		const hit = (m: Map<string, Pick>, it: Item) => (ok(it, m.get(it.id)!.top) ? 1 : 0);
 		const fix = (xs: Item[]) => pct(bootMean(xs.filter((it) => !hit(before, it)).map((it) => hit(after, it))));

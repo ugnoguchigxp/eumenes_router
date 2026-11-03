@@ -29,6 +29,8 @@ def pairs_of(rows, arm, seed):
     P = []
     for r in rows:
         if r['gold'] != C: P.append((r['text'][:400], doc(r['gold']), 1.0))
+        if arm == 'convpos':  # conversation.respond as an explicit class: (utt, conv card) is positive for conv rows, negative for tool rows
+            P.append((r['text'][:400], doc(C), 1.0 if r['gold'] == C or C in r['acceptable'] else 0.0))
         for c, _ in r['sr']:
             if c != C and not ok(r, c): P.append((r['text'][:400], doc(c), 0.0))
     if arm == 'cardx':  # SYNTHETIC arm: card-author example sentences not shown in the doc (passages[6:]), 3 random other tools as negatives
@@ -72,9 +74,10 @@ def score(name, outp):
     torch.set_num_threads(os.cpu_count())
     tok = AutoTokenizer.from_pretrained(BASE)  # fine-tuning never changes the tokenizer; reloading the saved copy trips a transformers regex warning
     m = AutoModelForSequenceClassification.from_pretrained(name).eval(); res = {}; lat = []
+    mf = os.path.join(name, 'meta.json'); WITH_C = os.environ.get('WITH_C') == '1' or (os.path.exists(mf) and json.load(open(mf)).get('arm') == 'convpos')
     with torch.inference_mode():
         for r in ROWS:
-            tools = [c for c, _ in r['sr'] if c != C]
+            tools = [c for c, _ in r['sr'] if c != C] + ([C] if WITH_C else [])
             t = time.perf_counter()
             enc = tok([r['text'][:400]] * len(tools), [doc(c) for c in tools], truncation=True, max_length=512, padding=True, return_tensors='pt')
             lg = m(**enc).logits; s = (lg[:, 0] if lg.shape[-1] == 1 else lg[:, -1]).sigmoid().tolist()
@@ -83,9 +86,10 @@ def score(name, outp):
 
 # ---- evaluation: same fusion as bench/router/correction.ts (w=2, conv=0.18 for ruri) ----
 import math
-W, CONV = 2.0, 0.18
+W, CONV = 2.0, float(os.environ.get('CONV', 0.18))
 def front(r, rr):
-    s = dict(r['sr']); ids = list(rr) + [C]; comb = [s.get(c, 0) + (CONV if c == C else W * rr[c]) for c in ids]
+    # conv: sr has no conv probability; it gets the offset, plus W * its rerank score when the model scores the conv card (convpos arm)
+    s = dict(r['sr']); ids = [c for c in rr if c != C] + [C]; comb = [s.get(c, 0) + (CONV + W * rr.get(C, 0) if c == C else W * rr[c]) for c in ids]
     mx = max(comb); e = [math.exp(x - mx) for x in comb]; z = sum(e); p = sorted(zip(ids, [x / z for x in e]), key=lambda kv: -kv[1])
     return p, math.log(p[0][1] + 1e-12) - math.log((p[1][1] if len(p) > 1 else 0) + 1e-12)
 def th_at(rows, rr, q):
@@ -140,7 +144,7 @@ def evaluate(a):
 if __name__ == '__main__':
     p = argparse.ArgumentParser(); sp = p.add_subparsers(dest='cmd', required=True)
     t = sp.add_parser('train'); t.add_argument('--k', type=int, default=10); t.add_argument('--seed', type=int, default=0); t.add_argument('--out', required=True)
-    t.add_argument('--arm', default='real', choices=['real', 'cardx']); t.add_argument('--layers', type=int, default=6); t.add_argument('--epochs', type=int, default=2)
+    t.add_argument('--arm', default='real', choices=['real', 'cardx', 'convpos']); t.add_argument('--layers', type=int, default=6); t.add_argument('--epochs', type=int, default=2)
     t.add_argument('--lr', type=float, default=2e-5); t.add_argument('--bs', type=int, default=16)
     s = sp.add_parser('score'); s.add_argument('model'); s.add_argument('out')
     e = sp.add_parser('eval'); e.add_argument('--zs', required=True); e.add_argument('--ft', nargs='+', required=True); e.add_argument('--meta', nargs='+', required=True)

@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test";
 import { bootMean, correctionStore, fuse, margin } from "./correction.ts";
+import { keyOf } from "./variant-table.ts";
 
 const unit = (xs: number[]) => { const n = Math.hypot(...xs); return xs.map((x) => x / n); };
 
@@ -35,4 +36,14 @@ test("bootMean brackets the mean", () => {
 	expect(b.mean).toBe(0.625);
 	expect(b.lo).toBeLessThanOrEqual(b.mean);
 	expect(b.hi).toBeGreaterThanOrEqual(b.mean);
+});
+
+test("the rule table matches a normalized variant the embedding misses", () => {
+	const store = correctionStore("m", 2, { tau: 0.8 });
+	store.add({ text: "ギットを開いて", right: "browser.operate", wrong: "web.search" }, unit([1, 0]), keyOf("ギットを開いて"));
+	const ranked: Array<[string, number]> = [["web.search", 0.6], ["browser.operate", 0.4]];
+	expect(store.correct(ranked, unit([0, 1])).ranked[0]![0]).toBe("web.search");
+	const r = store.correct(ranked, unit([0, 1]), undefined, keyOf("ｇｉｔを開いてください"));
+	expect(r.near).toBe(1);
+	expect(r.ranked[0]![0]).toBe("browser.operate");
 });

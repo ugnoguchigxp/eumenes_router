@@ -1,4 +1,7 @@
-# ruri-v3-reranker-310m 少数例ファインチューニング・キット（AI MAX 395+ 用）
+# ruri-v3-reranker-310m 少数例ファインチューニング・キット v2（AI MAX 395+ 用）
+
+v2 では convpos arm を追加しました。会話（ツールなし）を明示的な正例クラスとして学習させるものです。
+convpos のモデルは会話カードも採点し、融合では会話の値を conv + 2·rr(会話) として扱います。
 
 Box 上の実験と同じ設定で `cl-nagoya/ruri-v3-reranker-310m` を追加学習し、テスト入力に対するスコア（`scores.json`）を出すキットです。
 
@@ -11,6 +14,7 @@ Box 上の実験と同じ設定で `cl-nagoya/ruri-v3-reranker-310m` を追加�
 | パス | 内容 |
 |---|---|
 | `pairs/k{3,5,10}-real-s{0,1,2}.jsonl` | 学習ペア `{"q","doc","label"}` です。ツール（正解ラベル）ごとに最大 k 件の dev 発話を使います。正例は（発話, 正解カード）、負例は sr 上位8件のうち正解でない候補（hard negatives）です。conversation.respond の発話は負例だけになります。 |
+| `pairs/k{3,5,10}-convpos-s{0,1,2}.jsonl` | **v2 で追加。** conversation.respond を明示的な正例クラスとして学習するペアです。会話の発話には（発話, 会話カード）を正例、sr 候補のツールカードを負例として付けます。ツールの発話には、会話カードを負例として足しています。そのほかは real と同じです。 |
 | `pairs/k10-cardx-s{0,1,2}.jsonl` | 合成データの比較用です。k10 にカード作者の例文（`passages[6:]`）を正例として足し、ランダムな3ツールを負例にしています。 |
 | `pairs/manifest.json` | 各ファイルのペア数、ツールごとの件数、使った dev 発話の ID |
 | `data/rows.jsonl` | 評価の入力です（dev 177件 + test 217件の発話と、sr の候補カード ID）。**ラベルは含みません。** |
@@ -35,8 +39,8 @@ python -c "import torch; x=torch.ones(1,device='cuda'); print(torch.__version__,
 
 ```bash
 cd ruri_finetune_kit
-# ① 最優先: ツールごとに10件 × seed 3本
-KS=10 SEEDS="0 1 2" ./run_all.sh
+# ① 最優先（v2）: 会話を正例にした版と、従来版（real）を、ツールごとに10件 × seed 3本
+KS=10 ARMS="convpos real" SEEDS="0 1 2" ./run_all.sh
 # ② 学習曲線: 3件 / 5件（seed 3本。時間がなければ SEEDS=0）
 KS="5 3" SEEDS="0 1 2" ./run_all.sh
 # ③ 任意: 合成データ arm
@@ -50,6 +54,8 @@ FULL=1 KS=10 SEEDS=0 ./run_all.sh
 ```bash
 python train.py --pairs pairs/k10-real-s0.jsonl --seed 0 --out runs/k10-real-s0
 python score.py runs/k10-real-s0 runs/k10-real-s0/scores.json
+python train.py --pairs pairs/k10-convpos-s0.jsonl --seed 0 --out runs/k10-convpos-s0
+python score.py runs/k10-convpos-s0 runs/k10-convpos-s0/scores.json --with-conv   # convpos では会話カードも採点します
 python score.py cl-nagoya/ruri-v3-reranker-310m runs/zs.json   # 同じ機械での zero-shot（遅延の比較用）
 ```
 

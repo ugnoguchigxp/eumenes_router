@@ -11,6 +11,7 @@
  *   compare  [<run dir> ...] [--root out]
  *   correct  --db <file> [--variants <jsonl>] [--controls <jsonl>] [--corrections <jsonl>] [--url <embed server>]
  *            [--rerank ruri,xs --python <venv python>] [--theta 0.95[,0.9]] [--defer-th tag=0.12]
+ *            [--table [--table-max-false 0.02]]   variant-aware rule table (+tbl configs; readings via --python + pykakasi)
  *            --rerank accepts tag=<model dir> (fused with ruri's w/conv), e.g. ft=/tmp/ft/k10-real-s0 [--out <dir>]
  *            (user corrections through the router's feedback store, then variants/controls)
  *
@@ -69,6 +70,8 @@ const OPTIONS = {
 	rerank: { type: "string" },
 	theta: { type: "string" },
 	"defer-th": { type: "string" },
+	table: { type: "boolean" },
+	"table-max-false": { type: "string" },
 } as const;
 
 const stamp = () =>
@@ -225,6 +228,7 @@ export async function main(
 				rerankers: v.rerank ? v.rerank.split(",") : [],
 				deferThresholds: v["defer-th"] ? Object.fromEntries(v["defer-th"].split(",").map((kv) => { const [k, x] = kv.split("="); return [k!, Number(x)]; })) : undefined,
 				thetas: v.theta ? v.theta.split(",").map(Number) : undefined, print,
+				table: v.table, tableMaxFalse: v["table-max-false"] ? Number(v["table-max-false"]) : undefined,
 			});
 		}
 		case "compare": {

@@ -8,7 +8,7 @@ here = os.path.dirname(os.path.abspath(__file__)); os.makedirs(out + '/pairs', e
 test_ids = {r['id'] for r in ROWS if r['split'] == 'test'}; counts = {}
 for k in (3, 5, 10):
     for s in (0, 1, 2):
-        for arm in ('real', 'cardx'):
+        for arm in ('real', 'cardx', 'convpos'):
             if arm == 'cardx' and k != 10: continue
             tr = pick_train(k, s); assert not (set(r['id'] for r in tr) & test_ids)
             P = pairs_of(tr, arm, s); name = f'k{k}-{arm}-s{s}'
