@@ -4,6 +4,8 @@
   python best_v2.py eval    --corr DIR [--out DIR] [--rerank tag=FTDIR ...] [--skip-robust]
   python best_v2.py export  --corr DIR --artifact OUT [--cfg best-v2]        versioned artifact (model.json + memory.npz)
   python best_v2.py predict --artifact OUT [--in rows.jsonl | --row JSON] [--ruri MODEL]   one or many utterances, no retraining
+  python best_v2.py export-verify --corr DIR --out items.jsonl     deferred test items for tokens.py verify
+  python best_v2.py leak-check --corr DIR [--ft FTDIR ...] [--pairs pairs.jsonl ...]   test labels never reach training
 
 Pipeline (per utterance):
  1 candidates = sr top-8 that have a ruri score + conversation.respond (algo4 `fuse`, k=8); +tbl: table-hit tools added
@@ -273,9 +275,39 @@ def cmd_predict(a):
     rows = [json.loads(a.row)] if a.row else [json.loads(l) for l in (open(a.inp) if a.inp != '-' else sys.stdin) if l.strip()]
     out = open(a.out, 'w') if a.out else sys.stdout
     for r in rows: out.write(json.dumps(p.predict(r), ensure_ascii=False) + '\n'); out.flush()
+def cmd_export_verify(a):
+    """Items for tokens.py verify: best-v2's deferred test items, LR top-4 candidates with card texts (gold kept for scoring only)."""
+    items, _ = load(a.corr); EXTRA = B.ensure_extra(items, a.corr, a.python); real, _, _ = setup(items, a.variants)
+    dev = [x for x in real if x['split'] == 'dev']; test = [x for x in real if x['split'] == 'test']; cfg = CFGS[a.cfg]
+    tau = B.tune_tau([dict(key=x['key'], gold=x['gold']) for x in dev]); f = fit(dev, cfg, tau, EXTRA); R = apply(f, test, dev, cfg, tau, EXTRA)
+    cards = json.load(open(os.path.join(a.corr, 'rerank-in.json')))['cards']; doc = lambda c: (lambda p: p[0] + ' 例: ' + ' / '.join(p[1:6]))(cards.get(c, {}).get('passages') or [c]); n = 0
+    with open(a.out, 'w') as o:
+        for x in test:
+            if R[x['id']]['defer']:
+                cs = [c for c, _ in R[x['id']]['P'][:4]]; n += 1
+                o.write(json.dumps(dict(id=x['id'], text=x['text'], cands=cs, docs={c: doc(c) for c in cs}, gold=x['gold'], acceptable=sorted(x['acc']), past=x['past']), ensure_ascii=False) + '\n')
+    print(json.dumps(dict(out=a.out, deferred=n, of=len(test))))
+def cmd_leak_check(a):
+    """No test label may reach training: FT train ids ⊆ dev, and (optionally) a pairs jsonl carries no test-only utterance text or test id."""
+    import sqlite3, unicodedata
+    db = sqlite3.connect(os.path.join(a.corr, 'corr.db')); sp = {i: s for i, s in db.execute('select utterance_id, split from bench_labels')}
+    txt = {i: json.loads(j)['text'] for i, j in db.execute('select id, utterance_json from bench_utterances')}; N = lambda t: unicodedata.normalize('NFKC', t).strip()
+    dev_t = {N(txt[i]) for i, s in sp.items() if s == 'dev' and i in txt}; test_ids = {i for i, s in sp.items() if s == 'test' and not i.startswith(('var-', 'ctl-'))}
+    test_only = {N(txt[i]) for i in test_ids if i in txt} - dev_t; rep = dict(models={}, pairs={}); bad = False
+    for d in a.ft:
+        t = ft_train_ids(d) or set(); r = dict(train_ids=len(t), in_test=len(t & test_ids), in_dev=sum(sp.get(i) == 'dev' for i in t), unknown=sum(i not in sp for i in t)); rep['models'][d] = r; bad |= r['in_test'] > 0
+    for pf in a.pairs:
+        ids = texts = 0; n = 0
+        for l in open(pf):
+            if not l.strip(): continue
+            n += 1; row = json.loads(l); vals = [v for v in (row.values() if isinstance(row, dict) else row) if isinstance(v, str)]
+            ids += any(v in test_ids for v in vals); texts += any(N(v) in test_only for v in vals)
+        rep['pairs'][pf] = dict(rows=n, rows_with_test_id=ids, rows_with_test_only_text=texts); bad |= ids > 0 or texts > 0
+    rep['note'] = f'{len(test_ids)} test ids; {len(test_ids) - len(test_only)} test texts also occur in dev (legitimate dev memory, not a leak)'; rep['pass'] = not bad
+    print(json.dumps(rep, ensure_ascii=False, indent=1)); sys.exit(0 if not bad else 1)
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument('cmd', choices=['eval', 'export', 'predict']); ap.add_argument('--corr'); ap.add_argument('--out'); ap.add_argument('--python', default=sys.executable)
+    ap = argparse.ArgumentParser(); ap.add_argument('cmd', choices=['eval', 'export', 'predict', 'export-verify', 'leak-check']); ap.add_argument('--corr'); ap.add_argument('--out'); ap.add_argument('--python', default=sys.executable)
     ap.add_argument('--variants', default=os.path.join(HERE, '..', 'correction', 'variants.jsonl')); ap.add_argument('--rerank', action='append', default=[]); ap.add_argument('--skip-robust', action='store_true')
-    ap.add_argument('--artifact'); ap.add_argument('--cfg', default='best-v2'); ap.add_argument('--in', dest='inp'); ap.add_argument('--row'); ap.add_argument('--ruri'); ap.add_argument('--e5'); a = ap.parse_args()
-    dict(eval=cmd_eval, export=cmd_export, predict=cmd_predict)[a.cmd](a)
+    ap.add_argument('--artifact'); ap.add_argument('--cfg', default='best-v2'); ap.add_argument('--in', dest='inp'); ap.add_argument('--row'); ap.add_argument('--ruri'); ap.add_argument('--e5'); ap.add_argument('--ft', action='append', default=[]); ap.add_argument('--pairs', action='append', default=[]); a = ap.parse_args()
+    {'eval': cmd_eval, 'export': cmd_export, 'predict': cmd_predict, 'export-verify': cmd_export_verify, 'leak-check': cmd_leak_check}[a.cmd](a)
 if __name__ == '__main__': main()
