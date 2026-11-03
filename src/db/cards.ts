@@ -61,7 +61,16 @@ export function syncCardsInTransaction(
 		db.query("DELETE FROM router_passages_fts WHERE card_id=?").run(row.id);
 	}
 	const pending: Passage[] = [];
+	const previous = db.query(
+		"SELECT digest, enabled FROM router_cards WHERE id=?",
+	);
 	for (const card of normalized) {
+		const before = previous.get(card.id) as {
+			digest: string;
+			enabled: number;
+		} | null;
+		// The digest covers every field the passages come from: an unchanged, enabled card keeps its lexical rows.
+		const unchanged = before?.enabled === 1 && before.digest === card.digest;
 		db.query(
 			`INSERT INTO router_cards(
  id, revision, kind, title, summary, use_when_json, examples_json, impact, digest, enabled
@@ -87,11 +96,13 @@ ON CONFLICT(id) DO UPDATE SET
 			texts.length,
 		);
 		// The lexical index: one row per passage, as the retrieval was trained on.
-		db.query("DELETE FROM router_passages_fts WHERE card_id=?").run(card.id);
-		for (const text of texts)
-			db.query(
-				"INSERT INTO router_passages_fts(card_id, text) VALUES (?,?)",
-			).run(card.id, text);
+		if (!unchanged) {
+			db.query("DELETE FROM router_passages_fts WHERE card_id=?").run(card.id);
+			for (const text of texts)
+				db.query(
+					"INSERT INTO router_passages_fts(card_id, text) VALUES (?,?)",
+				).run(card.id, text);
+		}
 		for (let item = 0; item < texts.length; item++) {
 			const text = texts[item]!;
 			const digest = sha256Hex(text);
@@ -222,8 +233,11 @@ export function candidatesInTransaction(
 		: input.strict
 			? []
 			: cards.filter((card) => card.kind !== "read");
+	// A strict, empty index stays empty: the included cards only join a frame.
 	const inFrame = new Set(chosen.map((card) => card.id));
-	const include = new Set(input.include ?? []);
+	const include = new Set(
+		input.strict && !similarity.size ? [] : (input.include ?? []),
+	);
 	const offered = [
 		...chosen,
 		...cards.filter((card) => include.has(card.id) && !inFrame.has(card.id)),

@@ -6,7 +6,7 @@
  * here. No algorithm may call a generative model.
  */
 import type { Database } from "bun:sqlite";
-import { dot } from "../../src/index.ts";
+import { dot, trigramQuery } from "../../src/index.ts";
 import type { Utterance } from "./data.ts";
 import { isContextual } from "./round2.ts";
 
@@ -40,7 +40,11 @@ export type BenchHistory = {
 	/** The product's choice for the previous routed turn of the same conversation. */
 	previous: (utteranceId: string) => string | null;
 	/** Transition counts prev -> next over past choices, without this utterance's own pair. */
-	transition: (utteranceId: string, from: string, to: string) => { pair: number; from: number };
+	transition: (
+		utteranceId: string,
+		from: string,
+		to: string,
+	) => { pair: number; from: number };
 };
 
 export type Algorithm = {
@@ -49,15 +53,8 @@ export type Algorithm = {
 	score: (input: AlgorithmInput, env: AlgorithmEnv) => Map<string, number>;
 };
 
-/** The utterance's character trigrams as an FTS5 OR query; null under three characters. */
-export function trigramQuery(text: string): string | null {
-	const chars = [...text.normalize("NFKC").replace(/\s+/g, "")];
-	const grams = new Set<string>();
-	for (let i = 0; i + 3 <= chars.length; i++)
-		grams.add(chars.slice(i, i + 3).join(""));
-	if (!grams.size) return null;
-	return [...grams].map((g) => `"${g.replaceAll('"', '""')}"`).join(" OR ");
-}
+/** The utterance's character trigrams as an FTS5 OR query: the package's own, one place for the product and the bench. */
+export { trigramQuery };
 
 export function ftsSearch(db: Database) {
 	const query = db.query(
@@ -154,7 +151,9 @@ const recordedEmbed: Algorithm = {
 /** Normalized to 0..1 by the best value in the map. */
 function unit(m: Map<string, number>): Map<string, number> {
 	const top = Math.max(0, ...m.values());
-	return new Map([...m].map(([k, v]) => [k, top > 0 ? Math.max(0, v) / top : 0]));
+	return new Map(
+		[...m].map(([k, v]) => [k, top > 0 ? Math.max(0, v) / top : 0]),
+	);
 }
 
 function bigrams(text: string): Set<string> {
@@ -164,9 +163,16 @@ function bigrams(text: string): Set<string> {
 	return out;
 }
 
-
 export type SrOptions = {
-	weights: { sem: number; lex: number; proto: number; name: number; hist: number; prior: number; prev?: number };
+	weights: {
+		sem: number;
+		lex: number;
+		proto: number;
+		name: number;
+		hist: number;
+		prior: number;
+		prev?: number;
+	};
 	/** When the previous-turn feature applies: only to turns that lean on context, or always. */
 	prevGate?: "contextual" | "always";
 	/** The conversation's fixed score: below it, no toolchain is chosen. */
@@ -202,10 +208,18 @@ const RESOURCE_WORDS: Record<string, string[]> = {
  * `minCombined`. With `needsEmbeddings` false (no vectors), f_sem and f_proto drop out
  * and their weight with them.
  */
-export function srWeighted(name: string, options: SrOptions, useVectors: boolean): Algorithm {
+export function srWeighted(
+	name: string,
+	options: SrOptions,
+	useVectors: boolean,
+): Algorithm {
 	return {
 		name,
-		needsEmbeddings: useVectors && (options.weights.sem > 0 || options.weights.proto > 0 || (options.weights.prev ?? 0) > 0),
+		needsEmbeddings:
+			useVectors &&
+			(options.weights.sem > 0 ||
+				options.weights.proto > 0 ||
+				(options.weights.prev ?? 0) > 0),
 		score: ({ utterance, candidates }, env) => {
 			const w = { ...options.weights };
 			if (!useVectors) {
@@ -223,14 +237,17 @@ export function srWeighted(name: string, options: SrOptions, useVectors: boolean
 			if (w.sem > 0 || w.proto > 0) {
 				const q = env.vector(utterance.text);
 				for (const c of tools) {
-					const sims = c.passages.map((p) => dot(q, env.vector(p))).sort((a, b) => b - a);
+					const sims = c.passages
+						.map((p) => dot(q, env.vector(p)))
+						.sort((a, b) => b - a);
 					if (!sims.length) continue;
 					sem.set(c.id, sims[0]!);
 					const top = sims.slice(0, options.protoM);
 					proto.set(
 						c.id,
 						options.protoW * sims[0]! +
-							(1 - options.protoW) * (top.reduce((s, v) => s + v, 0) / top.length),
+							(1 - options.protoW) *
+								(top.reduce((s, v) => s + v, 0) / top.length),
 					);
 				}
 			}
@@ -239,7 +256,9 @@ export function srWeighted(name: string, options: SrOptions, useVectors: boolean
 				const vals = [...m.values()];
 				const lo = Math.min(...vals);
 				const hi = Math.max(...vals);
-				return new Map([...m].map(([k, v]) => [k, hi > lo ? (v - lo) / (hi - lo) : 0]));
+				return new Map(
+					[...m].map(([k, v]) => [k, hi > lo ? (v - lo) / (hi - lo) : 0]),
+				);
 			};
 			const semU = band(sem);
 			const protoU = band(proto);
@@ -255,7 +274,9 @@ export function srWeighted(name: string, options: SrOptions, useVectors: boolean
 				const q = env.vector(utterance.previousUser!);
 				const m = new Map<string, number>();
 				for (const c of tools) {
-					const sims = c.passages.map((p) => dot(q, env.vector(p))).sort((a, b) => b - a);
+					const sims = c.passages
+						.map((p) => dot(q, env.vector(p)))
+						.sort((a, b) => b - a);
 					if (sims.length) m.set(c.id, sims[0]!);
 				}
 				for (const [k, v] of band(m)) prevU.set(k, v);
@@ -264,10 +285,17 @@ export function srWeighted(name: string, options: SrOptions, useVectors: boolean
 			const prev = env.history?.previous(utterance.id) ?? null;
 			const kind = utterance.hints.referencedResource?.kind ?? null;
 			// The previous-turn feature is an additive bonus: it does not dilute the other features.
-			const total = Object.entries(w).reduce((s, [k, v]) => (k === "prev" ? s : s + v), 0) || 1;
+			const total =
+				Object.entries(w).reduce(
+					(s, [k, v]) => (k === "prev" ? s : s + v),
+					0,
+				) || 1;
 			const out = new Map<string, number>();
 			for (const c of tools) {
-				const lex = Math.max(lexNow.get(c.id) ?? 0, options.context * (lexCtx.get(c.id) ?? 0));
+				const lex = Math.max(
+					lexNow.get(c.id) ?? 0,
+					options.context * (lexCtx.get(c.id) ?? 0),
+				);
 				const text = env.cardText?.get(c.id);
 				let nameHit = 0;
 				if (text) {
@@ -279,12 +307,21 @@ export function srWeighted(name: string, options: SrOptions, useVectors: boolean
 				let hist = 0.5;
 				if (prev && env.history) {
 					const t = env.history.transition(utterance.id, prev, c.id);
-					hist = t.from > 0 && t.pair > 0 ? t.pair / t.from : prev === c.id ? 0.12 : 0.62;
+					hist =
+						t.from > 0 && t.pair > 0
+							? t.pair / t.from
+							: prev === c.id
+								? 0.12
+								: 0.62;
 				}
 				let prior = 0;
 				if (kind && text) {
 					const words = RESOURCE_WORDS[kind] ?? [kind];
-					prior = words.some((x) => text.summary.includes(x) || text.title.includes(x)) ? 1 : 0;
+					prior = words.some(
+						(x) => text.summary.includes(x) || text.title.includes(x),
+					)
+						? 1
+						: 0;
 				}
 				const f =
 					w.sem * (semU.get(c.id) ?? 0) +
@@ -296,7 +333,8 @@ export function srWeighted(name: string, options: SrOptions, useVectors: boolean
 					(w.prev ?? 0) * (prevU.get(c.id) ?? 0);
 				out.set(c.id, f / total);
 			}
-			if (candidates.some((c) => c.id === CONVERSATION_ID)) out.set(CONVERSATION_ID, options.minCombined);
+			if (candidates.some((c) => c.id === CONVERSATION_ID))
+				out.set(CONVERSATION_ID, options.minCombined);
 			return out;
 		},
 	};
@@ -325,6 +363,10 @@ export const ALGORITHMS: Record<string, Algorithm> = {
 };
 
 /** Register a tuned variant (from `run --sr <json>`). */
-export function registerSr(name: string, options: SrOptions, useVectors: boolean) {
+export function registerSr(
+	name: string,
+	options: SrOptions,
+	useVectors: boolean,
+) {
 	ALGORITHMS[name] = srWeighted(name, options, useVectors);
 }

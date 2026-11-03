@@ -211,3 +211,76 @@ test("the memory goes into SQLite and comes back the same; another space or sour
 	).toBe("image.create");
 	db.close();
 });
+
+test("inputs that are not finite, duplicate candidates, broken base64 or labels are refused", () => {
+	const model = loadBestV2(params(only("rr", 1)), memory);
+	const input = {
+		retrieval: [["music.create", 0.5]] as Array<[string, number]>,
+		retrievalScores: {},
+		rerank: { "music.create": 0.5 },
+		vector: [1, 0],
+	};
+	expect(() =>
+		scoreBestV2(model, { ...input, rerank: { "music.create": Number.NaN } }),
+	).toThrow("larm_invalid_route_response");
+	expect(() =>
+		scoreBestV2(model, {
+			...input,
+			retrieval: [
+				["music.create", 0.5],
+				["music.create", 0.4],
+			],
+		}),
+	).toThrow("larm_invalid_route_response");
+	expect(() =>
+		scoreBestV2(model, {
+			...input,
+			retrievalScores: { "music.create": Number.POSITIVE_INFINITY },
+		}),
+	).toThrow("larm_invalid_route_response");
+	expect(() =>
+		scoreBestV2(model, { ...input, vector: [Number.NaN, 0] }),
+	).toThrow(routerErrors.invalidEmbedding);
+	expect(() =>
+		loadBestV2(params(only("rr", 1)), { ...memory, vectors: "not base64!" }),
+	).toThrow(routerErrors.invalidModel);
+	expect(() =>
+		loadBestV2(params(only("rr", 1)), {
+			...memory,
+			labels: "music.create" as never,
+		}),
+	).toThrow(routerErrors.invalidModel);
+	expect(() =>
+		loadBestV2(params(only("rr", 1)), {
+			...memory,
+			vectors: base64([1, 0, Number.NaN, 1]),
+		}),
+	).toThrow(routerErrors.invalidModel);
+});
+
+test("one memory can live in two spaces of the same size", async () => {
+	const { Database } = await import("bun:sqlite");
+	const {
+		examplesInTransaction,
+		importExamplesInTransaction,
+		migrateInTransaction,
+	} = await import("../src/sqlite.ts");
+	const db = new Database(":memory:");
+	migrateInTransaction(db);
+	const a = {
+		modelId: "embed",
+		revision: "1",
+		artifactDigest: "d",
+		dimension: 2,
+	};
+	const b = { ...a, revision: "2" };
+	importExamplesInTransaction(db, memory, a);
+	importExamplesInTransaction(db, memory, b);
+	expect(examplesInTransaction(db, { source: "test", space: a })).toEqual(
+		memory,
+	);
+	expect(examplesInTransaction(db, { source: "test", space: b })).toEqual(
+		memory,
+	);
+	db.close();
+});

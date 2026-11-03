@@ -1,0 +1,1822 @@
+{
+ "model": "local:e5-small",
+ "split": "test",
+ "theta": 0.95,
+ "beta": 2,
+ "thetaDev": 0.9177445652996856,
+ "deferThreshold": {
+  "larm": 0.31152535759246675
+ },
+ "table": null,
+ "counts": {
+  "test": 217,
+  "variants": 1215,
+  "controls": 40
+ },
+ "configs": {
+  "sr": {
+   "corrections": 69,
+   "exactFront": {
+    "rate": 55.1,
+    "lo": 43.5,
+    "hi": 66.7,
+    "n": 69
+   },
+   "exact": {
+    "rate": 55.1,
+    "lo": 43.5,
+    "hi": 66.7,
+    "n": 69
+   },
+   "testTop1": {
+    "before": {
+     "rate": 68.2,
+     "lo": 62.2,
+     "hi": 74.2,
+     "n": 217
+    },
+    "after": {
+     "rate": 84.8,
+     "lo": 81.1,
+     "hi": 89.9,
+     "n": 217
+    },
+    "diff": {
+     "d": 16.6,
+     "lo": 12,
+     "hi": 23.5
+    }
+   },
+   "rest": {
+    "n": 148,
+    "before": {
+     "rate": 100,
+     "lo": 100,
+     "hi": 100,
+     "n": 148
+    },
+    "after": {
+     "rate": 98.6,
+     "lo": 96.6,
+     "hi": 100,
+     "n": 148
+    },
+    "misfire": {
+     "rate": 1.4,
+     "lo": 0,
+     "hi": 3.4,
+     "n": 148
+    },
+    "frontChanged": 2,
+    "frontMisfire": {
+     "rate": 1.4,
+     "lo": 0,
+     "hi": 3.4,
+     "n": 148
+    }
+   },
+   "variants": {
+    "n": 447,
+    "sources": 56,
+    "misfireOther": {
+     "rate": 0.7,
+     "lo": 0.2,
+     "hi": 1.5,
+     "n": 594
+    },
+    "before": {
+     "rate": 28.2,
+     "lo": 25.5,
+     "hi": 34.7,
+     "n": 447
+    },
+    "after": {
+     "rate": 59.1,
+     "lo": 54.6,
+     "hi": 65.8,
+     "n": 447
+    },
+    "fix": {
+     "rate": 43,
+     "lo": 35.5,
+     "hi": 48,
+     "n": 321
+    },
+    "frontBefore": {
+     "rate": 28.2,
+     "lo": 25.5,
+     "hi": 34.7,
+     "n": 447
+    },
+    "frontAfter": {
+     "rate": 59.1,
+     "lo": 54.6,
+     "hi": 65.8,
+     "n": 447
+    },
+    "frontFix": {
+     "rate": 43,
+     "lo": 35.5,
+     "hi": 48,
+     "n": 321
+    },
+    "inCandidates": 371,
+    "wrongBefore": 321,
+    "nearHit": 97.8,
+    "byType": {
+     "asr": {
+      "n": 56,
+      "before": {
+       "rate": 17.9,
+       "lo": 8.9,
+       "hi": 28.6,
+       "n": 56
+      },
+      "after": {
+       "rate": 53.6,
+       "lo": 39.3,
+       "hi": 66.1,
+       "n": 56
+      },
+      "fix": {
+       "rate": 43.5,
+       "lo": 28.3,
+       "hi": 58.7,
+       "n": 46
+      },
+      "frontFix": {
+       "rate": 43.5,
+       "lo": 28.3,
+       "hi": 58.7,
+       "n": 46
+      },
+      "frontBefore": {
+       "rate": 17.9,
+       "lo": 8.9,
+       "hi": 28.6,
+       "n": 56
+      },
+      "frontAfter": {
+       "rate": 53.6,
+       "lo": 39.3,
+       "hi": 66.1,
+       "n": 56
+      },
+      "nearHit": 96.4
+     },
+     "casual": {
+      "n": 56,
+      "before": {
+       "rate": 21.4,
+       "lo": 12.5,
+       "hi": 32.1,
+       "n": 56
+      },
+      "after": {
+       "rate": 53.6,
+       "lo": 39.3,
+       "hi": 66.1,
+       "n": 56
+      },
+      "fix": {
+       "rate": 40.9,
+       "lo": 27.3,
+       "hi": 56.8,
+       "n": 44
+      },
+      "frontFix": {
+       "rate": 40.9,
+       "lo": 27.3,
+       "hi": 56.8,
+       "n": 44
+      },
+      "frontBefore": {
+       "rate": 21.4,
+       "lo": 12.5,
+       "hi": 32.1,
+       "n": 56
+      },
+      "frontAfter": {
+       "rate": 53.6,
+       "lo": 39.3,
+       "hi": 66.1,
+       "n": 56
+      },
+      "nearHit": 100
+     },
+     "fragment": {
+      "n": 55,
+      "before": {
+       "rate": 30.9,
+       "lo": 20,
+       "hi": 43.6,
+       "n": 55
+      },
+      "after": {
+       "rate": 60,
+       "lo": 45.5,
+       "hi": 72.7,
+       "n": 55
+      },
+      "fix": {
+       "rate": 42.1,
+       "lo": 26.3,
+       "hi": 57.9,
+       "n": 38
+      },
+      "frontFix": {
+       "rate": 42.1,
+       "lo": 26.3,
+       "hi": 57.9,
+       "n": 38
+      },
+      "frontBefore": {
+       "rate": 30.9,
+       "lo": 20,
+       "hi": 43.6,
+       "n": 55
+      },
+      "frontAfter": {
+       "rate": 60,
+       "lo": 45.5,
+       "hi": 72.7,
+       "n": 55
+      },
+      "nearHit": 98.2
+     },
+     "indirect": {
+      "n": 56,
+      "before": {
+       "rate": 30.4,
+       "lo": 19.6,
+       "hi": 42.9,
+       "n": 56
+      },
+      "after": {
+       "rate": 46.4,
+       "lo": 33.9,
+       "hi": 60.7,
+       "n": 56
+      },
+      "fix": {
+       "rate": 23.1,
+       "lo": 10.3,
+       "hi": 35.9,
+       "n": 39
+      },
+      "frontFix": {
+       "rate": 23.1,
+       "lo": 10.3,
+       "hi": 35.9,
+       "n": 39
+      },
+      "frontBefore": {
+       "rate": 30.4,
+       "lo": 19.6,
+       "hi": 42.9,
+       "n": 56
+      },
+      "frontAfter": {
+       "rate": 46.4,
+       "lo": 33.9,
+       "hi": 60.7,
+       "n": 56
+      },
+      "nearHit": 89.3
+     },
+     "keigo": {
+      "n": 56,
+      "before": {
+       "rate": 39.3,
+       "lo": 26.8,
+       "hi": 53.6,
+       "n": 56
+      },
+      "after": {
+       "rate": 69.6,
+       "lo": 55.4,
+       "hi": 82.1,
+       "n": 56
+      },
+      "fix": {
+       "rate": 50,
+       "lo": 32.4,
+       "hi": 64.7,
+       "n": 34
+      },
+      "frontFix": {
+       "rate": 50,
+       "lo": 32.4,
+       "hi": 64.7,
+       "n": 34
+      },
+      "frontBefore": {
+       "rate": 39.3,
+       "lo": 26.8,
+       "hi": 53.6,
+       "n": 56
+      },
+      "frontAfter": {
+       "rate": 69.6,
+       "lo": 55.4,
+       "hi": 82.1,
+       "n": 56
+      },
+      "nearHit": 100
+     },
+     "mixed": {
+      "n": 56,
+      "before": {
+       "rate": 21.4,
+       "lo": 10.7,
+       "hi": 32.1,
+       "n": 56
+      },
+      "after": {
+       "rate": 57.1,
+       "lo": 42.9,
+       "hi": 69.6,
+       "n": 56
+      },
+      "fix": {
+       "rate": 45.5,
+       "lo": 29.5,
+       "hi": 61.4,
+       "n": 44
+      },
+      "frontFix": {
+       "rate": 45.5,
+       "lo": 29.5,
+       "hi": 61.4,
+       "n": 44
+      },
+      "frontBefore": {
+       "rate": 21.4,
+       "lo": 10.7,
+       "hi": 32.1,
+       "n": 56
+      },
+      "frontAfter": {
+       "rate": 57.1,
+       "lo": 42.9,
+       "hi": 69.6,
+       "n": 56
+      },
+      "nearHit": 98.2
+     },
+     "paraphrase": {
+      "n": 56,
+      "before": {
+       "rate": 41.1,
+       "lo": 28.6,
+       "hi": 53.6,
+       "n": 56
+      },
+      "after": {
+       "rate": 67.9,
+       "lo": 55.4,
+       "hi": 78.6,
+       "n": 56
+      },
+      "fix": {
+       "rate": 45.5,
+       "lo": 27.3,
+       "hi": 60.6,
+       "n": 33
+      },
+      "frontFix": {
+       "rate": 45.5,
+       "lo": 27.3,
+       "hi": 60.6,
+       "n": 33
+      },
+      "frontBefore": {
+       "rate": 41.1,
+       "lo": 28.6,
+       "hi": 53.6,
+       "n": 56
+      },
+      "frontAfter": {
+       "rate": 67.9,
+       "lo": 55.4,
+       "hi": 78.6,
+       "n": 56
+      },
+      "nearHit": 100
+     },
+     "verbose": {
+      "n": 56,
+      "before": {
+       "rate": 23.2,
+       "lo": 12.5,
+       "hi": 33.9,
+       "n": 56
+      },
+      "after": {
+       "rate": 64.3,
+       "lo": 51.8,
+       "hi": 76.8,
+       "n": 56
+      },
+      "fix": {
+       "rate": 53.5,
+       "lo": 39.5,
+       "hi": 69.8,
+       "n": 43
+      },
+      "frontFix": {
+       "rate": 53.5,
+       "lo": 39.5,
+       "hi": 69.8,
+       "n": 43
+      },
+      "frontBefore": {
+       "rate": 23.2,
+       "lo": 12.5,
+       "hi": 33.9,
+       "n": 56
+      },
+      "frontAfter": {
+       "rate": 64.3,
+       "lo": 51.8,
+       "hi": 76.8,
+       "n": 56
+      },
+      "nearHit": 100
+     }
+    }
+   },
+   "controls": {
+    "n": 40,
+    "nearHit": 15,
+    "frontChanged": 0,
+    "frontMisfire": 0,
+    "frontBefore": {
+     "rate": 77.5,
+     "lo": 62.5,
+     "hi": 90,
+     "n": 40
+    },
+    "deferBefore": 0,
+    "deferAfter": 0
+   },
+   "deferRate": {
+    "before": 0,
+    "after": 0
+   }
+  },
+  "larm": {
+   "corrections": 23,
+   "exactFront": {
+    "rate": 47.6,
+    "lo": 28.6,
+    "hi": 71.4,
+    "n": 21
+   },
+   "exact": {
+    "rate": 69.6,
+    "lo": 47.8,
+    "hi": 87,
+    "n": 23
+   },
+   "testTop1": {
+    "before": {
+     "rate": 89.4,
+     "lo": 86.2,
+     "hi": 93.1,
+     "n": 217
+    },
+    "after": {
+     "rate": 96.8,
+     "lo": 94.9,
+     "hi": 99.1,
+     "n": 217
+    },
+    "diff": {
+     "d": 7.4,
+     "lo": 4.1,
+     "hi": 10.1
+    }
+   },
+   "rest": {
+    "n": 194,
+    "before": {
+     "rate": 100,
+     "lo": 100,
+     "hi": 100,
+     "n": 194
+    },
+    "after": {
+     "rate": 100,
+     "lo": 100,
+     "hi": 100,
+     "n": 194
+    },
+    "misfire": {
+     "rate": 0,
+     "lo": 0,
+     "hi": 0,
+     "n": 194
+    },
+    "frontChanged": 0,
+    "frontMisfire": {
+     "rate": 0,
+     "lo": 0,
+     "hi": 0,
+     "n": 166
+    }
+   },
+   "variants": {
+    "n": 150,
+    "sources": 19,
+    "misfireOther": {
+     "rate": 1,
+     "lo": 0.6,
+     "hi": 1.4,
+     "n": 983
+    },
+    "before": {
+     "rate": 40.7,
+     "lo": 32.7,
+     "hi": 48,
+     "n": 150
+    },
+    "after": {
+     "rate": 76,
+     "lo": 70,
+     "hi": 84,
+     "n": 150
+    },
+    "fix": {
+     "rate": 60.7,
+     "lo": 49.4,
+     "hi": 69.7,
+     "n": 89
+    },
+    "frontBefore": {
+     "rate": 26.7,
+     "lo": 19.3,
+     "hi": 32.7,
+     "n": 150
+    },
+    "frontAfter": {
+     "rate": 60,
+     "lo": 52.7,
+     "hi": 67.3,
+     "n": 150
+    },
+    "frontFix": {
+     "rate": 45.5,
+     "lo": 37.3,
+     "hi": 54.5,
+     "n": 110
+    },
+    "inCandidates": 106,
+    "wrongBefore": 89,
+    "nearHit": 96.7,
+    "byType": {
+     "asr": {
+      "n": 19,
+      "before": {
+       "rate": 42.1,
+       "lo": 21.1,
+       "hi": 63.2,
+       "n": 19
+      },
+      "after": {
+       "rate": 73.7,
+       "lo": 52.6,
+       "hi": 89.5,
+       "n": 19
+      },
+      "fix": {
+       "rate": 54.5,
+       "lo": 27.3,
+       "hi": 81.8,
+       "n": 11
+      },
+      "frontFix": {
+       "rate": 46.7,
+       "lo": 20,
+       "hi": 73.3,
+       "n": 15
+      },
+      "frontBefore": {
+       "rate": 21.1,
+       "lo": 5.3,
+       "hi": 42.1,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 57.9,
+       "lo": 36.8,
+       "hi": 78.9,
+       "n": 19
+      },
+      "nearHit": 84.2
+     },
+     "casual": {
+      "n": 19,
+      "before": {
+       "rate": 36.8,
+       "lo": 15.8,
+       "hi": 57.9,
+       "n": 19
+      },
+      "after": {
+       "rate": 68.4,
+       "lo": 47.4,
+       "hi": 89.5,
+       "n": 19
+      },
+      "fix": {
+       "rate": 50,
+       "lo": 25,
+       "hi": 75,
+       "n": 12
+      },
+      "frontFix": {
+       "rate": 42.9,
+       "lo": 14.3,
+       "hi": 71.4,
+       "n": 14
+      },
+      "frontBefore": {
+       "rate": 26.3,
+       "lo": 10.5,
+       "hi": 47.4,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 57.9,
+       "lo": 36.8,
+       "hi": 78.9,
+       "n": 19
+      },
+      "nearHit": 100
+     },
+     "fragment": {
+      "n": 17,
+      "before": {
+       "rate": 41.2,
+       "lo": 17.6,
+       "hi": 64.7,
+       "n": 17
+      },
+      "after": {
+       "rate": 82.4,
+       "lo": 64.7,
+       "hi": 100,
+       "n": 17
+      },
+      "fix": {
+       "rate": 70,
+       "lo": 40,
+       "hi": 100,
+       "n": 10
+      },
+      "frontFix": {
+       "rate": 61.5,
+       "lo": 38.5,
+       "hi": 84.6,
+       "n": 13
+      },
+      "frontBefore": {
+       "rate": 23.5,
+       "lo": 5.9,
+       "hi": 47.1,
+       "n": 17
+      },
+      "frontAfter": {
+       "rate": 70.6,
+       "lo": 47.1,
+       "hi": 88.2,
+       "n": 17
+      },
+      "nearHit": 100
+     },
+     "indirect": {
+      "n": 19,
+      "before": {
+       "rate": 31.6,
+       "lo": 10.5,
+       "hi": 52.6,
+       "n": 19
+      },
+      "after": {
+       "rate": 63.2,
+       "lo": 42.1,
+       "hi": 84.2,
+       "n": 19
+      },
+      "fix": {
+       "rate": 53.8,
+       "lo": 23.1,
+       "hi": 76.9,
+       "n": 13
+      },
+      "frontFix": {
+       "rate": 46.2,
+       "lo": 23.1,
+       "hi": 76.9,
+       "n": 13
+      },
+      "frontBefore": {
+       "rate": 31.6,
+       "lo": 15.8,
+       "hi": 52.6,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 63.2,
+       "lo": 42.1,
+       "hi": 84.2,
+       "n": 19
+      },
+      "nearHit": 94.7
+     },
+     "keigo": {
+      "n": 19,
+      "before": {
+       "rate": 47.4,
+       "lo": 26.3,
+       "hi": 68.4,
+       "n": 19
+      },
+      "after": {
+       "rate": 84.2,
+       "lo": 68.4,
+       "hi": 100,
+       "n": 19
+      },
+      "fix": {
+       "rate": 70,
+       "lo": 40,
+       "hi": 100,
+       "n": 10
+      },
+      "frontFix": {
+       "rate": 53.8,
+       "lo": 30.8,
+       "hi": 84.6,
+       "n": 13
+      },
+      "frontBefore": {
+       "rate": 31.6,
+       "lo": 10.5,
+       "hi": 52.6,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 68.4,
+       "lo": 47.4,
+       "hi": 89.5,
+       "n": 19
+      },
+      "nearHit": 100
+     },
+     "mixed": {
+      "n": 19,
+      "before": {
+       "rate": 47.4,
+       "lo": 26.3,
+       "hi": 68.4,
+       "n": 19
+      },
+      "after": {
+       "rate": 73.7,
+       "lo": 52.6,
+       "hi": 94.7,
+       "n": 19
+      },
+      "fix": {
+       "rate": 50,
+       "lo": 20,
+       "hi": 80,
+       "n": 10
+      },
+      "frontFix": {
+       "rate": 35.7,
+       "lo": 14.3,
+       "hi": 64.3,
+       "n": 14
+      },
+      "frontBefore": {
+       "rate": 26.3,
+       "lo": 5.3,
+       "hi": 47.4,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 52.6,
+       "lo": 31.6,
+       "hi": 73.7,
+       "n": 19
+      },
+      "nearHit": 100
+     },
+     "paraphrase": {
+      "n": 19,
+      "before": {
+       "rate": 42.1,
+       "lo": 21.1,
+       "hi": 63.2,
+       "n": 19
+      },
+      "after": {
+       "rate": 84.2,
+       "lo": 68.4,
+       "hi": 100,
+       "n": 19
+      },
+      "fix": {
+       "rate": 72.7,
+       "lo": 45.5,
+       "hi": 100,
+       "n": 11
+      },
+      "frontFix": {
+       "rate": 33.3,
+       "lo": 8.3,
+       "hi": 58.3,
+       "n": 12
+      },
+      "frontBefore": {
+       "rate": 36.8,
+       "lo": 15.8,
+       "hi": 57.9,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 57.9,
+       "lo": 36.8,
+       "hi": 78.9,
+       "n": 19
+      },
+      "nearHit": 100
+     },
+     "verbose": {
+      "n": 19,
+      "before": {
+       "rate": 36.8,
+       "lo": 15.8,
+       "hi": 63.2,
+       "n": 19
+      },
+      "after": {
+       "rate": 78.9,
+       "lo": 57.9,
+       "hi": 94.7,
+       "n": 19
+      },
+      "fix": {
+       "rate": 66.7,
+       "lo": 41.7,
+       "hi": 91.7,
+       "n": 12
+      },
+      "frontFix": {
+       "rate": 43.8,
+       "lo": 18.8,
+       "hi": 68.8,
+       "n": 16
+      },
+      "frontBefore": {
+       "rate": 15.8,
+       "lo": 0,
+       "hi": 31.6,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 52.6,
+       "lo": 31.6,
+       "hi": 73.7,
+       "n": 19
+      },
+      "nearHit": 94.7
+     }
+    }
+   },
+   "controls": {
+    "n": 40,
+    "nearHit": 9,
+    "frontChanged": 1,
+    "frontMisfire": 0,
+    "frontBefore": {
+     "rate": 77.5,
+     "lo": 62.5,
+     "hi": 90,
+     "n": 40
+    },
+    "deferBefore": 14,
+    "deferAfter": 14
+   },
+   "deferRate": {
+    "before": 24.9,
+    "after": 25.8
+   }
+  },
+  "larm+pin": {
+   "corrections": 23,
+   "exactFront": {
+    "rate": 47.6,
+    "lo": 28.6,
+    "hi": 71.4,
+    "n": 21
+   },
+   "exact": {
+    "rate": 52.2,
+    "lo": 30.4,
+    "hi": 73.9,
+    "n": 23
+   },
+   "testTop1": {
+    "before": {
+     "rate": 89.4,
+     "lo": 86.2,
+     "hi": 93.1,
+     "n": 217
+    },
+    "after": {
+     "rate": 93.5,
+     "lo": 90.8,
+     "hi": 96.8,
+     "n": 217
+    },
+    "diff": {
+     "d": 4.1,
+     "lo": 1.4,
+     "hi": 6.5
+    }
+   },
+   "rest": {
+    "n": 194,
+    "before": {
+     "rate": 100,
+     "lo": 100,
+     "hi": 100,
+     "n": 194
+    },
+    "after": {
+     "rate": 98.5,
+     "lo": 96.9,
+     "hi": 100,
+     "n": 194
+    },
+    "misfire": {
+     "rate": 1.5,
+     "lo": 0,
+     "hi": 3.1,
+     "n": 194
+    },
+    "frontChanged": 0,
+    "frontMisfire": {
+     "rate": 0,
+     "lo": 0,
+     "hi": 0,
+     "n": 166
+    }
+   },
+   "variants": {
+    "n": 150,
+    "sources": 19,
+    "misfireOther": {
+     "rate": 2,
+     "lo": 1.2,
+     "hi": 2.8,
+     "n": 983
+    },
+    "before": {
+     "rate": 40.7,
+     "lo": 32.7,
+     "hi": 48,
+     "n": 150
+    },
+    "after": {
+     "rate": 60,
+     "lo": 52.7,
+     "hi": 67.3,
+     "n": 150
+    },
+    "fix": {
+     "rate": 57.3,
+     "lo": 46.1,
+     "hi": 66.3,
+     "n": 89
+    },
+    "frontBefore": {
+     "rate": 26.7,
+     "lo": 19.3,
+     "hi": 32.7,
+     "n": 150
+    },
+    "frontAfter": {
+     "rate": 60,
+     "lo": 52.7,
+     "hi": 67.3,
+     "n": 150
+    },
+    "frontFix": {
+     "rate": 45.5,
+     "lo": 37.3,
+     "hi": 54.5,
+     "n": 110
+    },
+    "inCandidates": 106,
+    "wrongBefore": 89,
+    "nearHit": 96.7,
+    "byType": {
+     "asr": {
+      "n": 19,
+      "before": {
+       "rate": 42.1,
+       "lo": 21.1,
+       "hi": 63.2,
+       "n": 19
+      },
+      "after": {
+       "rate": 57.9,
+       "lo": 36.8,
+       "hi": 78.9,
+       "n": 19
+      },
+      "fix": {
+       "rate": 54.5,
+       "lo": 27.3,
+       "hi": 81.8,
+       "n": 11
+      },
+      "frontFix": {
+       "rate": 46.7,
+       "lo": 20,
+       "hi": 73.3,
+       "n": 15
+      },
+      "frontBefore": {
+       "rate": 21.1,
+       "lo": 5.3,
+       "hi": 42.1,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 57.9,
+       "lo": 36.8,
+       "hi": 78.9,
+       "n": 19
+      },
+      "nearHit": 84.2
+     },
+     "casual": {
+      "n": 19,
+      "before": {
+       "rate": 36.8,
+       "lo": 15.8,
+       "hi": 57.9,
+       "n": 19
+      },
+      "after": {
+       "rate": 57.9,
+       "lo": 36.8,
+       "hi": 78.9,
+       "n": 19
+      },
+      "fix": {
+       "rate": 50,
+       "lo": 25,
+       "hi": 75,
+       "n": 12
+      },
+      "frontFix": {
+       "rate": 42.9,
+       "lo": 14.3,
+       "hi": 71.4,
+       "n": 14
+      },
+      "frontBefore": {
+       "rate": 26.3,
+       "lo": 10.5,
+       "hi": 47.4,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 57.9,
+       "lo": 36.8,
+       "hi": 78.9,
+       "n": 19
+      },
+      "nearHit": 100
+     },
+     "fragment": {
+      "n": 17,
+      "before": {
+       "rate": 41.2,
+       "lo": 17.6,
+       "hi": 64.7,
+       "n": 17
+      },
+      "after": {
+       "rate": 70.6,
+       "lo": 47.1,
+       "hi": 88.2,
+       "n": 17
+      },
+      "fix": {
+       "rate": 70,
+       "lo": 40,
+       "hi": 100,
+       "n": 10
+      },
+      "frontFix": {
+       "rate": 61.5,
+       "lo": 38.5,
+       "hi": 84.6,
+       "n": 13
+      },
+      "frontBefore": {
+       "rate": 23.5,
+       "lo": 5.9,
+       "hi": 47.1,
+       "n": 17
+      },
+      "frontAfter": {
+       "rate": 70.6,
+       "lo": 47.1,
+       "hi": 88.2,
+       "n": 17
+      },
+      "nearHit": 100
+     },
+     "indirect": {
+      "n": 19,
+      "before": {
+       "rate": 31.6,
+       "lo": 10.5,
+       "hi": 52.6,
+       "n": 19
+      },
+      "after": {
+       "rate": 63.2,
+       "lo": 42.1,
+       "hi": 84.2,
+       "n": 19
+      },
+      "fix": {
+       "rate": 61.5,
+       "lo": 38.5,
+       "hi": 84.6,
+       "n": 13
+      },
+      "frontFix": {
+       "rate": 46.2,
+       "lo": 23.1,
+       "hi": 76.9,
+       "n": 13
+      },
+      "frontBefore": {
+       "rate": 31.6,
+       "lo": 15.8,
+       "hi": 52.6,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 63.2,
+       "lo": 42.1,
+       "hi": 84.2,
+       "n": 19
+      },
+      "nearHit": 94.7
+     },
+     "keigo": {
+      "n": 19,
+      "before": {
+       "rate": 47.4,
+       "lo": 26.3,
+       "hi": 68.4,
+       "n": 19
+      },
+      "after": {
+       "rate": 68.4,
+       "lo": 47.4,
+       "hi": 89.5,
+       "n": 19
+      },
+      "fix": {
+       "rate": 70,
+       "lo": 40,
+       "hi": 100,
+       "n": 10
+      },
+      "frontFix": {
+       "rate": 53.8,
+       "lo": 30.8,
+       "hi": 84.6,
+       "n": 13
+      },
+      "frontBefore": {
+       "rate": 31.6,
+       "lo": 10.5,
+       "hi": 52.6,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 68.4,
+       "lo": 47.4,
+       "hi": 89.5,
+       "n": 19
+      },
+      "nearHit": 100
+     },
+     "mixed": {
+      "n": 19,
+      "before": {
+       "rate": 47.4,
+       "lo": 26.3,
+       "hi": 68.4,
+       "n": 19
+      },
+      "after": {
+       "rate": 52.6,
+       "lo": 31.6,
+       "hi": 73.7,
+       "n": 19
+      },
+      "fix": {
+       "rate": 50,
+       "lo": 20,
+       "hi": 80,
+       "n": 10
+      },
+      "frontFix": {
+       "rate": 35.7,
+       "lo": 14.3,
+       "hi": 64.3,
+       "n": 14
+      },
+      "frontBefore": {
+       "rate": 26.3,
+       "lo": 5.3,
+       "hi": 47.4,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 52.6,
+       "lo": 31.6,
+       "hi": 73.7,
+       "n": 19
+      },
+      "nearHit": 100
+     },
+     "paraphrase": {
+      "n": 19,
+      "before": {
+       "rate": 42.1,
+       "lo": 21.1,
+       "hi": 63.2,
+       "n": 19
+      },
+      "after": {
+       "rate": 57.9,
+       "lo": 36.8,
+       "hi": 78.9,
+       "n": 19
+      },
+      "fix": {
+       "rate": 54.5,
+       "lo": 27.3,
+       "hi": 81.8,
+       "n": 11
+      },
+      "frontFix": {
+       "rate": 33.3,
+       "lo": 8.3,
+       "hi": 58.3,
+       "n": 12
+      },
+      "frontBefore": {
+       "rate": 36.8,
+       "lo": 15.8,
+       "hi": 57.9,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 57.9,
+       "lo": 36.8,
+       "hi": 78.9,
+       "n": 19
+      },
+      "nearHit": 100
+     },
+     "verbose": {
+      "n": 19,
+      "before": {
+       "rate": 36.8,
+       "lo": 15.8,
+       "hi": 63.2,
+       "n": 19
+      },
+      "after": {
+       "rate": 52.6,
+       "lo": 31.6,
+       "hi": 73.7,
+       "n": 19
+      },
+      "fix": {
+       "rate": 50,
+       "lo": 25,
+       "hi": 75,
+       "n": 12
+      },
+      "frontFix": {
+       "rate": 43.8,
+       "lo": 18.8,
+       "hi": 68.8,
+       "n": 16
+      },
+      "frontBefore": {
+       "rate": 15.8,
+       "lo": 0,
+       "hi": 31.6,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 52.6,
+       "lo": 31.6,
+       "hi": 73.7,
+       "n": 19
+      },
+      "nearHit": 94.7
+     }
+    }
+   },
+   "controls": {
+    "n": 40,
+    "nearHit": 9,
+    "frontChanged": 1,
+    "frontMisfire": 0,
+    "frontBefore": {
+     "rate": 77.5,
+     "lo": 62.5,
+     "hi": 90,
+     "n": 40
+    },
+    "deferBefore": 14,
+    "deferAfter": 12
+   },
+   "deferRate": {
+    "before": 24.9,
+    "after": 19.8
+   }
+  },
+  "larm+inj": {
+   "corrections": 23,
+   "exactFront": {
+    "rate": 76.2,
+    "lo": 57.1,
+    "hi": 95.2,
+    "n": 21
+   },
+   "exact": {
+    "rate": 73.9,
+    "lo": 56.5,
+    "hi": 91.3,
+    "n": 23
+   },
+   "testTop1": {
+    "before": {
+     "rate": 89.4,
+     "lo": 86.2,
+     "hi": 93.1,
+     "n": 217
+    },
+    "after": {
+     "rate": 97.2,
+     "lo": 94.9,
+     "hi": 99.1,
+     "n": 217
+    },
+    "diff": {
+     "d": 7.8,
+     "lo": 4.1,
+     "hi": 10.1
+    }
+   },
+   "rest": {
+    "n": 194,
+    "before": {
+     "rate": 100,
+     "lo": 100,
+     "hi": 100,
+     "n": 194
+    },
+    "after": {
+     "rate": 100,
+     "lo": 100,
+     "hi": 100,
+     "n": 194
+    },
+    "misfire": {
+     "rate": 0,
+     "lo": 0,
+     "hi": 0,
+     "n": 194
+    },
+    "frontChanged": 1,
+    "frontMisfire": {
+     "rate": 0,
+     "lo": 0,
+     "hi": 0,
+     "n": 166
+    }
+   },
+   "variants": {
+    "n": 150,
+    "sources": 19,
+    "misfireOther": {
+     "rate": 0.7,
+     "lo": 0.3,
+     "hi": 1,
+     "n": 983
+    },
+    "before": {
+     "rate": 40.7,
+     "lo": 32.7,
+     "hi": 48,
+     "n": 150
+    },
+    "after": {
+     "rate": 86,
+     "lo": 80,
+     "hi": 92,
+     "n": 150
+    },
+    "fix": {
+     "rate": 76.4,
+     "lo": 67.4,
+     "hi": 83.1,
+     "n": 89
+    },
+    "frontBefore": {
+     "rate": 26.7,
+     "lo": 19.3,
+     "hi": 32.7,
+     "n": 150
+    },
+    "frontAfter": {
+     "rate": 76.7,
+     "lo": 70.7,
+     "hi": 83.3,
+     "n": 150
+    },
+    "frontFix": {
+     "rate": 68.2,
+     "lo": 60.9,
+     "hi": 75.5,
+     "n": 110
+    },
+    "inCandidates": 106,
+    "wrongBefore": 89,
+    "nearHit": 96.7,
+    "byType": {
+     "asr": {
+      "n": 19,
+      "before": {
+       "rate": 42.1,
+       "lo": 21.1,
+       "hi": 63.2,
+       "n": 19
+      },
+      "after": {
+       "rate": 84.2,
+       "lo": 68.4,
+       "hi": 100,
+       "n": 19
+      },
+      "fix": {
+       "rate": 72.7,
+       "lo": 45.5,
+       "hi": 90.9,
+       "n": 11
+      },
+      "frontFix": {
+       "rate": 66.7,
+       "lo": 40,
+       "hi": 86.7,
+       "n": 15
+      },
+      "frontBefore": {
+       "rate": 21.1,
+       "lo": 5.3,
+       "hi": 42.1,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 73.7,
+       "lo": 52.6,
+       "hi": 89.5,
+       "n": 19
+      },
+      "nearHit": 84.2
+     },
+     "casual": {
+      "n": 19,
+      "before": {
+       "rate": 36.8,
+       "lo": 15.8,
+       "hi": 57.9,
+       "n": 19
+      },
+      "after": {
+       "rate": 78.9,
+       "lo": 57.9,
+       "hi": 94.7,
+       "n": 19
+      },
+      "fix": {
+       "rate": 66.7,
+       "lo": 41.7,
+       "hi": 91.7,
+       "n": 12
+      },
+      "frontFix": {
+       "rate": 64.3,
+       "lo": 35.7,
+       "hi": 85.7,
+       "n": 14
+      },
+      "frontBefore": {
+       "rate": 26.3,
+       "lo": 10.5,
+       "hi": 47.4,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 73.7,
+       "lo": 52.6,
+       "hi": 89.5,
+       "n": 19
+      },
+      "nearHit": 100
+     },
+     "fragment": {
+      "n": 17,
+      "before": {
+       "rate": 41.2,
+       "lo": 17.6,
+       "hi": 64.7,
+       "n": 17
+      },
+      "after": {
+       "rate": 94.1,
+       "lo": 82.4,
+       "hi": 100,
+       "n": 17
+      },
+      "fix": {
+       "rate": 90,
+       "lo": 70,
+       "hi": 100,
+       "n": 10
+      },
+      "frontFix": {
+       "rate": 76.9,
+       "lo": 53.8,
+       "hi": 100,
+       "n": 13
+      },
+      "frontBefore": {
+       "rate": 23.5,
+       "lo": 5.9,
+       "hi": 47.1,
+       "n": 17
+      },
+      "frontAfter": {
+       "rate": 82.4,
+       "lo": 64.7,
+       "hi": 100,
+       "n": 17
+      },
+      "nearHit": 100
+     },
+     "indirect": {
+      "n": 19,
+      "before": {
+       "rate": 31.6,
+       "lo": 10.5,
+       "hi": 52.6,
+       "n": 19
+      },
+      "after": {
+       "rate": 78.9,
+       "lo": 57.9,
+       "hi": 94.7,
+       "n": 19
+      },
+      "fix": {
+       "rate": 69.2,
+       "lo": 46.2,
+       "hi": 92.3,
+       "n": 13
+      },
+      "frontFix": {
+       "rate": 76.9,
+       "lo": 53.8,
+       "hi": 100,
+       "n": 13
+      },
+      "frontBefore": {
+       "rate": 31.6,
+       "lo": 15.8,
+       "hi": 52.6,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 84.2,
+       "lo": 68.4,
+       "hi": 100,
+       "n": 19
+      },
+      "nearHit": 94.7
+     },
+     "keigo": {
+      "n": 19,
+      "before": {
+       "rate": 47.4,
+       "lo": 26.3,
+       "hi": 68.4,
+       "n": 19
+      },
+      "after": {
+       "rate": 89.5,
+       "lo": 73.7,
+       "hi": 100,
+       "n": 19
+      },
+      "fix": {
+       "rate": 80,
+       "lo": 50,
+       "hi": 100,
+       "n": 10
+      },
+      "frontFix": {
+       "rate": 69.2,
+       "lo": 46.2,
+       "hi": 92.3,
+       "n": 13
+      },
+      "frontBefore": {
+       "rate": 31.6,
+       "lo": 10.5,
+       "hi": 52.6,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 78.9,
+       "lo": 57.9,
+       "hi": 94.7,
+       "n": 19
+      },
+      "nearHit": 100
+     },
+     "mixed": {
+      "n": 19,
+      "before": {
+       "rate": 47.4,
+       "lo": 26.3,
+       "hi": 68.4,
+       "n": 19
+      },
+      "after": {
+       "rate": 89.5,
+       "lo": 73.7,
+       "hi": 100,
+       "n": 19
+      },
+      "fix": {
+       "rate": 80,
+       "lo": 50,
+       "hi": 100,
+       "n": 10
+      },
+      "frontFix": {
+       "rate": 71.4,
+       "lo": 50,
+       "hi": 92.9,
+       "n": 14
+      },
+      "frontBefore": {
+       "rate": 26.3,
+       "lo": 5.3,
+       "hi": 47.4,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 78.9,
+       "lo": 57.9,
+       "hi": 94.7,
+       "n": 19
+      },
+      "nearHit": 100
+     },
+     "paraphrase": {
+      "n": 19,
+      "before": {
+       "rate": 42.1,
+       "lo": 21.1,
+       "hi": 63.2,
+       "n": 19
+      },
+      "after": {
+       "rate": 89.5,
+       "lo": 73.7,
+       "hi": 100,
+       "n": 19
+      },
+      "fix": {
+       "rate": 81.8,
+       "lo": 54.5,
+       "hi": 100,
+       "n": 11
+      },
+      "frontFix": {
+       "rate": 50,
+       "lo": 25,
+       "hi": 75,
+       "n": 12
+      },
+      "frontBefore": {
+       "rate": 36.8,
+       "lo": 15.8,
+       "hi": 57.9,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 68.4,
+       "lo": 47.4,
+       "hi": 89.5,
+       "n": 19
+      },
+      "nearHit": 100
+     },
+     "verbose": {
+      "n": 19,
+      "before": {
+       "rate": 36.8,
+       "lo": 15.8,
+       "hi": 63.2,
+       "n": 19
+      },
+      "after": {
+       "rate": 84.2,
+       "lo": 68.4,
+       "hi": 100,
+       "n": 19
+      },
+      "fix": {
+       "rate": 75,
+       "lo": 50,
+       "hi": 100,
+       "n": 12
+      },
+      "frontFix": {
+       "rate": 68.8,
+       "lo": 43.8,
+       "hi": 87.5,
+       "n": 16
+      },
+      "frontBefore": {
+       "rate": 15.8,
+       "lo": 0,
+       "hi": 31.6,
+       "n": 19
+      },
+      "frontAfter": {
+       "rate": 73.7,
+       "lo": 52.6,
+       "hi": 89.5,
+       "n": 19
+      },
+      "nearHit": 94.7
+     }
+    }
+   },
+   "controls": {
+    "n": 40,
+    "nearHit": 9,
+    "frontChanged": 2,
+    "frontMisfire": 1,
+    "frontBefore": {
+     "rate": 77.5,
+     "lo": 62.5,
+     "hi": 90,
+     "n": 40
+    },
+    "deferBefore": 14,
+    "deferAfter": 15
+   },
+   "deferRate": {
+    "before": 24.9,
+    "after": 26.3
+   }
+  }
+ }
+}

@@ -50,9 +50,11 @@ export type SrOffer = {
 	scores: Record<string, number>;
 };
 
-/** The utterance's character trigrams as an FTS5 OR query; null under three characters. */
+/** The utterance's character trigrams as an FTS5 OR query; null under three characters. NUL is dropped (SQLite ends a string there). */
 export function trigramQuery(text: string): string | null {
-	const chars = [...text.normalize("NFKC").replace(/\s+/g, "")];
+	const chars = [
+		...text.normalize("NFKC").replace(/\s+/g, "").replaceAll("\u0000", ""),
+	];
 	const grams = new Set<string>();
 	for (let i = 0; i + 3 <= chars.length; i++)
 		grams.add(chars.slice(i, i + 3).join(""));

@@ -50,14 +50,13 @@ CREATE VIRTUAL TABLE IF NOT EXISTS router_passages_fts USING fts5(
  card_id UNINDEXED, text, tokenize='trigram'
 );
 CREATE TABLE IF NOT EXISTS router_examples (
- id TEXT PRIMARY KEY,
  source TEXT NOT NULL,
  space TEXT NOT NULL,
  item INTEGER NOT NULL,
  label TEXT NOT NULL,
- vector BLOB NOT NULL
+ vector BLOB NOT NULL,
+ PRIMARY KEY (source, space, item)
 );
-CREATE INDEX IF NOT EXISTS router_examples_source ON router_examples(source, space, item);
 `;
 
 /**

@@ -209,8 +209,11 @@ export async function route(
 		threshold: settings.feedbackNear,
 	});
 	// A correction can only move a candidate that is offered, so the right
-	// answers of near corrections are offered even when the frame missed them.
-	const include = [...new Set(near.map((row) => row.rightId))];
+	// answer of near corrections is offered even when the frame missed it —
+	// only when the correction applies (they agree, and the weight is on).
+	const rights = [...new Set(near.map((row) => row.rightId))];
+	const include =
+		settings.feedbackWeight > 0 && rights.length === 1 ? rights : [];
 	const retrieved = ports.read.candidates({
 		vector: { space: embedded.space, values: vector },
 		available: turn.available,

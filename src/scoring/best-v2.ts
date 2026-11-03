@@ -1,6 +1,7 @@
 import { routerErrors } from "../contracts/errors.ts";
+import { routeErrors } from "../contracts/route.ts";
 import { CONVERSATION_ID } from "../decision/decide.ts";
-import { dot, unpackVector } from "../vector.ts";
+import { decodeVectors, dot } from "../vector.ts";
 
 /**
  * best-v2, the main decision's scorer. The candidates are the retrieval's top
@@ -127,20 +128,39 @@ export function loadBestV2(
 	if (
 		memory?.format !== BEST_V2_MEMORY_FORMAT ||
 		memory.source !== a.source ||
-		memory.dimension !== dimension
+		memory.dimension !== dimension ||
+		!validLabels(memory.labels)
 	)
 		throw invalid();
-	const bytes = Uint8Array.from(atob(memory.vectors), (c) => c.charCodeAt(0));
-	if (bytes.byteLength !== memory.labels.length * dimension * 4)
-		throw invalid();
-	const all = unpackVector(bytes);
-	return {
-		params: a,
-		labels: memory.labels,
-		memory: memory.labels.map((_, i) =>
-			all.subarray(i * dimension, (i + 1) * dimension),
-		),
-	};
+	const vectors = decodeVectors(
+		memory.vectors,
+		memory.labels.length,
+		dimension,
+	);
+	if (!vectors) throw invalid();
+	return { params: a, labels: memory.labels, memory: vectors };
+}
+
+export const validLabels = (labels: unknown): labels is readonly string[] =>
+	Array.isArray(labels) &&
+	labels.every((label) => typeof label === "string" && label.length > 0);
+
+/** The host's inputs must be finite numbers and distinct candidates (the reranker answers through the host). */
+function assertInput(input: BestV2Input, dimension: number) {
+	if (input.vector.length !== dimension)
+		throw new Error(routerErrors.invalidEmbedding);
+	for (let i = 0; i < input.vector.length; i++)
+		if (!Number.isFinite(input.vector[i]))
+			throw new Error(routerErrors.invalidEmbedding);
+	const ids = new Set<string>();
+	for (const [id, p] of input.retrieval) {
+		if (ids.has(id) || !Number.isFinite(p))
+			throw new Error(routeErrors.invalidResponse);
+		ids.add(id);
+	}
+	for (const record of [input.retrievalScores, input.rerank])
+		for (const v of Object.values(record))
+			if (!Number.isFinite(v)) throw new Error(routeErrors.invalidResponse);
 }
 
 export function scoreBestV2(
@@ -149,8 +169,7 @@ export function scoreBestV2(
 ): BestV2Result {
 	const a = model.params;
 	const conv = CONVERSATION_ID;
-	if (input.vector.length !== a.knn.dimension)
-		throw new Error(routerErrors.invalidEmbedding);
+	assertInput(input, a.knn.dimension);
 	const retrieved = [...input.retrieval]
 		.sort((x, y) => y[1] - x[1])
 		.slice(0, a.fuse.top);
@@ -215,5 +234,6 @@ export function scoreBestV2(
 		})
 		.sort((x, y) => y.p - x.p);
 	const gate = ranked[0]!.p - (ranked[1]?.p ?? -9);
-	return { ranked, gate, defer: gate < a.gate.deferBelow };
+	// Written so that a NaN gate defers (it is never confident).
+	return { ranked, gate, defer: !(gate >= a.gate.deferBelow) };
 }

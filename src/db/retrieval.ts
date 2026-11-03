@@ -2,10 +2,13 @@ import { routerErrors } from "../contracts/errors.ts";
 import { trigramQuery, type SrCard } from "../retrieval/sr.ts";
 import {
 	BEST_V2_MEMORY_FORMAT,
+	validLabels,
 	type BestV2Memory,
 } from "../scoring/best-v2.ts";
 import {
 	assertVector,
+	decodeVectors,
+	encodeVectors,
 	packVector,
 	unpackVector,
 	vectorSpaceKey,
@@ -77,37 +80,40 @@ export function importExamplesInTransaction(
 	memory: BestV2Memory,
 	space: VectorSpace,
 ): number {
+	// Everything is checked before the old rows go.
 	if (
 		memory?.format !== BEST_V2_MEMORY_FORMAT ||
 		memory.dimension !== space.dimension ||
-		!memory.source
+		typeof memory.source !== "string" ||
+		!memory.source ||
+		!validLabels(memory.labels)
 	)
 		throw new Error(routerErrors.invalidModel);
-	const bytes = Uint8Array.from(atob(memory.vectors), (c) => c.charCodeAt(0));
-	if (bytes.byteLength !== memory.labels.length * space.dimension * 4)
-		throw new Error(routerErrors.invalidModel);
-	const all = unpackVector(bytes);
+	const vectors = decodeVectors(
+		memory.vectors,
+		memory.labels.length,
+		space.dimension,
+	);
+	if (!vectors) throw new Error(routerErrors.invalidModel);
+	for (const vector of vectors) assertVector(space, Array.from(vector));
 	const key = vectorSpaceKey(space);
 	db.query("DELETE FROM router_examples WHERE source=? AND space=?").run(
 		memory.source,
 		key,
 	);
-	memory.labels.forEach((label, item) => {
-		const vector = Array.from(
-			all.subarray(item * space.dimension, (item + 1) * space.dimension),
-		);
-		assertVector(space, vector);
-		db.query(
-			"INSERT INTO router_examples(id, source, space, item, label, vector) VALUES (?,?,?,?,?,?)",
-		).run(
-			`${memory.source}:${item}`,
-			memory.source,
-			key,
-			item,
-			label,
-			packVector(vector),
-		);
-	});
+	memory.labels.forEach((label, item) =>
+		db
+			.query(
+				"INSERT INTO router_examples(source, space, item, label, vector) VALUES (?,?,?,?,?)",
+			)
+			.run(
+				memory.source,
+				key,
+				item,
+				label,
+				packVector(Array.from(vectors[item]!)),
+			),
+	);
 	return memory.labels.length;
 }
 
@@ -125,18 +131,11 @@ export function examplesInTransaction(
 		vector: Uint8Array;
 	}>;
 	if (!rows.length) return null;
-	const bytes = new Uint8Array(rows.length * input.space.dimension * 4);
-	rows.forEach((row, i) =>
-		bytes.set(new Uint8Array(row.vector), i * input.space.dimension * 4),
-	);
-	let binary = "";
-	for (let i = 0; i < bytes.length; i += 0x8000)
-		binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
 	return {
 		format: BEST_V2_MEMORY_FORMAT,
 		source: input.source,
 		dimension: input.space.dimension,
 		labels: rows.map((row) => row.label),
-		vectors: btoa(binary),
+		vectors: encodeVectors(rows.map((row) => new Uint8Array(row.vector))),
 	};
 }

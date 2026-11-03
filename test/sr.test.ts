@@ -13,13 +13,29 @@ import {
 	type VectorSpace,
 } from "../src/index.ts";
 import { sha256Hex } from "../src/digest.ts";
+import { cardDigest } from "../src/index.ts";
 import {
+	candidatesInTransaction,
 	lexicalInTransaction,
 	migrateInTransaction,
 	saveVectorsInTransaction,
 	srCardsInTransaction,
 	syncCardsInTransaction,
 } from "../src/sqlite.ts";
+
+function cardOf(id: string, summary: string): Card {
+	const body = {
+		id,
+		revision: `rev-${id}-${summary}`,
+		kind: "dedicated" as const,
+		title: id,
+		summary,
+		useWhen: ["使う"],
+		examples: ["例"],
+		impact: "none" as const,
+	};
+	return { ...body, digest: cardDigest(body) };
+}
 
 test("trigrams of the normalized text, quoted, as an OR query", () => {
 	expect(trigramQuery("天気 予報")).toBe('"天気予" OR "気予報"');
@@ -203,3 +219,43 @@ test.skipIf(!parity)(
 		expect(wrong).toEqual([]);
 	},
 );
+
+test("a NUL in the utterance does not reach the query", () => {
+	expect(trigramQuery("天\u0000気予報")).toBe(
+		['"天気予"', '"気予報"'].join(" OR "),
+	);
+});
+
+test("an unchanged card keeps its lexical rows; a strict empty index stays empty with include", () => {
+	const db = new Database(":memory:");
+	migrateInTransaction(db);
+	const space: VectorSpace = {
+		modelId: "embed",
+		revision: "1",
+		artifactDigest: "d",
+		dimension: 2,
+	};
+	const cards = (bench: string) => [
+		cardOf("music.create", bench),
+		cardOf("image.create", "画像を作る"),
+	];
+	syncCardsInTransaction(db, cards("曲を作る"), space);
+	const rows = () =>
+		db
+			.query("SELECT rowid, card_id FROM router_passages_fts ORDER BY rowid")
+			.all();
+	const before = rows();
+	syncCardsInTransaction(db, cards("曲を作る"), space);
+	expect(rows()).toEqual(before);
+	syncCardsInTransaction(db, cards("曲を新しく作る"), space);
+	expect(rows()).not.toEqual(before);
+	expect(
+		candidatesInTransaction(db, {
+			vector: { space, values: [1, 0] },
+			available: () => true,
+			strict: true,
+			include: ["music.create"],
+		}),
+	).toEqual([]);
+	db.close();
+});

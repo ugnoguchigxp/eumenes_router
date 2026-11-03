@@ -412,3 +412,55 @@ test("a bad intent signal fails before the embedding", async () => {
 	).rejects.toThrow("larm_invalid_route_request");
 	expect(embedded).toBe(false);
 });
+
+test("nothing joins the offer when the near corrections disagree or the weight is off", async () => {
+	const asked: Array<readonly string[] | undefined> = [];
+	const run = (near: NearFeedback[], feedbackWeight: number) =>
+		route(
+			{
+				embed: async () => ({ space, vectors: [[1, 0]] }),
+				score: async () => ({
+					choice: CONVERSATION_ID,
+					probabilities: { [CONVERSATION_ID]: 1 },
+					scores: null,
+					model: "scorer",
+					headRevision: null,
+					calibrationRevision: null,
+				}),
+				read: {
+					candidates: (query) => {
+						asked.push(query.include);
+						return [];
+					},
+					nearFeedback: () => near,
+				},
+				settings: {
+					accept: 0.6,
+					low: 0.3,
+					margin: 0.15,
+					approve: 0.85,
+					multi: 0.5,
+					feedbackNear: 0.9,
+					feedbackWeight,
+				},
+			},
+			{
+				state: { text: "曲", previousAgent: null, previousUser: null },
+				dynamic: [conversation],
+				available: () => true,
+				instructions: "",
+			},
+		);
+	await run(
+		[
+			{ id: "a", wrongId: null, rightId: "music.create", similarity: 1 },
+			{ id: "b", wrongId: null, rightId: "image.create", similarity: 1 },
+		],
+		2,
+	);
+	await run(
+		[{ id: "a", wrongId: null, rightId: "music.create", similarity: 1 }],
+		0,
+	);
+	expect(asked).toEqual([undefined, undefined]);
+});
