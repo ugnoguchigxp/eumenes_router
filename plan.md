@@ -1,6 +1,6 @@
 # eumenes_router 計画（2026-11-02）
 
-状態（2026-11-03）: M0 を実装し、M2（方式の比較）の途中。メインの判断の実装は best-v2（判定と学習済みの数値はパッケージに入れた。`route()` への組み込みは §10 M3a の②）。文の構造の判断（参照と依頼を分ける、複数の依頼はパイプラインへ）を計画した（§10 M3b、未着手）。検証して採らなかった実装は `archive/`（結論と実測は `docs/reports/router_verifications_2026-11-03.md`）。正解付け（M1）と出荷（M3）は未着手。Eumenes 側のカードと状態の書き出しはまだない。408件の決定の一致は未了。この文書が作業の入口。作業規則は同じ場所の `AGENTS.md`。
+状態（2026-11-04）: M0 を実装し、M2（方式の比較）の途中。本流（成績の一番良い組み合わせ、利用者の判断。トークンよりこの判定を優先）は、構造の判断（LLM）→ 参照を伏せる振り分け → 依頼の部分ごとに best-v2（ツールの候補 10件）＋ LARM の学習し直した ruri の点数＋ sr-corr ＋ 訂正の記憶。best-v2 の判定と学習済みの数値はパッケージに入れた。構造の判断と送り先の規則はまだ bench（`bench/router/structure.ts`）。本流は2つの構成（A: best-v2 だけ、B: 構造の判断＋best-v2）で、1つの tarball に両方を入れ、Eumenes 側が呼び方で選ぶ（§10 M3d）。`route()` への組み込みは §10 M3a の②。構造の判断（M3b）と改善の試行（M3c）は測り終え、採らなかったものは `archive/`（結論と実測は `docs/reports/router_verifications_2026-11-03.md`・`docs/reports/router_improvements_2026-11-03.md`）。正解付け（M1）と出荷（M3）は未着手。Eumenes 側のカードと状態の書き出しはまだない。408件の決定の一致は未了。この文書が作業の入口。作業規則は同じ場所の `AGENTS.md`。
 
 一言で: Eumenes の「担当の振り分け（Toolchain Router）」を研究用の独立プロジェクトに切り出す。正解付きの評価データで方式を実測して決め、勝った方式を tarball で Eumenes に戻す。Router の完成品は目指さない。
 
@@ -18,6 +18,9 @@
 | 2026-11-03 | 利用者の判断: best-v2 をメインの判断の実装にする。劣る方式はパッケージ（tarball）に入れない。今回検証した実装（LLM による確認、LARM の文脈判定の単体利用、言い換えの意味の Haiku 判定）は `archive/` に移して ARCHIVED と明示し、本文を含まない実測データをリポジトリに残す（同じ改善をやり直さないための証跡） |
 | 2026-11-03 | 利用者の判断: 文の構造の判断を Router に入れる。起きる頻度ではなく、これから複合になる依頼に備えるため。依頼が2件以上なら、並列でも多段でもパイプラインへ送り、登録済みのパイプラインから近いものを選ぶ。参照つきの単一の依頼（「この音楽にぴったりな画像も作って」）は、依頼と参照を分けて Router で処理する（§10 M3b）。設計書 §11 #6 の全体の形が「発言 → 構造の判断 → 検索 → Router → 決定表」に変わる。パイプラインは Eumenes に仕組みがあるが、別のプロジェクトとしてやり直す予定（利用者）。Router との境目は契約で持ち、今の Eumenes の定義の形には結び付けない。設計書の直しと Eumenes への組み込みは Eumenes のセッションで行う |
 | 2026-11-03 | 利用者の判断: ブラウザ操作は多段でも browser.operate で閉じる。複数の担当を使うシナリオがパイプライン。`BEST_V2_PARAMS` を、LARM で学習し直した ruri（`ruri-conv20-structure-v1-s0-fp32-v1`）の点数で dev から学習した版に差し替える |
+| 2026-11-04 | 利用者の判断: これまでで成績の一番良い組み合わせを本流にし、それ以外は `archive/` に移す。本流は best-v2（ツールの候補 10件）＋ LARM の学習し直した ruri（`ruri-conv20-structure-v1-s0-fp32-v1`）の点数＋ sr-corr ＋ 訂正の記憶（θ 0.9177・β 1.5・正解を候補に足す）。test 1位 87.1%・回す率 18.0%・言い換え 81.6%。構造の判断（S1・S3）、ruri の学習データの道具、round2・round3・algo4 は archive。LLM の構造の判断（S3）を重ねると test 88.5% だが、1発言 約 900 トークン・p95 2.9 s で、トークンを減らす方針に反するので本流にしない |
+| 2026-11-04 | 利用者の判断: 本流は **構造の判断（LLM、S3）→ 参照を伏せる振り分け（mask）→ 依頼の部分ごとに best-v2（ツールの候補 10件）** とする。トークンよりこの判定（参照と依頼・複数の依頼）を優先する。上の行で S3 を外したのは費用を理由にした Claude の判断で、成績の一番良い組み合わせという指示に反していた。本流の値: 作った対 186件で 90.3%（今の経路＋手がかり 47.3%）、参照の側 1.3%、複数 → パイプライン 84.5%、単一 → パイプライン 0.9%、感想・質問 → 会話 100%、test 217件 88.5%（今の経路 87.1%）。1発言 約 900 トークン・p95 2.9 s。S1・候補 5 は archive のまま |
+| 2026-11-04 | 利用者の判断: 本流は2つとも採る。A（direct）: best-v2 だけ（ツールの候補 10件）。B（structured）: 構造の判断（LLM）→ 参照を伏せる振り分け → 依頼の部分ごとに best-v2。Eumenes 側がどちらを使うかを選べるようにする。1つの tarball に両方を入れ、Eumenes 側は呼び方（呼ぶ関数）で選ぶ。Router の中で発言ごとに切り替えるのではなく、どちらが良いかを試すための構成。最終的には1つに絞るかもしれない（§10 M3d） |
 
 設計書 §11 の決定（このプロジェクトでも守る）:
 
@@ -28,7 +31,7 @@
 | 3 | 追加学習 | してよい |
 | 4 | 即時の訂正 | 利用者の明示の訂正だけを「訂正の記憶」に残し、近い発言にだけ上限付きの補正をかける。重みは逐次更新しない。まとめて学習し、固定の評価で通ったときだけ版を切り替える |
 | 5 | LLM の選ぶ呼出し | なくす。点数の低い回も LLM に選ばせない（ホストの聞き返しか会話の回） |
-| 6 | 全体の形 | 発言 → 検索 → Router 1回 → 決定表 → 会話の回か、今の引き渡し。2026-11-03 に、検索の前に構造の判断を足すと決めた（§10 M3b） |
+| 6 | 全体の形 | 発言 → 検索 → Router 1回 → 決定表 → 会話の回か、今の引き渡し。2026-11-03 に、検索の前に構造の判断を足すと決めた（§10 M3b）。2026-11-04 から、構造の判断は LLM（担当は選ばせず、構造だけを返させる）で、本流 |
 | 8 | モデルの実行場所（本番） | LARM。Eumenes はモデル・ONNX Runtime・学習の仕組みを持たない |
 
 このプロジェクトで新しく確かめる仮説: 「候補ごとの Transformer 推論を足さない方式（Embedding＋語彙・構造の特徴＋軽量 LtR、または埋め込みの微調整）でも、判断モデルや CrossEncoder と同等になるか」。設計書 §7.3 の比較にはこの枠がない。
@@ -102,40 +105,42 @@
 | `eumenes_router` | 契約の型、候補の融合と枠、訂正の補正、決定表、予測集合、全体の流れ `route()` | なし（DB・時計・乱数・ネットワーク・モデルに直接依存しない。必要なものは引数で受ける） |
 | `eumenes_router/sqlite` | 表・migration・読み書きの関数 | ホストから借りた同期接続だけ。open/close・transaction・PRAGMA・独自 writer を持たない。書込みは `*InTransaction` で、ホストの transaction の中で呼ばれる |
 
-形（M0 で確定。案からの差分は下の表）:
+形（2026-11-04、本流の2つの入口。M0 の形からの差分は下の表と §10 M3d）:
 
 ```ts
 // ポート（ホストが渡す。ネットワークの呼出しは transaction の外で）
 type Embed = (texts: readonly string[]) => Promise<{ space: VectorSpace; vectors: number[][] }>;
-type Score = (input: RouteInput) => Promise<RouteAnswer>;
+type Score = (input: RouteInput) => Promise<RouteAnswer>;   // reranker（LARM の文脈判定）。scores が必須
+type Analyze = (prompt: { version; system; user }) => Promise<string>; // 構造の判断（routeStructured だけ）
 
 // eumenes_router/sqlite（ホストの transaction の中で）
 migrateInTransaction(db): void
-syncCardsInTransaction(db, cards, space): { pending: Passage[] } // その space で、文の digest が変わった分だけ
+syncCardsInTransaction(db, cards, space): { pending: Passage[] } // その space で、文の digest が変わった分だけ。全文検索の索引も保つ
 saveVectorsInTransaction(db, space, rows): void                  // rows は { id, revision, item, text, vector }
-candidatesInTransaction(db, { vector, available, slots, fromHistory?, strict?, include? }): Candidate[]
-// include は、近い訂正の正解。枠の外でも、枠の後ろに足す（枠を使わない）。有効で available なカードだけ
-// slots は "router" | "choice"。ftsRank は null。fromHistory は順位も枠も変えない印。
-// その space にベクトルが一件も無いとき、strict でなければ read 以外の有効なカードを id 順に返す（similarity は null）
+srCardsInTransaction(db, { space, available }): RouterCard[]     // 有効で available なカードと、その space の文のベクトル
+lexicalInTransaction(db, text): Map<string, number>              // 全文検索（trigram）のカードごとの −bm25 の最大
+importExamplesInTransaction(db, memory, space) / examplesInTransaction(db, { source, space }) // best-v2 の記憶
 nearFeedback(db, { vector, space, threshold, limit? }): NearFeedback[] // 既定 limit 5、新しい 500 件を走査
-recordFeedbackInTransaction(db, feedback): void                  // id と at はホストが渡す
-setFeedbackStateInTransaction(db, id, state, at): boolean
-forgetInTransaction(db, messageIds): number
+recordFeedbackInTransaction(db, feedback) / setFeedbackStateInTransaction(db, id, state, at) / forgetInTransaction(db, messageIds)
 
 // eumenes_router（Eumenes と bench が同じ関数を使い、流れのずれを作らない）
-const result = await route(
-  { embed, score, read: { candidates, nearFeedback }, settings, log },
-  { state: { text, previousAgent, previousUser }, dynamic, passages?: { conversation, memory }, fromHistory?, available, instructions, asked, signals: { intentChat: 0.12 } },
-);
-// passages を渡したとき、dynamic に無い conversation.respond と memory.request を、その文で足す。文はホストが書く
-// result: { candidates（検索の枠）, answer, corrected, decision, explain }
-// answer は、候補が無ければ null。そのときの決定は行 8（会話）で、採点は呼ばない
+const ports = { embed, rerank, read: { cards, lexical, nearFeedback }, model: loadBestV2(BEST_V2_PARAMS, memory), settings, log };
+const turn = { state: { text, previousAgent, previousUser }, dynamic, passages?, available, instructions, resource?, asked?, signals? };
+const a = await route(ports, turn);                         // A: direct
+const b = await routeStructured({ ...ports, analyze }, turn); // B: structured
+// a: { answer, corrected, decision, explain: { retrieval, offered, skipped, gate, defer, conflict, conflicts, intentChat } }
+// b: { structure, parts: [{ text, result }], decision }。decision は行 9 の { to: "pipeline", steps: [{ text, candidate, after }] } もありうる
+// ツールの候補が無ければ reranker を呼ばず行 8（会話）。説明が空白、名前が不正、候補が 128 を超えるときは larm_invalid_route_request
 // explain.conflicts は、補正が衝突した訂正の id。パッケージは状態を書かない。ホストが setFeedbackStateInTransaction で conflict にする
-// 説明が空白、または候補が 128 を超えるときは、採点の前に larm_invalid_route_request
 checkReachability({ cards, eval, before? }): ReachabilityReport
-// eval の1件は { cardId, offered, top1, set? }。ホストが検索まで済ませた結果。この関数は埋め込みもモデルも呼ばない
-// set をそのカードの全件に渡したとき recallAtSet（予測集合に正解が入る割合）。一件でも省くと null
 ```
+
+| 2026-11-04 の差分（M3d） | 中身 |
+| --- | --- |
+| 検索 | `candidatesInTransaction`（埋め込みの最大内積の枠）は消し、sr-corr（`srCardsInTransaction`・`lexicalInTransaction`・`srScores`・`srOffer`・`srRanking`、種類ごとの枠 `capByKind`）にした |
+| 採点 | 選ぶ呼出し（`probabilities` で1つを選ぶ）は消し、reranker の `scores` を best-v2 に渡す。基準の説明はカードの reranker の文（`rerankDocument`、上限 4096字）、本文は先頭 400字 |
+| 決定表 | best-v2 が回さないときが「自信あり」（`decide` の `confident`）。`low` は 0（聞き返しの行 8 にしない）。訂正で1位が変わったときは自信なし |
+| 版 | `contractVersions.route` 2、`structure` 1。`BEST_V2_PARAMS` の形式 `best-v2.v2` |
 
 案からの差分（M0）:
 
@@ -313,7 +318,7 @@ eumenes_router/
 | M0 | `git init`、`.gitignore`（`data/`・`node_modules/`・`dist/`）、Bun の雛形。§3.2 の部品をコピーし、§4 の形に分ける。`score.ts` を移す。Eumenes 側のカードと状態の書き出しを利用者に依頼する | 同じ評価データ・同じ予測で、パッケージの決定が Eumenes の `score.ts` の決定と100%一致する（parity）。`bun test` が通る |
 | M1 | inspector（正解付けの画面）を作る。正解付けは利用者が行う | §7 の区分の件数を満たし、split を固定する |
 | M2 | §8 の方式を比べる。オフラインで精度、合図の後に live と本番機で速度・資源 | §9 の合否で採る方式を決め、結果を記録する |
-| M3 | 出荷する: `eumenes_router-0.0.1-<sha256の先頭12>.tgz`、`.sha256`、`manifest.json` を作る。Eumenes 側（Eumenes のセッション）で `vendor/router/` に置き、移した部品を Eumenes から消してパッケージ呼出しに置き換える | Eumenes で `bun run verify -- --domain capabilities --domain dialogue --domain toolchain-history --domain larm` が通る。shadow で製品の経路と比べる |
+| M3 | 出荷する: `eumenes_router-0.0.1-<sha256の先頭12>.tgz`（本流の2つの構成を両方含む、§10 M3d）、`.sha256`、`manifest.json` を作る。Eumenes 側（Eumenes のセッション）で `vendor/router/` に置き、移した部品を Eumenes から消してパッケージ呼出しに置き換える | Eumenes で `bun run verify -- --domain capabilities --domain dialogue --domain toolchain-history --domain larm` が通る。shadow で製品の経路と比べる |
 
 版: 0.0.1 から始め、Eumenes に取り込むたびにパッチ番号だけを上げる。bun は tgz の中身をパスでキャッシュするので、取り込むたびに新しい名前にする。
 
@@ -336,9 +341,9 @@ eumenes_router/
 | 項目 | 状態 |
 | --- | --- |
 | 判定（融合・特徴・標準化＋LR・回す判定・記憶の kNN） | 実装済み `src/scoring/best-v2.ts`（`loadBestV2`・`scoreBestV2`、純粋）。`best_v2.py` の predict と test 217件＋言い換え 1,215件で一致（並びと回す判定が全件一致、確率の差 ≤ 3.6×10⁻⁸）。1件 0.094 ms。`test/best-v2.test.ts`（一致の確認は `data/best-v2-parity/` があるときだけ） |
-| 成果物（利用者の判断: A） | `best_v2.py export-package` が2つに分けて書く。学習済みの数値（係数・標準化・閾値・融合の定数・kNN の件数と次元）は `src/scoring/best-v2.params.ts`（`BEST_V2_PARAMS`）としてパッケージと Git に入れる。発話から作ったものは入らない。記憶（dev の発話のベクトル 177件と正解の id）は `BestV2Memory` としてホストが持ち、`loadBestV2(params, memory)` で渡す。リポジトリが公開なので、記憶はパッケージにも Git にも入れない（`data/` だけ）。記憶の `source` が数値の `source` と違えば拒む（kNN の特徴はその記憶で学習した）。今の版は LARM の ruri（network `ruri-conv20-structure-v1-s0-fp32-v1`）の点数で dev から学習したもの（source `ed4bad51102ea8ae`、2026-11-03 に旧 network の版 `40b7de92010fa24f` から差し替え） |
+| 成果物（利用者の判断: A） | `best_v2.py export-package` が2つに分けて書く。学習済みの数値（係数・標準化・閾値・融合の定数・kNN の件数と次元）は `src/scoring/best-v2.params.ts`（`BEST_V2_PARAMS`）としてパッケージと Git に入れる。発話から作ったものは入らない。記憶（dev の発話のベクトル 177件と正解の id）は `BestV2Memory` としてホストが持ち、`loadBestV2(params, memory)` で渡す。リポジトリが公開なので、記憶はパッケージにも Git にも入れない（`data/` だけ）。記憶の `source` が数値の `source` と違えば拒む（kNN の特徴はその記憶で学習した）。今の版は LARM の ruri（network `ruri-conv20-structure-v1-s0-fp32-v1`）の点数で、ツールの候補 10件（M3c の候補 2）として dev から学習したもの（source `4442fe7939835c60`、2026-11-04。それ以前は `ed4bad51102ea8ae`、旧 network の版は `40b7de92010fa24f`） |
 | 公開済みのデータ | 以前のコミットの `bench/router/experiments/correction/variants.jsonl`・`controls.jsonl`・`round2/para.json`（test の発話を書き換えた文など）は、利用者の判断でそのまま残す |
-| `route()` への組み込み（2026-11-03、利用者と合意） | 下の表の形で入れる。段階: ① SQLite（記憶の表・全文検索の索引）と sr-corr の移植 → ② `route()` を best-v2 にする → ③ 訂正の θ・β を best-v2 の上で dev から決め直す |
+| `route()` への組み込み（2026-11-03、利用者と合意） | 下の表の形で入れる。段階: ① SQLite（記憶の表・全文検索の索引）と sr-corr の移植 → ② `route()` を best-v2 にする（2026-11-04 に実装、§10 M3d）→ ③ 訂正の θ・β を best-v2 の上で dev から決め直す（未着手） |
 
 | 組み込みの決め | 中身 |
 | --- | --- |
@@ -348,7 +353,7 @@ eumenes_router/
 | 種類ごとの枠 | sr-corr は使える全カードに対して計算し（伸ばす計算が候補の集まりで変わるので、学習時と同じ集まりにする）、その順位に種類ごとの上限（専用10・パイプライン4・汎用4）をかけてから上位8件を取る。決定1の「種類ごとの枠」は残る |
 | 会話と記憶 | bench と同じく `conversation.respond` と `memory.request` もカードとして同期する（sr-corr と全文検索の統計を学習時と同じにするため） |
 | 回す | best-v2 の「自信あり」（1位と2位の差 ≥ 回す閾値。今の版は 0.2933）を、決定表の「自信あり」に使う。自信なしでも1位を予告付きで実行（行3）、変更・取り消せない担当は確認（行4）、会話が1位なら会話。Router の段で LLM の確認はしない。最後は担当・会話の LLM が受け止める（利用者の判断） |
-| reranker | ホストの `score` が LARM の文脈判定を API で呼び、候補ごとの点数（`scores`、0〜1）を返す（Eumenes 側の作業）。best-v2 の経路では `scores` を必須にする |
+| reranker | ホストの `score` が LARM の文脈判定を API で呼び、候補ごとの点数（`scores`、0〜1）を返す（Eumenes 側の作業）。best-v2 の経路では `scores` を必須にする。2026-11-04 から、採点するのは検索の上位8件のツールに加えて、全カードの順位（`srRanking`）の上位 10件のツール（改善の候補 2） |
 | ① の実施（2026-11-03） | 実装済み。`src/retrieval/sr.ts`（`srScores`・`srOffer`・`capByKind`・`trigramQuery`、純粋）、`src/db/retrieval.ts`（`lexicalInTransaction`・`srCardsInTransaction`・`importExamplesInTransaction`・`examplesInTransaction`）、表の版 2（`router_passages_fts`・`router_examples`）。bench の sr-corr と全 1,671 発言（dev・test・言い換え・対照）で、確率と点数が丸めた最後の桁まで一致（`test/sr.test.ts`、`data/` があるときだけ）。種類ごとの上限で上位8件が変わった発言は 0件。記憶は SQLite に入れて読むと元と同じ |
 | 測り直しと見直し（2026-11-03） | パッケージだけの経路（同期 → 記憶の取り込み → 全文検索 → sr-corr → 種類の上限 → 上位8件 → LARM の点数 → best-v2）で、test＋言い換え 1,432件の並びが best_v2.py と全件一致し、test top1 86.6%・回す率 23.0%・言い換え 80.2% を再現（`test/best-v2-pipeline.test.ts`）。独立した見直しの指摘を直した: 記憶の表の主キーに空間を入れる／訂正が効かない（食い違い・β 0）ときは候補を足さない（bench も同じ条件に揃え、test の訂正の値を 76.2% / 68.2% に直した）／有限でない入力・重複した候補・壊れた base64 と正解の並びを拒み、NaN の差は回す側にする／全文検索の問い合わせから NUL を除く（bench も同じ関数を使う）／strict の空の索引は空のまま／変わっていないカードの全文検索の行は書き直さない |
 | 埋め込み | 記憶は e5 small（`passage: ` を前に付ける、正規化）で作った。本番の発言とカードの文も同じ埋め込みでないと記憶と比べられない。LARM の埋め込みが同じかは M2 で確かめる |
@@ -415,6 +420,16 @@ eumenes_router/
 | 今の test の top1 を下げない | 達（+1.4 ポイント） |
 | 遅延 p95 ≤ 200 ms | 未達（2.86 s）。全発言に LLM を通すので、トークンも 1件 約 900 かかる。S3 は上限の参考で、本番の候補は S1・S2 |
 
+本流の決定（2026-11-04、利用者の判断）:
+
+| 項目 | 中身 |
+| --- | --- |
+| 本流 | 構造の判断（S3: LLM、`bench/router/experiments/structure/s3.py` の指示文、`.env` のモデル）→ 送り先の規則（`decideStructure`: 依頼なし → 会話、依頼1つ → 参照があれば元の文の参照を「これ」に伏せて振り分ける、なければ文全体、担当が2つ以上 → パイプラインの段。物だけの部分は次の部分の述語を借りる）→ 依頼の部分ごとに best-v2（ツールの候補 10件）。参照の種類の手がかりは文全体を振り分けるときだけ使う。壊れた構造（抜き出しが原文の一部でない）は今の経路のまま |
+| 値（本番と同じく手がかりを渡す） | 作った対 186件: 90.3%、参照の側 1.3%、複数 → パイプライン 84.5%、単一 → パイプライン 0.9%、感想・質問 → 会話 100%、壊れた構造 12。実際の発話 15件: 73.3%（ブラウザの中の多段を部分に分ける 3件）。test 217件: 88.5%（今の経路 87.1%、差の 95%CI −1.4〜+4.1。良くなった 7・悪くなった 4・パイプラインへ 3）。記録は `docs/reports/data/2026-11-03/structure/report-mainline*.json` |
+| 費用 | 全発言に LLM を1回。test 217件で 194,516 トークン（1件 896）、1回 p50 0.96 s・p95 2.86 s（`claude-haiku-5-5`、effort low） |
+| §9 の基準に届かない所 | 複数 → パイプライン 84.5%（≥ 90%）。壊れた構造（述語を共有する並列「曲と画像を作って」で原文にない文を書く）。ブラウザの中の多段を分ける（利用者の判断では browser.operate の依頼1つ）。情報を求める質問を依頼なしにする、答え方の指定を別の依頼にする |
+| 次 | ① 指示文の次の版（上の4つを直す。構造の評価セットの新しい文で選び、test は1回）。② LLM を呼ぶ発言を絞る（解析で複合の可能性があるときだけ呼ぶ）。③ `route()` に入れる: 構造の型と検査・`decideStructure`・`routedTexts` をパッケージの純 TS に移し、ホストの口 `analyze`（LLM を呼ぶ）を足す。指示文はホストが持つ（§4: 指示文はホストのもの）。bench の `s3.py` の指示文がその元 |
+
 次: 構造の評価セットを dev・test に分け（対は同じ側）、指示文と部分の振り分け方の手直しは dev で選び、test で1回測る。最初の版の test 217件の誤りは見たので、その旨を記録に書く。
 
 S2 の学習と配備（2026-11-03、利用者が LARM 側で実施）:
@@ -453,6 +468,42 @@ S2 の実測（2026-11-03、live。利用者の合図の後）:
 
 読み方: 作った対での改善は、学習の文も同じ書き手が別の型で書いたものなので、良く出やすい（評価の文との e5 の近さの中央値 0.95）。実際の発話の test 217件では、新 network の best-v2 は旧版と2件差（1位）で、回す率は 5件減った。構造の判断（S3）と組み合わせると test で +1.9 ポイント。複数 → パイプライン（84.5%）と遅延は §9 の基準に届かない。
 
+### M3d 本流の2つの構成と出荷（2026-11-04、利用者の判断、実装済み）
+
+1つの tarball に2つの構成を両方入れる。Eumenes 側は呼ぶ関数で選んで試す（Eumenes 側の設定で決める。Router の中で発言ごとに切り替えない）。最終的に1つに絞るかもしれない。
+
+| 項目 | A: direct | B: structured |
+| --- | --- | --- |
+| 入口 | `route()` | `routeStructured()`（名前は実装のときに決める） |
+| 流れ | 発言 → 検索（sr-corr、上位8件と全カードの順位）→ reranker（ホスト、LARM）→ best-v2 → 訂正 → 決定表 | 発言 → 構造の判断（ホストの口 `analyze`、LLM）→ 構造の検査 → 送り先の規則（依頼なし → 会話、依頼1つ → 参照を伏せた文、担当が2つ以上 → パイプラインの段）→ 依頼の部分ごとに A と同じ流れ → 決定表 |
+| ホストの口 | `embed`・`score`（上位8件と全カードの順位の上位 10件のツールの LARM の点数）・`read` | A の口 ＋ `analyze`（指示文を LLM に送り、構造を返す） |
+| 結果 | 今の `decision`（担当1つか会話か聞き返し） | A の結果に加えて、パイプラインの段（依頼の部分ごとの担当・先に済ませる依頼・構造）。行 9 を「構造の判断で担当が2つ以上」に変える |
+| 参照の種類の手がかり | そのまま使う | 文全体を振り分けるときだけ使う |
+| 訂正の記憶 | 文全体の近さ | 振り分ける文（伏せた文・依頼の部分）の近さ |
+| 値（2026-11-04） | test 217件 87.1%・回す率 18.0%、作った対 47.3% | test 217件 88.5%、作った対 90.3%（参照の側 1.3%、複数 → パイプライン 84.5%） |
+| 費用 | LLM 0 | 1発言 LLM 1回（約 900 トークン、p95 2.9 s） |
+
+| 作り | 決め（案） |
+| --- | --- |
+| 共通の部品 | 検索・best-v2・訂正・決定表は2つで同じものを使う。B は依頼の部分ごとに A の部品を呼ぶ |
+| 構造の判断の指示文 | B のために、測った指示文を版付きの定数としてパッケージに入れ、ホストはそれを LLM に送る（測ったものと出荷するものを同じにするため）。§4 の「指示文はホストが持つ」の例外になるので、利用者の合意が要る |
+| パッケージに移すもの | 構造の型と検査、`decideStructure`・`routedTexts`（今は `bench/router/structure.ts`）を純 TS で `src/` に。`analyze` の口と、パイプラインの段の結果の型を契約に足す |
+| manifest | 2つの入口と、それぞれの契約の版を書く |
+| 検査 | A・B それぞれで、パッケージだけの経路が bench の値（A: test 87.1 / 18.0・言い換え 81.6、B: 作った対 90.3%・test 88.5%）を再現することを確かめる |
+| パイプラインの段の受け手 | B がパイプラインの段を返したときの扱いは、やり直すパイプラインのプロジェクトが決める。それまで Eumenes 側は、構造を添えて今の扱い（`task.execute` など）にしてよい |
+
+実施（2026-11-04）:
+
+| 項目 | 状態 |
+| --- | --- |
+| 入口 | `route()`（A）、`routeStructured()`（B）。構造の部品は `src/structure.ts`（`STRUCTURE_PROMPT` は `s3.py` の指示文と1字も違わないことを検査で確かめる）。`scoreBestV2` に `include`（訂正の正解・動的な候補）、`decide` に `confident` を足した |
+| 消したもの | 埋め込みの最大内積の枠（`candidatesInTransaction`・`closestSimilarities`・`rankBy`・`slotted`・`CANDIDATE_SLOTS`）、選ぶ呼出しの短い説明文（`routerPassage`） |
+| 検査 | `bun test` 85 件成功。製品の入口から: A は test 217件のうち reranker が採点した文の全件で、記録の best-v2 の1位と回す判定に一致。B は test 217件と構造の評価セットの比べられる全件で、bench の送り先（担当・パイプラインの段・会話）に一致（`test/route-mainline.test.ts`、`data/` があるときだけ） |
+| 出荷物 | `bun run release`（`scripts/pack.ts`）。型・lint・検査が通ったときだけ作る。`release/eumenes_router-0.0.1-<sha>.tgz`・`.sha256`・`manifest.json`（入口・契約の版・best-v2 の数値の版・記憶の条件）。中身は `dist/`・`package.json`・`README.md`・`LICENSE` だけ。展開した `dist/` から2つの入口が動くことを確かめた |
+| 独立した見直し（1回） | 製品の流れの誤りはなかった。直したもの: 全文検索は埋め込みと同じ先頭 2000字で引く（巨大な貼り付けで重くならない）、構造の答えの空・空白だけの依頼の部分と参照は無効、カードの reranker の文は上限（4096字）で切って候補に残す、tarball の作りはリポの場所を固定し commit と未コミットの変更の有無を manifest に書き、本流の一致の検査が流れなければ止める、検査のコードの埋め込みのキャッシュ名は DB から読む。足した検査: 動的な候補が reranker と best-v2 を通る、説明が空白なら reranker の前に拒む、長いカードの文を切る、空の参照を拒む。直さなかったもの: `DecisionCard.score`（順位・類似度など）はどこからも読まれないが、Eumenes の決定表の形と同じにしておくため残す |
+| 行 9（依頼が複数） | A でも今の決定表のまま、2つの専用の担当の reranker の点数がどちらも `multi`（0.5）以上なら行 9（1位を予告「partial」で実行）。test 217件（reranker が採点した 214件）で 6件、そのうち best-v2 が自信ありの 5件は行 2 の代わりに行 9 になった。送り先は変わらず、予告の言い方だけが変わる |
+| 未検証 | 動的な候補（仕事・確認待ち・redirect）を best-v2 に追加の候補として渡す扱い（学習にない）。本番の LARM の遅延（1発言 最大 10件のツールの組）。本番の埋め込みが e5 small と同じか。400字を超える文は reranker に先頭 400字を渡す（bench では学習なしの ruri の点数だった） |
+
 ### 改善の候補（2026-11-03、考案、未着手）
 
 今の実測と、近い分野の手法（Web で調べた）から。上ほど、効く見込みに対して費用が小さい。どれも dev で選び、test は1回だけ測る。
@@ -467,6 +518,36 @@ S2 の実測（2026-11-03、live。利用者の合図の後）:
 | 6 | ruri の次の学習に、今のモデルが高い点数を付けた誤りの担当を難しい負例として足す（self-distillation の hard negative） | 学習で参照の側の誤りが半分になった。残りの誤りは似た担当どうし | 月1回の学習し直しの枠（§9 の決め）で、dev と作った対から作る |
 | 7 | 記憶・訂正の近さを e5 small より強い日本語の埋め込み（ruri-v3 の 30m〜310m）で測る | e5 small は近さの幅が狭く（関係ない文どうしでも 0.87）、訂正の θ で意図の違う組を分けにくい。JMTEB の平均は e5 small 69.5、ruri-v3 74.5〜77.2（提供元の値） | 本番の埋め込みを LARM で替えることになる。先にオフラインで記憶と訂正だけ比べる |
 | 8 | パイプラインの選び方は、パイプラインを束としても手順の担当としても引けるようにする（Tool-to-Agent Retrieval の考え方。§8 の P2） | 束の説明だけで引くと、手順の細かい担当が見えなくなる | パイプラインのプロジェクトとの契約（`steps`） |
+
+### M3c 改善の試行（2026-11-03、利用者の判断）
+
+上の候補を1つずつ試す。明確に良くなったものだけを採る（利用者の判断）。
+
+| 手順 | 中身 |
+| --- | --- |
+| ① 計画 | 変える所・測る物・採用の条件を、測る前にこの表の下に書く |
+| ② 設定を選ぶ | 設定の値があるものは dev だけで選ぶ。test は見ない |
+| ③ 測る | test 217件と言い換え 1,215件で1回だけ測る。比べる相手は、その時点で採用している構成 |
+| ④ 判定 | 採用・不採用と根拠（数値）を下の結果の表と `docs/reports/router_improvements_2026-11-03.md` に書く。採用したものは次の候補の比べる相手になる。不採用のコードは消し、数値だけ残す |
+
+採用の条件（best-v2 の候補 1・2・5。測る前に決めた）:
+
+| 条件 | 中身 |
+| --- | --- |
+| 明確な改善 | test の「LLM なしで1位」の差（同じ件どうしの対応のあるブートストラップ 2,000回）の 95%CI の下限 > 0。または、1位の差の点推定 ≥ 0 で、LLM に回す率の差の 95%CI の上限 < 0（回す件が減ればトークンが減る） |
+| 悪くしない | 言い換えの1位が 1ポイント以上下がらない。test の回す率が 2ポイント以上上がらない |
+| 製品に入れられる | 純粋層の制約を守れる。LARM の呼び出しの増え方（採点する組の数）を書く |
+
+構造の判断の候補（3・4）は、§9 の構造の判断の合否と、test 217件の1位で判定する。
+
+比べる相手（2026-11-03 時点で採用）: best-v2、LARM の学習し直した ruri の点数、`BEST_V2_PARAMS` source `ed4bad51102ea8ae`。test 1位 85.7%・回す率 20.7%、言い換え 81.0%。候補 2 を採用した後（2026-11-04）は、ツールの候補 10件の版（source `4442fe7939835c60`、回す閾値 0.2989）。test 1位 87.1%・回す率 18.0%、言い換え 81.6%。
+
+| # | 候補 | 計画 | dev で選んだ設定 | test 1位（差、95%CI） | 回す率（差、95%CI） | 言い換え 1位 | 判定 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 記憶（`memory.request`）を必ず候補に入れる | 検索の上位8件に無いとき、追加の候補として足す（検索の特徴は「なし」、reranker は LARM の全カードの点数）。dev で学習し直す。LARM の採点の組は 1件あたり最大 +1 | なし（入れるか入れないか） | 86.2%（+0.5、−0.9〜+2.3） | 19.8%（−0.9、−4.6〜+2.8） | 81.6% | **不採用**。直ったのは記憶の5件のうち1件。残りは LARM の ruri の記憶の点数が低く（0.06〜0.08）、候補に入っても1位にならない（`docs/reports/router_improvements_2026-11-03.md` §1） |
+| 2 | ツールの候補を 7件から増やす | 検索（sr-corr）の全カードの順位で、上位 7件の外の担当を k 件まで追加の候補として足す（検索の確率は「なし」、順位と点数は全カードの順位から、reranker は LARM の全カードの点数）。k は 10・12・16 から dev の交差検証の1位の正解率で選ぶ（同じなら小さい k）。LARM の採点の組は 1件あたり 7 → k | k = 10（dev の交差検証の1位: 今の構成 85.3%、10 85.3%、12 85.3%、16 83.6%。同じなので小さい k） | 87.1%（+1.4、0.0〜+3.2） | 18.0%（−2.7、−5.1〜−0.9） | 81.6% | **採用**。2つ目の条件（1位が下がらず、回す率の差の CI の上限 < 0）を満たす。良くなった 3・悪くなった 0。dev では差が出なかった。LARM の採点の組は 1件あたり 7 → 10（推論の時間は組の数にほぼ比例、未測定）。パッケージに入れた（`BEST_V2_PARAMS` 形式 v2、source `4442fe7939835c60`） |
+| 5 | 分けたほうが良いときだけ分ける（構造の判断に重ねる規則） | 構造の判断（今は S3）の結果を、best-v2 の自信（1位と2位の差）で確かめる。参照つきの単一の依頼: 伏せた文の自信が元の文以上のときだけ伏せた文の担当を採る。依頼なし: 元の文が自信のある担当（会話以外、回さない）なら担当を残す。複数の依頼: 部分がどれも回さない自信のときだけパイプラインへ、そうでなければ元の文で振り分ける。設定の値はない（回す閾値は best-v2 のもの）。比べる相手は k=10 の版での S3・mask。採用の条件: 作った対 186件の「送り先と担当が合う」の差（対応のあるブートストラップ）の 95%CI の下限 > 0 で test 217件の1位が下がらない、または test 217件の1位の差の CI の下限 > 0 で作った対が1ポイント以上下がらない | なし | 作った対 90.3 → 83.9%（−6.5、−10.2〜−2.7）。test 217件 88.5 → 88.5%（0、−2.3〜+2.8） | — | — | **不採用**。作った対で良くなった 1・悪くなった 13。best-v2 の自信は参照の語に引かれた誤りでも高く、感想の文も自信を持って担当に送るので、自信で分ける・分けないを決めると正しい構造の判断を文全体の誤りに戻す（`docs/reports/router_improvements_2026-11-03.md` §5） |
+| 4＋3 | S1: 係り受け解析で構造を取る。あわせて候補 3（参照の種類の手がかりは、参照を伏せずに文全体を振り分けるときだけ使う）（2026-11-04、利用者の判断で同時に試す） | GiNZA（`ja_ginza` 5.3.0、spaCy の係り受け）の出力に規則をかけて構造を作る。依頼は依頼の形（〜て・〜てください・〜てほしい・お願い・〜たい・〜れる？ など）で終わる述語と、そのヲ格・モ格の名詞句。参照は「〜に合う」「〜をもとに」「〜の雰囲気で」など依頼の名詞か述語に係る句と、指示語（この・その・さっきの・それ）。並列は「と・も〜も」で並ぶ目的語と、文や「あと」で並ぶ述語。多段は「〜て（から）、それ〜」。依頼の形が見つからない文は、はっきりした感想の形でなければ構造なし（今の経路のまま）。候補 3: 構造の判断で参照を伏せた文や部分には手がかりを渡さず、文全体を振り分けるときだけ渡す。bench は Python の中で GiNZA を読み（サーバーなし）、規則を作る。製品では解析器を HTTP の口にし、規則はパッケージの純 TS に移す。規則は構造の評価セットの dev 半分（対の id のハッシュで分ける、対は同じ側）だけを見て作り、test 半分と test 217件で1回測る。比べる相手は、本番と同じく手がかりを渡す今の経路（S0＋手がかり、採用した版）。参考に S3。採用の条件: §9 の構造の判断の合否（依頼の数と中心の担当 ≥ 90%、参照の側 ≤ 5%、複数 → パイプライン ≥ 90%、単一 → パイプライン ≤ 2%、解析の遅延 p95 ≤ 200 ms）を構造の評価セットの test 半分で満たし、test 217件の1位が下がらない（差の点推定 ≥ 0） | 規則は dev 半分だけで作った | 作った対 test 103件: 今の経路＋手がかり 45.6% → S1 85.4%（参照の側 16.2 → 8.1%、複数 → パイプライン 0 → 89.5%、単一 → パイプライン 3.6%、依頼なし → 会話 70.0%）。test 217件: 189 → 186件（−1.4、−3.7〜+0.9） | — | — | **不採用（条件未達）**。今の経路よりは大きく良いが、参照の側 ≤ 5%・複数 ≥ 90%・単一 ≤ 2%・test の1位を下げない、を満たさない。解析は p95 6.4 ms で速い。test 217件で下げたのは、説明の「〜ていて」を依頼に数えた、答え方の指定（「出典を添えて」）を分けた、言い直し（「…と言ったよね？」）を感想と見た、など。候補 3 は単独では採らない（実際の発話の手がかりのある 13件では、手がかりを外しても結果が変わらない。参考値）。S1 は利用者の判断で `archive/structure-judgment/` に移した（2026-11-04）。作り直すときは、新しい評価用の文（今の test 半分は見た）で測る（`docs/reports/router_improvements_2026-11-03.md` §4） |
 
 ## 11 確かめていないこと・決まっていないこと
 

@@ -1,79 +1,126 @@
 import { expect, test } from "bun:test";
 import {
+	BEST_V2_FEATURES,
+	BEST_V2_FORMAT,
+	BEST_V2_MEMORY_FORMAT,
 	CONVERSATION_ID,
+	loadBestV2,
+	rerankDocument,
 	route,
-	type Candidate,
+	routeErrors,
+	routeStructured,
+	type BestV2Params,
 	type NearFeedback,
 	type RouteAnswer,
-	type RouteCandidate,
+	type RouteInput,
+	type RoutePorts,
+	type RouteTurn,
+	type VectorSpace,
 } from "../src/index.ts";
-import type { VectorSpace } from "../src/index.ts";
+import type { RouterCard } from "../src/sqlite.ts";
 
 const space: VectorSpace = {
-	modelId: "embed",
-	revision: "1",
-	artifactDigest: "digest",
+	modelId: "test",
+	revision: "r1",
+	artifactDigest: "test",
 	dimension: 2,
 };
-
-const conversation: RouteCandidate = {
-	id: CONVERSATION_ID,
-	kind: "conversation",
-	passage: "会話で返事する",
+const n = BEST_V2_FEATURES.length;
+const only = (name: (typeof BEST_V2_FEATURES)[number], w: number) =>
+	BEST_V2_FEATURES.map((f) => (f === name ? w : 0));
+const params: BestV2Params = {
+	format: BEST_V2_FORMAT,
+	version: "test",
+	source: "test",
+	features: [...BEST_V2_FEATURES],
+	ranker: {
+		mean: Array(n).fill(0),
+		scale: Array(n).fill(1),
+		coef: only("rr", 4),
+		intercept: 0,
+	},
+	gate: { deferBelow: 0.1 },
+	fuse: { weight: 2, conversation: 0.18, top: 8 },
+	extra: { tools: 4 },
+	knn: { neighbors: 1, dimension: 2 },
 };
+const model = loadBestV2(params, {
+	format: BEST_V2_MEMORY_FORMAT,
+	source: "test",
+	dimension: 2,
+	labels: ["music.create"],
+	vectors: btoa(
+		String.fromCharCode(...new Uint8Array(new Float32Array([0, 1]).buffer)),
+	),
+});
 
-const music: Candidate = {
-	id: "music.create",
-	revision: "r1",
-	kind: "dedicated",
-	title: "作曲",
-	summary: "曲を作る",
-	useWhen: ["作曲の依頼"],
-	impact: "create",
-	similarity: 0.91,
-	rank: 1,
-	ftsRank: null,
-	fromHistory: false,
-};
+function card(
+	id: string,
+	kind: RouterCard["kind"],
+	vector: number[],
+	impact: RouterCard["impact"] = "create",
+): RouterCard {
+	return {
+		id,
+		revision: "r1",
+		kind,
+		title: id,
+		summary: `${id} の説明`,
+		useWhen: [`${id} の用途`],
+		examples: [`${id} の例`],
+		impact,
+		passages: [new Float32Array(vector)],
+	};
+}
+const CARDS = [
+	card(CONVERSATION_ID, "general", [0, 1], "none"),
+	card("music.create", "dedicated", [1, 0]),
+	card("image.create", "dedicated", [0.9, 0.1]),
+	card("timers.manage", "dedicated", [0.2, 0.8], "modify_existing"),
+];
 
-test("route scores the offer, applies a correction, and decides", async () => {
-	const logged: string[] = [];
-	const near: NearFeedback[] = [
-		{
-			id: "f1",
-			wrongId: CONVERSATION_ID,
-			rightId: "music.create",
-			similarity: 0.99,
-		},
-	];
-	let sawText = "";
-	const result = await route(
-		{
+type Calls = { embed: string[]; rerank: RouteInput[] };
+
+function ports(
+	scores: Record<string, number>,
+	options: {
+		near?: NearFeedback[];
+		cards?: RouterCard[];
+		withoutScores?: boolean;
+	} = {},
+): { ports: RoutePorts; calls: Calls } {
+	const calls: Calls = { embed: [], rerank: [] };
+	return {
+		calls,
+		ports: {
 			embed: async (texts) => {
-				sawText = texts[0] ?? "";
-				return { space, vectors: [[1, 0]] };
+				calls.embed.push(...texts);
+				return { space, vectors: texts.map(() => [1, 0]) };
 			},
-			score: async (input) => {
-				const names = input.criteria.map((criterion) => criterion.name);
-				expect(names).toEqual(["conversation.respond", "music.create"]);
-				const probabilities: Record<string, number> = {
-					"conversation.respond": 0.55,
-					"music.create": 0.45,
-				};
-				const answer: RouteAnswer = {
-					choice: "conversation.respond",
-					probabilities,
-					scores: null,
-					model: "scorer",
+			rerank: async (input): Promise<RouteAnswer> => {
+				calls.rerank.push(input);
+				const names = input.criteria.map((c) => c.name);
+				return {
+					choice: names[0]!,
+					probabilities: Object.fromEntries(
+						names.map((name) => [name, 1 / names.length]),
+					),
+					scores: options.withoutScores
+						? null
+						: Object.fromEntries(
+								names.map((name) => [name, scores[name] ?? 0]),
+							),
+					model: "test",
 					headRevision: null,
 					calibrationRevision: null,
 				};
-				return answer;
 			},
 			read: {
-				candidates: () => [music],
-				nearFeedback: () => near,
+				cards: () => options.cards ?? CARDS,
+				lexical: () => new Map(),
+				nearFeedback: () => options.near ?? [],
 			},
+			model,
 			settings: {
 				accept: 0.6,
 				low: 0.3,
@@ -83,384 +130,263 @@ test("route scores the offer, applies a correction, and decides", async () => {
 				feedbackNear: 0.9,
 				feedbackWeight: 2,
 			},
-			log: (event) => logged.push(event.name),
 		},
+	};
+}
+
+const turn = (text: string, extra: Partial<RouteTurn> = {}): RouteTurn => ({
+	state: { text, previousAgent: null, previousUser: null },
+	dynamic: [],
+	available: () => true,
+	instructions: "担当を選ぶ",
+	...extra,
+});
+
+const near = (id: string, rightId: string, wrongId: string | null = null) =>
+	({
+		id,
+		similarity: 1,
+		rightId,
+		wrongId,
+		state: "active",
+	}) as NearFeedback;
+
+test("route: the reranker's scores through best-v2; a sure top runs (row 2), the conversation is not sent", async () => {
+	const { ports: p, calls } = ports({
+		"music.create": 0.9,
+		"image.create": 0.2,
+		"timers.manage": 0.1,
+	});
+	const result = await route(p, turn("曲を作って"));
+	expect(result.decision).toMatchObject({ row: 2, to: "run" });
+	expect(result.corrected[0]!.candidate.id).toBe("music.create");
+	expect(result.explain.defer).toBe(false);
+	const sent = calls.rerank[0]!.criteria;
+	expect(sent.map((c) => c.name).sort()).toEqual([
+		"image.create",
+		"music.create",
+		"timers.manage",
+	]);
+	expect(sent.find((c) => c.name === "music.create")!.description).toBe(
+		rerankDocument(CARDS[1]!),
+	);
+	expect(calls.embed).toEqual(["曲を作って"]);
+});
+
+test("route: an unsure top is still run with a notice (row 3), never asked about", async () => {
+	// Two tools below `multi` (0.5): not "several jobs" (row 9), and close enough to defer.
+	const { ports: p } = ports({
+		"music.create": 0.45,
+		"image.create": 0.44,
+	});
+	const result = await route(p, turn("何か作って"));
+	expect(result.explain.defer).toBe(true);
+	expect(result.decision).toMatchObject({ row: 3, to: "run", announce: "try" });
+});
+
+test("route: a near correction moves the top and makes it unsure; disagreeing ones do not move anything", async () => {
+	const scores = { "music.create": 0.45, "image.create": 0.3 };
+	const moved = await route(
+		ports(scores, { near: [near("f1", "image.create", "music.create")] }).ports,
+		turn("曲を作って"),
+	);
+	expect(moved.corrected[0]!.candidate.id).toBe("image.create");
+	expect(moved.decision).toMatchObject({ row: 3, to: "run" });
+	const split = await route(
+		ports(scores, {
+			near: [near("f1", "image.create"), near("f2", "timers.manage")],
+		}).ports,
+		turn("曲を作って"),
+	);
+	expect(split.explain.conflict).toBe(true);
+	expect(split.explain.conflicts).toEqual(["f1", "f2"]);
+	expect(split.corrected[0]!.candidate.id).toBe("music.create");
+});
+
+test("route: with no tool to offer the reranker is not called and the decision is row 8", async () => {
+	const { ports: p, calls } = ports({}, { cards: [CARDS[0]!] });
+	const result = await route(p, turn("こんにちは"));
+	expect(result.decision).toEqual({ row: 8, to: "conversation" });
+	expect(calls.rerank).toEqual([]);
+	expect(result.answer).toBeNull();
+});
+
+test("route: an answer without scores is refused", async () => {
+	const { ports: p } = ports({}, { withoutScores: true });
+	await expect(route(p, turn("曲を作って"))).rejects.toThrow(
+		routeErrors.invalidResponse,
+	);
+});
+
+test("routeStructured: no request is the conversation, without routing anything", async () => {
+	const { ports: p, calls } = ports({ "music.create": 0.9 });
+	const result = await routeStructured(
+		{ ...p, analyze: async () => '{"requests":[]}' },
+		turn("この曲いいね"),
+	);
+	expect(result.decision).toEqual({ row: 1, to: "conversation" });
+	expect(result.parts).toEqual([]);
+	expect(calls.embed).toEqual([]);
+});
+
+test("routeStructured: one request with a reference routes the masked utterance, without the resource hint", async () => {
+	const { ports: p, calls } = ports({
+		"image.create": 0.9,
+		"music.create": 0.3,
+	});
+	const prompts: string[] = [];
+	const result = await routeStructured(
 		{
+			...p,
+			analyze: async (prompt) => {
+				prompts.push(prompt.user);
+				return JSON.stringify({
+					requests: [
+						{
+							text: "画像を作って",
+							target: "画像",
+							inputs: ["この音楽"],
+							after: [],
+						},
+					],
+				});
+			},
+		},
+		turn("この音楽に合う画像を作って", {
+			resource: "audio",
 			state: {
-				text: "静かな曲を作って",
-				previousAgent: null,
+				text: "この音楽に合う画像を作って",
+				previousAgent: "曲を作りました。",
 				previousUser: null,
 			},
-			dynamic: [conversation],
-			available: () => true,
-			instructions: "選ぶ",
-			signals: { intentChat: 0.2 },
-		},
+		}),
 	);
-	expect(sawText).toBe("静かな曲を作って");
-	expect(result.decision).toMatchObject({
-		row: 2,
-		to: "run",
-		candidate: { id: "music.create" },
-	});
-	expect(result.explain.conflict).toBe(false);
-	expect(result.explain.conflicts).toEqual([]);
-	expect(result.explain.intentChat).toBe(0.2);
-	expect(logged).toEqual(["router.decided"]);
-	expect(JSON.stringify(result.explain)).not.toContain("静かな曲");
-});
-
-test("corrections that disagree leave the probabilities as the scorer gave them", async () => {
-	const result = await route(
-		{
-			embed: async () => ({ space, vectors: [[1, 0]] }),
-			score: async () => ({
-				choice: "music.create",
-				probabilities: { "music.create": 0.7, "conversation.respond": 0.3 },
-				scores: null,
-				model: "scorer",
-				headRevision: null,
-				calibrationRevision: null,
-			}),
-			read: {
-				candidates: () => [music],
-				nearFeedback: () => [
-					{ id: "a", wrongId: null, rightId: "music.create", similarity: 1 },
-					{
-						id: "b",
-						wrongId: null,
-						rightId: "conversation.respond",
-						similarity: 1,
-					},
-				],
-			},
-			settings: {
-				accept: 0.6,
-				low: 0.3,
-				margin: 0.15,
-				approve: 0.85,
-				multi: 0.5,
-				feedbackNear: 0.9,
-				feedbackWeight: 2,
-			},
-		},
-		{
-			state: { text: "曲", previousAgent: null, previousUser: null },
-			dynamic: [conversation],
-			available: () => true,
-			instructions: "",
-		},
-	);
-	expect(result.explain.conflict).toBe(true);
-	expect(result.explain.conflicts).toEqual(["a", "b"]);
-	expect(result.corrected[0]?.p).toBeCloseTo(0.7);
-});
-
-test("the right answer of a near correction is asked for even when the frame missed it", async () => {
-	const asked: Array<readonly string[] | undefined> = [];
-	const run = (near: NearFeedback[]) =>
-		route(
-			{
-				embed: async () => ({ space, vectors: [[1, 0]] }),
-				score: async (input) => {
-					const probabilities: Record<string, number> = {
-						"conversation.respond": 1,
-					};
-					if (input.criteria.some((c) => c.name === "music.create"))
-						Object.assign(probabilities, {
-							"conversation.respond": 0.6,
-							"music.create": 0.4,
-						});
-					return {
-						choice: "conversation.respond",
-						probabilities,
-						scores: null,
-						model: "scorer",
-						headRevision: null,
-						calibrationRevision: null,
-					};
-				},
-				read: {
-					candidates: (query) => {
-						asked.push(query.include);
-						return query.include?.includes("music.create") ? [music] : [];
-					},
-					nearFeedback: () => near,
-				},
-				settings: {
-					accept: 0.6,
-					low: 0.3,
-					margin: 0.15,
-					approve: 0.85,
-					multi: 0.5,
-					feedbackNear: 0.9,
-					feedbackWeight: 2,
-				},
-			},
-			{
-				state: { text: "曲を作って", previousAgent: null, previousUser: null },
-				dynamic: [conversation],
-				available: () => true,
-				instructions: "",
-			},
-		);
-	const corrected = await run([
-		{
-			id: "f1",
-			wrongId: CONVERSATION_ID,
-			rightId: "music.create",
-			similarity: 0.99,
-		},
+	expect(prompts).toEqual([
+		"直前のエージェントの発言: 曲を作りました。\n発言: この音楽に合う画像を作って",
 	]);
-	expect(asked[0]).toEqual(["music.create"]);
-	expect(corrected.explain.offered).toEqual([
-		"conversation.respond",
-		"music.create",
+	expect(calls.embed).toEqual(["これに合う画像を作って"]);
+	expect(result.parts.map((part) => part.text)).toEqual([
+		"これに合う画像を作って",
 	]);
-	expect(corrected.corrected[0]?.candidate.id).toBe("music.create");
-	const plain = await run([]);
-	expect(asked[1]).toBeUndefined();
-	expect(plain.explain.offered).toEqual(["conversation.respond"]);
-});
-
-const settings = {
-	accept: 0.6,
-	low: 0.3,
-	margin: 0.15,
-	approve: 0.85,
-	multi: 0.5,
-	feedbackNear: 0.9,
-	feedbackWeight: 2,
-};
-
-test("an empty offer is a conversation and does not call the scorer", async () => {
-	const result = await route(
-		{
-			embed: async () => ({ space, vectors: [[1, 0]] }),
-			score: async () => {
-				throw new Error("scored");
-			},
-			read: { candidates: () => [], nearFeedback: () => [] },
-			settings,
-		},
-		{
-			state: { text: "曲", previousAgent: null, previousUser: null },
-			dynamic: [],
-			available: () => true,
-			instructions: "",
-		},
+	expect(result.decision).toMatchObject({ to: "run" });
+	expect(result.parts[0]!.result.corrected[0]!.candidate.id).toBe(
+		"image.create",
 	);
-	expect(result.answer).toBeNull();
-	expect(result.decision).toEqual({ row: 8, to: "conversation" });
-	expect(result.explain).toMatchObject({
-		offered: [],
-		conflict: false,
-		conflicts: [],
-	});
 });
 
-test("passages fill a missing conversation and memory request", async () => {
-	const result = await route(
+test("routeStructured: requests of two tools go to the pipeline stage in order", async () => {
+	const { ports: p } = ports({ "music.create": 0.9, "image.create": 0.1 });
+	const byText: Record<string, Record<string, number>> = {
+		曲を作って: { "music.create": 0.9, "image.create": 0.1 },
+		画像も作って: { "music.create": 0.1, "image.create": 0.9 },
+	};
+	const result = await routeStructured(
 		{
-			embed: async () => ({ space, vectors: [[1, 0]] }),
-			score: async (input) => {
-				expect(input.criteria.map((criterion) => criterion.name)).toEqual([
-					"conversation.respond",
-					"memory.request",
-					"music.create",
-				]);
-				expect(input.criteria[0]?.description).toBe("会話で返事する");
-				expect(input.criteria[1]?.description).toBe("記憶を頼む");
+			...p,
+			rerank: async (input) => {
+				const s = byText[input.text]!;
+				const names = input.criteria.map((c) => c.name);
 				return {
-					choice: "music.create",
-					probabilities: {
-						"conversation.respond": 0.2,
-						"memory.request": 0.1,
-						"music.create": 0.7,
-					},
-					scores: null,
-					model: "scorer",
+					choice: names[0]!,
+					probabilities: Object.fromEntries(
+						names.map((name) => [name, 1 / names.length]),
+					),
+					scores: Object.fromEntries(names.map((name) => [name, s[name] ?? 0])),
+					model: "test",
 					headRevision: null,
 					calibrationRevision: null,
 				};
 			},
-			read: { candidates: () => [music], nearFeedback: () => [] },
-			settings,
+			analyze: async () =>
+				JSON.stringify({
+					requests: [
+						{ text: "曲を作って", target: "曲", inputs: [], after: [] },
+						{
+							text: "画像も作って",
+							target: "画像",
+							inputs: ["それ"],
+							after: [0],
+						},
+					],
+				}),
 		},
-		{
-			state: { text: "曲", previousAgent: null, previousUser: null },
-			dynamic: [],
-			passages: { conversation: "会話で返事する", memory: "記憶を頼む" },
-			available: () => true,
-			instructions: "",
-		},
+		turn("曲を作って、それに合う画像も作って"),
 	);
-	expect(result.decision.row).toBe(2);
-	expect(result.explain.offered).toEqual([
-		"conversation.respond",
-		"memory.request",
-		"music.create",
+	expect(result.decision.to).toBe("pipeline");
+	if (result.decision.to !== "pipeline") throw new Error("not a pipeline");
+	expect(
+		result.decision.steps.map((s) => [s.text, s.candidate.id, s.after]),
+	).toEqual([
+		["曲を作って", "music.create", []],
+		["画像も作って", "image.create", [0]],
 	]);
 });
 
-test("a past choice is forwarded and does not change the offer", async () => {
-	const result = await route(
+test("routeStructured: an answer that is not a structure of the utterance routes the whole utterance, as route()", async () => {
+	const { ports: p, calls } = ports({ "music.create": 0.9 });
+	const result = await routeStructured(
 		{
-			embed: async () => ({ space, vectors: [[1, 0]] }),
-			score: async () => ({
-				choice: "music.create",
-				probabilities: { "conversation.respond": 0.3, "music.create": 0.7 },
-				scores: null,
-				model: "scorer",
-				headRevision: null,
-				calibrationRevision: null,
-			}),
-			read: {
-				candidates: (query) => {
-					expect(query.fromHistory).toEqual(["music.create"]);
-					return [{ ...music, fromHistory: true }];
-				},
-				nearFeedback: () => [],
-			},
-			settings,
+			...p,
+			analyze: async () =>
+				'{"requests":[{"text":"音楽を作って","target":null,"inputs":[],"after":[]}]}',
 		},
-		{
-			state: { text: "曲", previousAgent: null, previousUser: null },
-			dynamic: [conversation],
-			fromHistory: ["music.create"],
-			available: () => true,
-			instructions: "",
-		},
+		turn("曲を作って"),
 	);
-	expect(result.candidates[0]?.fromHistory).toBe(true);
-	expect(result.decision).toMatchObject({
-		row: 2,
-		candidate: { card: { score: { fromHistory: true } } },
+	expect(result.structure).toBeNull();
+	expect(calls.embed).toEqual(["曲を作って"]);
+	expect(result.decision).toMatchObject({ row: 2, to: "run" });
+});
+
+test("route: a dynamic candidate is scored by the reranker and decided by its row (an asked approval runs, row 5)", async () => {
+	const pending = {
+		id: "pending.approve",
+		kind: "pending" as const,
+		operation: "approve" as const,
+		confirmation: "c1",
+		toolchain: "music.create",
+		passage: "曲の生成を承認する",
+	};
+	const { ports: p, calls } = ports({
+		"pending.approve": 0.95,
+		"music.create": 0.2,
 	});
-});
-
-test("a blank description rejects the request before the scorer", async () => {
-	await expect(
-		route(
-			{
-				embed: async () => ({ space, vectors: [[1, 0]] }),
-				score: async () => {
-					throw new Error("scored");
-				},
-				read: { candidates: () => [], nearFeedback: () => [] },
-				settings,
-			},
-			{
-				state: { text: "曲", previousAgent: null, previousUser: null },
-				dynamic: [{ ...conversation, passage: "   " }],
-				available: () => true,
-				instructions: "",
-			},
-		),
-	).rejects.toThrow("larm_invalid_route_request");
-});
-
-test("more stable candidates than the scorer accepts is a bad request", async () => {
-	const many: Candidate[] = Array.from({ length: 129 }, (_, index) => ({
-		...music,
-		id: `c${index}`,
-		title: `c${index}`,
-	}));
-	await expect(
-		route(
-			{
-				embed: async () => ({ space, vectors: [[1, 0]] }),
-				score: async () => {
-					throw new Error("scored");
-				},
-				read: { candidates: () => many, nearFeedback: () => [] },
-				settings,
-			},
-			{
-				state: { text: "曲", previousAgent: null, previousUser: null },
-				dynamic: [],
-				available: () => true,
-				instructions: "",
-			},
-		),
-	).rejects.toThrow("larm_invalid_route_request");
-});
-
-test("a bad intent signal fails before the embedding", async () => {
-	let embedded = false;
-	await expect(
-		route(
-			{
-				embed: async () => {
-					embedded = true;
-					return { space, vectors: [[1, 0]] };
-				},
-				score: async () => {
-					throw new Error("scored");
-				},
-				read: { candidates: () => [], nearFeedback: () => [] },
-				settings,
-			},
-			{
-				state: { text: "曲", previousAgent: null, previousUser: null },
-				dynamic: [conversation],
-				available: () => true,
-				instructions: "",
-				signals: { intentChat: 2 },
-			},
-		),
-	).rejects.toThrow("larm_invalid_route_request");
-	expect(embedded).toBe(false);
-});
-
-test("nothing joins the offer when the near corrections disagree or the weight is off", async () => {
-	const asked: Array<readonly string[] | undefined> = [];
-	const run = (near: NearFeedback[], feedbackWeight: number) =>
-		route(
-			{
-				embed: async () => ({ space, vectors: [[1, 0]] }),
-				score: async () => ({
-					choice: CONVERSATION_ID,
-					probabilities: { [CONVERSATION_ID]: 1 },
-					scores: null,
-					model: "scorer",
-					headRevision: null,
-					calibrationRevision: null,
-				}),
-				read: {
-					candidates: (query) => {
-						asked.push(query.include);
-						return [];
-					},
-					nearFeedback: () => near,
-				},
-				settings: {
-					accept: 0.6,
-					low: 0.3,
-					margin: 0.15,
-					approve: 0.85,
-					multi: 0.5,
-					feedbackNear: 0.9,
-					feedbackWeight,
-				},
-			},
-			{
-				state: { text: "曲", previousAgent: null, previousUser: null },
-				dynamic: [conversation],
-				available: () => true,
-				instructions: "",
-			},
-		);
-	await run(
-		[
-			{ id: "a", wrongId: null, rightId: "music.create", similarity: 1 },
-			{ id: "b", wrongId: null, rightId: "image.create", similarity: 1 },
-		],
-		2,
+	const result = await route(
+		p,
+		turn("はい、お願い", { dynamic: [pending], asked: "pending.approve" }),
 	);
-	await run(
-		[{ id: "a", wrongId: null, rightId: "music.create", similarity: 1 }],
-		0,
+	expect(calls.rerank[0]!.criteria.map((c) => c.name)).toContain(
+		"pending.approve",
 	);
-	expect(asked).toEqual([undefined, undefined]);
+	expect(result.corrected[0]!.candidate.id).toBe("pending.approve");
+	expect(result.decision).toMatchObject({ row: 5, to: "run" });
+});
+
+test("route: a blank description is refused before the reranker; a long card document is cut, not dropped", async () => {
+	const blank = {
+		id: "work.check",
+		kind: "work" as const,
+		todo: "t1",
+		operation: "check" as const,
+		title: "確認",
+		passage: "  ",
+	};
+	const { ports: p, calls } = ports({ "music.create": 0.9 });
+	await expect(
+		route(p, turn("曲を作って", { dynamic: [blank] })),
+	).rejects.toThrow(routeErrors.invalidRequest);
+	expect(calls.rerank).toEqual([]);
+	const long = {
+		...card("music.create", "dedicated", [1, 0]),
+		examples: ["あ".repeat(5000)],
+	};
+	const { ports: q, calls: sent } = ports(
+		{ "music.create": 0.9 },
+		{ cards: [CARDS[0]!, long] },
+	);
+	const result = await route(q, turn("曲を作って"));
+	const description = sent.rerank[0]!.criteria.find(
+		(c) => c.name === "music.create",
+	)!.description;
+	expect(description.length).toBe(4096);
+	expect(result.corrected[0]!.candidate.id).toBe("music.create");
 });

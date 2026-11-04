@@ -76,8 +76,9 @@ ok = lambda x, t: t is not None and (t == x['gold'] or t in x['acc'])
 # ---------------- kNN ----------------
 def knn_votes(x, mem, M=10, loo=True):
     if not mem: return []
-    V = np.stack([m['vec'] for m in mem]); s = V @ x['vec']
-    idx = [j for j in np.argsort(-s) if mem[j]['id'] != x['id'] and (not loo or mem[j].get('corr') or mem[j]['text'] != x['text'])][:M]
+    # float64 and a stable order, as the package computes them (float32 sums flip near-ties at the 10th neighbour)
+    V = np.stack([m['vec'] for m in mem]).astype(np.float64); s = V @ np.asarray(x['vec'], np.float64)
+    idx = [j for j in np.argsort(-s, kind='stable') if mem[j]['id'] != x['id'] and (not loo or mem[j].get('corr') or mem[j]['text'] != x['text'])][:M]
     v = collections.defaultdict(float)
     for j in idx: v[mem[j]['gold']] += float(s[j])
     return sorted(v.items(), key=lambda kv: -kv[1])

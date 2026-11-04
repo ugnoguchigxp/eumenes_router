@@ -5,7 +5,9 @@ import { decodeVectors, dot } from "../vector.ts";
 
 /**
  * best-v2, the main decision's scorer. The candidates are the retrieval's top
- * tools that have a reranker score, plus the conversation. Each gets features
+ * tools that have a reranker score, plus the conversation, plus the next tools
+ * of the retrieval's ranking up to `extra.tools` that have one (extra
+ * candidates, outside the retrieval's probabilities). Each gets features
  * from the retrieval, the reranker, their fusion and the labeled-example memory
  * (kNN); a standardized logistic ranker gives it a probability, and the gap of
  * the top two decides whether to defer. Pure: no database, clock, randomness,
@@ -29,7 +31,7 @@ export const BEST_V2_FEATURES = [
 	"tbl_hit",
 ] as const;
 
-export const BEST_V2_FORMAT = "best-v2.v1";
+export const BEST_V2_FORMAT = "best-v2.v2";
 export const BEST_V2_MEMORY_FORMAT = "best-v2-memory.v1";
 
 /**
@@ -51,6 +53,8 @@ export type BestV2Params = {
 	gate: { deferBelow: number };
 	/** Fusion: softmax of retrieval p + weight·rerank, the conversation at a fixed offset, over the top retrieved. */
 	fuse: { weight: number; conversation: number; top: number };
+	/** Tools taken from the retrieval's ranking, the offered ones included; 0: none beyond the offer. */
+	extra: { tools: number };
 	knn: { neighbors: number; dimension: number };
 };
 
@@ -78,8 +82,16 @@ export type BestV2Input = {
 	retrieval: ReadonlyArray<readonly [string, number]>;
 	/** The retrieval's raw scores by candidate. */
 	retrievalScores: Readonly<Record<string, number>>;
-	/** The reranker's score by retrieved tool. A tool without one is not offered. */
+	/** The reranker's score by tool (the extra ones included). A tool without one is not offered. */
 	rerank: Readonly<Record<string, number>>;
+	/** The retrieval's ranking of every available tool, the conversation left out, with its score over the best (`srRanking`). Needed when `extra.tools` > 0. */
+	ranking?: ReadonlyArray<readonly [string, number]>;
+	/**
+	 * More candidates the host offers (a correction's right answer outside the
+	 * offer, the host's dynamic candidates): added after the extra tools when they
+	 * have a rerank score. Not in the training: they get no retrieval probability.
+	 */
+	include?: readonly string[];
 	/** The utterance in the memory's embedding space, normalized. */
 	vector: ArrayLike<number>;
 };
@@ -118,6 +130,8 @@ export function loadBestV2(
 	if (
 		!Number.isInteger(a.fuse.top) ||
 		a.fuse.top <= 0 ||
+		!Number.isInteger(a.extra?.tools) ||
+		a.extra.tools < 0 ||
 		!Number.isInteger(neighbors) ||
 		neighbors <= 0 ||
 		!Number.isInteger(dimension) ||
@@ -161,6 +175,12 @@ function assertInput(input: BestV2Input, dimension: number) {
 	for (const record of [input.retrievalScores, input.rerank])
 		for (const v of Object.values(record))
 			if (!Number.isFinite(v)) throw new Error(routeErrors.invalidResponse);
+	const ranked = new Set<string>();
+	for (const [id, v] of input.ranking ?? []) {
+		if (ranked.has(id) || id === CONVERSATION_ID || !Number.isFinite(v))
+			throw new Error(routeErrors.invalidResponse);
+		ranked.add(id);
+	}
 }
 
 export function scoreBestV2(
@@ -170,6 +190,8 @@ export function scoreBestV2(
 	const a = model.params;
 	const conv = CONVERSATION_ID;
 	assertInput(input, a.knn.dimension);
+	if (a.extra.tools > 0 && !input.ranking)
+		throw new Error(routeErrors.invalidResponse);
 	const retrieved = [...input.retrieval]
 		.sort((x, y) => y[1] - x[1])
 		.slice(0, a.fuse.top);
@@ -179,15 +201,32 @@ export function scoreBestV2(
 	for (const id of order)
 		if (id !== conv && Object.hasOwn(input.rerank, id))
 			rerank.set(id, input.rerank[id]!);
-	// Fusion over the offer: retrieved tools with a rerank score, then the conversation.
+	// Extra candidates: the next tools of the ranking (up to extra.tools, the offered ones counted) with a rerank score.
+	const full = new Map<string, [number, number]>();
+	if (a.extra.tools > 0)
+		(input.ranking ?? []).forEach(([id, v], i) => full.set(id, [i, v]));
+	const extra = new Map<string, number>();
+	for (const id of [...full.keys()].slice(0, a.extra.tools))
+		if (!rerank.has(id) && Object.hasOwn(input.rerank, id))
+			extra.set(id, input.rerank[id]!);
+	for (const id of input.include ?? [])
+		if (
+			id !== conv &&
+			!rerank.has(id) &&
+			!extra.has(id) &&
+			Object.hasOwn(input.rerank, id)
+		)
+			extra.set(id, input.rerank[id]!);
+	const scored = new Map([...rerank, ...extra]);
+	// Fusion over the offer: retrieved tools with a rerank score, the conversation, then the extra tools.
 	const ids = order.filter((id) => id !== conv && rerank.has(id));
-	ids.push(conv);
+	ids.push(conv, ...extra.keys());
 	const comb = ids.map(
 		(id) =>
 			(sr.get(id) ?? 0) +
 			(id === conv
 				? a.fuse.conversation + a.fuse.weight * (rerank.get(conv) ?? 0)
-				: a.fuse.weight * rerank.get(id)!),
+				: a.fuse.weight * scored.get(id)!),
 	);
 	const top = Math.max(...comb);
 	const exp = comb.map((v) => Math.exp(v - top));
@@ -211,12 +250,13 @@ export function scoreBestV2(
 	const { mean, scale, coef, intercept } = a.ranker;
 	const ranked = fused
 		.map(({ id, p }, i) => {
-			const r = rerank.get(id) ?? 0;
+			const r = scored.get(id) ?? 0;
 			const at = scores.indexOf(r);
+			const offered = order.includes(id);
 			const f = [
 				sr.get(id) ?? 0,
-				order.includes(id) ? order.indexOf(id) : 9,
-				input.retrievalScores[id] ?? 0,
+				offered ? order.indexOf(id) : full.has(id) ? 1 + full.get(id)![0] : 9,
+				offered ? (input.retrievalScores[id] ?? 0) : (full.get(id)?.[1] ?? 0),
 				r,
 				at >= 0 ? at : 9,
 				r - (scores[0] ?? 0),

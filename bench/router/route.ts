@@ -2,7 +2,7 @@
  * Production-shaped routing with the best-v2 artifact (`bun run router route`, or `run --algo best-v2 --text …`).
  *
  *   route --db <corr.db> --artifact <dir> (--text <utterance> [--prev <previous user turn>] [--hints <json>] | --in <jsonl> [--out <jsonl>])
- *         [--python <venv python>] [--url <e5 server>] [--model local:e5-small]
+ *         --model <embedding cache key> [--python <venv python>] [--url <e5 server>] [--rr-all <every-card scores.json>]
  *
  * Per utterance: sr-corr (TS, catalog + trigram index + e5 vector) → best_v2.py predict (ruri rerank, kNN memory,
  * LR ranker, p1−p2 gate from the exported artifact; no retraining). Output: one JSON per utterance with the tool, the
@@ -19,11 +19,12 @@ import { cachedVectors, fillCache, httpProvider } from "./embed.ts";
 import { ALGORITHMS, ftsSearch, ranking, registerSr, SR_DEFAULTS, type AlgorithmEnv, type CandidateCard, type SrOptions } from "./algorithms.ts";
 import { loadHistory } from "./data.ts";
 import { SR_CAL } from "./correction.ts";
+import { capByKind, srRanking } from "../../src/index.ts";
 
 export type RouteRow = { id?: string; text: string; prev?: string | null; hints?: Utterance["hints"] };
 export type RouteOptions = {
 	db: string; artifact: string; rows: RouteRow[]; python?: string | undefined; url?: string | undefined; model?: string | undefined;
-	/** Reranker scores of every card per text (context.py score-all): used for the offered tools instead of the artifact's ruri. */
+	/** Reranker scores of every card per text (context.py score-all): used for the offered and extra tools instead of the artifact's ruri. */
 	rrAll?: Record<string, Record<string, number>> | undefined;
 	offer?: number; temperature?: number;
 };
@@ -39,7 +40,8 @@ async function e5Server(python: string): Promise<{ url: string; stop: () => void
 }
 
 export async function route(o: RouteOptions) {
-	const python = o.python ?? "/tmp/cvenv/bin/python"; const model = o.model ?? "local:e5-small";
+	const python = o.python ?? "/tmp/cvenv/bin/python"; const model = o.model;
+	if (!model) throw new Error("route: --model (the embedding cache key the artifact was trained with) is required");
 	const offer = o.offer ?? 8; const temperature = o.temperature ?? 0.1;
 	const tmp = mkdtempSync(join(tmpdir(), "route-")); const dbPath = join(tmp, "route.db"); copyFileSync(o.db, dbPath);
 	const server = o.url ? null : await e5Server(python);
@@ -52,18 +54,22 @@ export async function route(o: RouteOptions) {
 		const algo = ALGORITHMS["sr-corr"]!; const cards = loadCards(db); const passages = passagesByCard(db); const vector = cachedVectors(db, model);
 		const env: AlgorithmEnv = { fts: ftsSearch(db), vector, history: loadHistory(db), cardText: new Map(cards.map((c) => [c.id, { title: c.title, summary: c.summary }])) };
 		const all: CandidateCard[] = cards.map((c) => ({ id: c.id, kind: c.kind, passages: passages.get(c.id) ?? [] }));
+		const kindOf = new Map(cards.map((c) => [c.id, c.kind]));
 		const inRows = o.rows.map((r, i) => {
 			const utterance: Utterance = { id: r.id ?? `q-${i}`, conversationId: "route", seq: i, text: r.text, previousUser: r.prev ?? null, previousAgent: null, hints: r.hints ?? {} };
 			const avail = utterance.hints.availableToolchainIds; const cands = avail ? all.filter((c) => c.id === CONVERSATION || avail.includes(c.id)) : all;
 			const t = performance.now(); const scores = algo.score({ utterance, candidates: cands }, env);
-			const order = ranking(scores).slice(0, offer);
+			const order = capByKind(ranking(scores), (id: string) => kindOf.get(id)).slice(0, offer);
 			if (!order.includes(CONVERSATION)) { if (order.length >= offer) order.pop(); order.push(CONVERSATION); }
 			const best = Math.max(0, ...order.map((id) => scores.get(id) ?? 0)); const scaled = order.map((id) => (best > 0 ? Math.max(0, scores.get(id) ?? 0) / best : 0));
 			const p = softmax(scaled, temperature); const srMs = performance.now() - t;
-			// A text the scores file lacks (over the provider's limit) keeps the artifact's ruri, as the corr swap does.
+			// The ranking of every tool (kind slots, as the package): an artifact with extra tools takes them from it.
+			const srfull = srRanking(scores, (ranked) => capByKind(ranked, (id: string) => kindOf.get(id)));
+			// A text the scores file lacks (over the provider's limit) keeps the artifact's ruri for the offer and gets no extra
+			// tools, as the corr swap and the package (no rerank score, no extra tool) do.
 			const scored = o.rrAll?.[r.text];
-			const rr = scored ? Object.fromEntries(order.filter((id) => id !== CONVERSATION).map((id) => [id, scored[id]!])) : undefined;
-			return { id: utterance.id, text: r.text, sr: order.map((id, k) => [id, Number(p[k]!.toFixed(6))]), sr_scores: Object.fromEntries(order.map((id, k) => [id, Number(scaled[k]!.toFixed(6))])), vec: [...vector(r.text)], sr_ms: srMs, ...(rr ? { rr } : {}) };
+			const rr = scored ? Object.fromEntries(Object.entries(scored).filter(([id]) => id !== CONVERSATION)) : undefined;
+			return { id: utterance.id, text: r.text, sr: order.map((id, k) => [id, Number(p[k]!.toFixed(6))]), sr_scores: Object.fromEntries(order.map((id, k) => [id, Number(scaled[k]!.toFixed(6))])), vec: [...vector(r.text)], srfull: o.rrAll && !scored ? [] : srfull, sr_ms: srMs, ...(rr ? { rr } : {}) };
 		});
 		db.close();
 		const inp = join(tmp, "in.jsonl"); const outp = join(tmp, "out.jsonl");

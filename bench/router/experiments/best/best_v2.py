@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """best-v2: algo4 E2 ranker (candidate features + p1−p2 gate) inside the best-v1 harness. Local CPU only, no external APIs.
 
-  python best_v2.py eval    --corr DIR [--out DIR] [--rerank tag=FTDIR ...] [--skip-robust]
+  python best_v2.py eval    --corr DIR [--out DIR] [--rerank tag=FTDIR ...] [--skip-robust] [--every scores.json]   (--every: every-card scores by text, for candidates outside the sr top-8)
   python best_v2.py export  --corr DIR --artifact OUT [--cfg best-v2]        versioned artifact (model.json + memory.npz)
   python best_v2.py predict --artifact OUT [--in rows.jsonl | --row JSON] [--ruri MODEL]   one or many utterances, no retraining
   python best_v2.py export-verify --corr DIR --out items.jsonl     deferred test items for tokens.py verify
-  python best_v2.py export-ranked --corr DIR --out ranked.jsonl    every item's ranked candidates, for correction.ts --external
+  python best_v2.py select  --corr DIR --cfg A,B [--every scores.json] [--sr-full sr.json]   dev-CV top-1 of each configuration (no test)
+  python best_v2.py export-ranked --corr DIR --out ranked.jsonl [--cfg C] [--every scores.json]   every item's ranked candidates, for correction.ts --external and compare.py
   python best_v2.py export-package --artifact OUT --params src/scoring/best-v2.params.ts --memory MEM.json   package numbers + host memory
   python best_v2.py export-parity --corr DIR --artifact OUT --out rows.jsonl   inputs + outputs for the package's parity test
   python best_v2.py leak-check --corr DIR [--ft FTDIR ...] [--pairs pairs.jsonl ...]   test labels never reach training
@@ -29,6 +30,10 @@ CFGS = {
     'best-v2':      dict(knn=True, tbl=False),
     'best-v2+tbl':  dict(knn=True, tbl=True),
     'best-v2-knn':  dict(knn=False, tbl=False),
+    # improvement candidate 2 (plan M3c): tool candidates up to k from sr's every-card ranking (--sr-full), scored by --every
+    'best-v2+k10':  dict(knn=True, tbl=False, k=10),
+    'best-v2+k12':  dict(knn=True, tbl=False, k=12),
+    'best-v2+k16':  dict(knn=True, tbl=False, k=16),
 }
 CGRID = (0.01, 0.03, 0.1, 0.3, 1.0, 3.0)
 ok = B.ok
@@ -42,12 +47,17 @@ def fuse(x, rr, extra=None):
 def cand_matrix(x, rr, votes, tbl, cfg, extra_rr=None):
     """rr: ruri scores of the sr tools; extra_rr: ruri scores of table-hit tools (only used with cfg tbl)."""
     extra = {c: extra_rr[c] for c in tbl if c != C and c not in rr and extra_rr and c in extra_rr} if cfg['tbl'] else {}
+    if cfg.get('k') and x.get('srfull') is None: raise ValueError(f"{x.get('id')}: a configuration with extra tools needs --sr-full (the retrieval ranking)")
+    full = {c: (i, v) for i, (c, v) in enumerate(x.get('srfull') or [])} if cfg.get('k') else {}
+    every = x.get('every') or {}; offered = {c for c, _ in x['sr'][:8]}
+    for c in list(full)[:cfg.get('k') or 0]:
+        if c != C and c not in rr and c not in offered and c not in extra and every.get(c) is not None: extra = {**extra, c: every[c]}
     P, xr = fuse(x, rr, extra); s = dict(x['sr']); order = [c for c, _ in x['sr']]
     rrs = sorted([v for k, v in rr.items() if k != C], reverse=True); kn = dict(votes) if cfg['knn'] else {}; kmax = max(kn.values()) if kn else 1
     F = []
     for i, (c, p) in enumerate(P):
         rv = xr.get(c, 0)
-        F.append([s.get(c, 0), order.index(c) if c in s else 9, x['sr_scores'].get(c, 0), rv, (rrs.index(rv) if rv in rrs else 9), rv - (rrs[0] if rrs else 0), p, i, float(c == C),
+        F.append([s.get(c, 0), order.index(c) if c in s else (1 + full[c][0] if c in full else 9), x['sr_scores'].get(c, 0) if c in s else (full[c][1] if c in full else 0), rv, (rrs.index(rv) if rv in rrs else 9), rv - (rrs[0] if rrs else 0), p, i, float(c == C),
                   kn.get(c, 0) / kmax if kmax else 0, tbl.get(c, 0) if cfg['tbl'] else 0, float(c in tbl) if cfg['tbl'] else 0])
     return [c for c, _ in P], np.array(F, float)
 def sig(z): return 1 / (1 + np.exp(-z))
@@ -74,7 +84,7 @@ def fit(train, cfg, tau, EXTRA, inner_seed=0, Cfix=None):
     X = {x['id']: featurize(x, train, cfg, tau, EXTRA, loo=True) for x in train}
     folds = B.gkfold(train, 5, inner_seed); res = {}
     for Cc in ((Cfix,) if Cfix else CGRID):
-        ll = 0; gsc = {}
+        ll = 0; gsc = {}; top = 0
         for f in folds:
             fs = set(f); tr = [r for j, r in enumerate(train) if j not in fs]
             m = Ranker.from_sk(fit_sk(np.vstack([X[r['id']][1] for r in tr]), np.concatenate([[float(ok(r, c)) for c in X[r['id']][0]] for r in tr]), Cc))
@@ -82,12 +92,12 @@ def fit(train, cfg, tau, EXTRA, inner_seed=0, Cfix=None):
                 r = train[j]; cs, F = X[r['id']]; p = m.proba(F)
                 d = np.log(p + 1e-12) - np.log(1 - p + 1e-12); sm = np.exp(d - d.max()); sm /= sm.sum()   # item softmax of the decision values
                 ll += -math.log(max([sm[i] for i, c in enumerate(cs) if ok(r, c)] + [1e-6]))
-                gsc[r['id']] = route(cs, F, m)[1]
-        res[Cc] = (ll, gsc)
+                gsc[r['id']] = route(cs, F, m)[1]; top += float(ok(r, cs[int(np.argmax(p))]))
+        res[Cc] = (ll, gsc, top / len(train))
     bestC = min(res, key=lambda c: res[c][0]); gsc = res[bestC][1]
     model = Ranker.from_sk(fit_sk(np.vstack([X[r['id']][1] for r in train]), np.concatenate([[float(ok(r, c)) for c in X[r['id']][0]] for r in train]), bestC))
     s = sorted(gsc.values()); th = s[max(int(len(s) * 0.2) - 1, 0)] + 1e-9
-    return dict(model=model, C=bestC, th=th, cv_ll={str(k): round(v[0], 2) for k, v in res.items()})
+    return dict(model=model, C=bestC, th=th, cv_ll={str(k): round(v[0], 2) for k, v in res.items()}, cv_top1=round(100 * res[bestC][2], 1))
 def apply(fitted, evals, mem, cfg, tau, EXTRA):
     out = {}
     for x in evals:
@@ -95,12 +105,15 @@ def apply(fitted, evals, mem, cfg, tau, EXTRA):
         out[x['id']] = dict(P=P, s=s, defer=s < fitted['th'])
     return out
 # ---------------- data ----------------
-def load(corr, rr_file=None):
+def load(corr, rr_file=None, every=None, srfull=None):
+    """every: a provider's every-card scores by text (context.py score-all); srfull: sr's every-card ranking by id
+    (srfull.ts). Both only for candidates outside the sr top-8."""
     items, utt = B.load(corr); S = {}
+    E = json.load(open(every)) if every else {}; SF = json.load(open(srfull)) if srfull else {}
     for sp in ('dev', 'test'):
         for l in open(os.path.join(corr, 'runs', f'sr-corr-{sp}', 'predictions.jsonl')):
             d = json.loads(l); S[d['id']] = d.get('scores', {})
-    for x in items: x['sr_scores'] = S.get(x['id'], {})
+    for x in items: x['sr_scores'] = S.get(x['id'], {}); x['every'] = E.get(x['text']); x['srfull'] = SF.get(x['id'])
     if rr_file:
         R = json.load(open(rr_file)); srfull = {}
         for sp in ('dev', 'test'):
@@ -139,7 +152,7 @@ def summarize(test, R, base_acc=None, past_acc=None, dedup=None):
     return row, acc
 def cmd_eval(a):
     out_dir = a.out or os.path.join(a.corr, 'best-v2'); os.makedirs(out_dir, exist_ok=True)
-    items, _ = load(a.corr); EXTRA = B.ensure_extra(items, a.corr, a.python)
+    items, _ = load(a.corr, every=a.every, srfull=a.sr_full); EXTRA = B.ensure_extra(items, a.corr, a.python)
     real, var, ctl = setup(items, a.variants); dev = [x for x in real if x['split'] == 'dev']; test = [x for x in real if x['split'] == 'test']
     tau = B.tune_tau([dict(key=x['key'], gold=x['gold']) for x in dev])
     devtext = {x['text'] for x in dev}; dedup = {x['id'] for x in test if x['text'] not in devtext}
@@ -227,7 +240,7 @@ def robust(real, EXTRA, REP, save):
         rob[name]['time_split_main'] = ts; REP['robust'] = rob; save(); print('robust', name, rob[name], file=sys.stderr)
 # ---------------- export / predict ----------------
 def cmd_export(a):
-    items, _ = load(a.corr); real, _, _ = setup(items, a.variants); dev = [x for x in real if x['split'] == 'dev']; cfg = CFGS[a.cfg]
+    items, _ = load(a.corr, every=a.every, srfull=a.sr_full); real, _, _ = setup(items, a.variants); dev = [x for x in real if x['split'] == 'dev']; cfg = CFGS[a.cfg]
     EXTRA = B.ensure_extra(items, a.corr, a.python); tau = B.tune_tau([dict(key=x['key'], gold=x['gold']) for x in dev]); f = fit(dev, cfg, tau, EXTRA)
     os.makedirs(a.artifact, exist_ok=True); cards = json.load(open(os.path.join(a.corr, 'rerank-in.json')))['cards']
     np.savez_compressed(os.path.join(a.artifact, 'memory.npz'), vec=np.stack([x['vec'] for x in dev]).astype('<f4'))
@@ -277,7 +290,11 @@ class Predictor:
         if self.flags['tbl']: x['key'] = self.key(row['text']); tbl = B.tbl_scores(x, self.mem, self.meta['table']['tau'], loo=False)
         T['table_ms'] = 1000 * (time.perf_counter() - t)
         t = time.perf_counter(); tools = [c for c, _ in x['sr'] if c != C]; extra = [c for c in tbl if c != C and c not in tools]
-        rr = row.get('rr') or self.ruri(row['text'], tools + extra); T['ruri_ms'] = 1000 * (time.perf_counter() - t)
+        k = self.flags.get('k') or 0; full = row.get('srfull') or []
+        if k and 'srfull' not in row: raise ValueError('this artifact takes extra tools: the row needs srfull (the retrieval ranking; [] for none)')
+        more = [c for c, _ in full[:k] if c not in tools and c not in extra] if k else []
+        rr = row.get('rr') or self.ruri(row['text'], tools + extra + more); T['ruri_ms'] = 1000 * (time.perf_counter() - t)
+        x['srfull'] = full if k else None; x['every'] = rr if k else None
         t = time.perf_counter(); cs, F = cand_matrix(x, {c: rr[c] for c in tools if c in rr}, votes, tbl, self.flags, {c: rr[c] for c in extra if c in rr}); P, s = route(cs, F, self.ranker); T['rank_gate_ms'] = 1000 * (time.perf_counter() - t)
         return dict(id=x['id'], tool=P[0][0], defer=bool(s < self.th), gate=round(s, 4), defer_below=round(self.th, 4), scores=[[c, round(p, 4)] for c, p in P], llm_candidates=[c for c, _ in P[:3]] if s < self.th else [],
                     latency_ms={k: round(v, 2) for k, v in T.items()} | dict(total=round(sum(T.values()), 2)), version=self.meta['version'])
@@ -298,10 +315,16 @@ def cmd_export_verify(a):
                 cs = [c for c, _ in R[x['id']]['P'][:4]]; n += 1
                 o.write(json.dumps(dict(id=x['id'], text=x['text'], cands=cs, docs={c: doc(c) for c in cs}, gold=x['gold'], acceptable=sorted(x['acc']), past=x['past']), ensure_ascii=False) + '\n')
     print(json.dumps(dict(out=a.out, deferred=n, of=len(test))))
+def cmd_select(a):
+    """dev-only: each named configuration fitted on dev, with its dev-CV top-1 (grouped 5-fold) — the test is not read."""
+    items, _ = load(a.corr, every=a.every, srfull=a.sr_full); EXTRA = B.ensure_extra(items, a.corr, a.python); real, _, _ = setup(items, a.variants)
+    dev = [x for x in real if x['split'] == 'dev']; tau = B.tune_tau([dict(key=x['key'], gold=x['gold']) for x in dev])
+    for name in a.cfg.split(','):
+        f = fit(dev, CFGS[name], tau, EXTRA); print(json.dumps(dict(cfg=name, cv_top1=f['cv_top1'], C=f['C'], th=round(f['th'], 4))))
 def cmd_export_ranked(a):
     """Every item's ranked candidates (dev in-sample, test, variants, controls), for bench/router/correction.ts --external,
     which puts the product's correction (nearFeedback -> correctProbabilities) on top and takes the corrected top-1."""
-    items, _ = load(a.corr); EXTRA = B.ensure_extra(items, a.corr, a.python); real, var, ctl = setup(items, a.variants)
+    items, _ = load(a.corr, every=a.every, srfull=a.sr_full); EXTRA = B.ensure_extra(items, a.corr, a.python); real, var, ctl = setup(items, a.variants)
     dev = [x for x in real if x['split'] == 'dev']; cfg = CFGS[a.cfg]; xs = real + var + ctl
     tau = B.tune_tau([dict(key=x['key'], gold=x['gold']) for x in dev]); f = fit(dev, cfg, tau, EXTRA); R = apply(f, xs, dev, cfg, tau, EXTRA)
     with open(a.out, 'w') as o:
@@ -314,10 +337,10 @@ def cmd_export_package(a):
     import base64
     mj, mz = os.path.join(a.artifact, 'model.json'), os.path.join(a.artifact, 'memory.npz')
     d = json.load(open(mj)); m = d['meta']; vec = np.load(mz)['vec'].astype('<f4')
-    assert m['flags'] == CFGS['best-v2'], f"the package scores best-v2 only, not {m['flags']}"
+    fl = m['flags']; assert fl.get('knn') and not fl.get('tbl') and set(fl) <= {'knn', 'tbl', 'k'}, f"the package scores best-v2 (kNN, extra tools) only, not {fl}"
     h = hashlib.sha256(open(mj, 'rb').read() + open(mz, 'rb').read()).hexdigest()[:16]; dim = int(vec.shape[1])
-    params = dict(format='best-v2.v1', version=m['version'], source=h, features=m['features'], ranker=m['ranker'], gate=dict(deferBelow=m['gate']['defer_below']),
-                  fuse=dict(weight=m['fuse']['W'], conversation=m['fuse']['CONV'], top=m['fuse']['k']), knn=dict(neighbors=m['knn']['M'], dimension=dim))
+    params = dict(format='best-v2.v2', version=m['version'], source=h, features=m['features'], ranker=m['ranker'], gate=dict(deferBelow=m['gate']['defer_below']),
+                  fuse=dict(weight=m['fuse']['W'], conversation=m['fuse']['CONV'], top=m['fuse']['k']), extra=dict(tools=int(fl.get('k', 0))), knn=dict(neighbors=m['knn']['M'], dimension=dim))
     memory = dict(format='best-v2-memory.v1', source=h, dimension=dim, labels=[x['gold'] for x in d['memory']], vectors=base64.b64encode(vec.tobytes()).decode())
     open(a.params, 'w').write('// Generated by bench/router/experiments/best/best_v2.py export-package. Do not edit.\n'
                               '// The trained numbers only: nothing here comes from an utterance. The memory is passed in by the host.\n'
@@ -326,13 +349,15 @@ def cmd_export_package(a):
 def cmd_export_parity(a):
     """Inputs and full-precision best-v2 outputs of the test items and variants (not in the memory), for the package's
     parity test (test/best-v2.test.ts). No utterance text."""
-    items, _ = load(a.corr); real, var, _ = setup(items, a.variants); p = Predictor(a.artifact); n = 0
+    items, _ = load(a.corr, every=a.every, srfull=a.sr_full); real, var, _ = setup(items, a.variants); p = Predictor(a.artifact); n = 0; k = p.flags.get('k') or 0
     with open(a.out, 'w') as o:
         for x in [x for x in real if x['split'] == 'test'] + var:
             sr = [tuple(t) for t in sorted(x['sr'], key=lambda kv: -kv[1])][:8]; tools = [c for c, _ in sr if c != C]; rr = {c: x['rr'][c] for c in tools if c in x['rr']}
-            q = dict(id=x['id'], text=x['text'], sr=sr, sr_scores=x['sr_scores'], vec=np.asarray(x['vec'], '<f4'))
+            q = dict(id=x['id'], text=x['text'], sr=sr, sr_scores=x['sr_scores'], vec=np.asarray(x['vec'], '<f4'), srfull=x['srfull'] if k else None, every=x['every'] if k else None)
             cs, F = cand_matrix(q, rr, B.knn_votes(q, p.mem, M, loo=False), {}, p.flags, {}); P, s = route(cs, F, p.ranker)
-            o.write(json.dumps(dict(id=x['id'], input=dict(retrieval=[[c, float(v)] for c, v in sr], retrievalScores=x['sr_scores'], rerank=rr, vector=[float(v) for v in q['vec']]),
+            extra = {c: x['every'][c] for c, _ in (x['srfull'] or [])[:k] if c not in rr and x['every'] and c in x['every']} if k else {}
+            inp = dict(retrieval=[[c, float(v)] for c, v in sr], retrievalScores=x['sr_scores'], rerank={**rr, **extra}, vector=[float(v) for v in q['vec']], **({'ranking': x['srfull']} if k else {}))
+            o.write(json.dumps(dict(id=x['id'], input=inp,
                                     expected=dict(ranked=[[c, float(v)] for c, v in P], gate=s, defer=bool(s < p.th))), ensure_ascii=False) + '\n'); n += 1
     print(json.dumps(dict(out=a.out, rows=n)))
 def cmd_leak_check(a):
@@ -354,8 +379,8 @@ def cmd_leak_check(a):
     rep['note'] = f'{len(test_ids)} test ids; {len(test_ids) - len(test_only)} test texts also occur in dev (legitimate dev memory, not a leak)'; rep['pass'] = not bad
     print(json.dumps(rep, ensure_ascii=False, indent=1)); sys.exit(0 if not bad else 1)
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument('cmd', choices=['eval', 'export', 'predict', 'export-verify', 'export-ranked', 'export-package', 'export-parity', 'leak-check']); ap.add_argument('--corr'); ap.add_argument('--out'); ap.add_argument('--python', default=sys.executable)
+    ap = argparse.ArgumentParser(); ap.add_argument('cmd', choices=['eval', 'export', 'predict', 'export-verify', 'export-ranked', 'export-package', 'export-parity', 'leak-check', 'select']); ap.add_argument('--corr'); ap.add_argument('--out'); ap.add_argument('--python', default=sys.executable)
     ap.add_argument('--variants', default=os.path.join(HERE, '..', 'correction', 'variants.jsonl')); ap.add_argument('--rerank', action='append', default=[]); ap.add_argument('--skip-robust', action='store_true')
-    ap.add_argument('--artifact'); ap.add_argument('--params'); ap.add_argument('--memory'); ap.add_argument('--cfg', default='best-v2'); ap.add_argument('--in', dest='inp'); ap.add_argument('--row'); ap.add_argument('--ruri'); ap.add_argument('--e5'); ap.add_argument('--ft', action='append', default=[]); ap.add_argument('--pairs', action='append', default=[]); a = ap.parse_args()
-    {'eval': cmd_eval, 'export': cmd_export, 'predict': cmd_predict, 'export-verify': cmd_export_verify, 'export-ranked': cmd_export_ranked, 'export-package': cmd_export_package, 'export-parity': cmd_export_parity, 'leak-check': cmd_leak_check}[a.cmd](a)
+    ap.add_argument('--artifact'); ap.add_argument('--every'); ap.add_argument('--sr-full', dest='sr_full'); ap.add_argument('--params'); ap.add_argument('--memory'); ap.add_argument('--cfg', default='best-v2'); ap.add_argument('--in', dest='inp'); ap.add_argument('--row'); ap.add_argument('--ruri'); ap.add_argument('--e5'); ap.add_argument('--ft', action='append', default=[]); ap.add_argument('--pairs', action='append', default=[]); a = ap.parse_args()
+    {'eval': cmd_eval, 'export': cmd_export, 'predict': cmd_predict, 'export-verify': cmd_export_verify, 'export-ranked': cmd_export_ranked, 'export-package': cmd_export_package, 'export-parity': cmd_export_parity, 'leak-check': cmd_leak_check, 'select': cmd_select}[a.cmd](a)
 if __name__ == '__main__': main()

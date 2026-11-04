@@ -15,7 +15,6 @@ import {
 import { sha256Hex } from "../src/digest.ts";
 import { cardDigest } from "../src/index.ts";
 import {
-	candidatesInTransaction,
 	lexicalInTransaction,
 	migrateInTransaction,
 	saveVectorsInTransaction,
@@ -126,7 +125,14 @@ test.skipIf(!parity)(
 	"the package's sr-corr gives the bench's predictions on every utterance",
 	() => {
 		const bench = new Database(`${corr}/corr.db`);
-		const model = "local:e5-small";
+		// The embedding cache key the records were made with: the one with the most vectors.
+		const model = (
+			bench
+				.query(
+					"SELECT model FROM bench_embeddings GROUP BY model ORDER BY count(*) DESC LIMIT 1",
+				)
+				.get() as { model: string }
+		).model;
 		const vector = (text: string) => {
 			const row = bench
 				.query(
@@ -226,7 +232,7 @@ test("a NUL in the utterance does not reach the query", () => {
 	);
 });
 
-test("an unchanged card keeps its lexical rows; a strict empty index stays empty with include", () => {
+test("an unchanged card keeps its lexical rows", () => {
 	const db = new Database(":memory:");
 	migrateInTransaction(db);
 	const space: VectorSpace = {
@@ -249,13 +255,5 @@ test("an unchanged card keeps its lexical rows; a strict empty index stays empty
 	expect(rows()).toEqual(before);
 	syncCardsInTransaction(db, cards("曲を新しく作る"), space);
 	expect(rows()).not.toEqual(before);
-	expect(
-		candidatesInTransaction(db, {
-			vector: { space, values: [1, 0] },
-			available: () => true,
-			strict: true,
-			include: ["music.create"],
-		}),
-	).toEqual([]);
 	db.close();
 });

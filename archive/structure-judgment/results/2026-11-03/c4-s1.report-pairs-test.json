@@ -1,0 +1,4804 @@
+{
+  "S0": {
+    "byKind": {
+      "pairs:single-ref": {
+        "n": 37,
+        "right": 30,
+        "routeRight": 36,
+        "countRight": 0,
+        "referenceSide": 4,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-embedded": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-modifier": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-same-tool": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:multi-seq": {
+        "n": 24,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:multi-par": {
+        "n": 14,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:none": {
+        "n": 10,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single-ref": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 2,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "byFamily": {
+      "pairs:A1": {
+        "n": 6,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 0,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A2": {
+        "n": 12,
+        "right": 8,
+        "routeRight": 11,
+        "countRight": 0,
+        "referenceSide": 2,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A3": {
+        "n": 6,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A4": {
+        "n": 2,
+        "right": 1,
+        "routeRight": 2,
+        "countRight": 0,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A5": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A6": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:K": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:S": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:C1": {
+        "n": 8,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:C2": {
+        "n": 8,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:C3": {
+        "n": 4,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:C4": {
+        "n": 3,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:C5": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:D1": {
+        "n": 7,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:D2": {
+        "n": 4,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:D3": {
+        "n": 3,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:E1": {
+        "n": 7,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:E2": {
+        "n": 3,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A1": {
+        "n": 2,
+        "right": 1,
+        "routeRight": 2,
+        "countRight": 0,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:B": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A2": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 1,
+        "countRight": 0,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "pairsBothRight": {
+      "pairs": 28,
+      "right": 11
+    },
+    "wrong": [
+      {
+        "id": "st-016",
+        "gold": "excalidraw.edit",
+        "got": "image.create"
+      },
+      {
+        "id": "st-022",
+        "gold": "image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-030",
+        "gold": "image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-031",
+        "gold": "music.create",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "st-032",
+        "gold": "image.create",
+        "got": "music.library"
+      },
+      {
+        "id": "st-046",
+        "gold": "image.create",
+        "got": "music.library"
+      },
+      {
+        "id": "st-054",
+        "gold": "image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-079",
+        "gold": "image.create",
+        "got": "kanban.manage"
+      },
+      {
+        "id": "st-112",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-113",
+        "gold": "pipeline:image.create+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-114",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-115",
+        "gold": "pipeline:image.create+music.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-116",
+        "gold": "pipeline:model3d.studio+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-117",
+        "gold": "pipeline:music.create+model3d.studio",
+        "got": "music.create"
+      },
+      {
+        "id": "st-120",
+        "gold": "pipeline:image.create+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-121",
+        "gold": "pipeline:music.create+image.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-124",
+        "gold": "pipeline:image.create+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-125",
+        "gold": "pipeline:model3d.studio+image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-126",
+        "gold": "pipeline:image.create+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-127",
+        "gold": "pipeline:image.create+ui.compose",
+        "got": "image.create"
+      },
+      {
+        "id": "st-128",
+        "gold": "pipeline:ui.compose+image.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-129",
+        "gold": "pipeline:excalidraw.edit+ui.compose",
+        "got": "ui.compose"
+      },
+      {
+        "id": "st-130",
+        "gold": "pipeline:ui.compose+excalidraw.edit",
+        "got": "ui.compose"
+      },
+      {
+        "id": "st-133",
+        "gold": "pipeline:object-recognition.manage+model3d.studio",
+        "got": "object-recognition.manage"
+      },
+      {
+        "id": "st-138",
+        "gold": "pipeline:stock.quote+excalidraw.edit",
+        "got": "stock.quote"
+      },
+      {
+        "id": "st-139",
+        "gold": "pipeline:weather.forecast+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-141",
+        "gold": "pipeline:compute.python+image.create",
+        "got": "compute.python"
+      },
+      {
+        "id": "st-143",
+        "gold": "pipeline:weather.forecast+image.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-144",
+        "gold": "pipeline:image.create+model3d.studio+music.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-145",
+        "gold": "pipeline:web.search+timers.manage+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-147",
+        "gold": "pipeline:music.create+image.create+ui.compose",
+        "got": "image.create"
+      },
+      {
+        "id": "st-149",
+        "gold": "pipeline:stock.quote+timers.manage",
+        "got": "stock.quote"
+      },
+      {
+        "id": "st-150",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-151",
+        "gold": "pipeline:image.create+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-152",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-153",
+        "gold": "pipeline:model3d.studio+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-154",
+        "gold": "pipeline:weather.forecast+stock.quote",
+        "got": "stock.quote"
+      },
+      {
+        "id": "st-155",
+        "gold": "pipeline:image.create+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-156",
+        "gold": "pipeline:ui.compose+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-157",
+        "gold": "pipeline:image.create+music.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-158",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-162",
+        "gold": "pipeline:weather.forecast+timers.manage",
+        "got": "weather.forecast"
+      },
+      {
+        "id": "st-164",
+        "gold": "pipeline:music.create+image.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-167",
+        "gold": "pipeline:ui.compose+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-168",
+        "gold": "pipeline:image.create+stock.quote",
+        "got": "stock.quote"
+      },
+      {
+        "id": "st-169",
+        "gold": "pipeline:timers.manage+image.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-170",
+        "gold": "conversation.respond",
+        "got": "image.create"
+      },
+      {
+        "id": "st-171",
+        "gold": "conversation.respond",
+        "got": "image.create"
+      },
+      {
+        "id": "st-173",
+        "gold": "conversation.respond",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-174",
+        "gold": "conversation.respond",
+        "got": "music.library"
+      },
+      {
+        "id": "st-175",
+        "gold": "conversation.respond",
+        "got": "ui.compose"
+      },
+      {
+        "id": "st-180",
+        "gold": "conversation.respond",
+        "got": "image.create"
+      },
+      {
+        "id": "st-183",
+        "gold": "conversation.respond",
+        "got": "music.create"
+      },
+      {
+        "id": "st-184",
+        "gold": "conversation.respond",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "03eb3a32-45bc-44a9-a46c-9c581f2c7c8e",
+        "gold": "image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+        "gold": "browser.operate",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
+        "gold": "browser.operate",
+        "got": "web.service-search"
+      },
+      {
+        "id": "be996408-9303-41b0-b55f-da418b74f712",
+        "gold": "model3d.studio",
+        "got": "image.create"
+      }
+    ]
+  },
+  "S0+hints": {
+    "byKind": {
+      "pairs:single-ref": {
+        "n": 37,
+        "right": 28,
+        "routeRight": 37,
+        "countRight": 0,
+        "referenceSide": 6,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-embedded": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-modifier": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-same-tool": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:multi-seq": {
+        "n": 24,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:multi-par": {
+        "n": 14,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:none": {
+        "n": 10,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single-ref": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 2,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "byFamily": {
+      "pairs:A1": {
+        "n": 6,
+        "right": 4,
+        "routeRight": 6,
+        "countRight": 0,
+        "referenceSide": 2,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A2": {
+        "n": 12,
+        "right": 8,
+        "routeRight": 12,
+        "countRight": 0,
+        "referenceSide": 2,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A3": {
+        "n": 6,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A4": {
+        "n": 2,
+        "right": 1,
+        "routeRight": 2,
+        "countRight": 0,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A5": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A6": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:K": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:S": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:C1": {
+        "n": 8,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:C2": {
+        "n": 8,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:C3": {
+        "n": 4,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:C4": {
+        "n": 3,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:C5": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:D1": {
+        "n": 7,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:D2": {
+        "n": 4,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:D3": {
+        "n": 3,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:E1": {
+        "n": 7,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:E2": {
+        "n": 3,
+        "right": 0,
+        "routeRight": 0,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A1": {
+        "n": 2,
+        "right": 1,
+        "routeRight": 2,
+        "countRight": 0,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:B": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 0,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A2": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 1,
+        "countRight": 0,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "pairsBothRight": {
+      "pairs": 28,
+      "right": 9
+    },
+    "wrong": [
+      {
+        "id": "st-016",
+        "gold": "excalidraw.edit",
+        "got": "image.create"
+      },
+      {
+        "id": "st-018",
+        "gold": "model3d.studio",
+        "got": "music.create"
+      },
+      {
+        "id": "st-022",
+        "gold": "image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-030",
+        "gold": "image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-031",
+        "gold": "music.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-032",
+        "gold": "image.create",
+        "got": "music.library"
+      },
+      {
+        "id": "st-046",
+        "gold": "image.create",
+        "got": "music.library"
+      },
+      {
+        "id": "st-054",
+        "gold": "image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-074",
+        "gold": "image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-079",
+        "gold": "image.create",
+        "got": "kanban.manage"
+      },
+      {
+        "id": "st-112",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-113",
+        "gold": "pipeline:image.create+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-114",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-115",
+        "gold": "pipeline:image.create+music.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-116",
+        "gold": "pipeline:model3d.studio+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-117",
+        "gold": "pipeline:music.create+model3d.studio",
+        "got": "music.create"
+      },
+      {
+        "id": "st-120",
+        "gold": "pipeline:image.create+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-121",
+        "gold": "pipeline:music.create+image.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-124",
+        "gold": "pipeline:image.create+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-125",
+        "gold": "pipeline:model3d.studio+image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-126",
+        "gold": "pipeline:image.create+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-127",
+        "gold": "pipeline:image.create+ui.compose",
+        "got": "image.create"
+      },
+      {
+        "id": "st-128",
+        "gold": "pipeline:ui.compose+image.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-129",
+        "gold": "pipeline:excalidraw.edit+ui.compose",
+        "got": "ui.compose"
+      },
+      {
+        "id": "st-130",
+        "gold": "pipeline:ui.compose+excalidraw.edit",
+        "got": "ui.compose"
+      },
+      {
+        "id": "st-133",
+        "gold": "pipeline:object-recognition.manage+model3d.studio",
+        "got": "object-recognition.manage"
+      },
+      {
+        "id": "st-138",
+        "gold": "pipeline:stock.quote+excalidraw.edit",
+        "got": "stock.quote"
+      },
+      {
+        "id": "st-139",
+        "gold": "pipeline:weather.forecast+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-141",
+        "gold": "pipeline:compute.python+image.create",
+        "got": "compute.python"
+      },
+      {
+        "id": "st-143",
+        "gold": "pipeline:weather.forecast+image.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-144",
+        "gold": "pipeline:image.create+model3d.studio+music.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-145",
+        "gold": "pipeline:web.search+timers.manage+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-147",
+        "gold": "pipeline:music.create+image.create+ui.compose",
+        "got": "image.create"
+      },
+      {
+        "id": "st-149",
+        "gold": "pipeline:stock.quote+timers.manage",
+        "got": "stock.quote"
+      },
+      {
+        "id": "st-150",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-151",
+        "gold": "pipeline:image.create+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-152",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-153",
+        "gold": "pipeline:model3d.studio+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-154",
+        "gold": "pipeline:weather.forecast+stock.quote",
+        "got": "stock.quote"
+      },
+      {
+        "id": "st-155",
+        "gold": "pipeline:image.create+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-156",
+        "gold": "pipeline:ui.compose+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-157",
+        "gold": "pipeline:image.create+music.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-158",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-162",
+        "gold": "pipeline:weather.forecast+timers.manage",
+        "got": "weather.forecast"
+      },
+      {
+        "id": "st-164",
+        "gold": "pipeline:music.create+image.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-167",
+        "gold": "pipeline:ui.compose+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-168",
+        "gold": "pipeline:image.create+stock.quote",
+        "got": "stock.quote"
+      },
+      {
+        "id": "st-169",
+        "gold": "pipeline:timers.manage+image.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-170",
+        "gold": "conversation.respond",
+        "got": "image.create"
+      },
+      {
+        "id": "st-171",
+        "gold": "conversation.respond",
+        "got": "image.create"
+      },
+      {
+        "id": "st-173",
+        "gold": "conversation.respond",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-174",
+        "gold": "conversation.respond",
+        "got": "music.library"
+      },
+      {
+        "id": "st-175",
+        "gold": "conversation.respond",
+        "got": "ui.compose"
+      },
+      {
+        "id": "st-180",
+        "gold": "conversation.respond",
+        "got": "image.create"
+      },
+      {
+        "id": "st-183",
+        "gold": "conversation.respond",
+        "got": "music.create"
+      },
+      {
+        "id": "st-184",
+        "gold": "conversation.respond",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "03eb3a32-45bc-44a9-a46c-9c581f2c7c8e",
+        "gold": "image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+        "gold": "browser.operate",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
+        "gold": "browser.operate",
+        "got": "web.service-search"
+      },
+      {
+        "id": "be996408-9303-41b0-b55f-da418b74f712",
+        "gold": "model3d.studio",
+        "got": "image.create"
+      }
+    ]
+  },
+  "S*/span": {
+    "byKind": {
+      "pairs:single-ref": {
+        "n": 37,
+        "right": 34,
+        "routeRight": 35,
+        "countRight": 37,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-embedded": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-modifier": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-same-tool": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:multi-seq": {
+        "n": 24,
+        "right": 22,
+        "routeRight": 24,
+        "countRight": 24,
+        "referenceSide": 0,
+        "toPipeline": 24,
+        "fallback": 0
+      },
+      "pairs:multi-par": {
+        "n": 14,
+        "right": 13,
+        "routeRight": 13,
+        "countRight": 14,
+        "referenceSide": 0,
+        "toPipeline": 13,
+        "fallback": 0
+      },
+      "pairs:none": {
+        "n": 10,
+        "right": 10,
+        "routeRight": 10,
+        "countRight": 10,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single-ref": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "byFamily": {
+      "pairs:A1": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A2": {
+        "n": 12,
+        "right": 10,
+        "routeRight": 11,
+        "countRight": 12,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A3": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A4": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A5": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A6": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:K": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:S": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:C1": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C2": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C3": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:C4": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:C5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:D1": {
+        "n": 7,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 6,
+        "fallback": 0
+      },
+      "pairs:D2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:D3": {
+        "n": 3,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:E1": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:E2": {
+        "n": 3,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A1": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:B": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A2": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "pairsBothRight": {
+      "pairs": 28,
+      "right": 24
+    },
+    "wrong": [
+      {
+        "id": "st-030",
+        "gold": "image.create",
+        "got": "browser.capture"
+      },
+      {
+        "id": "st-031",
+        "gold": "music.create",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "st-075",
+        "gold": "music.create",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "st-079",
+        "gold": "image.create",
+        "got": "browser.capture"
+      },
+      {
+        "id": "st-108",
+        "gold": "timers.manage",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "st-111",
+        "gold": "music.create",
+        "got": "pipeline:music.create+image.create"
+      },
+      {
+        "id": "st-138",
+        "gold": "pipeline:stock.quote+excalidraw.edit",
+        "got": "pipeline:stock.quote+task.execute"
+      },
+      {
+        "id": "st-145",
+        "gold": "pipeline:web.search+timers.manage+music.create",
+        "got": "pipeline:timers.manage+music.create"
+      },
+      {
+        "id": "st-156",
+        "gold": "pipeline:ui.compose+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+        "gold": "browser.operate",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
+        "gold": "browser.operate",
+        "got": "web.service-search"
+      },
+      {
+        "id": "be996408-9303-41b0-b55f-da418b74f712",
+        "gold": "model3d.studio",
+        "got": "image.create"
+      }
+    ],
+    "tokens": 0
+  },
+  "S*/borrow": {
+    "byKind": {
+      "pairs:single-ref": {
+        "n": 37,
+        "right": 34,
+        "routeRight": 35,
+        "countRight": 37,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-embedded": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-modifier": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-same-tool": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:multi-seq": {
+        "n": 24,
+        "right": 22,
+        "routeRight": 24,
+        "countRight": 24,
+        "referenceSide": 0,
+        "toPipeline": 24,
+        "fallback": 0
+      },
+      "pairs:multi-par": {
+        "n": 14,
+        "right": 14,
+        "routeRight": 14,
+        "countRight": 14,
+        "referenceSide": 0,
+        "toPipeline": 14,
+        "fallback": 0
+      },
+      "pairs:none": {
+        "n": 10,
+        "right": 10,
+        "routeRight": 10,
+        "countRight": 10,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single-ref": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "byFamily": {
+      "pairs:A1": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A2": {
+        "n": 12,
+        "right": 10,
+        "routeRight": 11,
+        "countRight": 12,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A3": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A4": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A5": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A6": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:K": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:S": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:C1": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C2": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C3": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:C4": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:C5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:D1": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 7,
+        "fallback": 0
+      },
+      "pairs:D2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:D3": {
+        "n": 3,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:E1": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:E2": {
+        "n": 3,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A1": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:B": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A2": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "pairsBothRight": {
+      "pairs": 28,
+      "right": 24
+    },
+    "wrong": [
+      {
+        "id": "st-030",
+        "gold": "image.create",
+        "got": "browser.capture"
+      },
+      {
+        "id": "st-031",
+        "gold": "music.create",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "st-075",
+        "gold": "music.create",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "st-079",
+        "gold": "image.create",
+        "got": "browser.capture"
+      },
+      {
+        "id": "st-111",
+        "gold": "music.create",
+        "got": "pipeline:music.create+image.create"
+      },
+      {
+        "id": "st-138",
+        "gold": "pipeline:stock.quote+excalidraw.edit",
+        "got": "pipeline:stock.quote+task.execute"
+      },
+      {
+        "id": "st-145",
+        "gold": "pipeline:web.search+timers.manage+music.create",
+        "got": "pipeline:timers.manage+music.create"
+      },
+      {
+        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+        "gold": "browser.operate",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
+        "gold": "browser.operate",
+        "got": "web.service-search"
+      },
+      {
+        "id": "be996408-9303-41b0-b55f-da418b74f712",
+        "gold": "model3d.studio",
+        "got": "image.create"
+      }
+    ],
+    "tokens": 0
+  },
+  "S*/mask": {
+    "byKind": {
+      "pairs:single-ref": {
+        "n": 37,
+        "right": 34,
+        "routeRight": 36,
+        "countRight": 37,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-embedded": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-modifier": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-same-tool": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:multi-seq": {
+        "n": 24,
+        "right": 22,
+        "routeRight": 24,
+        "countRight": 24,
+        "referenceSide": 0,
+        "toPipeline": 24,
+        "fallback": 0
+      },
+      "pairs:multi-par": {
+        "n": 14,
+        "right": 14,
+        "routeRight": 14,
+        "countRight": 14,
+        "referenceSide": 0,
+        "toPipeline": 14,
+        "fallback": 0
+      },
+      "pairs:none": {
+        "n": 10,
+        "right": 10,
+        "routeRight": 10,
+        "countRight": 10,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single-ref": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "byFamily": {
+      "pairs:A1": {
+        "n": 6,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A2": {
+        "n": 12,
+        "right": 10,
+        "routeRight": 11,
+        "countRight": 12,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A3": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A4": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A5": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A6": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:K": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:S": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:C1": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C2": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C3": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:C4": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:C5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:D1": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 7,
+        "fallback": 0
+      },
+      "pairs:D2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:D3": {
+        "n": 3,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:E1": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:E2": {
+        "n": 3,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A1": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:B": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A2": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "pairsBothRight": {
+      "pairs": 28,
+      "right": 24
+    },
+    "wrong": [
+      {
+        "id": "st-016",
+        "gold": "excalidraw.edit",
+        "got": "image.create"
+      },
+      {
+        "id": "st-030",
+        "gold": "image.create",
+        "got": "browser.capture"
+      },
+      {
+        "id": "st-031",
+        "gold": "music.create",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "st-079",
+        "gold": "image.create",
+        "got": "browser.capture"
+      },
+      {
+        "id": "st-111",
+        "gold": "music.create",
+        "got": "pipeline:music.create+image.create"
+      },
+      {
+        "id": "st-138",
+        "gold": "pipeline:stock.quote+excalidraw.edit",
+        "got": "pipeline:stock.quote+task.execute"
+      },
+      {
+        "id": "st-145",
+        "gold": "pipeline:web.search+timers.manage+music.create",
+        "got": "pipeline:timers.manage+music.create"
+      },
+      {
+        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+        "gold": "browser.operate",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
+        "gold": "browser.operate",
+        "got": "web.service-search"
+      },
+      {
+        "id": "be996408-9303-41b0-b55f-da418b74f712",
+        "gold": "model3d.studio",
+        "got": "image.create"
+      }
+    ],
+    "tokens": 0
+  },
+  "S1/span": {
+    "byKind": {
+      "pairs:single-ref": {
+        "n": 37,
+        "right": 33,
+        "routeRight": 36,
+        "countRight": 35,
+        "referenceSide": 2,
+        "toPipeline": 0,
+        "fallback": 2
+      },
+      "pairs:single-embedded": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:single": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-modifier": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-same-tool": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:multi-seq": {
+        "n": 24,
+        "right": 20,
+        "routeRight": 21,
+        "countRight": 23,
+        "referenceSide": 0,
+        "toPipeline": 21,
+        "fallback": 0
+      },
+      "pairs:multi-par": {
+        "n": 14,
+        "right": 12,
+        "routeRight": 12,
+        "countRight": 13,
+        "referenceSide": 0,
+        "toPipeline": 12,
+        "fallback": 0
+      },
+      "pairs:none": {
+        "n": 10,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 1
+      },
+      "real:single-ref": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 0
+      }
+    },
+    "byFamily": {
+      "pairs:A1": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A2": {
+        "n": 12,
+        "right": 10,
+        "routeRight": 11,
+        "countRight": 12,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A3": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A4": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A5": {
+        "n": 7,
+        "right": 6,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A6": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 2,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 2
+      },
+      "pairs:K": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:B": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:S": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:C1": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C2": {
+        "n": 8,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 7,
+        "fallback": 0
+      },
+      "pairs:C3": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 0
+      },
+      "pairs:C4": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:C5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:D1": {
+        "n": 7,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 6,
+        "fallback": 0
+      },
+      "pairs:D2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:D3": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 0
+      },
+      "pairs:E1": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 5,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 1
+      },
+      "pairs:E2": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A1": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:B": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 0
+      },
+      "real:A5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A2": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "pairsBothRight": {
+      "pairs": 28,
+      "right": 24
+    },
+    "wrong": [
+      {
+        "id": "st-030",
+        "gold": "image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-031",
+        "gold": "music.create",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "st-059",
+        "gold": "object-recognition.manage",
+        "got": "web.search"
+      },
+      {
+        "id": "st-074",
+        "gold": "image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-079",
+        "gold": "image.create",
+        "got": "kanban.manage"
+      },
+      {
+        "id": "st-081",
+        "gold": "pipeline.studio",
+        "got": "pipeline:image.create+pipeline.studio"
+      },
+      {
+        "id": "st-111",
+        "gold": "music.create",
+        "got": "pipeline:music.create+image.create"
+      },
+      {
+        "id": "st-133",
+        "gold": "pipeline:object-recognition.manage+model3d.studio",
+        "got": "object-recognition.manage"
+      },
+      {
+        "id": "st-138",
+        "gold": "pipeline:stock.quote+excalidraw.edit",
+        "got": "stock.quote"
+      },
+      {
+        "id": "st-141",
+        "gold": "pipeline:compute.python+image.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-145",
+        "gold": "pipeline:web.search+timers.manage+music.create",
+        "got": "pipeline:timers.manage+music.create"
+      },
+      {
+        "id": "st-156",
+        "gold": "pipeline:ui.compose+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-167",
+        "gold": "pipeline:ui.compose+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-174",
+        "gold": "conversation.respond",
+        "got": "music.library"
+      },
+      {
+        "id": "st-177",
+        "gold": "conversation.respond",
+        "got": "pipeline:image.create+music.create"
+      },
+      {
+        "id": "st-183",
+        "gold": "conversation.respond",
+        "got": "music.create"
+      },
+      {
+        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+        "gold": "browser.operate",
+        "got": "pipeline:task.execute+music.library"
+      },
+      {
+        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
+        "gold": "browser.operate",
+        "got": "pipeline:web.service-search+music.library"
+      },
+      {
+        "id": "be996408-9303-41b0-b55f-da418b74f712",
+        "gold": "model3d.studio",
+        "got": "image.create"
+      }
+    ],
+    "tokens": 0
+  },
+  "S1/borrow": {
+    "byKind": {
+      "pairs:single-ref": {
+        "n": 37,
+        "right": 33,
+        "routeRight": 36,
+        "countRight": 35,
+        "referenceSide": 2,
+        "toPipeline": 0,
+        "fallback": 2
+      },
+      "pairs:single-embedded": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:single": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-modifier": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-same-tool": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:multi-seq": {
+        "n": 24,
+        "right": 20,
+        "routeRight": 21,
+        "countRight": 23,
+        "referenceSide": 0,
+        "toPipeline": 21,
+        "fallback": 0
+      },
+      "pairs:multi-par": {
+        "n": 14,
+        "right": 13,
+        "routeRight": 13,
+        "countRight": 13,
+        "referenceSide": 0,
+        "toPipeline": 13,
+        "fallback": 0
+      },
+      "pairs:none": {
+        "n": 10,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 1
+      },
+      "real:single-ref": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 0
+      }
+    },
+    "byFamily": {
+      "pairs:A1": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A2": {
+        "n": 12,
+        "right": 10,
+        "routeRight": 11,
+        "countRight": 12,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A3": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A4": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A5": {
+        "n": 7,
+        "right": 6,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A6": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 2,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 2
+      },
+      "pairs:K": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:B": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:S": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:C1": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C2": {
+        "n": 8,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 7,
+        "fallback": 0
+      },
+      "pairs:C3": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 0
+      },
+      "pairs:C4": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:C5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:D1": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 7,
+        "fallback": 0
+      },
+      "pairs:D2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:D3": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 0
+      },
+      "pairs:E1": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 5,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 1
+      },
+      "pairs:E2": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A1": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:B": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 0
+      },
+      "real:A5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A2": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "pairsBothRight": {
+      "pairs": 28,
+      "right": 24
+    },
+    "wrong": [
+      {
+        "id": "st-030",
+        "gold": "image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-031",
+        "gold": "music.create",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "st-059",
+        "gold": "object-recognition.manage",
+        "got": "web.search"
+      },
+      {
+        "id": "st-074",
+        "gold": "image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-079",
+        "gold": "image.create",
+        "got": "kanban.manage"
+      },
+      {
+        "id": "st-081",
+        "gold": "pipeline.studio",
+        "got": "pipeline:image.create+pipeline.studio"
+      },
+      {
+        "id": "st-111",
+        "gold": "music.create",
+        "got": "pipeline:music.create+image.create"
+      },
+      {
+        "id": "st-133",
+        "gold": "pipeline:object-recognition.manage+model3d.studio",
+        "got": "object-recognition.manage"
+      },
+      {
+        "id": "st-138",
+        "gold": "pipeline:stock.quote+excalidraw.edit",
+        "got": "stock.quote"
+      },
+      {
+        "id": "st-141",
+        "gold": "pipeline:compute.python+image.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-145",
+        "gold": "pipeline:web.search+timers.manage+music.create",
+        "got": "pipeline:timers.manage+music.create"
+      },
+      {
+        "id": "st-167",
+        "gold": "pipeline:ui.compose+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-174",
+        "gold": "conversation.respond",
+        "got": "music.library"
+      },
+      {
+        "id": "st-177",
+        "gold": "conversation.respond",
+        "got": "pipeline:image.create+music.create"
+      },
+      {
+        "id": "st-183",
+        "gold": "conversation.respond",
+        "got": "music.create"
+      },
+      {
+        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+        "gold": "browser.operate",
+        "got": "pipeline:task.execute+music.library"
+      },
+      {
+        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
+        "gold": "browser.operate",
+        "got": "pipeline:web.service-search+music.library"
+      },
+      {
+        "id": "be996408-9303-41b0-b55f-da418b74f712",
+        "gold": "model3d.studio",
+        "got": "image.create"
+      }
+    ],
+    "tokens": 0
+  },
+  "S1/mask": {
+    "byKind": {
+      "pairs:single-ref": {
+        "n": 37,
+        "right": 33,
+        "routeRight": 36,
+        "countRight": 35,
+        "referenceSide": 3,
+        "toPipeline": 0,
+        "fallback": 2
+      },
+      "pairs:single-embedded": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:single": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-modifier": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-same-tool": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:multi-seq": {
+        "n": 24,
+        "right": 20,
+        "routeRight": 21,
+        "countRight": 23,
+        "referenceSide": 0,
+        "toPipeline": 21,
+        "fallback": 0
+      },
+      "pairs:multi-par": {
+        "n": 14,
+        "right": 13,
+        "routeRight": 13,
+        "countRight": 13,
+        "referenceSide": 0,
+        "toPipeline": 13,
+        "fallback": 0
+      },
+      "pairs:none": {
+        "n": 10,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 1
+      },
+      "real:single-ref": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 0
+      }
+    },
+    "byFamily": {
+      "pairs:A1": {
+        "n": 6,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A2": {
+        "n": 12,
+        "right": 10,
+        "routeRight": 11,
+        "countRight": 12,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A3": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A4": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A5": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A6": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 2,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 2
+      },
+      "pairs:K": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:B": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:S": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:C1": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C2": {
+        "n": 8,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 7,
+        "fallback": 0
+      },
+      "pairs:C3": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 0
+      },
+      "pairs:C4": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:C5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:D1": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 7,
+        "fallback": 0
+      },
+      "pairs:D2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:D3": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 0
+      },
+      "pairs:E1": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 5,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 1
+      },
+      "pairs:E2": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A1": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:B": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 0
+      },
+      "real:A5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A2": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "pairsBothRight": {
+      "pairs": 28,
+      "right": 23
+    },
+    "wrong": [
+      {
+        "id": "st-016",
+        "gold": "excalidraw.edit",
+        "got": "image.create"
+      },
+      {
+        "id": "st-030",
+        "gold": "image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-031",
+        "gold": "music.create",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "st-074",
+        "gold": "image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-079",
+        "gold": "image.create",
+        "got": "kanban.manage"
+      },
+      {
+        "id": "st-081",
+        "gold": "pipeline.studio",
+        "got": "pipeline:image.create+pipeline.studio"
+      },
+      {
+        "id": "st-111",
+        "gold": "music.create",
+        "got": "pipeline:music.create+image.create"
+      },
+      {
+        "id": "st-133",
+        "gold": "pipeline:object-recognition.manage+model3d.studio",
+        "got": "object-recognition.manage"
+      },
+      {
+        "id": "st-138",
+        "gold": "pipeline:stock.quote+excalidraw.edit",
+        "got": "stock.quote"
+      },
+      {
+        "id": "st-141",
+        "gold": "pipeline:compute.python+image.create",
+        "got": "image.create"
+      },
+      {
+        "id": "st-145",
+        "gold": "pipeline:web.search+timers.manage+music.create",
+        "got": "pipeline:timers.manage+music.create"
+      },
+      {
+        "id": "st-167",
+        "gold": "pipeline:ui.compose+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-174",
+        "gold": "conversation.respond",
+        "got": "music.library"
+      },
+      {
+        "id": "st-177",
+        "gold": "conversation.respond",
+        "got": "pipeline:image.create+music.create"
+      },
+      {
+        "id": "st-183",
+        "gold": "conversation.respond",
+        "got": "music.create"
+      },
+      {
+        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+        "gold": "browser.operate",
+        "got": "pipeline:task.execute+music.library"
+      },
+      {
+        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
+        "gold": "browser.operate",
+        "got": "pipeline:web.service-search+music.library"
+      },
+      {
+        "id": "be996408-9303-41b0-b55f-da418b74f712",
+        "gold": "model3d.studio",
+        "got": "image.create"
+      }
+    ],
+    "tokens": 0
+  },
+  "S3/span": {
+    "byKind": {
+      "pairs:single-ref": {
+        "n": 37,
+        "right": 32,
+        "routeRight": 36,
+        "countRight": 36,
+        "referenceSide": 3,
+        "toPipeline": 0,
+        "fallback": 1
+      },
+      "pairs:single-embedded": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-modifier": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-same-tool": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 2
+      },
+      "pairs:multi-seq": {
+        "n": 24,
+        "right": 22,
+        "routeRight": 24,
+        "countRight": 24,
+        "referenceSide": 0,
+        "toPipeline": 24,
+        "fallback": 0
+      },
+      "pairs:multi-par": {
+        "n": 14,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 6
+      },
+      "pairs:none": {
+        "n": 10,
+        "right": 10,
+        "routeRight": 10,
+        "countRight": 10,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single-ref": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 2,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 1
+      }
+    },
+    "byFamily": {
+      "pairs:A1": {
+        "n": 6,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A2": {
+        "n": 12,
+        "right": 9,
+        "routeRight": 11,
+        "countRight": 12,
+        "referenceSide": 2,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A3": {
+        "n": 6,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A4": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A5": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 1
+      },
+      "pairs:A6": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:K": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:S": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 2
+      },
+      "pairs:C1": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C2": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C3": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:C4": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:C5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:D1": {
+        "n": 7,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 6
+      },
+      "pairs:D2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:D3": {
+        "n": 3,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:E1": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:E2": {
+        "n": 3,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A1": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:B": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 1
+      },
+      "real:A5": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A2": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "pairsBothRight": {
+      "pairs": 28,
+      "right": 21
+    },
+    "wrong": [
+      {
+        "id": "st-016",
+        "gold": "excalidraw.edit",
+        "got": "image.create"
+      },
+      {
+        "id": "st-022",
+        "gold": "image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-030",
+        "gold": "image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-031",
+        "gold": "music.create",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "st-046",
+        "gold": "image.create",
+        "got": "music.library"
+      },
+      {
+        "id": "st-079",
+        "gold": "image.create",
+        "got": "browser.capture"
+      },
+      {
+        "id": "st-111",
+        "gold": "music.create",
+        "got": "pipeline:music.create+image.create"
+      },
+      {
+        "id": "st-138",
+        "gold": "pipeline:stock.quote+excalidraw.edit",
+        "got": "pipeline:stock.quote+task.execute"
+      },
+      {
+        "id": "st-145",
+        "gold": "pipeline:web.search+timers.manage+music.create",
+        "got": "pipeline:timers.manage+music.create"
+      },
+      {
+        "id": "st-150",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-151",
+        "gold": "pipeline:image.create+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-152",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-153",
+        "gold": "pipeline:model3d.studio+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-155",
+        "gold": "pipeline:image.create+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-156",
+        "gold": "pipeline:ui.compose+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+        "gold": "browser.operate",
+        "got": "pipeline:web.search+task.execute"
+      },
+      {
+        "id": "17f32c65-2d21-43f7-ac64-a327bf0582e7",
+        "gold": "music.library",
+        "got": "music.create"
+      },
+      {
+        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
+        "gold": "browser.operate",
+        "got": "pipeline:web.service-search+music.library"
+      },
+      {
+        "id": "be996408-9303-41b0-b55f-da418b74f712",
+        "gold": "model3d.studio",
+        "got": "image.create"
+      }
+    ],
+    "tokens": 92021
+  },
+  "S3/borrow": {
+    "byKind": {
+      "pairs:single-ref": {
+        "n": 37,
+        "right": 32,
+        "routeRight": 36,
+        "countRight": 36,
+        "referenceSide": 3,
+        "toPipeline": 0,
+        "fallback": 1
+      },
+      "pairs:single-embedded": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-modifier": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-same-tool": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 2
+      },
+      "pairs:multi-seq": {
+        "n": 24,
+        "right": 22,
+        "routeRight": 24,
+        "countRight": 24,
+        "referenceSide": 0,
+        "toPipeline": 24,
+        "fallback": 0
+      },
+      "pairs:multi-par": {
+        "n": 14,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 6
+      },
+      "pairs:none": {
+        "n": 10,
+        "right": 10,
+        "routeRight": 10,
+        "countRight": 10,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single-ref": {
+        "n": 4,
+        "right": 2,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 2,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 1
+      }
+    },
+    "byFamily": {
+      "pairs:A1": {
+        "n": 6,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A2": {
+        "n": 12,
+        "right": 9,
+        "routeRight": 11,
+        "countRight": 12,
+        "referenceSide": 2,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A3": {
+        "n": 6,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A4": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A5": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 1
+      },
+      "pairs:A6": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:K": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:S": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 2
+      },
+      "pairs:C1": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C2": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C3": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:C4": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:C5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:D1": {
+        "n": 7,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 6
+      },
+      "pairs:D2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:D3": {
+        "n": 3,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:E1": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:E2": {
+        "n": 3,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A1": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:B": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 1
+      },
+      "real:A5": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A2": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "pairsBothRight": {
+      "pairs": 28,
+      "right": 21
+    },
+    "wrong": [
+      {
+        "id": "st-016",
+        "gold": "excalidraw.edit",
+        "got": "image.create"
+      },
+      {
+        "id": "st-022",
+        "gold": "image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-030",
+        "gold": "image.create",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-031",
+        "gold": "music.create",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "st-046",
+        "gold": "image.create",
+        "got": "music.library"
+      },
+      {
+        "id": "st-079",
+        "gold": "image.create",
+        "got": "browser.capture"
+      },
+      {
+        "id": "st-111",
+        "gold": "music.create",
+        "got": "pipeline:music.create+image.create"
+      },
+      {
+        "id": "st-138",
+        "gold": "pipeline:stock.quote+excalidraw.edit",
+        "got": "pipeline:stock.quote+task.execute"
+      },
+      {
+        "id": "st-145",
+        "gold": "pipeline:web.search+timers.manage+music.create",
+        "got": "pipeline:timers.manage+music.create"
+      },
+      {
+        "id": "st-150",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-151",
+        "gold": "pipeline:image.create+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-152",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-153",
+        "gold": "pipeline:model3d.studio+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-155",
+        "gold": "pipeline:image.create+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-156",
+        "gold": "pipeline:ui.compose+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+        "gold": "browser.operate",
+        "got": "pipeline:web.search+task.execute"
+      },
+      {
+        "id": "17f32c65-2d21-43f7-ac64-a327bf0582e7",
+        "gold": "music.library",
+        "got": "music.create"
+      },
+      {
+        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
+        "gold": "browser.operate",
+        "got": "pipeline:web.service-search+music.library"
+      },
+      {
+        "id": "be996408-9303-41b0-b55f-da418b74f712",
+        "gold": "model3d.studio",
+        "got": "image.create"
+      }
+    ],
+    "tokens": 92021
+  },
+  "S3/mask": {
+    "byKind": {
+      "pairs:single-ref": {
+        "n": 37,
+        "right": 34,
+        "routeRight": 36,
+        "countRight": 36,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 1
+      },
+      "pairs:single-embedded": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-modifier": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:single-same-tool": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 2
+      },
+      "pairs:multi-seq": {
+        "n": 24,
+        "right": 22,
+        "routeRight": 24,
+        "countRight": 24,
+        "referenceSide": 0,
+        "toPipeline": 24,
+        "fallback": 0
+      },
+      "pairs:multi-par": {
+        "n": 14,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 6
+      },
+      "pairs:none": {
+        "n": 10,
+        "right": 10,
+        "routeRight": 10,
+        "countRight": 10,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single-ref": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:single": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 1
+      }
+    },
+    "byFamily": {
+      "pairs:A1": {
+        "n": 6,
+        "right": 5,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A2": {
+        "n": 12,
+        "right": 10,
+        "routeRight": 11,
+        "countRight": 12,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A3": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A4": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:A5": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 1
+      },
+      "pairs:A6": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:K": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B": {
+        "n": 6,
+        "right": 6,
+        "routeRight": 6,
+        "countRight": 6,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:B2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:S": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 2
+      },
+      "pairs:C1": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C2": {
+        "n": 8,
+        "right": 8,
+        "routeRight": 8,
+        "countRight": 8,
+        "referenceSide": 0,
+        "toPipeline": 8,
+        "fallback": 0
+      },
+      "pairs:C3": {
+        "n": 4,
+        "right": 3,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:C4": {
+        "n": 3,
+        "right": 2,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:C5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 0
+      },
+      "pairs:D1": {
+        "n": 7,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 1,
+        "fallback": 6
+      },
+      "pairs:D2": {
+        "n": 4,
+        "right": 4,
+        "routeRight": 4,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 4,
+        "fallback": 0
+      },
+      "pairs:D3": {
+        "n": 3,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 3,
+        "fallback": 0
+      },
+      "pairs:E1": {
+        "n": 7,
+        "right": 7,
+        "routeRight": 7,
+        "countRight": 7,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "pairs:E2": {
+        "n": 3,
+        "right": 3,
+        "routeRight": 3,
+        "countRight": 3,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A1": {
+        "n": 2,
+        "right": 2,
+        "routeRight": 2,
+        "countRight": 2,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:B": {
+        "n": 7,
+        "right": 5,
+        "routeRight": 5,
+        "countRight": 4,
+        "referenceSide": 0,
+        "toPipeline": 2,
+        "fallback": 1
+      },
+      "real:A5": {
+        "n": 1,
+        "right": 1,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 0,
+        "toPipeline": 0,
+        "fallback": 0
+      },
+      "real:A2": {
+        "n": 1,
+        "right": 0,
+        "routeRight": 1,
+        "countRight": 1,
+        "referenceSide": 1,
+        "toPipeline": 0,
+        "fallback": 0
+      }
+    },
+    "pairsBothRight": {
+      "pairs": 28,
+      "right": 23
+    },
+    "wrong": [
+      {
+        "id": "st-016",
+        "gold": "excalidraw.edit",
+        "got": "image.create"
+      },
+      {
+        "id": "st-030",
+        "gold": "image.create",
+        "got": "browser.capture"
+      },
+      {
+        "id": "st-031",
+        "gold": "music.create",
+        "got": "conversation.respond"
+      },
+      {
+        "id": "st-079",
+        "gold": "image.create",
+        "got": "browser.capture"
+      },
+      {
+        "id": "st-111",
+        "gold": "music.create",
+        "got": "pipeline:music.create+image.create"
+      },
+      {
+        "id": "st-138",
+        "gold": "pipeline:stock.quote+excalidraw.edit",
+        "got": "pipeline:stock.quote+task.execute"
+      },
+      {
+        "id": "st-145",
+        "gold": "pipeline:web.search+timers.manage+music.create",
+        "got": "pipeline:timers.manage+music.create"
+      },
+      {
+        "id": "st-150",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-151",
+        "gold": "pipeline:image.create+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-152",
+        "gold": "pipeline:music.create+image.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-153",
+        "gold": "pipeline:model3d.studio+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "st-155",
+        "gold": "pipeline:image.create+model3d.studio",
+        "got": "model3d.studio"
+      },
+      {
+        "id": "st-156",
+        "gold": "pipeline:ui.compose+music.create",
+        "got": "music.create"
+      },
+      {
+        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+        "gold": "browser.operate",
+        "got": "pipeline:web.search+task.execute"
+      },
+      {
+        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
+        "gold": "browser.operate",
+        "got": "pipeline:web.service-search+music.library"
+      },
+      {
+        "id": "be996408-9303-41b0-b55f-da418b74f712",
+        "gold": "model3d.studio",
+        "got": "image.create"
+      }
+    ],
+    "tokens": 92021
+  }
+}

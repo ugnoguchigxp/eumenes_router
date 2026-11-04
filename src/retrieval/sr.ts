@@ -176,3 +176,25 @@ export function srOffer(
 		scores: Object.fromEntries(order.map((id, i) => [id, round(scaled[i]!)])),
 	};
 }
+
+/**
+ * Every available tool in sr-corr's order (kind slots applied, the
+ * conversation left out), with its score over the best, rounded as the offer
+ * is: best-v2's extra candidates beyond the offer come from it.
+ */
+export function srRanking(
+	scores: ReadonlyMap<string, number>,
+	cap?: (ranked: readonly string[]) => string[],
+): Array<[string, number]> {
+	const sorted = [...scores]
+		.sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))
+		.map(([id]) => id);
+	let best = 0;
+	for (const v of scores.values()) if (v > best) best = v;
+	return (cap ? cap(sorted) : sorted)
+		.filter((id) => id !== CONVERSATION_ID)
+		.map((id) => [
+			id,
+			round(best > 0 ? Math.max(0, scores.get(id) ?? 0) / best : 0),
+		]);
+}

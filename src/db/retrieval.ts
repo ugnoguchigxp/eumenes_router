@@ -1,3 +1,4 @@
+import type { Impact } from "../contracts/cards.ts";
 import { routerErrors } from "../contracts/errors.ts";
 import { trigramQuery, type SrCard } from "../retrieval/sr.ts";
 import {
@@ -37,22 +38,34 @@ export function lexicalInTransaction(
 	return out;
 }
 
+/** A synced card as the router reads it: sr-corr's fields, and what the decision table and the reranker need. */
+export type RouterCard = SrCard & {
+	revision: string;
+	impact: Impact;
+	useWhen: string[];
+	examples: string[];
+};
+
 /** The enabled, available cards with their passage vectors in the space (sr-corr's candidates). */
 export function srCardsInTransaction(
 	db: RouterDb,
 	input: { space: VectorSpace; available: (id: string) => boolean },
-): SrCard[] {
+): RouterCard[] {
 	const key = vectorSpaceKey(input.space);
 	const cards = (
 		db
 			.query(
-				"SELECT id, kind, title, summary FROM router_cards WHERE enabled=1 ORDER BY id",
+				"SELECT id, revision, kind, title, summary, use_when_json, examples_json, impact FROM router_cards WHERE enabled=1 ORDER BY id",
 			)
 			.all() as Array<{
 			id: string;
+			revision: string;
 			kind: SrCard["kind"];
 			title: string;
 			summary: string;
+			use_when_json: string;
+			examples_json: string;
+			impact: Impact;
 		}>
 	).filter((card) => input.available(card.id));
 	const vectors = new Map<string, Float32Array[]>();
@@ -67,9 +80,13 @@ export function srCardsInTransaction(
 	}
 	return cards.map((card) => ({
 		id: card.id,
+		revision: card.revision,
 		kind: card.kind,
 		title: card.title,
 		summary: card.summary,
+		useWhen: JSON.parse(card.use_when_json) as string[],
+		examples: JSON.parse(card.examples_json) as string[],
+		impact: card.impact,
 		passages: vectors.get(card.id) ?? [],
 	}));
 }

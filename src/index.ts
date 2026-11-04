@@ -27,19 +27,8 @@ export type {
 	FeedbackWrite,
 	NearFeedback,
 } from "./contracts/feedback.ts";
-export {
-	cardPassages,
-	routerPassage,
-	ROUTER_PASSAGE_CHARS,
-} from "./retrieval/passages.ts";
-export {
-	CANDIDATE_SLOTS,
-	closestSimilarities,
-	rankBy,
-	ROUTER_SLOTS,
-	slotKind,
-	slotted,
-} from "./retrieval/rank.ts";
+export { cardPassages, rerankDocument } from "./retrieval/passages.ts";
+export { ROUTER_SLOTS, slotKind } from "./retrieval/rank.ts";
 export type { Slots } from "./retrieval/rank.ts";
 export { correctProbabilities } from "./decision/correct.ts";
 export {
@@ -66,7 +55,7 @@ export type {
 	ReachabilityCase,
 	ReachabilityReport,
 } from "./reachability.ts";
-export { route } from "./route.ts";
+export { route, routeStructured } from "./route.ts";
 export {
 	BEST_V2_FEATURES,
 	BEST_V2_FORMAT,
@@ -79,6 +68,7 @@ export {
 	SR,
 	capByKind,
 	srOffer,
+	srRanking,
 	srScores,
 	trigramQuery,
 } from "./retrieval/sr.ts";
@@ -91,8 +81,7 @@ export type {
 	BestV2Result,
 } from "./scoring/best-v2.ts";
 export type {
-	Candidate,
-	CandidateQuery,
+	Analyze,
 	Embed,
 	FeedbackQuery,
 	RouteLog,
@@ -100,7 +89,17 @@ export type {
 	RouteResult,
 	RouteTurn,
 	Score,
+	StructuredPorts,
+	StructuredResult,
 } from "./route.ts";
+export {
+	parseStructure,
+	routedTexts,
+	STRUCTURE_LIMITS,
+	STRUCTURE_PROMPT,
+	structurePrompt,
+} from "./structure.ts";
+export type { Structure, StructureRequest } from "./structure.ts";
 export { dot, packVector, unpackVector, vectorSpaceKey } from "./vector.ts";
 export type { VectorSpace } from "./vector.ts";
 export { head, tail } from "./text.ts";

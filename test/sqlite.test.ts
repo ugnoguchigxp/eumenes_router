@@ -5,13 +5,13 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { cardDigest, type Card, type VectorSpace } from "../src/index.ts";
 import {
-	candidatesInTransaction,
 	forgetInTransaction,
 	DB_SCHEMA_VERSION,
 	migrateInTransaction,
 	nearFeedback,
 	recordFeedbackInTransaction,
 	saveVectorsInTransaction,
+	srCardsInTransaction,
 	setFeedbackStateInTransaction,
 	syncCardsInTransaction,
 } from "../src/sqlite.ts";
@@ -51,7 +51,7 @@ function open() {
 	};
 }
 
-test("changed passages are pending, saved vectors are searched, a disabled card leaves", () => {
+test("changed passages are pending, saved vectors are read back, a disabled card leaves", () => {
 	const { db, close } = open();
 	try {
 		const music = card("music.create");
@@ -76,168 +76,22 @@ test("changed passages are pending, saved vectors are searched, a disabled card 
 		expect(syncCardsInTransaction(db, [music, image], space).pending).toEqual(
 			[],
 		);
-		const found = candidatesInTransaction(db, {
-			vector: { space, values: [1, 0] },
-			available: () => true,
-			slots: "router",
-		});
-		expect(found[0]?.id).toBe("music.create");
-		expect(found.map((row) => row.id).sort()).toEqual([
-			"image.create",
-			"music.create",
+		const found = srCardsInTransaction(db, { space, available: () => true });
+		expect(found.map((row) => [row.id, row.passages.length])).toEqual([
+			["image.create", 3],
+			["music.create", 3],
+		]);
+		expect(found.find((row) => row.id === "image.create")?.examples).toEqual([
+			"絵を描いて",
 		]);
 		const changed = card("music.create", ["別の例"]);
 		const again = syncCardsInTransaction(db, [changed], space);
 		expect(again.pending.map((row) => row.item)).toEqual([2]);
 		expect(
-			candidatesInTransaction(db, {
-				vector: { space, values: [0, 1] },
-				available: () => true,
-			}).map((row) => row.id),
+			srCardsInTransaction(db, { space, available: () => true }).map(
+				(row) => row.id,
+			),
 		).toEqual(["music.create"]);
-	} finally {
-		close();
-	}
-});
-
-test("an empty index returns every available card except read tools", () => {
-	const { db, close } = open();
-	try {
-		const music = card("music.create");
-		const image = card("image.create");
-		const readBody = { ...card("readMemory"), kind: "read" as const };
-		const read = { ...readBody, digest: cardDigest(readBody) };
-		syncCardsInTransaction(db, [music, image, read], space);
-		const query = {
-			vector: { space, values: [1, 0] },
-			available: () => true,
-		};
-		const found = candidatesInTransaction(db, query);
-		expect(found.map((row) => row.id)).toEqual([
-			"image.create",
-			"music.create",
-		]);
-		expect(found.every((row) => row.similarity === null)).toBe(true);
-		expect(found.every((row) => row.fromHistory === false)).toBe(true);
-		expect(
-			candidatesInTransaction(db, {
-				...query,
-				available: (id) => id !== "image.create",
-			}).map((row) => row.id),
-		).toEqual(["music.create"]);
-		expect(candidatesInTransaction(db, { ...query, strict: true })).toEqual([]);
-	} finally {
-		close();
-	}
-});
-
-test("fromHistory marks a past choice and does not change the rank", () => {
-	const { db, close } = open();
-	try {
-		const music = card("music.create");
-		const image = card("image.create");
-		const pending = syncCardsInTransaction(db, [music, image], space);
-		saveVectorsInTransaction(
-			db,
-			space,
-			pending.pending.map((row) => ({
-				...row,
-				vector: row.id === "music.create" ? [1, 0] : [0, 1],
-			})),
-		);
-		const found = candidatesInTransaction(db, {
-			vector: { space, values: [1, 0] },
-			available: () => true,
-			fromHistory: ["image.create"],
-		});
-		expect(found.map((row) => row.id)).toEqual([
-			"music.create",
-			"image.create",
-		]);
-		expect(found.map((row) => row.fromHistory)).toEqual([false, true]);
-	} finally {
-		close();
-	}
-});
-
-test("include offers cards outside the frame after it, once, and only when available", () => {
-	const { db, close } = open();
-	try {
-		const ids = ["a.one", "b.two", "c.three", "d.four", "e.five"];
-		const pending = syncCardsInTransaction(
-			db,
-			ids.map((id) => card(id)),
-			space,
-		);
-		const angle = (id: string) => ids.indexOf(id) * 0.2;
-		saveVectorsInTransaction(
-			db,
-			space,
-			pending.pending.map((row) => ({
-				...row,
-				vector: [Math.cos(angle(row.id)), Math.sin(angle(row.id))],
-			})),
-		);
-		const query = {
-			vector: { space, values: [1, 0] },
-			available: (id: string) => id !== "d.four",
-			slots: "choice" as const,
-		};
-		expect(candidatesInTransaction(db, query).map((row) => row.id)).toEqual([
-			"a.one",
-			"b.two",
-			"c.three",
-		]);
-		const found = candidatesInTransaction(db, {
-			...query,
-			include: ["e.five", "a.one", "d.four", "conversation.respond"],
-		});
-		expect(found.map((row) => row.id)).toEqual([
-			"a.one",
-			"b.two",
-			"c.three",
-			"e.five",
-		]);
-		expect(found.map((row) => row.rank)).toEqual([1, 2, 3, 4]);
-	} finally {
-		close();
-	}
-});
-
-test("choice slots drop a pipeline farther than `near` from the closest", () => {
-	const { db, close } = open();
-	try {
-		const dedicated = {
-			...card("alpha.do"),
-			kind: "dedicated" as const,
-		};
-		dedicated.digest = cardDigest(dedicated);
-		const pipeline = {
-			...card("beta.pipe"),
-			kind: "pipeline" as const,
-		};
-		pipeline.digest = cardDigest(pipeline);
-		const pending = syncCardsInTransaction(db, [dedicated, pipeline], space);
-		saveVectorsInTransaction(
-			db,
-			space,
-			pending.pending.map((row) => ({
-				...row,
-				vector: row.id === "alpha.do" ? [1, 0] : [0.6, 0.8],
-			})),
-		);
-		const wide = candidatesInTransaction(db, {
-			vector: { space, values: [1, 0] },
-			available: () => true,
-			slots: "router",
-		});
-		const narrow = candidatesInTransaction(db, {
-			vector: { space, values: [1, 0] },
-			available: () => true,
-			slots: "choice",
-		});
-		expect(wide.map((row) => row.id).sort()).toEqual(["alpha.do", "beta.pipe"]);
-		expect(narrow.map((row) => row.id)).toEqual(["alpha.do"]);
 	} finally {
 		close();
 	}

@@ -47,6 +47,8 @@ export type StructureItem = {
 	id: string;
 	source: "pairs" | "real";
 	split: string | null;
+	/** The half rules are made on (dev) or measured on (test): the real utterance's split, or a hash of the pair (or text). */
+	half: "dev" | "test";
 	family: string;
 	pair: string | null;
 	kind: Kind;
@@ -233,6 +235,18 @@ export function parseSource(
 			id: real ? real.id : `st-${String(items.length + 1).padStart(3, "0")}`,
 			source: real ? "real" : "pairs",
 			split: real ? real.split : null,
+			half: real
+				? real.split === "dev"
+					? "dev"
+					: "test"
+				: Number.parseInt(
+							sha256Hex(pair === "-" ? text : pair).slice(0, 2),
+							16,
+					  ) %
+							2 ===
+					  0
+					? "dev"
+					: "test",
 			family,
 			pair: pair === "-" ? null : pair,
 			kind,
@@ -269,7 +283,13 @@ function row<T>(map: Map<string, T>, key: string, blank: () => T): T {
 	return made;
 }
 
-type Prediction = { id: string; text: string; tool: string; defer: boolean };
+type Prediction = {
+	id: string;
+	text: string;
+	tool: string;
+	gate: number;
+	defer: boolean;
+};
 
 /** A structure as the analyzer returns it (plan §10 M3b); null when it broke the contract. */
 export type Structure = {
@@ -353,6 +373,41 @@ export function decideStructure(
 	if (tools.length === 1)
 		return { route: "tool", tool: tools[0]!, tools, fallback };
 	return { route: "conversation", tool: CONVERSATION_ID, tools, fallback };
+}
+
+/** Today's decision from one routing of the whole utterance. */
+export const wholeDecision = (tool: string): Decision =>
+	tool === CONVERSATION_ID
+		? { route: "conversation", tool, tools: [], fallback: false }
+		: { route: "tool", tool, tools: [tool], fallback: false };
+
+/** The paired bootstrap 95% CI (percentage points) of mean(b) − mean(a), 2,000 resamples, seeded. */
+export function pairedCi(
+	a: readonly boolean[],
+	b: readonly boolean[],
+	seed = 11,
+): [number, number] {
+	let x = seed >>> 0;
+	const next = () => {
+		x = (x + 0x6d2b79f5) >>> 0;
+		let t = x;
+		t = Math.imul(t ^ (t >>> 15), t | 1);
+		t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+	};
+	const n = a.length;
+	const d: number[] = [];
+	for (let r = 0; r < 2000; r++) {
+		let sum = 0;
+		for (let k = 0; k < n; k++) {
+			const j = Math.floor(next() * n);
+			sum += Number(b[j]) - Number(a[j]);
+		}
+		d.push(sum / n);
+	}
+	d.sort((p, q) => p - q);
+	const pct = (v: number) => Math.round(1000 * v) / 10;
+	return [pct(d[49]!), pct(d[1949]!)];
 }
 
 /** Whether a decision is the gold one: the tool, the conversation, or the pipeline stage with the same tools. */
@@ -447,6 +502,8 @@ if (import.meta.main) {
 			routes: { type: "string" },
 			hinted: { type: "string" },
 			structures: { type: "string" },
+			half: { type: "string" },
+			"whole-hinted": { type: "boolean" },
 		},
 	});
 	const need = (x: string | undefined, name: string) => {
@@ -547,7 +604,9 @@ if (import.meta.main) {
 				.trim()
 				.split("\n")
 				.map((l) => JSON.parse(l) as Record<string, unknown>);
-		const items = lines(need(v.items, "items")) as unknown as StructureItem[];
+		const items = (
+			lines(need(v.items, "items")) as unknown as StructureItem[]
+		).filter((i) => !v.half || i.half === v.half);
 		// Structures by method: the gold one (S*) and each analyzer's file ({id, structure, prompt, completion}).
 		const methods = new Map<
 			string,
@@ -600,19 +659,17 @@ if (import.meta.main) {
 			);
 			console.log(JSON.stringify({ requests: texts.size }));
 		} else {
-			const routed = new Map<string, string>();
+			const routed = new Map<string, Prediction>();
 			for (const file of need(v.routes, "routes").split(","))
 				for (const p of lines(file) as unknown as Prediction[])
-					routed.set(p.text, p.tool);
-			const routeOf = (text: string) => {
-				const tool = routed.get(text);
-				if (!tool) throw new Error("a routed text has no routing");
-				return tool;
+					routed.set(p.text, p);
+			const routedOf = (text: string) => {
+				const p = routed.get(text);
+				if (!p) throw new Error("a routed text has no routing");
+				return p;
 			};
-			const today = (tool: string): Decision =>
-				tool === CONVERSATION_ID
-					? { route: "conversation", tool, tools: [], fallback: false }
-					: { route: "tool", tool, tools: [tool], fallback: false };
+			const routeOf = (text: string) => routedOf(text).tool;
+			const today = wholeDecision;
 			const report: Record<string, unknown> = {
 				S0: scoreDecisions(items, (i) => ({
 					decision: today(routeOf(i.text)),
@@ -631,12 +688,25 @@ if (import.meta.main) {
 					count: null,
 				}));
 			}
+			// Candidate 3 (plan M3c): with --whole-hinted, the whole utterance is routed with the host's hints (as --hinted)
+			// and the masked texts and request parts without them.
+			const hintedWhole =
+				v["whole-hinted"] && v.hinted
+					? new Map(
+							(lines(v.hinted) as unknown as Prediction[]).map((p) => [
+								p.id,
+								p.tool,
+							]),
+						)
+					: null;
+			const routeFor = (i: StructureItem) => (text: string) =>
+				hintedWhole && text === i.text ? hintedWhole.get(i.id)! : routeOf(text);
 			for (const [tag, structures] of methods)
 				for (const mode of PART_MODES) {
 					const got = (i: StructureItem) => structures.get(i.id)!;
 					report[`${tag}/${mode}`] = {
 						...scoreDecisions(items, (i) => ({
-							decision: decideStructure(i.text, got(i).s, routeOf, mode),
+							decision: decideStructure(i.text, got(i).s, routeFor(i), mode),
 							count: got(i).s?.requests.length ?? null,
 						})),
 						tokens: items.reduce((sum, i) => sum + got(i).tokens, 0),
@@ -713,15 +783,17 @@ if (import.meta.main) {
 				}),
 			);
 			db.close();
-			const routed = new Map<string, string>();
+			const routed = new Map<string, Prediction>();
 			for (const f of need(v.routes, "routes").split(","))
 				for (const p of lines(f) as unknown as Prediction[])
-					routed.set(p.text, p.tool);
-			const routeOf = (text: string) => {
-				const tool = routed.get(text);
-				if (!tool) throw new Error("a routed text has no routing");
-				return tool;
+					routed.set(p.text, p);
+			const routedOf = (text: string) => {
+				const p = routed.get(text);
+				if (!p) throw new Error("a routed text has no routing");
+				return p;
 			};
+			const routeOf = (text: string) => routedOf(text).tool;
+			const vectors = { today: [] as boolean[], mask: [] as boolean[] };
 			let today = 0;
 			let structured = 0;
 			const changed = { better: 0, worse: 0, toPipeline: 0, fallback: 0 };
@@ -739,6 +811,8 @@ if (import.meta.main) {
 					d.route === "pipeline" ? `pipeline:${d.tools.join("+")}` : d.tool!;
 				const a = ok.has(before);
 				const b = d.route !== "pipeline" && ok.has(after);
+				vectors.today.push(a);
+				vectors.mask.push(b);
 				if (a) today++;
 				if (b) structured++;
 				if (d.route === "pipeline") changed.toPipeline++;
@@ -756,6 +830,7 @@ if (import.meta.main) {
 						n: rows.length,
 						todayTop1: today,
 						structuredTop1: structured,
+						maskVsToday: { ci: pairedCi(vectors.today, vectors.mask) },
 						...changed,
 						tokens: rows.reduce((sum, r) => sum + got(r.id).tokens, 0),
 						moved,

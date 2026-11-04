@@ -74,7 +74,17 @@ export type RouteDecision =
 			announce: Announce;
 	  }
 	/** Not sure enough to do it (a yes, a cancellation): the host asks once more instead. */
-	| { row: 5 | 6; to: "again"; candidate: RouteCandidate };
+	| { row: 5 | 6; to: "again"; candidate: RouteCandidate }
+	/** Requests of two or more tools (the structured route): the pipeline stage takes them, in this order. */
+	| {
+			row: 9;
+			to: "pipeline";
+			steps: ReadonlyArray<{
+				text: string;
+				candidate: RouteCandidate;
+				after: readonly number[];
+			}>;
+	  };
 
 const isTool = (candidate: RouteCandidate) =>
 	candidate.kind === "toolchain" || candidate.kind === "read";
@@ -94,6 +104,8 @@ export function decide(
 	},
 	/** The candidate the host asked about in the turn before (rows 5 and 6). */
 	asked: string | null = null,
+	/** Whether the top is sure, when the scorer decides it (best-v2's gate); else from `accept` and `margin`. */
+	confident?: boolean,
 ): RouteDecision {
 	const top = ranked[0];
 	const next = ranked[1];
@@ -112,7 +124,7 @@ export function decide(
 			return { row: 8, to: "ask", options: [candidate, next.candidate] };
 		return { row: 8, to: "conversation" };
 	}
-	const sure = p1 >= accept && p1 - p2 >= margin;
+	const sure = confident ?? (p1 >= accept && p1 - p2 >= margin);
 	if (candidate.kind === "toolchain" && several(ranked, accept, multi))
 		return { row: 9, to: "run", candidate, announce: "partial" };
 	if (isTool(candidate)) {
@@ -198,6 +210,7 @@ export function decidedId(decision: RouteDecision): string | null {
 		case "conversation":
 			return CONVERSATION_ID;
 		case "ask":
+		case "pipeline":
 			return null;
 		default:
 			return decision.candidate.id;

@@ -1,9 +1,9 @@
 import { Database } from "bun:sqlite";
 import { readFileSync, rmSync, existsSync } from "node:fs";
-import { run } from "../../run.ts";
-import { registerSr, SR_DEFAULTS, type SrOptions } from "../../algorithms.ts";
-import { loadLabels, loadUtterances, CONVERSATION } from "../../data.ts";
-import { isContextual } from "../../round2.ts";
+import { run } from "../../bench/router/run.ts";
+import { registerSr, SR_DEFAULTS, type SrOptions } from "../../bench/router/algorithms.ts";
+import { loadLabels, loadUtterances, CONVERSATION } from "../../bench/router/data.ts";
+import { isContextual } from "../../bench/router/round2.ts";
 export const MODEL = "local:e5-small";
 let k = 0;
 export function go(dbPath: string, algo: string, split: "dev"|"test", sr?: Partial<SrOptions>, extra: any = {}) {

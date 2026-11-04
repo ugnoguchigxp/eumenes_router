@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Few-shot ruri fine-tune experiment. CPU only, no API keys. Weights stay under $FT (default /tmp/ft), never in git.
-#   PY=/tmp/cvenv/bin/python HF_HOME=/tmp/r3hf HF_HUB_OFFLINE=1 bench/router/experiments/finetune/run.sh
+#   PY=/tmp/cvenv/bin/python HF_HOME=/tmp/r3hf HF_HUB_OFFLINE=1 archive/ruri-training/finetune/run.sh
 # Env: SEEDS ("0 1 2"), KS ("3 5 10"; k<10 and the synthetic arm use seed 0 only), ARMS ("real cardx"), FT (/tmp/ft)
 set -euo pipefail
 cd "$(dirname "$0")"

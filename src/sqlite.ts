@@ -5,7 +5,6 @@
 export type { RouterDb, SqlValue } from "./db/connection.ts";
 export { migrateInTransaction, DB_SCHEMA_VERSION } from "./db/schema.ts";
 export {
-	candidatesInTransaction,
 	saveVectorsInTransaction,
 	syncCardsInTransaction,
 } from "./db/cards.ts";
@@ -22,7 +21,8 @@ export {
 	recordFeedbackInTransaction,
 	setFeedbackStateInTransaction,
 } from "./db/feedback.ts";
-export type { Candidate, CandidateQuery, FeedbackQuery } from "./route.ts";
+export type { FeedbackQuery } from "./route.ts";
+export type { RouterCard } from "./db/retrieval.ts";
 export type { Card, Passage } from "./contracts/cards.ts";
 export type {
 	FeedbackState,

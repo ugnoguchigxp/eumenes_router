@@ -2,8 +2,8 @@
 import { Database } from "bun:sqlite";
 import { mkdirSync } from "node:fs";
 import { go } from "../round2/exp.ts";
-import { loadLabels, loadUtterances, loadCards, passagesByCard, CONVERSATION } from "../../data.ts";
-import { isContextual } from "../../round2.ts";
+import { loadLabels, loadUtterances, loadCards, passagesByCard, CONVERSATION } from "../../bench/router/data.ts";
+import { isContextual } from "../../bench/router/round2.ts";
 const DB = "/workspace/eumenes_router/data/bench-r2.db";
 const SR = { weights: { sem: 1, lex: 1, proto: 1, name: 0, hist: 0, prior: 1 }, minCombined: 0.7, context: 0 };
 const db = new Database(DB);

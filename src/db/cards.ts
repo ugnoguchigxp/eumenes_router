@@ -1,35 +1,10 @@
 import { parseCard, type Card, type Passage } from "../contracts/cards.ts";
 import { routerErrors } from "../contracts/errors.ts";
 import { sha256Hex } from "../digest.ts";
-import type { Candidate, CandidateQuery } from "../route.ts";
 import { cardPassages } from "../retrieval/passages.ts";
-import {
-	CANDIDATE_SLOTS,
-	closestSimilarities,
-	rankBy,
-	ROUTER_SLOTS,
-	slotKind,
-	slotted,
-	type IndexedPassage,
-} from "../retrieval/rank.ts";
-import {
-	assertVector,
-	packVector,
-	unpackVector,
-	vectorSpaceKey,
-} from "../vector.ts";
+import { assertVector, packVector, vectorSpaceKey } from "../vector.ts";
 import type { VectorSpace } from "../vector.ts";
 import type { RouterDb } from "./connection.ts";
-
-type CardRow = {
-	id: string;
-	revision: string;
-	kind: Candidate["kind"];
-	title: string;
-	summary: string;
-	use_when_json: string;
-	impact: Candidate["impact"];
-};
 
 /**
  * Upserts the published cards and returns the passages whose stored vector, in `space`,
@@ -194,81 +169,4 @@ export function saveVectorsInTransaction(
 			packVector(row.vector),
 		);
 	}
-}
-
-/** The router's frame (or the narrower choice frame) for one query vector. */
-export function candidatesInTransaction(
-	db: RouterDb,
-	input: CandidateQuery,
-): Candidate[] {
-	assertVector(input.vector.space, input.vector.values);
-	const key = vectorSpaceKey(input.vector.space);
-	const cards = (
-		db
-			.query(
-				`SELECT id, revision, kind, title, summary, use_when_json, impact
- FROM router_cards WHERE enabled=1 ORDER BY id`,
-			)
-			.all() as CardRow[]
-	).filter((card) => input.available(card.id));
-	const active = new Set(cards.map((card) => card.id));
-	const passages: IndexedPassage[] = (
-		db
-			.query("SELECT card_id, vector FROM router_passages WHERE space=?")
-			.all(key) as Array<{ card_id: string; vector: Uint8Array }>
-	).flatMap((row) => {
-		if (!active.has(row.card_id)) return [];
-		return [{ id: row.card_id, values: unpackVector(row.vector) }];
-	});
-	const similarity = closestSimilarities(passages, input.vector.values, active);
-	const history = new Set(input.fromHistory ?? []);
-	const slots = input.slots === "choice" ? CANDIDATE_SLOTS : ROUTER_SLOTS;
-	const chosen = similarity.size
-		? slotted(
-				rankBy(cards, similarity),
-				(card) => similarity.get(card.id)!,
-				(card) => slotKind(card.kind),
-				slots,
-			)
-		: input.strict
-			? []
-			: cards.filter((card) => card.kind !== "read");
-	// A strict, empty index stays empty: the included cards only join a frame.
-	const inFrame = new Set(chosen.map((card) => card.id));
-	const include = new Set(
-		input.strict && !similarity.size ? [] : (input.include ?? []),
-	);
-	const offered = [
-		...chosen,
-		...cards.filter((card) => include.has(card.id) && !inFrame.has(card.id)),
-	];
-	return offered.map((card, index) =>
-		toCandidate(
-			card,
-			index + 1,
-			similarity.get(card.id) ?? null,
-			history.has(card.id),
-		),
-	);
-}
-
-function toCandidate(
-	card: CardRow,
-	rank: number,
-	similarity: number | null,
-	fromHistory: boolean,
-): Candidate {
-	return {
-		id: card.id,
-		revision: card.revision,
-		kind: card.kind,
-		title: card.title,
-		summary: card.summary,
-		useWhen: JSON.parse(card.use_when_json) as string[],
-		impact: card.impact,
-		similarity,
-		rank,
-		ftsRank: null,
-		fromHistory,
-	};
 }

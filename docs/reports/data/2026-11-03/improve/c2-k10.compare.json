@@ -1,0 +1,28 @@
+{
+ "n_test": 217,
+ "n_variants": 1215,
+ "test": {
+  "a_top1": 85.7,
+  "b_top1": 87.1,
+  "top1_diff": 1.4,
+  "top1_ci": [
+   0.0,
+   3.2
+  ],
+  "a_defer": 20.7,
+  "b_defer": 18.0,
+  "defer_diff": -2.7,
+  "defer_ci": [
+   -5.1,
+   -0.9
+  ],
+  "better": 3,
+  "worse": 0
+ },
+ "variants": {
+  "a_top1": 81.0,
+  "b_top1": 81.6,
+  "a_defer": 25.5,
+  "b_defer": 24.3
+ }
+}

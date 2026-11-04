@@ -9,3 +9,4 @@ out/
 __pycache__/
 .env
 archive/larm-context/config.json
+/release/

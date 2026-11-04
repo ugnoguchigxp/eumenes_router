@@ -68,7 +68,7 @@ python score.py cl-nagoya/ruri-v3-reranker-310m runs/zs.json   # 同じ機械で
 Box 側では次のコマンドで評価します（テストの正解は Box にだけあります）。
 
 ```bash
-python3 bench/router/experiments/finetune/finetune.py eval --zs runs/zs.json --ft runs/k10-real-s*/scores.json --meta runs/k10-real-s*/meta.json
+python3 archive/ruri-training/finetune/finetune.py eval --zs runs/zs.json --ft runs/k10-real-s*/scores.json --meta runs/k10-real-s*/meta.json
 ```
 
 表記揺れ・対照・補正の評価は、`router correct --rerank ft=<モデルディレクトリ>` で行うため、モデルディレクトリそのものが必要です。こちらも測る場合は、`runs/k10-real-s0/` を丸ごと（約1.2GB）送ってください。

@@ -8,6 +8,7 @@ import {
 	loadBestV2,
 	scoreBestV2,
 	srOffer,
+	srRanking,
 	srScores,
 	unpackVector,
 	type Card,
@@ -25,25 +26,36 @@ import {
 } from "../src/sqlite.ts";
 
 // The whole package path on the evaluation data, without Python: cards and passage vectors synced into a package
-// database, the memory imported into it, then lexical index → sr-corr → kind slots → top 8 → reranker scores (LARM,
-// as recorded) → best-v2. Every test item and variant must give best_v2.py's ranking, and the totals the report's.
-// The inputs are evaluation data (data/, outside Git): data/larm-context/corr-larm2 (the scores of the LARM network
-// the shipped numbers were trained on), data/best-v2-parity/memory.json, and the recorded ranking
-// docs/reports/data/2026-11-03/best-v2-larm2.ranked.jsonl.
+// database, the memory imported into it, then lexical index → sr-corr → kind slots → top 8 and the ranking of every
+// tool → reranker scores of the top tools up to extra.tools (LARM, as recorded) → best-v2. Every test item and variant
+// must give best_v2.py's ranking, and the totals the report's. The inputs are evaluation data (data/, outside Git):
+// data/larm-context/corr-larm2 (the scores of the LARM network the shipped numbers were trained on), its every-card
+// scores data/larm-context/rerank-larm2-all.json, data/best-v2-parity/memory.json, and the recorded ranking
+// docs/reports/data/2026-11-03/best-v2-larm2-k10.ranked.jsonl.
 const corr = "data/larm-context/corr-larm2";
 const memoryFile = "data/best-v2-parity/memory.json";
-const rankedFile = "docs/reports/data/2026-11-03/best-v2-larm2.ranked.jsonl";
+const rankedFile =
+	"docs/reports/data/2026-11-03/best-v2-larm2-k10.ranked.jsonl";
+const everyFile = "data/larm-context/rerank-larm2-all.json";
 const ready =
 	existsSync(`${corr}/corr.db`) &&
 	existsSync(`${corr}/rerank-ruri.json`) &&
 	existsSync(memoryFile) &&
-	existsSync(rankedFile);
+	existsSync(rankedFile) &&
+	existsSync(everyFile);
 
 test.skipIf(!ready)(
 	"the package path gives best_v2.py's ranking and the report's totals",
 	() => {
 		const bench = new Database(`${corr}/corr.db`);
-		const model = "local:e5-small";
+		// The embedding cache key the records were made with: the one with the most vectors.
+		const model = (
+			bench
+				.query(
+					"SELECT model FROM bench_embeddings GROUP BY model ORDER BY count(*) DESC LIMIT 1",
+				)
+				.get() as { model: string }
+		).model;
 		const space: VectorSpace = {
 			modelId: model,
 			revision: "bench",
@@ -86,6 +98,9 @@ test.skipIf(!ready)(
 		const best = loadBestV2(BEST_V2_PARAMS, memory!);
 		const rerank: Record<string, Record<string, number>> = JSON.parse(
 			readFileSync(`${corr}/rerank-ruri.json`, "utf8"),
+		);
+		const every: Record<string, Record<string, number>> = JSON.parse(
+			readFileSync(everyFile, "utf8"),
 		);
 		const want = new Map(
 			readFileSync(rankedFile, "utf8")
@@ -165,10 +180,26 @@ test.skipIf(!ready)(
 			const rr =
 				rerank[`${text}\u0000${offer.retrieval.map(([id]) => id).join("|")}`];
 			if (!rr) continue; // texts over the reranker's limit kept other scores in the recorded run
+			// The host scores the ranking's top tools up to extra.tools (a text over the limit has the offer's only).
+			const ranking = srRanking(scores, (ranked) =>
+				capByKind(ranked, (id: string) => kindOf.get(id)),
+			);
+			const all = every[text];
+			const extra = all
+				? Object.fromEntries(
+						ranking
+							.slice(0, BEST_V2_PARAMS.extra.tools)
+							.filter(
+								([id]) => !Object.hasOwn(rr, id) && Object.hasOwn(all, id),
+							)
+							.map(([id]) => [id, all[id]!]),
+					)
+				: {};
 			const got = scoreBestV2(best, {
 				retrieval: offer.retrieval,
 				retrievalScores: offer.scores,
-				rerank: rr,
+				rerank: { ...rr, ...extra },
+				ranking,
 				vector: vector(text),
 			});
 			const w = want.get(l.id)!;
@@ -194,12 +225,12 @@ test.skipIf(!ready)(
 		expect(compared).toBeGreaterThan(1400);
 		expect(order).toEqual([]);
 		expect(worst).toBeLessThan(1e-6);
-		// best-v2 (LARM ruri), no LLM, the top candidate taken: the report's 85.7% top-1 and 20.7% deferral on the test.
+		// best-v2 (LARM ruri, 10 tools), no LLM, the top candidate taken: the report's 87.1% top-1 and 18.0% deferral on the test.
 		expect(tally.test.n).toBe(217);
-		expect(+((100 * tally.test.top1) / tally.test.n).toFixed(1)).toBe(85.7);
-		expect(+((100 * tally.test.defer) / tally.test.n).toFixed(1)).toBe(20.7);
+		expect(+((100 * tally.test.top1) / tally.test.n).toFixed(1)).toBe(87.1);
+		expect(+((100 * tally.test.defer) / tally.test.n).toFixed(1)).toBe(18.0);
 		expect(+((100 * tally.variant.top1) / tally.variant.n).toFixed(1)).toBe(
-			81.0,
+			81.6,
 		);
 	},
 );

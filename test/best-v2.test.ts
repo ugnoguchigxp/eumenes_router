@@ -7,6 +7,7 @@ import {
 	BEST_V2_PARAMS,
 	CONVERSATION_ID,
 	loadBestV2,
+	routeErrors,
 	routerErrors,
 	scoreBestV2,
 	type BestV2Memory,
@@ -30,6 +31,7 @@ const params = (coef: number[]): BestV2Params => ({
 	},
 	gate: { deferBelow: 0.1 },
 	fuse: { weight: 2, conversation: 0.18, top: 8 },
+	extra: { tools: 0 },
 	knn: { neighbors: 2, dimension: 2 },
 });
 const memory: BestV2Memory = {
@@ -64,6 +66,68 @@ test("offers the retrieved tools that have a rerank score, plus the conversation
 		result.ranked[0]!.p - result.ranked[1]!.p,
 		12,
 	);
+});
+
+test("extra tools come from the ranking, after the offer, when they have a rerank score", () => {
+	const model = loadBestV2(
+		{ ...params(only("rr", 4)), extra: { tools: 4 } },
+		memory,
+	);
+	const result = scoreBestV2(model, {
+		retrieval: [
+			["image.create", 0.6],
+			[CONVERSATION_ID, 0.4],
+		],
+		retrievalScores: { "image.create": 1, [CONVERSATION_ID]: 0.7 },
+		rerank: { "image.create": 0.2, "web.search": 0.9, "ocr.manage": 0.1 },
+		// image.create is offered; web.search and ocr.manage are within 4 tools; timers.manage has no rerank score;
+		// music.create is the 5th tool, outside extra.tools.
+		ranking: [
+			["image.create", 1],
+			["timers.manage", 0.8],
+			["web.search", 0.7],
+			["ocr.manage", 0.6],
+			["music.create", 0.5],
+		],
+		vector: [1, 0],
+	});
+	expect(result.ranked.map((c) => c.id)).toEqual([
+		"web.search",
+		"image.create",
+		"ocr.manage",
+		CONVERSATION_ID,
+	]);
+});
+
+test("extra tools without the ranking, or a ranking that repeats or names the conversation, are refused", () => {
+	const model = loadBestV2(
+		{ ...params(only("rr", 1)), extra: { tools: 2 } },
+		memory,
+	);
+	const input = {
+		retrieval: [["image.create", 1]] as const,
+		retrievalScores: {},
+		rerank: { "image.create": 0.5 },
+		vector: [1, 0],
+	};
+	expect(() => scoreBestV2(model, input)).toThrow(routeErrors.invalidResponse);
+	expect(() =>
+		scoreBestV2(model, {
+			...input,
+			ranking: [
+				["image.create", 1],
+				["image.create", 0.5],
+			],
+		}),
+	).toThrow(routeErrors.invalidResponse);
+	expect(() =>
+		scoreBestV2(model, { ...input, ranking: [[CONVERSATION_ID, 1]] }),
+	).toThrow(routeErrors.invalidResponse);
+	expect(
+		scoreBestV2(loadBestV2(params(only("rr", 1)), memory), input).ranked.map(
+			(c) => c.id,
+		),
+	).toEqual(["image.create", CONVERSATION_ID]);
 });
 
 test("the memory's nearest labels raise their candidate", () => {
@@ -107,6 +171,8 @@ test("broken numbers, another memory, or a vector of another size are refused", 
 		{ ...good, ranker: { ...good.ranker, scale: Array(n).fill(0) } },
 		memory,
 	);
+	refused({ ...good, extra: { tools: -1 } }, memory);
+	refused({ ...good, extra: { tools: 1.5 } }, memory);
 	refused(good, { ...memory, source: "another training" });
 	refused(good, { ...memory, vectors: base64([1, 0, 0]) });
 	expect(() =>
@@ -121,6 +187,7 @@ test("broken numbers, another memory, or a vector of another size are refused", 
 
 test("the shipped numbers hold nothing from an utterance", () => {
 	expect(Object.keys(BEST_V2_PARAMS).sort()).toEqual([
+		"extra",
 		"features",
 		"format",
 		"fuse",
@@ -222,7 +289,7 @@ test("inputs that are not finite, duplicate candidates, broken base64 or labels 
 	};
 	expect(() =>
 		scoreBestV2(model, { ...input, rerank: { "music.create": Number.NaN } }),
-	).toThrow("larm_invalid_route_response");
+	).toThrow(routeErrors.invalidResponse);
 	expect(() =>
 		scoreBestV2(model, {
 			...input,
@@ -231,13 +298,13 @@ test("inputs that are not finite, duplicate candidates, broken base64 or labels 
 				["music.create", 0.4],
 			],
 		}),
-	).toThrow("larm_invalid_route_response");
+	).toThrow(routeErrors.invalidResponse);
 	expect(() =>
 		scoreBestV2(model, {
 			...input,
 			retrievalScores: { "music.create": Number.POSITIVE_INFINITY },
 		}),
-	).toThrow("larm_invalid_route_response");
+	).toThrow(routeErrors.invalidResponse);
 	expect(() =>
 		scoreBestV2(model, { ...input, vector: [Number.NaN, 0] }),
 	).toThrow(routerErrors.invalidEmbedding);
