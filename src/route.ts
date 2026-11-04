@@ -96,6 +96,11 @@ export type RouteTurn = {
 	dynamic: readonly RouteCandidate[];
 	/** Sentences for the conversation and a memory request when the host writes them. */
 	passages?: { conversation: string; memory: string };
+	/**
+	 * Synced cards the host keeps on offer though the search may not find them: the
+	 * toolchains of the work in progress. best-v2 scores them like a correction's right answer.
+	 */
+	retained?: readonly string[];
 	available: (id: string) => boolean;
 	/** The host's instructions for the reranker. This package does not write them. */
 	instructions: string;
@@ -237,13 +242,17 @@ async function routeText(
 	// A correction moves only an offered candidate: the right answer of near
 	// corrections is offered when the correction applies (they agree, weight on).
 	const rights = [...new Set(near.map((row) => row.rightId))];
-	const include =
-		settings.feedbackWeight > 0 && rights.length === 1 ? rights : [];
 	const cards = ports.read.cards({
 		space: embedded.space,
 		available: turn.available,
 	});
 	const byId = new Map(cards.map((card) => [card.id, card]));
+	const include = [
+		...new Set([
+			...(settings.feedbackWeight > 0 && rights.length === 1 ? rights : []),
+			...(turn.retained ?? []).filter((id) => byId.has(id)),
+		]),
+	];
 	const cap = (ranked: readonly string[]) =>
 		capByKind(ranked, (id: string) => byId.get(id)?.kind);
 	const scores = srScores({

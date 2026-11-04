@@ -211,6 +211,26 @@ test("route: with no tool to offer the reranker is not called and the decision i
 	expect(result.answer).toBeNull();
 });
 
+test("route: a retained card the search does not reach is offered and scored", async () => {
+	// 25 tools, the further down the less similar: the offer and the extra tools stop before the last ones.
+	const many = [
+		CARDS[0]!,
+		...Array.from({ length: 25 }, (_, i) =>
+			card(`d${String(i).padStart(2, "0")}`, "dedicated", [
+				Math.cos(i / 20),
+				Math.sin(i / 20),
+			]),
+		),
+	];
+	const searched = await route(ports({}, { cards: many }).ports, turn("曲"));
+	expect(searched.explain.offered).not.toContain("d24");
+	const { ports: p, calls } = ports({ d24: 0.9 }, { cards: many });
+	const result = await route(p, turn("曲", { retained: ["d24", "gone"] }));
+	expect(calls.rerank[0]!.criteria.map((c) => c.name)).toContain("d24");
+	expect(result.corrected.map((r) => r.candidate.id)).toContain("d24");
+	expect(result.explain.offered).not.toContain("gone");
+});
+
 test("route: an answer without scores is refused", async () => {
 	const { ports: p } = ports({}, { withoutScores: true });
 	await expect(route(p, turn("曲を作って"))).rejects.toThrow(

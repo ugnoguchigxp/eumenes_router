@@ -16,7 +16,7 @@ import { sha256Hex } from "../src/digest.ts";
 import { cardDigest } from "../src/index.ts";
 import {
 	lexicalInTransaction,
-	migrateInTransaction,
+	migrations,
 	saveVectorsInTransaction,
 	srCardsInTransaction,
 	syncCardsInTransaction,
@@ -157,7 +157,7 @@ test.skipIf(!parity)(
 			dimension: 384,
 		};
 		const db = new Database(":memory:");
-		migrateInTransaction(db);
+		for (const sql of migrations) db.exec(sql);
 		const { pending } = syncCardsInTransaction(db, cards, space);
 		saveVectorsInTransaction(
 			db,
@@ -234,7 +234,7 @@ test("a NUL in the utterance does not reach the query", () => {
 
 test("an unchanged card keeps its lexical rows", () => {
 	const db = new Database(":memory:");
-	migrateInTransaction(db);
+	for (const sql of migrations) db.exec(sql);
 	const space: VectorSpace = {
 		modelId: "embed",
 		revision: "1",

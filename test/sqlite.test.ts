@@ -3,11 +3,15 @@ import { expect, test } from "bun:test";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { cardDigest, type Card, type VectorSpace } from "../src/index.ts";
+import {
+	cardDigest,
+	dbSchemaVersion,
+	type Card,
+	type VectorSpace,
+} from "../src/index.ts";
 import {
 	forgetInTransaction,
-	DB_SCHEMA_VERSION,
-	migrateInTransaction,
+	migrations,
 	nearFeedback,
 	recordFeedbackInTransaction,
 	saveVectorsInTransaction,
@@ -41,7 +45,7 @@ function open() {
 	const dir = mkdtempSync(join(tmpdir(), "eumenes_router-"));
 	const db = new Database(join(dir, "router.sqlite"));
 	db.exec("PRAGMA journal_mode = WAL");
-	migrateInTransaction(db);
+	for (const sql of migrations) db.exec(sql);
 	return {
 		db,
 		close() {
@@ -144,15 +148,55 @@ test("a correction is found by its vector, retracted, and removed with its messa
 	}
 });
 
-test("a newer schema is refused and a second migrate does nothing", () => {
-	const { db, close } = open();
+test("the migrations are the published schema count, and a host's router_feedback of the same definition keeps its rows", () => {
+	expect(migrations.length).toBe(dbSchemaVersion);
+	const db = new Database(":memory:");
 	try {
-		migrateInTransaction(db);
-		db.query("UPDATE router_schema SET version=? WHERE id=1").run(
-			DB_SCHEMA_VERSION + 1,
-		);
-		expect(() => migrateInTransaction(db)).toThrow("router_schema_newer");
+		// Eumenes made this table first (toolchain-history/0005-router); the package's migration keeps it.
+		db.exec(`CREATE TABLE router_feedback(
+ id TEXT PRIMARY KEY,conversation_id TEXT NOT NULL,message_id TEXT NOT NULL,message_ids_json TEXT NOT NULL,run_id TEXT NOT NULL,
+ source TEXT NOT NULL CHECK(source IN ('redirect','ask_answer','ui_pick','review')),
+ query_text TEXT NOT NULL,query_space TEXT NOT NULL,query_vector BLOB NOT NULL,
+ wrong_id TEXT,right_id TEXT NOT NULL,
+ state TEXT NOT NULL CHECK(state IN ('active','retracted','stale','conflict')),
+ created_at INTEGER NOT NULL,updated_at INTEGER NOT NULL);
+CREATE INDEX router_feedback_space ON router_feedback(query_space,state);
+CREATE INDEX router_feedback_message ON router_feedback(message_id);`);
+		recordFeedbackInTransaction(db, {
+			id: "kept",
+			conversationId: "c",
+			messageId: "m1",
+			messageIds: [],
+			runId: "run",
+			source: "review",
+			text: "曲を作って",
+			space,
+			vector: [1, 0],
+			wrongId: null,
+			rightId: "music.create",
+			at: 1,
+		});
+		for (const sql of migrations) db.exec(sql);
+		const tables = (
+			db
+				.query(
+					"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'router_%' AND name NOT LIKE 'router_passages_fts_%' ORDER BY name",
+				)
+				.all() as Array<{ name: string }>
+		).map((r) => r.name);
+		expect(tables).toEqual([
+			"router_cards",
+			"router_examples",
+			"router_feedback",
+			"router_passages",
+			"router_passages_fts",
+		]);
+		expect(
+			nearFeedback(db, { vector: [1, 0], space, threshold: 0.9 }).map(
+				(f) => f.id,
+			),
+		).toEqual(["kept"]);
 	} finally {
-		close();
+		db.close();
 	}
 });

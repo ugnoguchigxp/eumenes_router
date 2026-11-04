@@ -19,7 +19,7 @@ import {
 	examplesInTransaction,
 	importExamplesInTransaction,
 	lexicalInTransaction,
-	migrateInTransaction,
+	migrations,
 	saveVectorsInTransaction,
 	srCardsInTransaction,
 	syncCardsInTransaction,
@@ -78,7 +78,7 @@ test.skipIf(!ready)(
 		).map((r) => JSON.parse(r.card_json) as Card);
 		const kindOf = new Map(cards.map((c) => [c.id, c.kind]));
 		const db = new Database(":memory:");
-		migrateInTransaction(db);
+		for (const sql of migrations) db.exec(sql);
 		const { pending } = syncCardsInTransaction(db, cards, space);
 		saveVectorsInTransaction(
 			db,

@@ -247,10 +247,10 @@ test("the memory goes into SQLite and comes back the same; another space or sour
 	const {
 		examplesInTransaction,
 		importExamplesInTransaction,
-		migrateInTransaction,
+		migrations,
 	} = await import("../src/sqlite.ts");
 	const db = new Database(":memory:");
-	migrateInTransaction(db);
+	for (const sql of migrations) db.exec(sql);
 	const space = {
 		modelId: "embed",
 		revision: "1",
@@ -330,10 +330,10 @@ test("one memory can live in two spaces of the same size", async () => {
 	const {
 		examplesInTransaction,
 		importExamplesInTransaction,
-		migrateInTransaction,
+		migrations,
 	} = await import("../src/sqlite.ts");
 	const db = new Database(":memory:");
-	migrateInTransaction(db);
+	for (const sql of migrations) db.exec(sql);
 	const a = {
 		modelId: "embed",
 		revision: "1",

@@ -23,7 +23,7 @@ import {
 	writeFileSync,
 } from "node:fs";
 import { join } from "node:path";
-import { migrateInTransaction } from "../../src/db/schema.ts";
+import { migrations } from "../../src/db/schema.ts";
 import {
 	nearFeedback,
 	recordFeedbackInTransaction,
@@ -96,7 +96,7 @@ export function correctionStore(
 	ratio = 0,
 ) {
 	const db = new Database(":memory:");
-	migrateInTransaction(db as never);
+	for (const sql of migrations) db.exec(sql);
 	const space: VectorSpace = {
 		modelId: model,
 		revision: "bench",

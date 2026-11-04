@@ -1,11 +1,11 @@
-import { dbSchemaVersion } from "../contracts/versions.ts";
-import { routerErrors } from "../contracts/errors.ts";
-import type { RouterDb } from "./connection.ts";
-
-export const DB_SCHEMA_VERSION = dbSchemaVersion;
-
-const SCHEMA = `
-CREATE TABLE IF NOT EXISTS router_cards (
+/**
+ * The router's tables, as migrations the host applies in order, each once, in its own migration system and
+ * transaction (as `eumenes-memory/sqlite` and `eumenes-world-model/sqlite` publish theirs). A migration never
+ * changes once published; a change of the tables is a new entry. `IF NOT EXISTS` lets a host that already holds a
+ * table of the same definition (Eumenes' `router_feedback`, which this one was copied from) keep it.
+ */
+export const migrations: readonly string[] = [
+	`CREATE TABLE IF NOT EXISTS router_cards (
  id TEXT PRIMARY KEY,
  revision TEXT NOT NULL,
  kind TEXT NOT NULL CHECK(kind IN ('dedicated','pipeline','general','read')),
@@ -57,31 +57,5 @@ CREATE TABLE IF NOT EXISTS router_examples (
  vector BLOB NOT NULL,
  PRIMARY KEY (source, space, item)
 );
-`;
-
-/**
- * Creates the router tables when the database has none.
- * The host calls this inside its own transaction. A newer or older schema is refused
- * rather than altered: this package does not migrate a database it did not create.
- */
-export function migrateInTransaction(db: RouterDb): void {
-	db.exec(
-		`CREATE TABLE IF NOT EXISTS router_schema (
- id INTEGER PRIMARY KEY CHECK (id = 1),
- version INTEGER NOT NULL
-)`,
-	);
-	const row = db
-		.query("SELECT version FROM router_schema WHERE id=1")
-		.get() as { version: number } | null;
-	const version = row ? row.version : null;
-	if (version === DB_SCHEMA_VERSION) return;
-	if (version !== null && version > DB_SCHEMA_VERSION)
-		throw new Error(routerErrors.schemaNewer);
-	if (version !== null && version < DB_SCHEMA_VERSION)
-		throw new Error(routerErrors.schemaOlder);
-	db.exec(SCHEMA);
-	db.query("INSERT INTO router_schema(id, version) VALUES (1, ?)").run(
-		DB_SCHEMA_VERSION,
-	);
-}
+`,
+];

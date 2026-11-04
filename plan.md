@@ -114,7 +114,7 @@ type Score = (input: RouteInput) => Promise<RouteAnswer>;   // reranker（LARM �
 type Analyze = (prompt: { version; system; user }) => Promise<string>; // 構造の判断（routeStructured だけ）
 
 // eumenes_router/sqlite（ホストの transaction の中で）
-migrateInTransaction(db): void
+migrations: readonly string[]                                    // 表の SQL。ホストが自分の migration の仕組みで順に1回ずつ当てる（eumenes-memory・eumenes-world-model と同じ。2026-11-04）
 syncCardsInTransaction(db, cards, space): { pending: Passage[] } // その space で、文の digest が変わった分だけ。全文検索の索引も保つ
 saveVectorsInTransaction(db, space, rows): void                  // rows は { id, revision, item, text, vector }
 srCardsInTransaction(db, { space, available }): RouterCard[]     // 有効で available なカードと、その space の文のベクトル
@@ -125,7 +125,8 @@ recordFeedbackInTransaction(db, feedback) / setFeedbackStateInTransaction(db, id
 
 // eumenes_router（Eumenes と bench が同じ関数を使い、流れのずれを作らない）
 const ports = { embed, rerank, read: { cards, lexical, nearFeedback }, model: loadBestV2(BEST_V2_PARAMS, memory), settings, log };
-const turn = { state: { text, previousAgent, previousUser }, dynamic, passages?, available, instructions, resource?, asked?, signals? };
+const turn = { state: { text, previousAgent, previousUser }, dynamic, passages?, retained?, available, instructions, resource?, asked?, signals? };
+// retained: 進行中の仕事の担当（同期済みのカードの id）。検索で見つからなくても offer に入れ、訂正の正解と同じく best-v2 で採点する（2026-11-04、Eumenes への組み込みで追加）
 const a = await route(ports, turn);                         // A: direct
 const b = await routeStructured({ ...ports, analyze }, turn); // B: structured
 // a: { answer, corrected, decision, explain: { retrieval, offered, skipped, gate, defer, conflict, conflicts, intentChat } }
@@ -172,7 +173,7 @@ Eumenes からパッケージに渡す、振り分け用のカード（bundle �
 | --- | --- |
 | ログ | logger は外から渡す。id と数値だけを渡し、発言の本文・埋め込み・Provider の生の応答は渡さない |
 | 名前 | コード（定数・分岐・既定値・エラーメッセージ）とファイル名に、モデル名・profile 名を書かない。bench の設定ファイルと実行結果の記録にだけ書く |
-| 版 | `contractVersions`（cards・route・feedback）と `dbSchemaVersion` を manifest に出す（`eumenes-memory` と同じ） |
+| 版 | `contractVersions`（cards・route・feedback・structure）と `dbSchemaVersion`（`migrations` の数）を manifest に出す（`eumenes-memory` と同じ） |
 | 忘却 | 訂正は、文を作ったすべての発言の id を持つ。どれかを忘れたら消える |
 
 ## 5 パッケージが持つ表
@@ -502,7 +503,17 @@ S2 の実測（2026-11-03、live。利用者の合図の後）:
 | 出荷物 | `bun run release`（`scripts/pack.ts`）。型・lint・検査が通ったときだけ作る。`release/eumenes_router-0.0.1-<sha>.tgz`・`.sha256`・`manifest.json`（入口・契約の版・best-v2 の数値の版・記憶の条件）。中身は `dist/`・`package.json`・`README.md`・`LICENSE` だけ。展開した `dist/` から2つの入口が動くことを確かめた |
 | 独立した見直し（1回） | 製品の流れの誤りはなかった。直したもの: 全文検索は埋め込みと同じ先頭 2000字で引く（巨大な貼り付けで重くならない）、構造の答えの空・空白だけの依頼の部分と参照は無効、カードの reranker の文は上限（4096字）で切って候補に残す、tarball の作りはリポの場所を固定し commit と未コミットの変更の有無を manifest に書き、本流の一致の検査が流れなければ止める、検査のコードの埋め込みのキャッシュ名は DB から読む。足した検査: 動的な候補が reranker と best-v2 を通る、説明が空白なら reranker の前に拒む、長いカードの文を切る、空の参照を拒む。直さなかったもの: `DecisionCard.score`（順位・類似度など）はどこからも読まれないが、Eumenes の決定表の形と同じにしておくため残す |
 | 行 9（依頼が複数） | A でも今の決定表のまま、2つの専用の担当の reranker の点数がどちらも `multi`（0.5）以上なら行 9（1位を予告「partial」で実行）。test 217件（reranker が採点した 214件）で 6件、そのうち best-v2 が自信ありの 5件は行 2 の代わりに行 9 になった。送り先は変わらず、予告の言い方だけが変わる |
-| 未検証 | 動的な候補（仕事・確認待ち・redirect）を best-v2 に追加の候補として渡す扱い（学習にない）。本番の LARM の遅延（1発言 最大 10件のツールの組）。本番の埋め込みが e5 small と同じか。400字を超える文は reranker に先頭 400字を渡す（bench では学習なしの ruri の点数だった） |
+| 未検証 | 動的な候補（仕事・確認待ち・redirect）を best-v2 に追加の候補として渡す扱い（学習にない）。本番の LARM の遅延（1発言 最大 10件のツールの組）。400字を超える文は reranker に先頭 400字を渡す（bench では学習なしの ruri の点数だった） |
+
+Eumenes への組み込み（2026-11-04、利用者の指示「eumenesへの移植していいです。現在eumenesのroutingをしている箇所の実装は削除して構いません。このtarballが使われて、然るべき動きになっているか確認してください」。Eumenes 側の設計は `/Users/y.noguchi/Code/eumenes/spec/router-package-integration-2026-11-04.md`）:
+
+| 項目 | 決め・結果 |
+| --- | --- |
+| パッケージの変更 | 表は `migrations`（SQL の列。ホストが自分の migration で当てる。`eumenes-memory`・`eumenes-world-model` と同じ）にし、`migrateInTransaction` と `router_schema` をなくした（`dbSchemaVersion` は migration の数で 1）。`RouteTurn.retained`（進行中の仕事の担当。検索で見つからなくても offer に入れ、best-v2 で採点する）を足した |
+| 埋め込み | Eumenes の LARM の embedding は `intfloat/multilingual-e5-small`（catalog の `embeddingSpace`）。LARM が保存したカードの文の埋め込みと、bench のローカル e5 small（`passage: `）を同じ文 281件で比べると cos 0.991〜0.998（最小〜最大、中央 0.997）。同じモデルとみて、記憶（ローカル e5 で作った）を LARM の空間に取り込む。発言も `passage` で埋め込む（bench と同じ） |
+| reranker | LARM の catalog（読み取りだけで確かめた）に `decision.context` の provider（protocol `larm.system-one.v1`、endpoint `/v1/systemone`、network `ruri-conv20-structure-v1-s0-fp32-v1`、`state` は最新の文だけ、instructions はモデルの入力に入らない）。bench の点数を取ったものと同じ |
+| 構造の判断（B） | Eumenes の保存済みのクラウド LLM 資源に background control で1回（`reasoningEffort: "low"`）。失敗・時間切れは構造なしとして全体を振り分ける |
+| パイプラインの段（B の行 9） | Eumenes ではパイプラインを作り直すまで、最初の担当に頼み、残りはまだ頼んでいないと伝える |
 
 ### 改善の候補（2026-11-03、考案、未着手）
 

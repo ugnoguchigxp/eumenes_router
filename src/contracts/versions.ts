@@ -8,5 +8,5 @@ export const contractVersions = {
 	structure: 1,
 } as const;
 
-/** `router_schema.version`. A database newer or older than this is refused. */
-export const dbSchemaVersion = 2;
+/** The number of `migrations` (`eumenes_router/sqlite`): the host has applied them all. */
+export const dbSchemaVersion = 1;

@@ -26,7 +26,7 @@ import {
 	examplesInTransaction,
 	importExamplesInTransaction,
 	lexicalInTransaction,
-	migrateInTransaction,
+	migrations,
 	saveVectorsInTransaction,
 	srCardsInTransaction,
 	syncCardsInTransaction,
@@ -105,7 +105,7 @@ function setup() {
 			.all() as Array<{ card_json: string }>
 	).map((r) => JSON.parse(r.card_json) as Card);
 	const db = new Database(":memory:");
-	migrateInTransaction(db);
+	for (const sql of migrations) db.exec(sql);
 	const { pending } = syncCardsInTransaction(db, cards, space);
 	saveVectorsInTransaction(
 		db,

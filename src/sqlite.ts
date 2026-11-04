@@ -1,9 +1,10 @@
 /**
  * `eumenes_router/sqlite`. Synchronous reads and writes on a connection the host lends.
  * The host opens, closes, and wraps the call in a transaction. This module does none of that.
+ * `migrations` are the tables' SQL, which the host applies in its own migration system.
  */
 export type { RouterDb, SqlValue } from "./db/connection.ts";
-export { migrateInTransaction, DB_SCHEMA_VERSION } from "./db/schema.ts";
+export { migrations } from "./db/schema.ts";
 export {
 	saveVectorsInTransaction,
 	syncCardsInTransaction,

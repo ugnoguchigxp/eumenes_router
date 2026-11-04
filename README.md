@@ -99,7 +99,7 @@ bun run format
 | import | 内容 |
 | --- | --- |
 | `eumenes_router` | `route`（A: direct）、`routeStructured`（B: structured）、`decide`、`correctProbabilities`、`predictionSet`、`offerCandidates`、`checkReachability`、`loadBestV2`・`scoreBestV2`・`BEST_V2_PARAMS`、`srScores`・`srOffer`・`srRanking`・`capByKind`、`rerankDocument`、`STRUCTURE_PROMPT`・`structurePrompt`・`parseStructure`・`routedTexts`。DB・時計・乱数・ネットワーク・モデルには触らない |
-| `eumenes_router/sqlite` | 借りた同期接続への `migrateInTransaction`、`syncCardsInTransaction`、`saveVectorsInTransaction`、`srCardsInTransaction`、`lexicalInTransaction`、`importExamplesInTransaction`・`examplesInTransaction`（best-v2 の記憶）、`nearFeedback`、`recordFeedbackInTransaction`、`setFeedbackStateInTransaction`、`forgetInTransaction`。open/close・transaction はしない |
+| `eumenes_router/sqlite` | 表の SQL `migrations`（ホストが自分の migration で当てる）、借りた同期接続への `syncCardsInTransaction`、`saveVectorsInTransaction`、`srCardsInTransaction`、`lexicalInTransaction`、`importExamplesInTransaction`・`examplesInTransaction`（best-v2 の記憶）、`nearFeedback`、`recordFeedbackInTransaction`、`setFeedbackStateInTransaction`、`forgetInTransaction`。open/close・transaction はしない |
 
 | 入口 | ホストの口 | 流れ | 結果 |
 | --- | --- | --- | --- |
