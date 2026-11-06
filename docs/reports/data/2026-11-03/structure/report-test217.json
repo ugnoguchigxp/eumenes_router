@@ -1,139 +1,139 @@
 {
-  "method": "S3",
-  "n": 217,
-  "todayTop1": 183,
-  "structuredTop1": 186,
-  "better": 10,
-  "worse": 7,
-  "toPipeline": 3,
-  "fallback": 10,
-  "tokens": 194516,
-  "moved": [
-    {
-      "id": "679abfd4-722e-4674-8089-af94167a7eb5",
-      "today": "weather.forecast",
-      "now": "conversation.respond",
-      "right": false
-    },
-    {
-      "id": "0030ae9b-14c9-4b9a-a173-3480819952bb",
-      "today": "read_agents",
-      "now": "conversation.respond",
-      "right": true
-    },
-    {
-      "id": "63784cb2-f34d-49f6-90f6-c88dd05b1731",
-      "today": "world.query",
-      "now": "conversation.respond",
-      "right": true
-    },
-    {
-      "id": "4294d4f1-cffa-4fad-811b-60c3f38b8576",
-      "today": "world.query",
-      "now": "conversation.respond",
-      "right": false
-    },
-    {
-      "id": "79f4af73-af9f-4218-b4c5-5c57a5b1f97f",
-      "today": "world.query",
-      "now": "read_memory",
-      "right": false
-    },
-    {
-      "id": "8d0f9a9c-34da-45db-a594-d8cb9feb0c02",
-      "today": "world.query",
-      "now": "conversation.respond",
-      "right": false
-    },
-    {
-      "id": "40935146-63b1-409d-b8e8-1541c270cc39",
-      "today": "task.execute",
-      "now": "pipeline:task.execute+world.query",
-      "right": false
-    },
-    {
-      "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
-      "today": "task.execute",
-      "now": "pipeline:task.execute+world.query",
-      "right": false
-    },
-    {
-      "id": "138ec776-e685-48ac-bf7d-5a1041c173cd",
-      "today": "image.create",
-      "now": "conversation.respond",
-      "right": true
-    },
-    {
-      "id": "b07155ef-b842-4537-85a4-1fc4a366b14e",
-      "today": "web.search",
-      "now": "conversation.respond",
-      "right": true
-    },
-    {
-      "id": "a3c89c6e-ef1d-411b-b469-1a674e575222",
-      "today": "image.create",
-      "now": "conversation.respond",
-      "right": true
-    },
-    {
-      "id": "2ad1c390-dba2-4cfa-a172-dddad50c207a",
-      "today": "weather.forecast",
-      "now": "conversation.respond",
-      "right": true
-    },
-    {
-      "id": "b0172159-d918-40b2-abe5-e39594b228e1",
-      "today": "web.service-search",
-      "now": "pipeline:web.service-search+music.library",
-      "right": false
-    },
-    {
-      "id": "45b94ae8-b923-4ba9-8e57-9281417ec34a",
-      "today": "music.library",
-      "now": "conversation.respond",
-      "right": false
-    },
-    {
-      "id": "17689ac4-a018-41b0-a0e1-8dedd4245ddd",
-      "today": "ui.compose",
-      "now": "conversation.respond",
-      "right": false
-    },
-    {
-      "id": "03eb3a32-45bc-44a9-a46c-9c581f2c7c8e",
-      "today": "music.create",
-      "now": "image.create",
-      "right": true
-    },
-    {
-      "id": "96fa483e-2b65-4da0-9d16-ef2465c7bb81",
-      "today": "read_history",
-      "now": "conversation.respond",
-      "right": true
-    },
-    {
-      "id": "93e1e319-d047-4efc-bd15-f570214594a1",
-      "today": "image.create",
-      "now": "conversation.respond",
-      "right": true
-    },
-    {
-      "id": "89623051-593f-464c-9b5b-7ccb88833cb7",
-      "today": "image.create",
-      "now": "music.create",
-      "right": true
-    },
-    {
-      "id": "0d65a8a8-2fca-49b0-b34a-5f7212f3ef67",
-      "today": "web.search",
-      "now": "browser.operate",
-      "right": false
-    },
-    {
-      "id": "af69349a-0ab0-448b-b534-d395009dc6b2",
-      "today": "image.create",
-      "now": "conversation.respond",
-      "right": true
-    }
-  ]
+	"method": "S3",
+	"n": 217,
+	"todayTop1": 183,
+	"structuredTop1": 186,
+	"better": 10,
+	"worse": 7,
+	"toPipeline": 3,
+	"fallback": 10,
+	"tokens": 194516,
+	"moved": [
+		{
+			"id": "679abfd4-722e-4674-8089-af94167a7eb5",
+			"today": "weather.forecast",
+			"now": "conversation.respond",
+			"right": false
+		},
+		{
+			"id": "0030ae9b-14c9-4b9a-a173-3480819952bb",
+			"today": "read_agents",
+			"now": "conversation.respond",
+			"right": true
+		},
+		{
+			"id": "63784cb2-f34d-49f6-90f6-c88dd05b1731",
+			"today": "world.query",
+			"now": "conversation.respond",
+			"right": true
+		},
+		{
+			"id": "4294d4f1-cffa-4fad-811b-60c3f38b8576",
+			"today": "world.query",
+			"now": "conversation.respond",
+			"right": false
+		},
+		{
+			"id": "79f4af73-af9f-4218-b4c5-5c57a5b1f97f",
+			"today": "world.query",
+			"now": "read_memory",
+			"right": false
+		},
+		{
+			"id": "8d0f9a9c-34da-45db-a594-d8cb9feb0c02",
+			"today": "world.query",
+			"now": "conversation.respond",
+			"right": false
+		},
+		{
+			"id": "40935146-63b1-409d-b8e8-1541c270cc39",
+			"today": "task.execute",
+			"now": "pipeline:task.execute+world.query",
+			"right": false
+		},
+		{
+			"id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+			"today": "task.execute",
+			"now": "pipeline:task.execute+world.query",
+			"right": false
+		},
+		{
+			"id": "138ec776-e685-48ac-bf7d-5a1041c173cd",
+			"today": "image.create",
+			"now": "conversation.respond",
+			"right": true
+		},
+		{
+			"id": "b07155ef-b842-4537-85a4-1fc4a366b14e",
+			"today": "web.search",
+			"now": "conversation.respond",
+			"right": true
+		},
+		{
+			"id": "a3c89c6e-ef1d-411b-b469-1a674e575222",
+			"today": "image.create",
+			"now": "conversation.respond",
+			"right": true
+		},
+		{
+			"id": "2ad1c390-dba2-4cfa-a172-dddad50c207a",
+			"today": "weather.forecast",
+			"now": "conversation.respond",
+			"right": true
+		},
+		{
+			"id": "b0172159-d918-40b2-abe5-e39594b228e1",
+			"today": "web.service-search",
+			"now": "pipeline:web.service-search+music.library",
+			"right": false
+		},
+		{
+			"id": "45b94ae8-b923-4ba9-8e57-9281417ec34a",
+			"today": "music.library",
+			"now": "conversation.respond",
+			"right": false
+		},
+		{
+			"id": "17689ac4-a018-41b0-a0e1-8dedd4245ddd",
+			"today": "ui.compose",
+			"now": "conversation.respond",
+			"right": false
+		},
+		{
+			"id": "03eb3a32-45bc-44a9-a46c-9c581f2c7c8e",
+			"today": "music.create",
+			"now": "image.create",
+			"right": true
+		},
+		{
+			"id": "96fa483e-2b65-4da0-9d16-ef2465c7bb81",
+			"today": "read_history",
+			"now": "conversation.respond",
+			"right": true
+		},
+		{
+			"id": "93e1e319-d047-4efc-bd15-f570214594a1",
+			"today": "image.create",
+			"now": "conversation.respond",
+			"right": true
+		},
+		{
+			"id": "89623051-593f-464c-9b5b-7ccb88833cb7",
+			"today": "image.create",
+			"now": "music.create",
+			"right": true
+		},
+		{
+			"id": "0d65a8a8-2fca-49b0-b34a-5f7212f3ef67",
+			"today": "web.search",
+			"now": "browser.operate",
+			"right": false
+		},
+		{
+			"id": "af69349a-0ab0-448b-b534-d395009dc6b2",
+			"today": "image.create",
+			"now": "conversation.respond",
+			"right": true
+		}
+	]
 }

@@ -1,4361 +1,4361 @@
 {
-  "S0": {
-    "byKind": {
-      "pairs:single-ref": {
-        "n": 77,
-        "right": 61,
-        "routeRight": 75,
-        "countRight": 0,
-        "referenceSide": 12,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-embedded": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-modifier": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-same-tool": {
-        "n": 6,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:multi-seq": {
-        "n": 38,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:multi-par": {
-        "n": 20,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:none": {
-        "n": 17,
-        "right": 3,
-        "routeRight": 3,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 8,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-modifier": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-ref": {
-        "n": 4,
-        "right": 2,
-        "routeRight": 4,
-        "countRight": 0,
-        "referenceSide": 2,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "byFamily": {
-      "pairs:A1": {
-        "n": 20,
-        "right": 17,
-        "routeRight": 20,
-        "countRight": 0,
-        "referenceSide": 3,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A2": {
-        "n": 16,
-        "right": 11,
-        "routeRight": 15,
-        "countRight": 0,
-        "referenceSide": 3,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A3": {
-        "n": 10,
-        "right": 8,
-        "routeRight": 9,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A4": {
-        "n": 10,
-        "right": 7,
-        "routeRight": 10,
-        "countRight": 0,
-        "referenceSide": 3,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A5": {
-        "n": 11,
-        "right": 11,
-        "routeRight": 11,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A6": {
-        "n": 10,
-        "right": 7,
-        "routeRight": 10,
-        "countRight": 0,
-        "referenceSide": 3,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:K": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B2": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:S": {
-        "n": 6,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:C1": {
-        "n": 12,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:C2": {
-        "n": 12,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:C3": {
-        "n": 8,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:C4": {
-        "n": 4,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:C5": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:D1": {
-        "n": 7,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:D2": {
-        "n": 8,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:D3": {
-        "n": 5,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:E1": {
-        "n": 10,
-        "right": 3,
-        "routeRight": 3,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:E2": {
-        "n": 7,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:B": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 8,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:B2": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A1": {
-        "n": 2,
-        "right": 1,
-        "routeRight": 2,
-        "countRight": 0,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A5": {
-        "n": 1,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A2": {
-        "n": 1,
-        "right": 0,
-        "routeRight": 1,
-        "countRight": 0,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "pairsBothRight": {
-      "pairs": 48,
-      "right": 22
-    },
-    "wrong": [
-      {
-        "id": "st-005",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-011",
-        "gold": "ui.compose",
-        "got": "music.create"
-      },
-      {
-        "id": "st-016",
-        "gold": "excalidraw.edit",
-        "got": "image.create"
-      },
-      {
-        "id": "st-022",
-        "gold": "image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-030",
-        "gold": "image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-031",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-032",
-        "gold": "image.create",
-        "got": "music.library"
-      },
-      {
-        "id": "st-034",
-        "gold": "image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-045",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-046",
-        "gold": "image.create",
-        "got": "music.library"
-      },
-      {
-        "id": "st-052",
-        "gold": "music.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-054",
-        "gold": "image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-056",
-        "gold": "ui.compose",
-        "got": "music.create"
-      },
-      {
-        "id": "st-070",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-072",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-077",
-        "gold": "music.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-079",
-        "gold": "image.create",
-        "got": "kanban.manage"
-      },
-      {
-        "id": "st-082",
-        "gold": "memory.request",
-        "got": "image.create"
-      },
-      {
-        "id": "st-100",
-        "gold": "excalidraw.edit",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-112",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-113",
-        "gold": "pipeline:image.create+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-114",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-115",
-        "gold": "pipeline:image.create+music.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-116",
-        "gold": "pipeline:model3d.studio+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-117",
-        "gold": "pipeline:music.create+model3d.studio",
-        "got": "music.create"
-      },
-      {
-        "id": "st-118",
-        "gold": "pipeline:music.create+ui.compose",
-        "got": "music.create"
-      },
-      {
-        "id": "st-119",
-        "gold": "pipeline:ui.compose+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-120",
-        "gold": "pipeline:image.create+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-121",
-        "gold": "pipeline:music.create+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-122",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-123",
-        "gold": "pipeline:image.create+music.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-124",
-        "gold": "pipeline:image.create+model3d.studio",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-125",
-        "gold": "pipeline:model3d.studio+image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-126",
-        "gold": "pipeline:image.create+model3d.studio",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-127",
-        "gold": "pipeline:image.create+ui.compose",
-        "got": "image.create"
-      },
-      {
-        "id": "st-128",
-        "gold": "pipeline:ui.compose+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-129",
-        "gold": "pipeline:excalidraw.edit+ui.compose",
-        "got": "ui.compose"
-      },
-      {
-        "id": "st-130",
-        "gold": "pipeline:ui.compose+excalidraw.edit",
-        "got": "ui.compose"
-      },
-      {
-        "id": "st-131",
-        "gold": "pipeline:music.create+music.library",
-        "got": "music.library"
-      },
-      {
-        "id": "st-132",
-        "gold": "pipeline:ocr.manage+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-133",
-        "gold": "pipeline:object-recognition.manage+model3d.studio",
-        "got": "object-recognition.manage"
-      },
-      {
-        "id": "st-134",
-        "gold": "pipeline:excalidraw.edit+browser.capture",
-        "got": "image.create"
-      },
-      {
-        "id": "st-135",
-        "gold": "pipeline:model3d.studio+image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-136",
-        "gold": "pipeline:web.search+timers.manage",
-        "got": "timers.manage"
-      },
-      {
-        "id": "st-137",
-        "gold": "pipeline:web.search+timers.manage",
-        "got": "timers.manage"
-      },
-      {
-        "id": "st-138",
-        "gold": "pipeline:stock.quote+excalidraw.edit",
-        "got": "stock.quote"
-      },
-      {
-        "id": "st-139",
-        "gold": "pipeline:weather.forecast+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-140",
-        "gold": "pipeline:web.search+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-141",
-        "gold": "pipeline:compute.python+image.create",
-        "got": "compute.python"
-      },
-      {
-        "id": "st-142",
-        "gold": "pipeline:weather.forecast+timers.manage",
-        "got": "timers.manage"
-      },
-      {
-        "id": "st-143",
-        "gold": "pipeline:weather.forecast+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-144",
-        "gold": "pipeline:image.create+model3d.studio+music.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-145",
-        "gold": "pipeline:web.search+timers.manage+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-146",
-        "gold": "pipeline:image.create+model3d.studio+music.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-147",
-        "gold": "pipeline:music.create+image.create+ui.compose",
-        "got": "image.create"
-      },
-      {
-        "id": "st-148",
-        "gold": "pipeline:weather.forecast+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-149",
-        "gold": "pipeline:stock.quote+timers.manage",
-        "got": "stock.quote"
-      },
-      {
-        "id": "st-150",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-151",
-        "gold": "pipeline:image.create+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-152",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-153",
-        "gold": "pipeline:model3d.studio+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-154",
-        "gold": "pipeline:weather.forecast+stock.quote",
-        "got": "stock.quote"
-      },
-      {
-        "id": "st-155",
-        "gold": "pipeline:image.create+model3d.studio",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-156",
-        "gold": "pipeline:ui.compose+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-157",
-        "gold": "pipeline:image.create+music.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-158",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-159",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-160",
-        "gold": "pipeline:timers.manage+weather.forecast",
-        "got": "weather.forecast"
-      },
-      {
-        "id": "st-161",
-        "gold": "pipeline:excalidraw.edit+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-162",
-        "gold": "pipeline:weather.forecast+timers.manage",
-        "got": "weather.forecast"
-      },
-      {
-        "id": "st-163",
-        "gold": "pipeline:compute.python+weather.forecast",
-        "got": "weather.forecast"
-      },
-      {
-        "id": "st-164",
-        "gold": "pipeline:music.create+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-165",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-166",
-        "gold": "pipeline:ui.compose+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-167",
-        "gold": "pipeline:ui.compose+model3d.studio",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-168",
-        "gold": "pipeline:image.create+stock.quote",
-        "got": "stock.quote"
-      },
-      {
-        "id": "st-169",
-        "gold": "pipeline:timers.manage+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-170",
-        "gold": "conversation.respond",
-        "got": "image.create"
-      },
-      {
-        "id": "st-171",
-        "gold": "conversation.respond",
-        "got": "image.create"
-      },
-      {
-        "id": "st-172",
-        "gold": "conversation.respond",
-        "got": "ui.compose"
-      },
-      {
-        "id": "st-173",
-        "gold": "conversation.respond",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-174",
-        "gold": "conversation.respond",
-        "got": "music.library"
-      },
-      {
-        "id": "st-175",
-        "gold": "conversation.respond",
-        "got": "browser.operate"
-      },
-      {
-        "id": "st-176",
-        "gold": "conversation.respond",
-        "got": "music.library"
-      },
-      {
-        "id": "st-180",
-        "gold": "conversation.respond",
-        "got": "image.create"
-      },
-      {
-        "id": "st-181",
-        "gold": "conversation.respond",
-        "got": "music.create"
-      },
-      {
-        "id": "st-182",
-        "gold": "conversation.respond",
-        "got": "image.create"
-      },
-      {
-        "id": "st-183",
-        "gold": "conversation.respond",
-        "got": "music.create"
-      },
-      {
-        "id": "st-184",
-        "gold": "conversation.respond",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-185",
-        "gold": "conversation.respond",
-        "got": "image.create"
-      },
-      {
-        "id": "st-186",
-        "gold": "conversation.respond",
-        "got": "timers.manage"
-      },
-      {
-        "id": "03eb3a32-45bc-44a9-a46c-9c581f2c7c8e",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
-        "gold": "browser.operate",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
-        "gold": "browser.operate",
-        "got": "web.service-search"
-      },
-      {
-        "id": "be996408-9303-41b0-b55f-da418b74f712",
-        "gold": "model3d.studio",
-        "got": "image.create"
-      }
-    ]
-  },
-  "S0+hints": {
-    "byKind": {
-      "pairs:single-ref": {
-        "n": 77,
-        "right": 51,
-        "routeRight": 77,
-        "countRight": 0,
-        "referenceSide": 22,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-embedded": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-modifier": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-same-tool": {
-        "n": 6,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:multi-seq": {
-        "n": 38,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:multi-par": {
-        "n": 20,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:none": {
-        "n": 17,
-        "right": 3,
-        "routeRight": 3,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 8,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-modifier": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-ref": {
-        "n": 4,
-        "right": 2,
-        "routeRight": 4,
-        "countRight": 0,
-        "referenceSide": 2,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "byFamily": {
-      "pairs:A1": {
-        "n": 20,
-        "right": 13,
-        "routeRight": 20,
-        "countRight": 0,
-        "referenceSide": 7,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A2": {
-        "n": 16,
-        "right": 11,
-        "routeRight": 16,
-        "countRight": 0,
-        "referenceSide": 3,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A3": {
-        "n": 10,
-        "right": 6,
-        "routeRight": 10,
-        "countRight": 0,
-        "referenceSide": 2,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A4": {
-        "n": 10,
-        "right": 6,
-        "routeRight": 10,
-        "countRight": 0,
-        "referenceSide": 4,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A5": {
-        "n": 11,
-        "right": 10,
-        "routeRight": 11,
-        "countRight": 0,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A6": {
-        "n": 10,
-        "right": 5,
-        "routeRight": 10,
-        "countRight": 0,
-        "referenceSide": 5,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:K": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B2": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:S": {
-        "n": 6,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:C1": {
-        "n": 12,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:C2": {
-        "n": 12,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:C3": {
-        "n": 8,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:C4": {
-        "n": 4,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:C5": {
-        "n": 2,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:D1": {
-        "n": 7,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:D2": {
-        "n": 8,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:D3": {
-        "n": 5,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:E1": {
-        "n": 10,
-        "right": 3,
-        "routeRight": 3,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:E2": {
-        "n": 7,
-        "right": 0,
-        "routeRight": 0,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:B": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 8,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:B2": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A1": {
-        "n": 2,
-        "right": 1,
-        "routeRight": 2,
-        "countRight": 0,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A5": {
-        "n": 1,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A2": {
-        "n": 1,
-        "right": 0,
-        "routeRight": 1,
-        "countRight": 0,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "pairsBothRight": {
-      "pairs": 48,
-      "right": 14
-    },
-    "wrong": [
-      {
-        "id": "st-005",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-008",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-011",
-        "gold": "ui.compose",
-        "got": "music.create"
-      },
-      {
-        "id": "st-014",
-        "gold": "ui.compose",
-        "got": "image.create"
-      },
-      {
-        "id": "st-016",
-        "gold": "excalidraw.edit",
-        "got": "image.create"
-      },
-      {
-        "id": "st-018",
-        "gold": "model3d.studio",
-        "got": "music.create"
-      },
-      {
-        "id": "st-019",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-022",
-        "gold": "image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-030",
-        "gold": "image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-031",
-        "gold": "music.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-032",
-        "gold": "image.create",
-        "got": "music.library"
-      },
-      {
-        "id": "st-034",
-        "gold": "image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-042",
-        "gold": "ui.compose",
-        "got": "music.create"
-      },
-      {
-        "id": "st-044",
-        "gold": "model3d.studio",
-        "got": "music.create"
-      },
-      {
-        "id": "st-045",
-        "gold": "music.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-046",
-        "gold": "image.create",
-        "got": "music.library"
-      },
-      {
-        "id": "st-051",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-052",
-        "gold": "music.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-054",
-        "gold": "image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-056",
-        "gold": "ui.compose",
-        "got": "music.create"
-      },
-      {
-        "id": "st-064",
-        "gold": "ui.compose",
-        "got": "browser.capture"
-      },
-      {
-        "id": "st-070",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-071",
-        "gold": "music.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-072",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-074",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-077",
-        "gold": "music.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-079",
-        "gold": "image.create",
-        "got": "kanban.manage"
-      },
-      {
-        "id": "st-082",
-        "gold": "memory.request",
-        "got": "image.create"
-      },
-      {
-        "id": "st-100",
-        "gold": "excalidraw.edit",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-112",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-113",
-        "gold": "pipeline:image.create+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-114",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-115",
-        "gold": "pipeline:image.create+music.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-116",
-        "gold": "pipeline:model3d.studio+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-117",
-        "gold": "pipeline:music.create+model3d.studio",
-        "got": "music.create"
-      },
-      {
-        "id": "st-118",
-        "gold": "pipeline:music.create+ui.compose",
-        "got": "music.create"
-      },
-      {
-        "id": "st-119",
-        "gold": "pipeline:ui.compose+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-120",
-        "gold": "pipeline:image.create+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-121",
-        "gold": "pipeline:music.create+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-122",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-123",
-        "gold": "pipeline:image.create+music.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-124",
-        "gold": "pipeline:image.create+model3d.studio",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-125",
-        "gold": "pipeline:model3d.studio+image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-126",
-        "gold": "pipeline:image.create+model3d.studio",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-127",
-        "gold": "pipeline:image.create+ui.compose",
-        "got": "image.create"
-      },
-      {
-        "id": "st-128",
-        "gold": "pipeline:ui.compose+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-129",
-        "gold": "pipeline:excalidraw.edit+ui.compose",
-        "got": "ui.compose"
-      },
-      {
-        "id": "st-130",
-        "gold": "pipeline:ui.compose+excalidraw.edit",
-        "got": "ui.compose"
-      },
-      {
-        "id": "st-131",
-        "gold": "pipeline:music.create+music.library",
-        "got": "music.library"
-      },
-      {
-        "id": "st-132",
-        "gold": "pipeline:ocr.manage+music.create",
-        "got": "ocr.manage"
-      },
-      {
-        "id": "st-133",
-        "gold": "pipeline:object-recognition.manage+model3d.studio",
-        "got": "object-recognition.manage"
-      },
-      {
-        "id": "st-134",
-        "gold": "pipeline:excalidraw.edit+browser.capture",
-        "got": "image.create"
-      },
-      {
-        "id": "st-135",
-        "gold": "pipeline:model3d.studio+image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-136",
-        "gold": "pipeline:web.search+timers.manage",
-        "got": "timers.manage"
-      },
-      {
-        "id": "st-137",
-        "gold": "pipeline:web.search+timers.manage",
-        "got": "timers.manage"
-      },
-      {
-        "id": "st-138",
-        "gold": "pipeline:stock.quote+excalidraw.edit",
-        "got": "stock.quote"
-      },
-      {
-        "id": "st-139",
-        "gold": "pipeline:weather.forecast+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-140",
-        "gold": "pipeline:web.search+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-141",
-        "gold": "pipeline:compute.python+image.create",
-        "got": "compute.python"
-      },
-      {
-        "id": "st-142",
-        "gold": "pipeline:weather.forecast+timers.manage",
-        "got": "timers.manage"
-      },
-      {
-        "id": "st-143",
-        "gold": "pipeline:weather.forecast+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-144",
-        "gold": "pipeline:image.create+model3d.studio+music.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-145",
-        "gold": "pipeline:web.search+timers.manage+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-146",
-        "gold": "pipeline:image.create+model3d.studio+music.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-147",
-        "gold": "pipeline:music.create+image.create+ui.compose",
-        "got": "image.create"
-      },
-      {
-        "id": "st-148",
-        "gold": "pipeline:weather.forecast+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-149",
-        "gold": "pipeline:stock.quote+timers.manage",
-        "got": "stock.quote"
-      },
-      {
-        "id": "st-150",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-151",
-        "gold": "pipeline:image.create+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-152",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-153",
-        "gold": "pipeline:model3d.studio+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-154",
-        "gold": "pipeline:weather.forecast+stock.quote",
-        "got": "stock.quote"
-      },
-      {
-        "id": "st-155",
-        "gold": "pipeline:image.create+model3d.studio",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-156",
-        "gold": "pipeline:ui.compose+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-157",
-        "gold": "pipeline:image.create+music.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-158",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-159",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-160",
-        "gold": "pipeline:timers.manage+weather.forecast",
-        "got": "weather.forecast"
-      },
-      {
-        "id": "st-161",
-        "gold": "pipeline:excalidraw.edit+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-162",
-        "gold": "pipeline:weather.forecast+timers.manage",
-        "got": "weather.forecast"
-      },
-      {
-        "id": "st-163",
-        "gold": "pipeline:compute.python+weather.forecast",
-        "got": "weather.forecast"
-      },
-      {
-        "id": "st-164",
-        "gold": "pipeline:music.create+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-165",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-166",
-        "gold": "pipeline:ui.compose+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-167",
-        "gold": "pipeline:ui.compose+model3d.studio",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-168",
-        "gold": "pipeline:image.create+stock.quote",
-        "got": "stock.quote"
-      },
-      {
-        "id": "st-169",
-        "gold": "pipeline:timers.manage+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-170",
-        "gold": "conversation.respond",
-        "got": "image.create"
-      },
-      {
-        "id": "st-171",
-        "gold": "conversation.respond",
-        "got": "image.create"
-      },
-      {
-        "id": "st-172",
-        "gold": "conversation.respond",
-        "got": "ui.compose"
-      },
-      {
-        "id": "st-173",
-        "gold": "conversation.respond",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-174",
-        "gold": "conversation.respond",
-        "got": "music.library"
-      },
-      {
-        "id": "st-175",
-        "gold": "conversation.respond",
-        "got": "browser.operate"
-      },
-      {
-        "id": "st-176",
-        "gold": "conversation.respond",
-        "got": "music.library"
-      },
-      {
-        "id": "st-180",
-        "gold": "conversation.respond",
-        "got": "image.create"
-      },
-      {
-        "id": "st-181",
-        "gold": "conversation.respond",
-        "got": "music.create"
-      },
-      {
-        "id": "st-182",
-        "gold": "conversation.respond",
-        "got": "image.create"
-      },
-      {
-        "id": "st-183",
-        "gold": "conversation.respond",
-        "got": "music.create"
-      },
-      {
-        "id": "st-184",
-        "gold": "conversation.respond",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-185",
-        "gold": "conversation.respond",
-        "got": "image.create"
-      },
-      {
-        "id": "st-186",
-        "gold": "conversation.respond",
-        "got": "timers.manage"
-      },
-      {
-        "id": "03eb3a32-45bc-44a9-a46c-9c581f2c7c8e",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
-        "gold": "browser.operate",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
-        "gold": "browser.operate",
-        "got": "web.service-search"
-      },
-      {
-        "id": "be996408-9303-41b0-b55f-da418b74f712",
-        "gold": "model3d.studio",
-        "got": "image.create"
-      }
-    ]
-  },
-  "S*/span": {
-    "byKind": {
-      "pairs:single-ref": {
-        "n": 77,
-        "right": 70,
-        "routeRight": 72,
-        "countRight": 77,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-embedded": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 15,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-modifier": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-same-tool": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 4,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 0
-      },
-      "pairs:multi-seq": {
-        "n": 38,
-        "right": 35,
-        "routeRight": 37,
-        "countRight": 38,
-        "referenceSide": 0,
-        "toPipeline": 37,
-        "fallback": 0
-      },
-      "pairs:multi-par": {
-        "n": 20,
-        "right": 19,
-        "routeRight": 19,
-        "countRight": 20,
-        "referenceSide": 0,
-        "toPipeline": 19,
-        "fallback": 0
-      },
-      "pairs:none": {
-        "n": 17,
-        "right": 17,
-        "routeRight": 17,
-        "countRight": 17,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 8,
-        "countRight": 9,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-modifier": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-ref": {
-        "n": 4,
-        "right": 3,
-        "routeRight": 4,
-        "countRight": 4,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "byFamily": {
-      "pairs:A1": {
-        "n": 20,
-        "right": 20,
-        "routeRight": 20,
-        "countRight": 20,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A2": {
-        "n": 16,
-        "right": 14,
-        "routeRight": 15,
-        "countRight": 16,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A3": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A4": {
-        "n": 10,
-        "right": 9,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A5": {
-        "n": 11,
-        "right": 11,
-        "routeRight": 11,
-        "countRight": 11,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A6": {
-        "n": 10,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:K": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 15,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B2": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:S": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 4,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 0
-      },
-      "pairs:C1": {
-        "n": 12,
-        "right": 12,
-        "routeRight": 12,
-        "countRight": 12,
-        "referenceSide": 0,
-        "toPipeline": 12,
-        "fallback": 0
-      },
-      "pairs:C2": {
-        "n": 12,
-        "right": 12,
-        "routeRight": 12,
-        "countRight": 12,
-        "referenceSide": 0,
-        "toPipeline": 12,
-        "fallback": 0
-      },
-      "pairs:C3": {
-        "n": 8,
-        "right": 6,
-        "routeRight": 7,
-        "countRight": 8,
-        "referenceSide": 0,
-        "toPipeline": 7,
-        "fallback": 0
-      },
-      "pairs:C4": {
-        "n": 4,
-        "right": 3,
-        "routeRight": 4,
-        "countRight": 4,
-        "referenceSide": 0,
-        "toPipeline": 4,
-        "fallback": 0
-      },
-      "pairs:C5": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 2,
-        "fallback": 0
-      },
-      "pairs:D1": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 6,
-        "fallback": 0
-      },
-      "pairs:D2": {
-        "n": 8,
-        "right": 8,
-        "routeRight": 8,
-        "countRight": 8,
-        "referenceSide": 0,
-        "toPipeline": 8,
-        "fallback": 0
-      },
-      "pairs:D3": {
-        "n": 5,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 5,
-        "referenceSide": 0,
-        "toPipeline": 5,
-        "fallback": 0
-      },
-      "pairs:E1": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:E2": {
-        "n": 7,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:B": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 8,
-        "countRight": 9,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:B2": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A1": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A5": {
-        "n": 1,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A2": {
-        "n": 1,
-        "right": 0,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "pairsBothRight": {
-      "pairs": 48,
-      "right": 41
-    },
-    "wrong": [
-      {
-        "id": "st-030",
-        "gold": "image.create",
-        "got": "browser.capture"
-      },
-      {
-        "id": "st-031",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-056",
-        "gold": "ui.compose",
-        "got": "image.create"
-      },
-      {
-        "id": "st-070",
-        "gold": "image.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-071",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-072",
-        "gold": "image.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-075",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-079",
-        "gold": "image.create",
-        "got": "browser.capture"
-      },
-      {
-        "id": "st-082",
-        "gold": "memory.request",
-        "got": "image.create"
-      },
-      {
-        "id": "st-100",
-        "gold": "excalidraw.edit",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-108",
-        "gold": "timers.manage",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-111",
-        "gold": "music.create",
-        "got": "pipeline:music.create+image.create"
-      },
-      {
-        "id": "st-136",
-        "gold": "pipeline:web.search+timers.manage",
-        "got": "timers.manage"
-      },
-      {
-        "id": "st-138",
-        "gold": "pipeline:stock.quote+excalidraw.edit",
-        "got": "pipeline:stock.quote+task.execute"
-      },
-      {
-        "id": "st-145",
-        "gold": "pipeline:web.search+timers.manage+music.create",
-        "got": "pipeline:timers.manage+music.create"
-      },
-      {
-        "id": "st-156",
-        "gold": "pipeline:ui.compose+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
-        "gold": "browser.operate",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
-        "gold": "browser.operate",
-        "got": "web.service-search"
-      },
-      {
-        "id": "be996408-9303-41b0-b55f-da418b74f712",
-        "gold": "model3d.studio",
-        "got": "image.create"
-      }
-    ],
-    "tokens": 0
-  },
-  "S*/borrow": {
-    "byKind": {
-      "pairs:single-ref": {
-        "n": 77,
-        "right": 70,
-        "routeRight": 72,
-        "countRight": 77,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-embedded": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 15,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-modifier": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-same-tool": {
-        "n": 6,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 0
-      },
-      "pairs:multi-seq": {
-        "n": 38,
-        "right": 35,
-        "routeRight": 37,
-        "countRight": 38,
-        "referenceSide": 0,
-        "toPipeline": 37,
-        "fallback": 0
-      },
-      "pairs:multi-par": {
-        "n": 20,
-        "right": 20,
-        "routeRight": 20,
-        "countRight": 20,
-        "referenceSide": 0,
-        "toPipeline": 20,
-        "fallback": 0
-      },
-      "pairs:none": {
-        "n": 17,
-        "right": 17,
-        "routeRight": 17,
-        "countRight": 17,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 8,
-        "countRight": 9,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-modifier": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-ref": {
-        "n": 4,
-        "right": 3,
-        "routeRight": 4,
-        "countRight": 4,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "byFamily": {
-      "pairs:A1": {
-        "n": 20,
-        "right": 20,
-        "routeRight": 20,
-        "countRight": 20,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A2": {
-        "n": 16,
-        "right": 14,
-        "routeRight": 15,
-        "countRight": 16,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A3": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A4": {
-        "n": 10,
-        "right": 9,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A5": {
-        "n": 11,
-        "right": 11,
-        "routeRight": 11,
-        "countRight": 11,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A6": {
-        "n": 10,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:K": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 15,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B2": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:S": {
-        "n": 6,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 0
-      },
-      "pairs:C1": {
-        "n": 12,
-        "right": 12,
-        "routeRight": 12,
-        "countRight": 12,
-        "referenceSide": 0,
-        "toPipeline": 12,
-        "fallback": 0
-      },
-      "pairs:C2": {
-        "n": 12,
-        "right": 12,
-        "routeRight": 12,
-        "countRight": 12,
-        "referenceSide": 0,
-        "toPipeline": 12,
-        "fallback": 0
-      },
-      "pairs:C3": {
-        "n": 8,
-        "right": 6,
-        "routeRight": 7,
-        "countRight": 8,
-        "referenceSide": 0,
-        "toPipeline": 7,
-        "fallback": 0
-      },
-      "pairs:C4": {
-        "n": 4,
-        "right": 3,
-        "routeRight": 4,
-        "countRight": 4,
-        "referenceSide": 0,
-        "toPipeline": 4,
-        "fallback": 0
-      },
-      "pairs:C5": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 2,
-        "fallback": 0
-      },
-      "pairs:D1": {
-        "n": 7,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 7,
-        "fallback": 0
-      },
-      "pairs:D2": {
-        "n": 8,
-        "right": 8,
-        "routeRight": 8,
-        "countRight": 8,
-        "referenceSide": 0,
-        "toPipeline": 8,
-        "fallback": 0
-      },
-      "pairs:D3": {
-        "n": 5,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 5,
-        "referenceSide": 0,
-        "toPipeline": 5,
-        "fallback": 0
-      },
-      "pairs:E1": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:E2": {
-        "n": 7,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:B": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 8,
-        "countRight": 9,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:B2": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A1": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A5": {
-        "n": 1,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A2": {
-        "n": 1,
-        "right": 0,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "pairsBothRight": {
-      "pairs": 48,
-      "right": 41
-    },
-    "wrong": [
-      {
-        "id": "st-030",
-        "gold": "image.create",
-        "got": "browser.capture"
-      },
-      {
-        "id": "st-031",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-056",
-        "gold": "ui.compose",
-        "got": "image.create"
-      },
-      {
-        "id": "st-070",
-        "gold": "image.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-071",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-072",
-        "gold": "image.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-075",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-079",
-        "gold": "image.create",
-        "got": "browser.capture"
-      },
-      {
-        "id": "st-082",
-        "gold": "memory.request",
-        "got": "image.create"
-      },
-      {
-        "id": "st-100",
-        "gold": "excalidraw.edit",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-111",
-        "gold": "music.create",
-        "got": "pipeline:music.create+image.create"
-      },
-      {
-        "id": "st-136",
-        "gold": "pipeline:web.search+timers.manage",
-        "got": "timers.manage"
-      },
-      {
-        "id": "st-138",
-        "gold": "pipeline:stock.quote+excalidraw.edit",
-        "got": "pipeline:stock.quote+task.execute"
-      },
-      {
-        "id": "st-145",
-        "gold": "pipeline:web.search+timers.manage+music.create",
-        "got": "pipeline:timers.manage+music.create"
-      },
-      {
-        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
-        "gold": "browser.operate",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
-        "gold": "browser.operate",
-        "got": "web.service-search"
-      },
-      {
-        "id": "be996408-9303-41b0-b55f-da418b74f712",
-        "gold": "model3d.studio",
-        "got": "image.create"
-      }
-    ],
-    "tokens": 0
-  },
-  "S*/mask": {
-    "byKind": {
-      "pairs:single-ref": {
-        "n": 77,
-        "right": 74,
-        "routeRight": 76,
-        "countRight": 77,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-embedded": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 15,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-modifier": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-same-tool": {
-        "n": 6,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 0
-      },
-      "pairs:multi-seq": {
-        "n": 38,
-        "right": 35,
-        "routeRight": 37,
-        "countRight": 38,
-        "referenceSide": 0,
-        "toPipeline": 37,
-        "fallback": 0
-      },
-      "pairs:multi-par": {
-        "n": 20,
-        "right": 20,
-        "routeRight": 20,
-        "countRight": 20,
-        "referenceSide": 0,
-        "toPipeline": 20,
-        "fallback": 0
-      },
-      "pairs:none": {
-        "n": 17,
-        "right": 17,
-        "routeRight": 17,
-        "countRight": 17,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 8,
-        "countRight": 9,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-modifier": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single-ref": {
-        "n": 4,
-        "right": 3,
-        "routeRight": 4,
-        "countRight": 4,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "byFamily": {
-      "pairs:A1": {
-        "n": 20,
-        "right": 19,
-        "routeRight": 20,
-        "countRight": 20,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A2": {
-        "n": 16,
-        "right": 14,
-        "routeRight": 15,
-        "countRight": 16,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A3": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A4": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A5": {
-        "n": 11,
-        "right": 11,
-        "routeRight": 11,
-        "countRight": 11,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A6": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:K": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 15,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B2": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 6,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:S": {
-        "n": 6,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 0
-      },
-      "pairs:C1": {
-        "n": 12,
-        "right": 12,
-        "routeRight": 12,
-        "countRight": 12,
-        "referenceSide": 0,
-        "toPipeline": 12,
-        "fallback": 0
-      },
-      "pairs:C2": {
-        "n": 12,
-        "right": 12,
-        "routeRight": 12,
-        "countRight": 12,
-        "referenceSide": 0,
-        "toPipeline": 12,
-        "fallback": 0
-      },
-      "pairs:C3": {
-        "n": 8,
-        "right": 6,
-        "routeRight": 7,
-        "countRight": 8,
-        "referenceSide": 0,
-        "toPipeline": 7,
-        "fallback": 0
-      },
-      "pairs:C4": {
-        "n": 4,
-        "right": 3,
-        "routeRight": 4,
-        "countRight": 4,
-        "referenceSide": 0,
-        "toPipeline": 4,
-        "fallback": 0
-      },
-      "pairs:C5": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 2,
-        "fallback": 0
-      },
-      "pairs:D1": {
-        "n": 7,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 7,
-        "fallback": 0
-      },
-      "pairs:D2": {
-        "n": 8,
-        "right": 8,
-        "routeRight": 8,
-        "countRight": 8,
-        "referenceSide": 0,
-        "toPipeline": 8,
-        "fallback": 0
-      },
-      "pairs:D3": {
-        "n": 5,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 5,
-        "referenceSide": 0,
-        "toPipeline": 5,
-        "fallback": 0
-      },
-      "pairs:E1": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:E2": {
-        "n": 7,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:B": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 8,
-        "countRight": 9,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:B2": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A1": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A5": {
-        "n": 1,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A2": {
-        "n": 1,
-        "right": 0,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "pairsBothRight": {
-      "pairs": 48,
-      "right": 44
-    },
-    "wrong": [
-      {
-        "id": "st-016",
-        "gold": "excalidraw.edit",
-        "got": "image.create"
-      },
-      {
-        "id": "st-030",
-        "gold": "image.create",
-        "got": "browser.capture"
-      },
-      {
-        "id": "st-031",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-079",
-        "gold": "image.create",
-        "got": "browser.capture"
-      },
-      {
-        "id": "st-082",
-        "gold": "memory.request",
-        "got": "image.create"
-      },
-      {
-        "id": "st-100",
-        "gold": "excalidraw.edit",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-111",
-        "gold": "music.create",
-        "got": "pipeline:music.create+image.create"
-      },
-      {
-        "id": "st-136",
-        "gold": "pipeline:web.search+timers.manage",
-        "got": "timers.manage"
-      },
-      {
-        "id": "st-138",
-        "gold": "pipeline:stock.quote+excalidraw.edit",
-        "got": "pipeline:stock.quote+task.execute"
-      },
-      {
-        "id": "st-145",
-        "gold": "pipeline:web.search+timers.manage+music.create",
-        "got": "pipeline:timers.manage+music.create"
-      },
-      {
-        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
-        "gold": "browser.operate",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
-        "gold": "browser.operate",
-        "got": "web.service-search"
-      },
-      {
-        "id": "be996408-9303-41b0-b55f-da418b74f712",
-        "gold": "model3d.studio",
-        "got": "image.create"
-      }
-    ],
-    "tokens": 0
-  },
-  "S3/span": {
-    "byKind": {
-      "pairs:single-ref": {
-        "n": 77,
-        "right": 66,
-        "routeRight": 75,
-        "countRight": 75,
-        "referenceSide": 7,
-        "toPipeline": 0,
-        "fallback": 2
-      },
-      "pairs:single-embedded": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 15,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-modifier": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-same-tool": {
-        "n": 6,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 3
-      },
-      "pairs:multi-seq": {
-        "n": 38,
-        "right": 33,
-        "routeRight": 35,
-        "countRight": 37,
-        "referenceSide": 0,
-        "toPipeline": 35,
-        "fallback": 1
-      },
-      "pairs:multi-par": {
-        "n": 20,
-        "right": 14,
-        "routeRight": 14,
-        "countRight": 14,
-        "referenceSide": 0,
-        "toPipeline": 14,
-        "fallback": 6
-      },
-      "pairs:none": {
-        "n": 17,
-        "right": 17,
-        "routeRight": 17,
-        "countRight": 17,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 5,
-        "referenceSide": 0,
-        "toPipeline": 2,
-        "fallback": 2
-      },
-      "real:single-modifier": {
-        "n": 2,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 1
-      },
-      "real:single-ref": {
-        "n": 4,
-        "right": 2,
-        "routeRight": 4,
-        "countRight": 4,
-        "referenceSide": 2,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "byFamily": {
-      "pairs:A1": {
-        "n": 20,
-        "right": 17,
-        "routeRight": 20,
-        "countRight": 20,
-        "referenceSide": 3,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A2": {
-        "n": 16,
-        "right": 13,
-        "routeRight": 15,
-        "countRight": 16,
-        "referenceSide": 2,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A3": {
-        "n": 10,
-        "right": 8,
-        "routeRight": 9,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A4": {
-        "n": 10,
-        "right": 9,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A5": {
-        "n": 11,
-        "right": 11,
-        "routeRight": 11,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 1
-      },
-      "pairs:A6": {
-        "n": 10,
-        "right": 8,
-        "routeRight": 10,
-        "countRight": 9,
-        "referenceSide": 2,
-        "toPipeline": 0,
-        "fallback": 1
-      },
-      "pairs:K": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 15,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B2": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:S": {
-        "n": 6,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 3
-      },
-      "pairs:C1": {
-        "n": 12,
-        "right": 11,
-        "routeRight": 11,
-        "countRight": 12,
-        "referenceSide": 0,
-        "toPipeline": 11,
-        "fallback": 0
-      },
-      "pairs:C2": {
-        "n": 12,
-        "right": 12,
-        "routeRight": 12,
-        "countRight": 12,
-        "referenceSide": 0,
-        "toPipeline": 12,
-        "fallback": 0
-      },
-      "pairs:C3": {
-        "n": 8,
-        "right": 5,
-        "routeRight": 6,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 6,
-        "fallback": 1
-      },
-      "pairs:C4": {
-        "n": 4,
-        "right": 3,
-        "routeRight": 4,
-        "countRight": 4,
-        "referenceSide": 0,
-        "toPipeline": 4,
-        "fallback": 0
-      },
-      "pairs:C5": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 2,
-        "fallback": 0
-      },
-      "pairs:D1": {
-        "n": 7,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 6
-      },
-      "pairs:D2": {
-        "n": 8,
-        "right": 8,
-        "routeRight": 8,
-        "countRight": 8,
-        "referenceSide": 0,
-        "toPipeline": 8,
-        "fallback": 0
-      },
-      "pairs:D3": {
-        "n": 5,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 5,
-        "referenceSide": 0,
-        "toPipeline": 5,
-        "fallback": 0
-      },
-      "pairs:E1": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:E2": {
-        "n": 7,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:B": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 5,
-        "referenceSide": 0,
-        "toPipeline": 2,
-        "fallback": 2
-      },
-      "real:B2": {
-        "n": 2,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 1
-      },
-      "real:A1": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A5": {
-        "n": 1,
-        "right": 0,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A2": {
-        "n": 1,
-        "right": 0,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "pairsBothRight": {
-      "pairs": 48,
-      "right": 35
-    },
-    "wrong": [
-      {
-        "id": "st-005",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-011",
-        "gold": "ui.compose",
-        "got": "music.create"
-      },
-      {
-        "id": "st-016",
-        "gold": "excalidraw.edit",
-        "got": "image.create"
-      },
-      {
-        "id": "st-022",
-        "gold": "image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-030",
-        "gold": "image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-031",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-045",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-046",
-        "gold": "image.create",
-        "got": "music.library"
-      },
-      {
-        "id": "st-056",
-        "gold": "ui.compose",
-        "got": "image.create"
-      },
-      {
-        "id": "st-070",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-072",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-079",
-        "gold": "image.create",
-        "got": "browser.capture"
-      },
-      {
-        "id": "st-082",
-        "gold": "memory.request",
-        "got": "image.create"
-      },
-      {
-        "id": "st-100",
-        "gold": "excalidraw.edit",
-        "got": "task.execute"
-      },
-      {
-        "id": "st-111",
-        "gold": "music.create",
-        "got": "pipeline:music.create+image.create"
-      },
-      {
-        "id": "st-118",
-        "gold": "pipeline:music.create+ui.compose",
-        "got": "music.create"
-      },
-      {
-        "id": "st-136",
-        "gold": "pipeline:web.search+timers.manage",
-        "got": "timers.manage"
-      },
-      {
-        "id": "st-138",
-        "gold": "pipeline:stock.quote+excalidraw.edit",
-        "got": "pipeline:stock.quote+task.execute"
-      },
-      {
-        "id": "st-140",
-        "gold": "pipeline:web.search+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-145",
-        "gold": "pipeline:web.search+timers.manage+music.create",
-        "got": "pipeline:timers.manage+music.create"
-      },
-      {
-        "id": "st-150",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-151",
-        "gold": "pipeline:image.create+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-152",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-153",
-        "gold": "pipeline:model3d.studio+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-155",
-        "gold": "pipeline:image.create+model3d.studio",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-156",
-        "gold": "pipeline:ui.compose+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "add3e339-e56c-4acd-a370-08fd877737bb",
-        "gold": "excalidraw.edit",
-        "got": "pipeline:excalidraw.edit+image.create"
-      },
-      {
-        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
-        "gold": "browser.operate",
-        "got": "pipeline:web.search+task.execute"
-      },
-      {
-        "id": "17f32c65-2d21-43f7-ac64-a327bf0582e7",
-        "gold": "music.library",
-        "got": "music.create"
-      },
-      {
-        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
-        "gold": "browser.operate",
-        "got": "pipeline:web.service-search+music.library"
-      },
-      {
-        "id": "be996408-9303-41b0-b55f-da418b74f712",
-        "gold": "model3d.studio",
-        "got": "image.create"
-      }
-    ],
-    "tokens": 161676
-  },
-  "S3/borrow": {
-    "byKind": {
-      "pairs:single-ref": {
-        "n": 77,
-        "right": 66,
-        "routeRight": 75,
-        "countRight": 75,
-        "referenceSide": 7,
-        "toPipeline": 0,
-        "fallback": 2
-      },
-      "pairs:single-embedded": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 15,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-modifier": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-same-tool": {
-        "n": 6,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 3
-      },
-      "pairs:multi-seq": {
-        "n": 38,
-        "right": 33,
-        "routeRight": 35,
-        "countRight": 37,
-        "referenceSide": 0,
-        "toPipeline": 35,
-        "fallback": 1
-      },
-      "pairs:multi-par": {
-        "n": 20,
-        "right": 14,
-        "routeRight": 14,
-        "countRight": 14,
-        "referenceSide": 0,
-        "toPipeline": 14,
-        "fallback": 6
-      },
-      "pairs:none": {
-        "n": 17,
-        "right": 17,
-        "routeRight": 17,
-        "countRight": 17,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 5,
-        "referenceSide": 0,
-        "toPipeline": 2,
-        "fallback": 2
-      },
-      "real:single-modifier": {
-        "n": 2,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 1
-      },
-      "real:single-ref": {
-        "n": 4,
-        "right": 2,
-        "routeRight": 4,
-        "countRight": 4,
-        "referenceSide": 2,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "byFamily": {
-      "pairs:A1": {
-        "n": 20,
-        "right": 17,
-        "routeRight": 20,
-        "countRight": 20,
-        "referenceSide": 3,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A2": {
-        "n": 16,
-        "right": 13,
-        "routeRight": 15,
-        "countRight": 16,
-        "referenceSide": 2,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A3": {
-        "n": 10,
-        "right": 8,
-        "routeRight": 9,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A4": {
-        "n": 10,
-        "right": 9,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A5": {
-        "n": 11,
-        "right": 11,
-        "routeRight": 11,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 1
-      },
-      "pairs:A6": {
-        "n": 10,
-        "right": 8,
-        "routeRight": 10,
-        "countRight": 9,
-        "referenceSide": 2,
-        "toPipeline": 0,
-        "fallback": 1
-      },
-      "pairs:K": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 15,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B2": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:S": {
-        "n": 6,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 3
-      },
-      "pairs:C1": {
-        "n": 12,
-        "right": 11,
-        "routeRight": 11,
-        "countRight": 12,
-        "referenceSide": 0,
-        "toPipeline": 11,
-        "fallback": 0
-      },
-      "pairs:C2": {
-        "n": 12,
-        "right": 12,
-        "routeRight": 12,
-        "countRight": 12,
-        "referenceSide": 0,
-        "toPipeline": 12,
-        "fallback": 0
-      },
-      "pairs:C3": {
-        "n": 8,
-        "right": 5,
-        "routeRight": 6,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 6,
-        "fallback": 1
-      },
-      "pairs:C4": {
-        "n": 4,
-        "right": 3,
-        "routeRight": 4,
-        "countRight": 4,
-        "referenceSide": 0,
-        "toPipeline": 4,
-        "fallback": 0
-      },
-      "pairs:C5": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 2,
-        "fallback": 0
-      },
-      "pairs:D1": {
-        "n": 7,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 6
-      },
-      "pairs:D2": {
-        "n": 8,
-        "right": 8,
-        "routeRight": 8,
-        "countRight": 8,
-        "referenceSide": 0,
-        "toPipeline": 8,
-        "fallback": 0
-      },
-      "pairs:D3": {
-        "n": 5,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 5,
-        "referenceSide": 0,
-        "toPipeline": 5,
-        "fallback": 0
-      },
-      "pairs:E1": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:E2": {
-        "n": 7,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:B": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 5,
-        "referenceSide": 0,
-        "toPipeline": 2,
-        "fallback": 2
-      },
-      "real:B2": {
-        "n": 2,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 1
-      },
-      "real:A1": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A5": {
-        "n": 1,
-        "right": 0,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A2": {
-        "n": 1,
-        "right": 0,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "pairsBothRight": {
-      "pairs": 48,
-      "right": 35
-    },
-    "wrong": [
-      {
-        "id": "st-005",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-011",
-        "gold": "ui.compose",
-        "got": "music.create"
-      },
-      {
-        "id": "st-016",
-        "gold": "excalidraw.edit",
-        "got": "image.create"
-      },
-      {
-        "id": "st-022",
-        "gold": "image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-030",
-        "gold": "image.create",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-031",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-045",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-046",
-        "gold": "image.create",
-        "got": "music.library"
-      },
-      {
-        "id": "st-056",
-        "gold": "ui.compose",
-        "got": "image.create"
-      },
-      {
-        "id": "st-070",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-072",
-        "gold": "image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-079",
-        "gold": "image.create",
-        "got": "browser.capture"
-      },
-      {
-        "id": "st-082",
-        "gold": "memory.request",
-        "got": "image.create"
-      },
-      {
-        "id": "st-100",
-        "gold": "excalidraw.edit",
-        "got": "task.execute"
-      },
-      {
-        "id": "st-111",
-        "gold": "music.create",
-        "got": "pipeline:music.create+image.create"
-      },
-      {
-        "id": "st-118",
-        "gold": "pipeline:music.create+ui.compose",
-        "got": "music.create"
-      },
-      {
-        "id": "st-136",
-        "gold": "pipeline:web.search+timers.manage",
-        "got": "timers.manage"
-      },
-      {
-        "id": "st-138",
-        "gold": "pipeline:stock.quote+excalidraw.edit",
-        "got": "pipeline:stock.quote+task.execute"
-      },
-      {
-        "id": "st-140",
-        "gold": "pipeline:web.search+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-145",
-        "gold": "pipeline:web.search+timers.manage+music.create",
-        "got": "pipeline:timers.manage+music.create"
-      },
-      {
-        "id": "st-150",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-151",
-        "gold": "pipeline:image.create+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-152",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-153",
-        "gold": "pipeline:model3d.studio+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-155",
-        "gold": "pipeline:image.create+model3d.studio",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-156",
-        "gold": "pipeline:ui.compose+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "add3e339-e56c-4acd-a370-08fd877737bb",
-        "gold": "excalidraw.edit",
-        "got": "pipeline:excalidraw.edit+image.create"
-      },
-      {
-        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
-        "gold": "browser.operate",
-        "got": "pipeline:web.search+task.execute"
-      },
-      {
-        "id": "17f32c65-2d21-43f7-ac64-a327bf0582e7",
-        "gold": "music.library",
-        "got": "music.create"
-      },
-      {
-        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
-        "gold": "browser.operate",
-        "got": "pipeline:web.service-search+music.library"
-      },
-      {
-        "id": "be996408-9303-41b0-b55f-da418b74f712",
-        "gold": "model3d.studio",
-        "got": "image.create"
-      }
-    ],
-    "tokens": 161676
-  },
-  "S3/mask": {
-    "byKind": {
-      "pairs:single-ref": {
-        "n": 77,
-        "right": 74,
-        "routeRight": 76,
-        "countRight": 75,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 2
-      },
-      "pairs:single-embedded": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 15,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-modifier": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:single-same-tool": {
-        "n": 6,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 3
-      },
-      "pairs:multi-seq": {
-        "n": 38,
-        "right": 33,
-        "routeRight": 35,
-        "countRight": 37,
-        "referenceSide": 0,
-        "toPipeline": 35,
-        "fallback": 1
-      },
-      "pairs:multi-par": {
-        "n": 20,
-        "right": 14,
-        "routeRight": 14,
-        "countRight": 14,
-        "referenceSide": 0,
-        "toPipeline": 14,
-        "fallback": 6
-      },
-      "pairs:none": {
-        "n": 17,
-        "right": 17,
-        "routeRight": 17,
-        "countRight": 17,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:single": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 5,
-        "referenceSide": 0,
-        "toPipeline": 2,
-        "fallback": 2
-      },
-      "real:single-modifier": {
-        "n": 2,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 1
-      },
-      "real:single-ref": {
-        "n": 4,
-        "right": 3,
-        "routeRight": 4,
-        "countRight": 4,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "byFamily": {
-      "pairs:A1": {
-        "n": 20,
-        "right": 19,
-        "routeRight": 20,
-        "countRight": 20,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A2": {
-        "n": 16,
-        "right": 14,
-        "routeRight": 15,
-        "countRight": 16,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A3": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A4": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:A5": {
-        "n": 11,
-        "right": 11,
-        "routeRight": 11,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 1
-      },
-      "pairs:A6": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 9,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 1
-      },
-      "pairs:K": {
-        "n": 6,
-        "right": 4,
-        "routeRight": 6,
-        "countRight": 6,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B": {
-        "n": 15,
-        "right": 15,
-        "routeRight": 15,
-        "countRight": 15,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:B2": {
-        "n": 7,
-        "right": 6,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:S": {
-        "n": 6,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 3
-      },
-      "pairs:C1": {
-        "n": 12,
-        "right": 11,
-        "routeRight": 11,
-        "countRight": 12,
-        "referenceSide": 0,
-        "toPipeline": 11,
-        "fallback": 0
-      },
-      "pairs:C2": {
-        "n": 12,
-        "right": 12,
-        "routeRight": 12,
-        "countRight": 12,
-        "referenceSide": 0,
-        "toPipeline": 12,
-        "fallback": 0
-      },
-      "pairs:C3": {
-        "n": 8,
-        "right": 5,
-        "routeRight": 6,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 6,
-        "fallback": 1
-      },
-      "pairs:C4": {
-        "n": 4,
-        "right": 3,
-        "routeRight": 4,
-        "countRight": 4,
-        "referenceSide": 0,
-        "toPipeline": 4,
-        "fallback": 0
-      },
-      "pairs:C5": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 2,
-        "fallback": 0
-      },
-      "pairs:D1": {
-        "n": 7,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 6
-      },
-      "pairs:D2": {
-        "n": 8,
-        "right": 8,
-        "routeRight": 8,
-        "countRight": 8,
-        "referenceSide": 0,
-        "toPipeline": 8,
-        "fallback": 0
-      },
-      "pairs:D3": {
-        "n": 5,
-        "right": 5,
-        "routeRight": 5,
-        "countRight": 5,
-        "referenceSide": 0,
-        "toPipeline": 5,
-        "fallback": 0
-      },
-      "pairs:E1": {
-        "n": 10,
-        "right": 10,
-        "routeRight": 10,
-        "countRight": 10,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "pairs:E2": {
-        "n": 7,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 7,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:B": {
-        "n": 9,
-        "right": 7,
-        "routeRight": 7,
-        "countRight": 5,
-        "referenceSide": 0,
-        "toPipeline": 2,
-        "fallback": 2
-      },
-      "real:B2": {
-        "n": 2,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 0,
-        "referenceSide": 0,
-        "toPipeline": 1,
-        "fallback": 1
-      },
-      "real:A1": {
-        "n": 2,
-        "right": 2,
-        "routeRight": 2,
-        "countRight": 2,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A5": {
-        "n": 1,
-        "right": 1,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 0,
-        "toPipeline": 0,
-        "fallback": 0
-      },
-      "real:A2": {
-        "n": 1,
-        "right": 0,
-        "routeRight": 1,
-        "countRight": 1,
-        "referenceSide": 1,
-        "toPipeline": 0,
-        "fallback": 0
-      }
-    },
-    "pairsBothRight": {
-      "pairs": 48,
-      "right": 42
-    },
-    "wrong": [
-      {
-        "id": "st-016",
-        "gold": "excalidraw.edit",
-        "got": "image.create"
-      },
-      {
-        "id": "st-030",
-        "gold": "image.create",
-        "got": "browser.capture"
-      },
-      {
-        "id": "st-031",
-        "gold": "music.create",
-        "got": "conversation.respond"
-      },
-      {
-        "id": "st-079",
-        "gold": "image.create",
-        "got": "browser.capture"
-      },
-      {
-        "id": "st-082",
-        "gold": "memory.request",
-        "got": "image.create"
-      },
-      {
-        "id": "st-100",
-        "gold": "excalidraw.edit",
-        "got": "task.execute"
-      },
-      {
-        "id": "st-111",
-        "gold": "music.create",
-        "got": "pipeline:music.create+image.create"
-      },
-      {
-        "id": "st-118",
-        "gold": "pipeline:music.create+ui.compose",
-        "got": "music.create"
-      },
-      {
-        "id": "st-136",
-        "gold": "pipeline:web.search+timers.manage",
-        "got": "timers.manage"
-      },
-      {
-        "id": "st-138",
-        "gold": "pipeline:stock.quote+excalidraw.edit",
-        "got": "pipeline:stock.quote+task.execute"
-      },
-      {
-        "id": "st-140",
-        "gold": "pipeline:web.search+image.create",
-        "got": "image.create"
-      },
-      {
-        "id": "st-145",
-        "gold": "pipeline:web.search+timers.manage+music.create",
-        "got": "pipeline:timers.manage+music.create"
-      },
-      {
-        "id": "st-150",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-151",
-        "gold": "pipeline:image.create+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-152",
-        "gold": "pipeline:music.create+image.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-153",
-        "gold": "pipeline:model3d.studio+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "st-155",
-        "gold": "pipeline:image.create+model3d.studio",
-        "got": "model3d.studio"
-      },
-      {
-        "id": "st-156",
-        "gold": "pipeline:ui.compose+music.create",
-        "got": "music.create"
-      },
-      {
-        "id": "add3e339-e56c-4acd-a370-08fd877737bb",
-        "gold": "excalidraw.edit",
-        "got": "pipeline:excalidraw.edit+image.create"
-      },
-      {
-        "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
-        "gold": "browser.operate",
-        "got": "pipeline:web.search+task.execute"
-      },
-      {
-        "id": "b0172159-d918-40b2-abe5-e39594b228e1",
-        "gold": "browser.operate",
-        "got": "pipeline:web.service-search+music.library"
-      },
-      {
-        "id": "be996408-9303-41b0-b55f-da418b74f712",
-        "gold": "model3d.studio",
-        "got": "image.create"
-      }
-    ],
-    "tokens": 161676
-  }
+	"S0": {
+		"byKind": {
+			"pairs:single-ref": {
+				"n": 77,
+				"right": 61,
+				"routeRight": 75,
+				"countRight": 0,
+				"referenceSide": 12,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-embedded": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-modifier": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-same-tool": {
+				"n": 6,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:multi-seq": {
+				"n": 38,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:multi-par": {
+				"n": 20,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:none": {
+				"n": 17,
+				"right": 3,
+				"routeRight": 3,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 8,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single-modifier": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single-ref": {
+				"n": 4,
+				"right": 2,
+				"routeRight": 4,
+				"countRight": 0,
+				"referenceSide": 2,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"byFamily": {
+			"pairs:A1": {
+				"n": 20,
+				"right": 17,
+				"routeRight": 20,
+				"countRight": 0,
+				"referenceSide": 3,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A2": {
+				"n": 16,
+				"right": 11,
+				"routeRight": 15,
+				"countRight": 0,
+				"referenceSide": 3,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A3": {
+				"n": 10,
+				"right": 8,
+				"routeRight": 9,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A4": {
+				"n": 10,
+				"right": 7,
+				"routeRight": 10,
+				"countRight": 0,
+				"referenceSide": 3,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A5": {
+				"n": 11,
+				"right": 11,
+				"routeRight": 11,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A6": {
+				"n": 10,
+				"right": 7,
+				"routeRight": 10,
+				"countRight": 0,
+				"referenceSide": 3,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:K": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B2": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:S": {
+				"n": 6,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:C1": {
+				"n": 12,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:C2": {
+				"n": 12,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:C3": {
+				"n": 8,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:C4": {
+				"n": 4,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:C5": {
+				"n": 2,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:D1": {
+				"n": 7,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:D2": {
+				"n": 8,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:D3": {
+				"n": 5,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:E1": {
+				"n": 10,
+				"right": 3,
+				"routeRight": 3,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:E2": {
+				"n": 7,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:B": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 8,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:B2": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A1": {
+				"n": 2,
+				"right": 1,
+				"routeRight": 2,
+				"countRight": 0,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A5": {
+				"n": 1,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A2": {
+				"n": 1,
+				"right": 0,
+				"routeRight": 1,
+				"countRight": 0,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"pairsBothRight": {
+			"pairs": 48,
+			"right": 22
+		},
+		"wrong": [
+			{
+				"id": "st-005",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-011",
+				"gold": "ui.compose",
+				"got": "music.create"
+			},
+			{
+				"id": "st-016",
+				"gold": "excalidraw.edit",
+				"got": "image.create"
+			},
+			{
+				"id": "st-022",
+				"gold": "image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-030",
+				"gold": "image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-031",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-032",
+				"gold": "image.create",
+				"got": "music.library"
+			},
+			{
+				"id": "st-034",
+				"gold": "image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-045",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-046",
+				"gold": "image.create",
+				"got": "music.library"
+			},
+			{
+				"id": "st-052",
+				"gold": "music.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-054",
+				"gold": "image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-056",
+				"gold": "ui.compose",
+				"got": "music.create"
+			},
+			{
+				"id": "st-070",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-072",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-077",
+				"gold": "music.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-079",
+				"gold": "image.create",
+				"got": "kanban.manage"
+			},
+			{
+				"id": "st-082",
+				"gold": "memory.request",
+				"got": "image.create"
+			},
+			{
+				"id": "st-100",
+				"gold": "excalidraw.edit",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-112",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-113",
+				"gold": "pipeline:image.create+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-114",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-115",
+				"gold": "pipeline:image.create+music.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-116",
+				"gold": "pipeline:model3d.studio+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-117",
+				"gold": "pipeline:music.create+model3d.studio",
+				"got": "music.create"
+			},
+			{
+				"id": "st-118",
+				"gold": "pipeline:music.create+ui.compose",
+				"got": "music.create"
+			},
+			{
+				"id": "st-119",
+				"gold": "pipeline:ui.compose+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-120",
+				"gold": "pipeline:image.create+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-121",
+				"gold": "pipeline:music.create+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-122",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-123",
+				"gold": "pipeline:image.create+music.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-124",
+				"gold": "pipeline:image.create+model3d.studio",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-125",
+				"gold": "pipeline:model3d.studio+image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-126",
+				"gold": "pipeline:image.create+model3d.studio",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-127",
+				"gold": "pipeline:image.create+ui.compose",
+				"got": "image.create"
+			},
+			{
+				"id": "st-128",
+				"gold": "pipeline:ui.compose+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-129",
+				"gold": "pipeline:excalidraw.edit+ui.compose",
+				"got": "ui.compose"
+			},
+			{
+				"id": "st-130",
+				"gold": "pipeline:ui.compose+excalidraw.edit",
+				"got": "ui.compose"
+			},
+			{
+				"id": "st-131",
+				"gold": "pipeline:music.create+music.library",
+				"got": "music.library"
+			},
+			{
+				"id": "st-132",
+				"gold": "pipeline:ocr.manage+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-133",
+				"gold": "pipeline:object-recognition.manage+model3d.studio",
+				"got": "object-recognition.manage"
+			},
+			{
+				"id": "st-134",
+				"gold": "pipeline:excalidraw.edit+browser.capture",
+				"got": "image.create"
+			},
+			{
+				"id": "st-135",
+				"gold": "pipeline:model3d.studio+image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-136",
+				"gold": "pipeline:web.search+timers.manage",
+				"got": "timers.manage"
+			},
+			{
+				"id": "st-137",
+				"gold": "pipeline:web.search+timers.manage",
+				"got": "timers.manage"
+			},
+			{
+				"id": "st-138",
+				"gold": "pipeline:stock.quote+excalidraw.edit",
+				"got": "stock.quote"
+			},
+			{
+				"id": "st-139",
+				"gold": "pipeline:weather.forecast+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-140",
+				"gold": "pipeline:web.search+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-141",
+				"gold": "pipeline:compute.python+image.create",
+				"got": "compute.python"
+			},
+			{
+				"id": "st-142",
+				"gold": "pipeline:weather.forecast+timers.manage",
+				"got": "timers.manage"
+			},
+			{
+				"id": "st-143",
+				"gold": "pipeline:weather.forecast+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-144",
+				"gold": "pipeline:image.create+model3d.studio+music.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-145",
+				"gold": "pipeline:web.search+timers.manage+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-146",
+				"gold": "pipeline:image.create+model3d.studio+music.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-147",
+				"gold": "pipeline:music.create+image.create+ui.compose",
+				"got": "image.create"
+			},
+			{
+				"id": "st-148",
+				"gold": "pipeline:weather.forecast+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-149",
+				"gold": "pipeline:stock.quote+timers.manage",
+				"got": "stock.quote"
+			},
+			{
+				"id": "st-150",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-151",
+				"gold": "pipeline:image.create+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-152",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-153",
+				"gold": "pipeline:model3d.studio+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-154",
+				"gold": "pipeline:weather.forecast+stock.quote",
+				"got": "stock.quote"
+			},
+			{
+				"id": "st-155",
+				"gold": "pipeline:image.create+model3d.studio",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-156",
+				"gold": "pipeline:ui.compose+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-157",
+				"gold": "pipeline:image.create+music.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-158",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-159",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-160",
+				"gold": "pipeline:timers.manage+weather.forecast",
+				"got": "weather.forecast"
+			},
+			{
+				"id": "st-161",
+				"gold": "pipeline:excalidraw.edit+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-162",
+				"gold": "pipeline:weather.forecast+timers.manage",
+				"got": "weather.forecast"
+			},
+			{
+				"id": "st-163",
+				"gold": "pipeline:compute.python+weather.forecast",
+				"got": "weather.forecast"
+			},
+			{
+				"id": "st-164",
+				"gold": "pipeline:music.create+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-165",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-166",
+				"gold": "pipeline:ui.compose+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-167",
+				"gold": "pipeline:ui.compose+model3d.studio",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-168",
+				"gold": "pipeline:image.create+stock.quote",
+				"got": "stock.quote"
+			},
+			{
+				"id": "st-169",
+				"gold": "pipeline:timers.manage+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-170",
+				"gold": "conversation.respond",
+				"got": "image.create"
+			},
+			{
+				"id": "st-171",
+				"gold": "conversation.respond",
+				"got": "image.create"
+			},
+			{
+				"id": "st-172",
+				"gold": "conversation.respond",
+				"got": "ui.compose"
+			},
+			{
+				"id": "st-173",
+				"gold": "conversation.respond",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-174",
+				"gold": "conversation.respond",
+				"got": "music.library"
+			},
+			{
+				"id": "st-175",
+				"gold": "conversation.respond",
+				"got": "browser.operate"
+			},
+			{
+				"id": "st-176",
+				"gold": "conversation.respond",
+				"got": "music.library"
+			},
+			{
+				"id": "st-180",
+				"gold": "conversation.respond",
+				"got": "image.create"
+			},
+			{
+				"id": "st-181",
+				"gold": "conversation.respond",
+				"got": "music.create"
+			},
+			{
+				"id": "st-182",
+				"gold": "conversation.respond",
+				"got": "image.create"
+			},
+			{
+				"id": "st-183",
+				"gold": "conversation.respond",
+				"got": "music.create"
+			},
+			{
+				"id": "st-184",
+				"gold": "conversation.respond",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-185",
+				"gold": "conversation.respond",
+				"got": "image.create"
+			},
+			{
+				"id": "st-186",
+				"gold": "conversation.respond",
+				"got": "timers.manage"
+			},
+			{
+				"id": "03eb3a32-45bc-44a9-a46c-9c581f2c7c8e",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+				"gold": "browser.operate",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "b0172159-d918-40b2-abe5-e39594b228e1",
+				"gold": "browser.operate",
+				"got": "web.service-search"
+			},
+			{
+				"id": "be996408-9303-41b0-b55f-da418b74f712",
+				"gold": "model3d.studio",
+				"got": "image.create"
+			}
+		]
+	},
+	"S0+hints": {
+		"byKind": {
+			"pairs:single-ref": {
+				"n": 77,
+				"right": 51,
+				"routeRight": 77,
+				"countRight": 0,
+				"referenceSide": 22,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-embedded": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-modifier": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-same-tool": {
+				"n": 6,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:multi-seq": {
+				"n": 38,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:multi-par": {
+				"n": 20,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:none": {
+				"n": 17,
+				"right": 3,
+				"routeRight": 3,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 8,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single-modifier": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single-ref": {
+				"n": 4,
+				"right": 2,
+				"routeRight": 4,
+				"countRight": 0,
+				"referenceSide": 2,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"byFamily": {
+			"pairs:A1": {
+				"n": 20,
+				"right": 13,
+				"routeRight": 20,
+				"countRight": 0,
+				"referenceSide": 7,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A2": {
+				"n": 16,
+				"right": 11,
+				"routeRight": 16,
+				"countRight": 0,
+				"referenceSide": 3,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A3": {
+				"n": 10,
+				"right": 6,
+				"routeRight": 10,
+				"countRight": 0,
+				"referenceSide": 2,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A4": {
+				"n": 10,
+				"right": 6,
+				"routeRight": 10,
+				"countRight": 0,
+				"referenceSide": 4,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A5": {
+				"n": 11,
+				"right": 10,
+				"routeRight": 11,
+				"countRight": 0,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A6": {
+				"n": 10,
+				"right": 5,
+				"routeRight": 10,
+				"countRight": 0,
+				"referenceSide": 5,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:K": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B2": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:S": {
+				"n": 6,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:C1": {
+				"n": 12,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:C2": {
+				"n": 12,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:C3": {
+				"n": 8,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:C4": {
+				"n": 4,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:C5": {
+				"n": 2,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:D1": {
+				"n": 7,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:D2": {
+				"n": 8,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:D3": {
+				"n": 5,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:E1": {
+				"n": 10,
+				"right": 3,
+				"routeRight": 3,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:E2": {
+				"n": 7,
+				"right": 0,
+				"routeRight": 0,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:B": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 8,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:B2": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A1": {
+				"n": 2,
+				"right": 1,
+				"routeRight": 2,
+				"countRight": 0,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A5": {
+				"n": 1,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A2": {
+				"n": 1,
+				"right": 0,
+				"routeRight": 1,
+				"countRight": 0,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"pairsBothRight": {
+			"pairs": 48,
+			"right": 14
+		},
+		"wrong": [
+			{
+				"id": "st-005",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-008",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-011",
+				"gold": "ui.compose",
+				"got": "music.create"
+			},
+			{
+				"id": "st-014",
+				"gold": "ui.compose",
+				"got": "image.create"
+			},
+			{
+				"id": "st-016",
+				"gold": "excalidraw.edit",
+				"got": "image.create"
+			},
+			{
+				"id": "st-018",
+				"gold": "model3d.studio",
+				"got": "music.create"
+			},
+			{
+				"id": "st-019",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-022",
+				"gold": "image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-030",
+				"gold": "image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-031",
+				"gold": "music.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-032",
+				"gold": "image.create",
+				"got": "music.library"
+			},
+			{
+				"id": "st-034",
+				"gold": "image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-042",
+				"gold": "ui.compose",
+				"got": "music.create"
+			},
+			{
+				"id": "st-044",
+				"gold": "model3d.studio",
+				"got": "music.create"
+			},
+			{
+				"id": "st-045",
+				"gold": "music.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-046",
+				"gold": "image.create",
+				"got": "music.library"
+			},
+			{
+				"id": "st-051",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-052",
+				"gold": "music.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-054",
+				"gold": "image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-056",
+				"gold": "ui.compose",
+				"got": "music.create"
+			},
+			{
+				"id": "st-064",
+				"gold": "ui.compose",
+				"got": "browser.capture"
+			},
+			{
+				"id": "st-070",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-071",
+				"gold": "music.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-072",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-074",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-077",
+				"gold": "music.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-079",
+				"gold": "image.create",
+				"got": "kanban.manage"
+			},
+			{
+				"id": "st-082",
+				"gold": "memory.request",
+				"got": "image.create"
+			},
+			{
+				"id": "st-100",
+				"gold": "excalidraw.edit",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-112",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-113",
+				"gold": "pipeline:image.create+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-114",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-115",
+				"gold": "pipeline:image.create+music.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-116",
+				"gold": "pipeline:model3d.studio+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-117",
+				"gold": "pipeline:music.create+model3d.studio",
+				"got": "music.create"
+			},
+			{
+				"id": "st-118",
+				"gold": "pipeline:music.create+ui.compose",
+				"got": "music.create"
+			},
+			{
+				"id": "st-119",
+				"gold": "pipeline:ui.compose+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-120",
+				"gold": "pipeline:image.create+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-121",
+				"gold": "pipeline:music.create+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-122",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-123",
+				"gold": "pipeline:image.create+music.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-124",
+				"gold": "pipeline:image.create+model3d.studio",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-125",
+				"gold": "pipeline:model3d.studio+image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-126",
+				"gold": "pipeline:image.create+model3d.studio",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-127",
+				"gold": "pipeline:image.create+ui.compose",
+				"got": "image.create"
+			},
+			{
+				"id": "st-128",
+				"gold": "pipeline:ui.compose+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-129",
+				"gold": "pipeline:excalidraw.edit+ui.compose",
+				"got": "ui.compose"
+			},
+			{
+				"id": "st-130",
+				"gold": "pipeline:ui.compose+excalidraw.edit",
+				"got": "ui.compose"
+			},
+			{
+				"id": "st-131",
+				"gold": "pipeline:music.create+music.library",
+				"got": "music.library"
+			},
+			{
+				"id": "st-132",
+				"gold": "pipeline:ocr.manage+music.create",
+				"got": "ocr.manage"
+			},
+			{
+				"id": "st-133",
+				"gold": "pipeline:object-recognition.manage+model3d.studio",
+				"got": "object-recognition.manage"
+			},
+			{
+				"id": "st-134",
+				"gold": "pipeline:excalidraw.edit+browser.capture",
+				"got": "image.create"
+			},
+			{
+				"id": "st-135",
+				"gold": "pipeline:model3d.studio+image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-136",
+				"gold": "pipeline:web.search+timers.manage",
+				"got": "timers.manage"
+			},
+			{
+				"id": "st-137",
+				"gold": "pipeline:web.search+timers.manage",
+				"got": "timers.manage"
+			},
+			{
+				"id": "st-138",
+				"gold": "pipeline:stock.quote+excalidraw.edit",
+				"got": "stock.quote"
+			},
+			{
+				"id": "st-139",
+				"gold": "pipeline:weather.forecast+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-140",
+				"gold": "pipeline:web.search+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-141",
+				"gold": "pipeline:compute.python+image.create",
+				"got": "compute.python"
+			},
+			{
+				"id": "st-142",
+				"gold": "pipeline:weather.forecast+timers.manage",
+				"got": "timers.manage"
+			},
+			{
+				"id": "st-143",
+				"gold": "pipeline:weather.forecast+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-144",
+				"gold": "pipeline:image.create+model3d.studio+music.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-145",
+				"gold": "pipeline:web.search+timers.manage+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-146",
+				"gold": "pipeline:image.create+model3d.studio+music.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-147",
+				"gold": "pipeline:music.create+image.create+ui.compose",
+				"got": "image.create"
+			},
+			{
+				"id": "st-148",
+				"gold": "pipeline:weather.forecast+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-149",
+				"gold": "pipeline:stock.quote+timers.manage",
+				"got": "stock.quote"
+			},
+			{
+				"id": "st-150",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-151",
+				"gold": "pipeline:image.create+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-152",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-153",
+				"gold": "pipeline:model3d.studio+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-154",
+				"gold": "pipeline:weather.forecast+stock.quote",
+				"got": "stock.quote"
+			},
+			{
+				"id": "st-155",
+				"gold": "pipeline:image.create+model3d.studio",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-156",
+				"gold": "pipeline:ui.compose+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-157",
+				"gold": "pipeline:image.create+music.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-158",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-159",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-160",
+				"gold": "pipeline:timers.manage+weather.forecast",
+				"got": "weather.forecast"
+			},
+			{
+				"id": "st-161",
+				"gold": "pipeline:excalidraw.edit+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-162",
+				"gold": "pipeline:weather.forecast+timers.manage",
+				"got": "weather.forecast"
+			},
+			{
+				"id": "st-163",
+				"gold": "pipeline:compute.python+weather.forecast",
+				"got": "weather.forecast"
+			},
+			{
+				"id": "st-164",
+				"gold": "pipeline:music.create+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-165",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-166",
+				"gold": "pipeline:ui.compose+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-167",
+				"gold": "pipeline:ui.compose+model3d.studio",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-168",
+				"gold": "pipeline:image.create+stock.quote",
+				"got": "stock.quote"
+			},
+			{
+				"id": "st-169",
+				"gold": "pipeline:timers.manage+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-170",
+				"gold": "conversation.respond",
+				"got": "image.create"
+			},
+			{
+				"id": "st-171",
+				"gold": "conversation.respond",
+				"got": "image.create"
+			},
+			{
+				"id": "st-172",
+				"gold": "conversation.respond",
+				"got": "ui.compose"
+			},
+			{
+				"id": "st-173",
+				"gold": "conversation.respond",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-174",
+				"gold": "conversation.respond",
+				"got": "music.library"
+			},
+			{
+				"id": "st-175",
+				"gold": "conversation.respond",
+				"got": "browser.operate"
+			},
+			{
+				"id": "st-176",
+				"gold": "conversation.respond",
+				"got": "music.library"
+			},
+			{
+				"id": "st-180",
+				"gold": "conversation.respond",
+				"got": "image.create"
+			},
+			{
+				"id": "st-181",
+				"gold": "conversation.respond",
+				"got": "music.create"
+			},
+			{
+				"id": "st-182",
+				"gold": "conversation.respond",
+				"got": "image.create"
+			},
+			{
+				"id": "st-183",
+				"gold": "conversation.respond",
+				"got": "music.create"
+			},
+			{
+				"id": "st-184",
+				"gold": "conversation.respond",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-185",
+				"gold": "conversation.respond",
+				"got": "image.create"
+			},
+			{
+				"id": "st-186",
+				"gold": "conversation.respond",
+				"got": "timers.manage"
+			},
+			{
+				"id": "03eb3a32-45bc-44a9-a46c-9c581f2c7c8e",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+				"gold": "browser.operate",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "b0172159-d918-40b2-abe5-e39594b228e1",
+				"gold": "browser.operate",
+				"got": "web.service-search"
+			},
+			{
+				"id": "be996408-9303-41b0-b55f-da418b74f712",
+				"gold": "model3d.studio",
+				"got": "image.create"
+			}
+		]
+	},
+	"S*/span": {
+		"byKind": {
+			"pairs:single-ref": {
+				"n": 77,
+				"right": 70,
+				"routeRight": 72,
+				"countRight": 77,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-embedded": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 15,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-modifier": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-same-tool": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 4,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 0
+			},
+			"pairs:multi-seq": {
+				"n": 38,
+				"right": 35,
+				"routeRight": 37,
+				"countRight": 38,
+				"referenceSide": 0,
+				"toPipeline": 37,
+				"fallback": 0
+			},
+			"pairs:multi-par": {
+				"n": 20,
+				"right": 19,
+				"routeRight": 19,
+				"countRight": 20,
+				"referenceSide": 0,
+				"toPipeline": 19,
+				"fallback": 0
+			},
+			"pairs:none": {
+				"n": 17,
+				"right": 17,
+				"routeRight": 17,
+				"countRight": 17,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 8,
+				"countRight": 9,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single-modifier": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single-ref": {
+				"n": 4,
+				"right": 3,
+				"routeRight": 4,
+				"countRight": 4,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"byFamily": {
+			"pairs:A1": {
+				"n": 20,
+				"right": 20,
+				"routeRight": 20,
+				"countRight": 20,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A2": {
+				"n": 16,
+				"right": 14,
+				"routeRight": 15,
+				"countRight": 16,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A3": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A4": {
+				"n": 10,
+				"right": 9,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A5": {
+				"n": 11,
+				"right": 11,
+				"routeRight": 11,
+				"countRight": 11,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A6": {
+				"n": 10,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:K": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 15,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B2": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:S": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 4,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 0
+			},
+			"pairs:C1": {
+				"n": 12,
+				"right": 12,
+				"routeRight": 12,
+				"countRight": 12,
+				"referenceSide": 0,
+				"toPipeline": 12,
+				"fallback": 0
+			},
+			"pairs:C2": {
+				"n": 12,
+				"right": 12,
+				"routeRight": 12,
+				"countRight": 12,
+				"referenceSide": 0,
+				"toPipeline": 12,
+				"fallback": 0
+			},
+			"pairs:C3": {
+				"n": 8,
+				"right": 6,
+				"routeRight": 7,
+				"countRight": 8,
+				"referenceSide": 0,
+				"toPipeline": 7,
+				"fallback": 0
+			},
+			"pairs:C4": {
+				"n": 4,
+				"right": 3,
+				"routeRight": 4,
+				"countRight": 4,
+				"referenceSide": 0,
+				"toPipeline": 4,
+				"fallback": 0
+			},
+			"pairs:C5": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 2,
+				"fallback": 0
+			},
+			"pairs:D1": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 6,
+				"fallback": 0
+			},
+			"pairs:D2": {
+				"n": 8,
+				"right": 8,
+				"routeRight": 8,
+				"countRight": 8,
+				"referenceSide": 0,
+				"toPipeline": 8,
+				"fallback": 0
+			},
+			"pairs:D3": {
+				"n": 5,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 5,
+				"referenceSide": 0,
+				"toPipeline": 5,
+				"fallback": 0
+			},
+			"pairs:E1": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:E2": {
+				"n": 7,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:B": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 8,
+				"countRight": 9,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:B2": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A1": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A5": {
+				"n": 1,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A2": {
+				"n": 1,
+				"right": 0,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"pairsBothRight": {
+			"pairs": 48,
+			"right": 41
+		},
+		"wrong": [
+			{
+				"id": "st-030",
+				"gold": "image.create",
+				"got": "browser.capture"
+			},
+			{
+				"id": "st-031",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-056",
+				"gold": "ui.compose",
+				"got": "image.create"
+			},
+			{
+				"id": "st-070",
+				"gold": "image.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-071",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-072",
+				"gold": "image.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-075",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-079",
+				"gold": "image.create",
+				"got": "browser.capture"
+			},
+			{
+				"id": "st-082",
+				"gold": "memory.request",
+				"got": "image.create"
+			},
+			{
+				"id": "st-100",
+				"gold": "excalidraw.edit",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-108",
+				"gold": "timers.manage",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-111",
+				"gold": "music.create",
+				"got": "pipeline:music.create+image.create"
+			},
+			{
+				"id": "st-136",
+				"gold": "pipeline:web.search+timers.manage",
+				"got": "timers.manage"
+			},
+			{
+				"id": "st-138",
+				"gold": "pipeline:stock.quote+excalidraw.edit",
+				"got": "pipeline:stock.quote+task.execute"
+			},
+			{
+				"id": "st-145",
+				"gold": "pipeline:web.search+timers.manage+music.create",
+				"got": "pipeline:timers.manage+music.create"
+			},
+			{
+				"id": "st-156",
+				"gold": "pipeline:ui.compose+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+				"gold": "browser.operate",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "b0172159-d918-40b2-abe5-e39594b228e1",
+				"gold": "browser.operate",
+				"got": "web.service-search"
+			},
+			{
+				"id": "be996408-9303-41b0-b55f-da418b74f712",
+				"gold": "model3d.studio",
+				"got": "image.create"
+			}
+		],
+		"tokens": 0
+	},
+	"S*/borrow": {
+		"byKind": {
+			"pairs:single-ref": {
+				"n": 77,
+				"right": 70,
+				"routeRight": 72,
+				"countRight": 77,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-embedded": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 15,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-modifier": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-same-tool": {
+				"n": 6,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 0
+			},
+			"pairs:multi-seq": {
+				"n": 38,
+				"right": 35,
+				"routeRight": 37,
+				"countRight": 38,
+				"referenceSide": 0,
+				"toPipeline": 37,
+				"fallback": 0
+			},
+			"pairs:multi-par": {
+				"n": 20,
+				"right": 20,
+				"routeRight": 20,
+				"countRight": 20,
+				"referenceSide": 0,
+				"toPipeline": 20,
+				"fallback": 0
+			},
+			"pairs:none": {
+				"n": 17,
+				"right": 17,
+				"routeRight": 17,
+				"countRight": 17,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 8,
+				"countRight": 9,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single-modifier": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single-ref": {
+				"n": 4,
+				"right": 3,
+				"routeRight": 4,
+				"countRight": 4,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"byFamily": {
+			"pairs:A1": {
+				"n": 20,
+				"right": 20,
+				"routeRight": 20,
+				"countRight": 20,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A2": {
+				"n": 16,
+				"right": 14,
+				"routeRight": 15,
+				"countRight": 16,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A3": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A4": {
+				"n": 10,
+				"right": 9,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A5": {
+				"n": 11,
+				"right": 11,
+				"routeRight": 11,
+				"countRight": 11,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A6": {
+				"n": 10,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:K": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 15,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B2": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:S": {
+				"n": 6,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 0
+			},
+			"pairs:C1": {
+				"n": 12,
+				"right": 12,
+				"routeRight": 12,
+				"countRight": 12,
+				"referenceSide": 0,
+				"toPipeline": 12,
+				"fallback": 0
+			},
+			"pairs:C2": {
+				"n": 12,
+				"right": 12,
+				"routeRight": 12,
+				"countRight": 12,
+				"referenceSide": 0,
+				"toPipeline": 12,
+				"fallback": 0
+			},
+			"pairs:C3": {
+				"n": 8,
+				"right": 6,
+				"routeRight": 7,
+				"countRight": 8,
+				"referenceSide": 0,
+				"toPipeline": 7,
+				"fallback": 0
+			},
+			"pairs:C4": {
+				"n": 4,
+				"right": 3,
+				"routeRight": 4,
+				"countRight": 4,
+				"referenceSide": 0,
+				"toPipeline": 4,
+				"fallback": 0
+			},
+			"pairs:C5": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 2,
+				"fallback": 0
+			},
+			"pairs:D1": {
+				"n": 7,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 7,
+				"fallback": 0
+			},
+			"pairs:D2": {
+				"n": 8,
+				"right": 8,
+				"routeRight": 8,
+				"countRight": 8,
+				"referenceSide": 0,
+				"toPipeline": 8,
+				"fallback": 0
+			},
+			"pairs:D3": {
+				"n": 5,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 5,
+				"referenceSide": 0,
+				"toPipeline": 5,
+				"fallback": 0
+			},
+			"pairs:E1": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:E2": {
+				"n": 7,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:B": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 8,
+				"countRight": 9,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:B2": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A1": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A5": {
+				"n": 1,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A2": {
+				"n": 1,
+				"right": 0,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"pairsBothRight": {
+			"pairs": 48,
+			"right": 41
+		},
+		"wrong": [
+			{
+				"id": "st-030",
+				"gold": "image.create",
+				"got": "browser.capture"
+			},
+			{
+				"id": "st-031",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-056",
+				"gold": "ui.compose",
+				"got": "image.create"
+			},
+			{
+				"id": "st-070",
+				"gold": "image.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-071",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-072",
+				"gold": "image.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-075",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-079",
+				"gold": "image.create",
+				"got": "browser.capture"
+			},
+			{
+				"id": "st-082",
+				"gold": "memory.request",
+				"got": "image.create"
+			},
+			{
+				"id": "st-100",
+				"gold": "excalidraw.edit",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-111",
+				"gold": "music.create",
+				"got": "pipeline:music.create+image.create"
+			},
+			{
+				"id": "st-136",
+				"gold": "pipeline:web.search+timers.manage",
+				"got": "timers.manage"
+			},
+			{
+				"id": "st-138",
+				"gold": "pipeline:stock.quote+excalidraw.edit",
+				"got": "pipeline:stock.quote+task.execute"
+			},
+			{
+				"id": "st-145",
+				"gold": "pipeline:web.search+timers.manage+music.create",
+				"got": "pipeline:timers.manage+music.create"
+			},
+			{
+				"id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+				"gold": "browser.operate",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "b0172159-d918-40b2-abe5-e39594b228e1",
+				"gold": "browser.operate",
+				"got": "web.service-search"
+			},
+			{
+				"id": "be996408-9303-41b0-b55f-da418b74f712",
+				"gold": "model3d.studio",
+				"got": "image.create"
+			}
+		],
+		"tokens": 0
+	},
+	"S*/mask": {
+		"byKind": {
+			"pairs:single-ref": {
+				"n": 77,
+				"right": 74,
+				"routeRight": 76,
+				"countRight": 77,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-embedded": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 15,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-modifier": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-same-tool": {
+				"n": 6,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 0
+			},
+			"pairs:multi-seq": {
+				"n": 38,
+				"right": 35,
+				"routeRight": 37,
+				"countRight": 38,
+				"referenceSide": 0,
+				"toPipeline": 37,
+				"fallback": 0
+			},
+			"pairs:multi-par": {
+				"n": 20,
+				"right": 20,
+				"routeRight": 20,
+				"countRight": 20,
+				"referenceSide": 0,
+				"toPipeline": 20,
+				"fallback": 0
+			},
+			"pairs:none": {
+				"n": 17,
+				"right": 17,
+				"routeRight": 17,
+				"countRight": 17,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 8,
+				"countRight": 9,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single-modifier": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single-ref": {
+				"n": 4,
+				"right": 3,
+				"routeRight": 4,
+				"countRight": 4,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"byFamily": {
+			"pairs:A1": {
+				"n": 20,
+				"right": 19,
+				"routeRight": 20,
+				"countRight": 20,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A2": {
+				"n": 16,
+				"right": 14,
+				"routeRight": 15,
+				"countRight": 16,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A3": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A4": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A5": {
+				"n": 11,
+				"right": 11,
+				"routeRight": 11,
+				"countRight": 11,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A6": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:K": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 15,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B2": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 6,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:S": {
+				"n": 6,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 0
+			},
+			"pairs:C1": {
+				"n": 12,
+				"right": 12,
+				"routeRight": 12,
+				"countRight": 12,
+				"referenceSide": 0,
+				"toPipeline": 12,
+				"fallback": 0
+			},
+			"pairs:C2": {
+				"n": 12,
+				"right": 12,
+				"routeRight": 12,
+				"countRight": 12,
+				"referenceSide": 0,
+				"toPipeline": 12,
+				"fallback": 0
+			},
+			"pairs:C3": {
+				"n": 8,
+				"right": 6,
+				"routeRight": 7,
+				"countRight": 8,
+				"referenceSide": 0,
+				"toPipeline": 7,
+				"fallback": 0
+			},
+			"pairs:C4": {
+				"n": 4,
+				"right": 3,
+				"routeRight": 4,
+				"countRight": 4,
+				"referenceSide": 0,
+				"toPipeline": 4,
+				"fallback": 0
+			},
+			"pairs:C5": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 2,
+				"fallback": 0
+			},
+			"pairs:D1": {
+				"n": 7,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 7,
+				"fallback": 0
+			},
+			"pairs:D2": {
+				"n": 8,
+				"right": 8,
+				"routeRight": 8,
+				"countRight": 8,
+				"referenceSide": 0,
+				"toPipeline": 8,
+				"fallback": 0
+			},
+			"pairs:D3": {
+				"n": 5,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 5,
+				"referenceSide": 0,
+				"toPipeline": 5,
+				"fallback": 0
+			},
+			"pairs:E1": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:E2": {
+				"n": 7,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:B": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 8,
+				"countRight": 9,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:B2": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A1": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A5": {
+				"n": 1,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A2": {
+				"n": 1,
+				"right": 0,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"pairsBothRight": {
+			"pairs": 48,
+			"right": 44
+		},
+		"wrong": [
+			{
+				"id": "st-016",
+				"gold": "excalidraw.edit",
+				"got": "image.create"
+			},
+			{
+				"id": "st-030",
+				"gold": "image.create",
+				"got": "browser.capture"
+			},
+			{
+				"id": "st-031",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-079",
+				"gold": "image.create",
+				"got": "browser.capture"
+			},
+			{
+				"id": "st-082",
+				"gold": "memory.request",
+				"got": "image.create"
+			},
+			{
+				"id": "st-100",
+				"gold": "excalidraw.edit",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-111",
+				"gold": "music.create",
+				"got": "pipeline:music.create+image.create"
+			},
+			{
+				"id": "st-136",
+				"gold": "pipeline:web.search+timers.manage",
+				"got": "timers.manage"
+			},
+			{
+				"id": "st-138",
+				"gold": "pipeline:stock.quote+excalidraw.edit",
+				"got": "pipeline:stock.quote+task.execute"
+			},
+			{
+				"id": "st-145",
+				"gold": "pipeline:web.search+timers.manage+music.create",
+				"got": "pipeline:timers.manage+music.create"
+			},
+			{
+				"id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+				"gold": "browser.operate",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "b0172159-d918-40b2-abe5-e39594b228e1",
+				"gold": "browser.operate",
+				"got": "web.service-search"
+			},
+			{
+				"id": "be996408-9303-41b0-b55f-da418b74f712",
+				"gold": "model3d.studio",
+				"got": "image.create"
+			}
+		],
+		"tokens": 0
+	},
+	"S3/span": {
+		"byKind": {
+			"pairs:single-ref": {
+				"n": 77,
+				"right": 66,
+				"routeRight": 75,
+				"countRight": 75,
+				"referenceSide": 7,
+				"toPipeline": 0,
+				"fallback": 2
+			},
+			"pairs:single-embedded": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 15,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-modifier": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-same-tool": {
+				"n": 6,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 3
+			},
+			"pairs:multi-seq": {
+				"n": 38,
+				"right": 33,
+				"routeRight": 35,
+				"countRight": 37,
+				"referenceSide": 0,
+				"toPipeline": 35,
+				"fallback": 1
+			},
+			"pairs:multi-par": {
+				"n": 20,
+				"right": 14,
+				"routeRight": 14,
+				"countRight": 14,
+				"referenceSide": 0,
+				"toPipeline": 14,
+				"fallback": 6
+			},
+			"pairs:none": {
+				"n": 17,
+				"right": 17,
+				"routeRight": 17,
+				"countRight": 17,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 5,
+				"referenceSide": 0,
+				"toPipeline": 2,
+				"fallback": 2
+			},
+			"real:single-modifier": {
+				"n": 2,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 1
+			},
+			"real:single-ref": {
+				"n": 4,
+				"right": 2,
+				"routeRight": 4,
+				"countRight": 4,
+				"referenceSide": 2,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"byFamily": {
+			"pairs:A1": {
+				"n": 20,
+				"right": 17,
+				"routeRight": 20,
+				"countRight": 20,
+				"referenceSide": 3,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A2": {
+				"n": 16,
+				"right": 13,
+				"routeRight": 15,
+				"countRight": 16,
+				"referenceSide": 2,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A3": {
+				"n": 10,
+				"right": 8,
+				"routeRight": 9,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A4": {
+				"n": 10,
+				"right": 9,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A5": {
+				"n": 11,
+				"right": 11,
+				"routeRight": 11,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 1
+			},
+			"pairs:A6": {
+				"n": 10,
+				"right": 8,
+				"routeRight": 10,
+				"countRight": 9,
+				"referenceSide": 2,
+				"toPipeline": 0,
+				"fallback": 1
+			},
+			"pairs:K": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 15,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B2": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:S": {
+				"n": 6,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 3
+			},
+			"pairs:C1": {
+				"n": 12,
+				"right": 11,
+				"routeRight": 11,
+				"countRight": 12,
+				"referenceSide": 0,
+				"toPipeline": 11,
+				"fallback": 0
+			},
+			"pairs:C2": {
+				"n": 12,
+				"right": 12,
+				"routeRight": 12,
+				"countRight": 12,
+				"referenceSide": 0,
+				"toPipeline": 12,
+				"fallback": 0
+			},
+			"pairs:C3": {
+				"n": 8,
+				"right": 5,
+				"routeRight": 6,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 6,
+				"fallback": 1
+			},
+			"pairs:C4": {
+				"n": 4,
+				"right": 3,
+				"routeRight": 4,
+				"countRight": 4,
+				"referenceSide": 0,
+				"toPipeline": 4,
+				"fallback": 0
+			},
+			"pairs:C5": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 2,
+				"fallback": 0
+			},
+			"pairs:D1": {
+				"n": 7,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 6
+			},
+			"pairs:D2": {
+				"n": 8,
+				"right": 8,
+				"routeRight": 8,
+				"countRight": 8,
+				"referenceSide": 0,
+				"toPipeline": 8,
+				"fallback": 0
+			},
+			"pairs:D3": {
+				"n": 5,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 5,
+				"referenceSide": 0,
+				"toPipeline": 5,
+				"fallback": 0
+			},
+			"pairs:E1": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:E2": {
+				"n": 7,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:B": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 5,
+				"referenceSide": 0,
+				"toPipeline": 2,
+				"fallback": 2
+			},
+			"real:B2": {
+				"n": 2,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 1
+			},
+			"real:A1": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A5": {
+				"n": 1,
+				"right": 0,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A2": {
+				"n": 1,
+				"right": 0,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"pairsBothRight": {
+			"pairs": 48,
+			"right": 35
+		},
+		"wrong": [
+			{
+				"id": "st-005",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-011",
+				"gold": "ui.compose",
+				"got": "music.create"
+			},
+			{
+				"id": "st-016",
+				"gold": "excalidraw.edit",
+				"got": "image.create"
+			},
+			{
+				"id": "st-022",
+				"gold": "image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-030",
+				"gold": "image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-031",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-045",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-046",
+				"gold": "image.create",
+				"got": "music.library"
+			},
+			{
+				"id": "st-056",
+				"gold": "ui.compose",
+				"got": "image.create"
+			},
+			{
+				"id": "st-070",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-072",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-079",
+				"gold": "image.create",
+				"got": "browser.capture"
+			},
+			{
+				"id": "st-082",
+				"gold": "memory.request",
+				"got": "image.create"
+			},
+			{
+				"id": "st-100",
+				"gold": "excalidraw.edit",
+				"got": "task.execute"
+			},
+			{
+				"id": "st-111",
+				"gold": "music.create",
+				"got": "pipeline:music.create+image.create"
+			},
+			{
+				"id": "st-118",
+				"gold": "pipeline:music.create+ui.compose",
+				"got": "music.create"
+			},
+			{
+				"id": "st-136",
+				"gold": "pipeline:web.search+timers.manage",
+				"got": "timers.manage"
+			},
+			{
+				"id": "st-138",
+				"gold": "pipeline:stock.quote+excalidraw.edit",
+				"got": "pipeline:stock.quote+task.execute"
+			},
+			{
+				"id": "st-140",
+				"gold": "pipeline:web.search+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-145",
+				"gold": "pipeline:web.search+timers.manage+music.create",
+				"got": "pipeline:timers.manage+music.create"
+			},
+			{
+				"id": "st-150",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-151",
+				"gold": "pipeline:image.create+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-152",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-153",
+				"gold": "pipeline:model3d.studio+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-155",
+				"gold": "pipeline:image.create+model3d.studio",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-156",
+				"gold": "pipeline:ui.compose+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "add3e339-e56c-4acd-a370-08fd877737bb",
+				"gold": "excalidraw.edit",
+				"got": "pipeline:excalidraw.edit+image.create"
+			},
+			{
+				"id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+				"gold": "browser.operate",
+				"got": "pipeline:web.search+task.execute"
+			},
+			{
+				"id": "17f32c65-2d21-43f7-ac64-a327bf0582e7",
+				"gold": "music.library",
+				"got": "music.create"
+			},
+			{
+				"id": "b0172159-d918-40b2-abe5-e39594b228e1",
+				"gold": "browser.operate",
+				"got": "pipeline:web.service-search+music.library"
+			},
+			{
+				"id": "be996408-9303-41b0-b55f-da418b74f712",
+				"gold": "model3d.studio",
+				"got": "image.create"
+			}
+		],
+		"tokens": 161676
+	},
+	"S3/borrow": {
+		"byKind": {
+			"pairs:single-ref": {
+				"n": 77,
+				"right": 66,
+				"routeRight": 75,
+				"countRight": 75,
+				"referenceSide": 7,
+				"toPipeline": 0,
+				"fallback": 2
+			},
+			"pairs:single-embedded": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 15,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-modifier": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-same-tool": {
+				"n": 6,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 3
+			},
+			"pairs:multi-seq": {
+				"n": 38,
+				"right": 33,
+				"routeRight": 35,
+				"countRight": 37,
+				"referenceSide": 0,
+				"toPipeline": 35,
+				"fallback": 1
+			},
+			"pairs:multi-par": {
+				"n": 20,
+				"right": 14,
+				"routeRight": 14,
+				"countRight": 14,
+				"referenceSide": 0,
+				"toPipeline": 14,
+				"fallback": 6
+			},
+			"pairs:none": {
+				"n": 17,
+				"right": 17,
+				"routeRight": 17,
+				"countRight": 17,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 5,
+				"referenceSide": 0,
+				"toPipeline": 2,
+				"fallback": 2
+			},
+			"real:single-modifier": {
+				"n": 2,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 1
+			},
+			"real:single-ref": {
+				"n": 4,
+				"right": 2,
+				"routeRight": 4,
+				"countRight": 4,
+				"referenceSide": 2,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"byFamily": {
+			"pairs:A1": {
+				"n": 20,
+				"right": 17,
+				"routeRight": 20,
+				"countRight": 20,
+				"referenceSide": 3,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A2": {
+				"n": 16,
+				"right": 13,
+				"routeRight": 15,
+				"countRight": 16,
+				"referenceSide": 2,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A3": {
+				"n": 10,
+				"right": 8,
+				"routeRight": 9,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A4": {
+				"n": 10,
+				"right": 9,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A5": {
+				"n": 11,
+				"right": 11,
+				"routeRight": 11,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 1
+			},
+			"pairs:A6": {
+				"n": 10,
+				"right": 8,
+				"routeRight": 10,
+				"countRight": 9,
+				"referenceSide": 2,
+				"toPipeline": 0,
+				"fallback": 1
+			},
+			"pairs:K": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 15,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B2": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:S": {
+				"n": 6,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 3
+			},
+			"pairs:C1": {
+				"n": 12,
+				"right": 11,
+				"routeRight": 11,
+				"countRight": 12,
+				"referenceSide": 0,
+				"toPipeline": 11,
+				"fallback": 0
+			},
+			"pairs:C2": {
+				"n": 12,
+				"right": 12,
+				"routeRight": 12,
+				"countRight": 12,
+				"referenceSide": 0,
+				"toPipeline": 12,
+				"fallback": 0
+			},
+			"pairs:C3": {
+				"n": 8,
+				"right": 5,
+				"routeRight": 6,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 6,
+				"fallback": 1
+			},
+			"pairs:C4": {
+				"n": 4,
+				"right": 3,
+				"routeRight": 4,
+				"countRight": 4,
+				"referenceSide": 0,
+				"toPipeline": 4,
+				"fallback": 0
+			},
+			"pairs:C5": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 2,
+				"fallback": 0
+			},
+			"pairs:D1": {
+				"n": 7,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 6
+			},
+			"pairs:D2": {
+				"n": 8,
+				"right": 8,
+				"routeRight": 8,
+				"countRight": 8,
+				"referenceSide": 0,
+				"toPipeline": 8,
+				"fallback": 0
+			},
+			"pairs:D3": {
+				"n": 5,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 5,
+				"referenceSide": 0,
+				"toPipeline": 5,
+				"fallback": 0
+			},
+			"pairs:E1": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:E2": {
+				"n": 7,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:B": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 5,
+				"referenceSide": 0,
+				"toPipeline": 2,
+				"fallback": 2
+			},
+			"real:B2": {
+				"n": 2,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 1
+			},
+			"real:A1": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A5": {
+				"n": 1,
+				"right": 0,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A2": {
+				"n": 1,
+				"right": 0,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"pairsBothRight": {
+			"pairs": 48,
+			"right": 35
+		},
+		"wrong": [
+			{
+				"id": "st-005",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-011",
+				"gold": "ui.compose",
+				"got": "music.create"
+			},
+			{
+				"id": "st-016",
+				"gold": "excalidraw.edit",
+				"got": "image.create"
+			},
+			{
+				"id": "st-022",
+				"gold": "image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-030",
+				"gold": "image.create",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-031",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-045",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-046",
+				"gold": "image.create",
+				"got": "music.library"
+			},
+			{
+				"id": "st-056",
+				"gold": "ui.compose",
+				"got": "image.create"
+			},
+			{
+				"id": "st-070",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-072",
+				"gold": "image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-079",
+				"gold": "image.create",
+				"got": "browser.capture"
+			},
+			{
+				"id": "st-082",
+				"gold": "memory.request",
+				"got": "image.create"
+			},
+			{
+				"id": "st-100",
+				"gold": "excalidraw.edit",
+				"got": "task.execute"
+			},
+			{
+				"id": "st-111",
+				"gold": "music.create",
+				"got": "pipeline:music.create+image.create"
+			},
+			{
+				"id": "st-118",
+				"gold": "pipeline:music.create+ui.compose",
+				"got": "music.create"
+			},
+			{
+				"id": "st-136",
+				"gold": "pipeline:web.search+timers.manage",
+				"got": "timers.manage"
+			},
+			{
+				"id": "st-138",
+				"gold": "pipeline:stock.quote+excalidraw.edit",
+				"got": "pipeline:stock.quote+task.execute"
+			},
+			{
+				"id": "st-140",
+				"gold": "pipeline:web.search+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-145",
+				"gold": "pipeline:web.search+timers.manage+music.create",
+				"got": "pipeline:timers.manage+music.create"
+			},
+			{
+				"id": "st-150",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-151",
+				"gold": "pipeline:image.create+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-152",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-153",
+				"gold": "pipeline:model3d.studio+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-155",
+				"gold": "pipeline:image.create+model3d.studio",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-156",
+				"gold": "pipeline:ui.compose+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "add3e339-e56c-4acd-a370-08fd877737bb",
+				"gold": "excalidraw.edit",
+				"got": "pipeline:excalidraw.edit+image.create"
+			},
+			{
+				"id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+				"gold": "browser.operate",
+				"got": "pipeline:web.search+task.execute"
+			},
+			{
+				"id": "17f32c65-2d21-43f7-ac64-a327bf0582e7",
+				"gold": "music.library",
+				"got": "music.create"
+			},
+			{
+				"id": "b0172159-d918-40b2-abe5-e39594b228e1",
+				"gold": "browser.operate",
+				"got": "pipeline:web.service-search+music.library"
+			},
+			{
+				"id": "be996408-9303-41b0-b55f-da418b74f712",
+				"gold": "model3d.studio",
+				"got": "image.create"
+			}
+		],
+		"tokens": 161676
+	},
+	"S3/mask": {
+		"byKind": {
+			"pairs:single-ref": {
+				"n": 77,
+				"right": 74,
+				"routeRight": 76,
+				"countRight": 75,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 2
+			},
+			"pairs:single-embedded": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 15,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-modifier": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:single-same-tool": {
+				"n": 6,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 3
+			},
+			"pairs:multi-seq": {
+				"n": 38,
+				"right": 33,
+				"routeRight": 35,
+				"countRight": 37,
+				"referenceSide": 0,
+				"toPipeline": 35,
+				"fallback": 1
+			},
+			"pairs:multi-par": {
+				"n": 20,
+				"right": 14,
+				"routeRight": 14,
+				"countRight": 14,
+				"referenceSide": 0,
+				"toPipeline": 14,
+				"fallback": 6
+			},
+			"pairs:none": {
+				"n": 17,
+				"right": 17,
+				"routeRight": 17,
+				"countRight": 17,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:single": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 5,
+				"referenceSide": 0,
+				"toPipeline": 2,
+				"fallback": 2
+			},
+			"real:single-modifier": {
+				"n": 2,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 1
+			},
+			"real:single-ref": {
+				"n": 4,
+				"right": 3,
+				"routeRight": 4,
+				"countRight": 4,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"byFamily": {
+			"pairs:A1": {
+				"n": 20,
+				"right": 19,
+				"routeRight": 20,
+				"countRight": 20,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A2": {
+				"n": 16,
+				"right": 14,
+				"routeRight": 15,
+				"countRight": 16,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A3": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A4": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:A5": {
+				"n": 11,
+				"right": 11,
+				"routeRight": 11,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 1
+			},
+			"pairs:A6": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 9,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 1
+			},
+			"pairs:K": {
+				"n": 6,
+				"right": 4,
+				"routeRight": 6,
+				"countRight": 6,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B": {
+				"n": 15,
+				"right": 15,
+				"routeRight": 15,
+				"countRight": 15,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:B2": {
+				"n": 7,
+				"right": 6,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:S": {
+				"n": 6,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 3
+			},
+			"pairs:C1": {
+				"n": 12,
+				"right": 11,
+				"routeRight": 11,
+				"countRight": 12,
+				"referenceSide": 0,
+				"toPipeline": 11,
+				"fallback": 0
+			},
+			"pairs:C2": {
+				"n": 12,
+				"right": 12,
+				"routeRight": 12,
+				"countRight": 12,
+				"referenceSide": 0,
+				"toPipeline": 12,
+				"fallback": 0
+			},
+			"pairs:C3": {
+				"n": 8,
+				"right": 5,
+				"routeRight": 6,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 6,
+				"fallback": 1
+			},
+			"pairs:C4": {
+				"n": 4,
+				"right": 3,
+				"routeRight": 4,
+				"countRight": 4,
+				"referenceSide": 0,
+				"toPipeline": 4,
+				"fallback": 0
+			},
+			"pairs:C5": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 2,
+				"fallback": 0
+			},
+			"pairs:D1": {
+				"n": 7,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 6
+			},
+			"pairs:D2": {
+				"n": 8,
+				"right": 8,
+				"routeRight": 8,
+				"countRight": 8,
+				"referenceSide": 0,
+				"toPipeline": 8,
+				"fallback": 0
+			},
+			"pairs:D3": {
+				"n": 5,
+				"right": 5,
+				"routeRight": 5,
+				"countRight": 5,
+				"referenceSide": 0,
+				"toPipeline": 5,
+				"fallback": 0
+			},
+			"pairs:E1": {
+				"n": 10,
+				"right": 10,
+				"routeRight": 10,
+				"countRight": 10,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"pairs:E2": {
+				"n": 7,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 7,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:B": {
+				"n": 9,
+				"right": 7,
+				"routeRight": 7,
+				"countRight": 5,
+				"referenceSide": 0,
+				"toPipeline": 2,
+				"fallback": 2
+			},
+			"real:B2": {
+				"n": 2,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 0,
+				"referenceSide": 0,
+				"toPipeline": 1,
+				"fallback": 1
+			},
+			"real:A1": {
+				"n": 2,
+				"right": 2,
+				"routeRight": 2,
+				"countRight": 2,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A5": {
+				"n": 1,
+				"right": 1,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 0,
+				"toPipeline": 0,
+				"fallback": 0
+			},
+			"real:A2": {
+				"n": 1,
+				"right": 0,
+				"routeRight": 1,
+				"countRight": 1,
+				"referenceSide": 1,
+				"toPipeline": 0,
+				"fallback": 0
+			}
+		},
+		"pairsBothRight": {
+			"pairs": 48,
+			"right": 42
+		},
+		"wrong": [
+			{
+				"id": "st-016",
+				"gold": "excalidraw.edit",
+				"got": "image.create"
+			},
+			{
+				"id": "st-030",
+				"gold": "image.create",
+				"got": "browser.capture"
+			},
+			{
+				"id": "st-031",
+				"gold": "music.create",
+				"got": "conversation.respond"
+			},
+			{
+				"id": "st-079",
+				"gold": "image.create",
+				"got": "browser.capture"
+			},
+			{
+				"id": "st-082",
+				"gold": "memory.request",
+				"got": "image.create"
+			},
+			{
+				"id": "st-100",
+				"gold": "excalidraw.edit",
+				"got": "task.execute"
+			},
+			{
+				"id": "st-111",
+				"gold": "music.create",
+				"got": "pipeline:music.create+image.create"
+			},
+			{
+				"id": "st-118",
+				"gold": "pipeline:music.create+ui.compose",
+				"got": "music.create"
+			},
+			{
+				"id": "st-136",
+				"gold": "pipeline:web.search+timers.manage",
+				"got": "timers.manage"
+			},
+			{
+				"id": "st-138",
+				"gold": "pipeline:stock.quote+excalidraw.edit",
+				"got": "pipeline:stock.quote+task.execute"
+			},
+			{
+				"id": "st-140",
+				"gold": "pipeline:web.search+image.create",
+				"got": "image.create"
+			},
+			{
+				"id": "st-145",
+				"gold": "pipeline:web.search+timers.manage+music.create",
+				"got": "pipeline:timers.manage+music.create"
+			},
+			{
+				"id": "st-150",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-151",
+				"gold": "pipeline:image.create+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-152",
+				"gold": "pipeline:music.create+image.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-153",
+				"gold": "pipeline:model3d.studio+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "st-155",
+				"gold": "pipeline:image.create+model3d.studio",
+				"got": "model3d.studio"
+			},
+			{
+				"id": "st-156",
+				"gold": "pipeline:ui.compose+music.create",
+				"got": "music.create"
+			},
+			{
+				"id": "add3e339-e56c-4acd-a370-08fd877737bb",
+				"gold": "excalidraw.edit",
+				"got": "pipeline:excalidraw.edit+image.create"
+			},
+			{
+				"id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+				"gold": "browser.operate",
+				"got": "pipeline:web.search+task.execute"
+			},
+			{
+				"id": "b0172159-d918-40b2-abe5-e39594b228e1",
+				"gold": "browser.operate",
+				"got": "pipeline:web.service-search+music.library"
+			},
+			{
+				"id": "be996408-9303-41b0-b55f-da418b74f712",
+				"gold": "model3d.studio",
+				"got": "image.create"
+			}
+		],
+		"tokens": 161676
+	}
 }

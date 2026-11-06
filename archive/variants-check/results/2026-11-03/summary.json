@@ -1,24 +1,24 @@
 {
- "written": 1215,
- "haiku_not_same": 238,
- "review": {
-  "keep": 223,
-  "fix": 15
- },
- "fixed_by_type": {
-  "fragment": 2,
-  "indirect": 13
- },
- "final": 1215,
- "sources": 153,
- "by_type": {
-  "paraphrase": 153,
-  "casual": 153,
-  "keigo": 153,
-  "indirect": 151,
-  "fragment": 149,
-  "verbose": 152,
-  "asr": 152,
-  "mixed": 152
- }
+	"written": 1215,
+	"haiku_not_same": 238,
+	"review": {
+		"keep": 223,
+		"fix": 15
+	},
+	"fixed_by_type": {
+		"fragment": 2,
+		"indirect": 13
+	},
+	"final": 1215,
+	"sources": 153,
+	"by_type": {
+		"paraphrase": 153,
+		"casual": 153,
+		"keigo": 153,
+		"indirect": 151,
+		"fragment": 149,
+		"verbose": 152,
+		"asr": 152,
+		"mixed": 152
+	}
 }

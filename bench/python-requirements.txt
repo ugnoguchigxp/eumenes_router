@@ -1,0 +1,6 @@
+# Offline numerical regression environment (Python 3.9+). No model runtime.
+joblib==1.5.3
+numpy==2.0.2
+scikit-learn==1.6.1
+scipy==1.13.1
+threadpoolctl==3.7.0

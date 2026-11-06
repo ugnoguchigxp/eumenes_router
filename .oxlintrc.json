@@ -9,6 +9,7 @@
 	},
 	"ignorePatterns": [
 		"node_modules/**",
+		".venv/**",
 		"dist/**",
 		"data/**",
 		"bench/fixtures/eumenes/**"

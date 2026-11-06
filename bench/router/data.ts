@@ -257,7 +257,12 @@ export function importLabels(
 			db.query(
 				`INSERT INTO bench_labels(utterance_id, split, status, label_json) VALUES (?,?,?,?)
 ON CONFLICT(utterance_id) DO UPDATE SET split=excluded.split, status=excluded.status, label_json=excluded.label_json`,
-			).run(label.id, cut.get(label.id) ?? splitOf(row.c), label.status, JSON.stringify(label));
+			).run(
+				label.id,
+				cut.get(label.id) ?? splitOf(row.c),
+				label.status,
+				JSON.stringify(label),
+			);
 		});
 	})();
 	return counts;
@@ -315,7 +320,13 @@ export function passagesByCard(db: Database): Map<string, string[]> {
 export function importExportEmbeddings(
 	db: Database,
 	path: string,
-): { rows: number; cards: number; utterances: number; missingPassage: number; space: string } {
+): {
+	rows: number;
+	cards: number;
+	utterances: number;
+	missingPassage: number;
+	space: string;
+} {
 	const raw = readFileSync(path);
 	const text = path.endsWith(".gz")
 		? new TextDecoder().decode(gunzipSync(raw))
@@ -323,7 +334,13 @@ export function importExportEmbeddings(
 	const passage = db.query(
 		"SELECT text FROM bench_passages WHERE card_id=? AND item=?",
 	);
-	const counts = { rows: 0, cards: 0, utterances: 0, missingPassage: 0, space: "" };
+	const counts = {
+		rows: 0,
+		cards: 0,
+		utterances: 0,
+		missingPassage: 0,
+		space: "",
+	};
 	const owners = new Set<string>();
 	db.transaction(() => {
 		for (const line of text.split("\n")) {
@@ -343,7 +360,9 @@ export function importExportEmbeddings(
 				continue;
 			}
 			owners.add(row.cardId);
-			const p = passage.get(row.cardId, row.item ?? 0) as { text: string } | null;
+			const p = passage.get(row.cardId, row.item ?? 0) as {
+				text: string;
+			} | null;
 			if (!p) {
 				counts.missingPassage++;
 				continue;
@@ -377,19 +396,26 @@ export const RETIRED: Record<string, string> = {
  */
 export function loadHistory(db: Database): BenchHistory {
 	const rows = db
-		.query("SELECT utterance_id AS id, chosen_id AS c, choice_json AS j FROM bench_choices")
+		.query(
+			"SELECT utterance_id AS id, chosen_id AS c, choice_json AS j FROM bench_choices",
+		)
 		.all() as Array<{ id: string; c: string; j: string }>;
 	const current = (id: string | null) =>
 		id === null || id === UNDECIDED ? null : (RETIRED[id] ?? id);
 	const chosen = new Map(rows.map((r) => [r.id, current(r.c)]));
 	const recorded = new Map(
 		rows.map((r) => {
-			const raw = JSON.parse(r.j) as { candidates?: Array<{ id: string; similarity: number | null }> };
+			const raw = JSON.parse(r.j) as {
+				candidates?: Array<{ id: string; similarity: number | null }>;
+			};
 			return [
 				r.id,
 				(raw.candidates ?? [])
 					.filter((c) => typeof c.similarity === "number")
-					.map((c) => ({ id: current(c.id) ?? c.id, similarity: c.similarity as number })),
+					.map((c) => ({
+						id: current(c.id) ?? c.id,
+						similarity: c.similarity as number,
+					})),
 			];
 		}),
 	);

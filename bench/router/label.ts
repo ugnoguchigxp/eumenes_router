@@ -20,8 +20,8 @@ export type SheetRow = {
 	previousAgent: string | null;
 	text: string;
 	hints: unknown;
-	pastChoice: string | null;
-	candidates: Array<{ id: string; title: string; score: number }>;
+	pastChoice?: string | null;
+	candidates?: Array<{ id: string; title: string; score: number }>;
 	/** Fill in and pass the line to `label import` (status `reviewed` or `hold`). */
 	label: {
 		id: string;
@@ -31,13 +31,41 @@ export type SheetRow = {
 		status: "hold";
 		note: string;
 	};
-	priority: number;
+	priority?: number;
 };
 
 export function reviewSheet(
 	db: Database,
-	options: { model: string | null; limit: number; top: number },
+	options: {
+		model: string | null;
+		limit: number;
+		top: number;
+		diagnostic?: boolean;
+		recheck?: boolean;
+	},
 ): SheetRow[] {
+	if (!options.diagnostic) {
+		const labels = loadLabels(db);
+		return loadUtterances(db)
+			.filter((u) => options.recheck || labels.get(u.id)?.status !== "reviewed")
+			.slice(0, options.limit)
+			.map((u) => ({
+				id: u.id,
+				conversationId: u.conversationId,
+				previousUser: u.previousUser,
+				previousAgent: u.previousAgent,
+				text: u.text,
+				hints: u.hints,
+				label: {
+					id: u.id,
+					gold: null,
+					acceptable: [],
+					none: false,
+					status: "hold",
+					note: "",
+				},
+			}));
+	}
 	const algo = ALGORITHMS[options.model ? "hybrid" : "fts"]!;
 	const cards = loadCards(db);
 	const title = new Map(cards.map((c) => [c.id, c.title]));
@@ -92,7 +120,7 @@ export function reviewSheet(
 			priority: Number((short + (1 - gap)).toFixed(4)),
 		});
 	}
-	rows.sort((a, b) => b.priority - a.priority || (a.id < b.id ? -1 : 1));
+	rows.sort((a, b) => b.priority! - a.priority! || (a.id < b.id ? -1 : 1));
 	return rows.slice(0, options.limit);
 }
 
@@ -100,19 +128,23 @@ export function sheetMarkdown(rows: readonly SheetRow[]): string {
 	const out = [
 		"# 正解付けシート",
 		"",
-		"候補は検索の参考で、正解ではない。各行の `label` を埋めて `router label import` に渡す（`status` は `reviewed` か `hold`＝保留、該当なしは `none: true`）。",
+		"各行の `label` を埋めて `router label import` に渡す（`status` は `reviewed` か `hold`＝保留、該当なしは `none: true`）。通常のシートには予測・過去の選択を表示しない。diagnostic 出力は診断専用で、正解付けには使わない。",
 		"",
 	];
 	for (const r of rows) {
 		out.push(
-			`## ${r.id}（会話 ${r.conversationId}、優先度 ${r.priority}）`,
+			`## ${r.id}（会話 ${r.conversationId}）`,
 			"",
 			`- 直前のユーザー: ${r.previousUser ?? "なし"}`,
 			`- 直前のエージェント: ${r.previousAgent ?? "なし"}`,
 			`- 発言: **${r.text}**`,
 			`- 文脈ヒント: \`${JSON.stringify(r.hints)}\``,
-			`- 過去の選択: ${r.pastChoice ?? "なし"}`,
-			`- 候補: ${r.candidates.map((c) => `\`${c.id}\`(${c.score})`).join(", ") || "なし"}`,
+			...(r.candidates
+				? [
+						`- 過去の選択: ${r.pastChoice ?? "なし"}`,
+						`- 候補: ${r.candidates.map((c) => `\`${c.id}\`(${c.score})`).join(", ") || "なし"}`,
+					]
+				: []),
 			"",
 		);
 	}

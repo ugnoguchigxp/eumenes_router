@@ -121,7 +121,9 @@ export function run(db: Database, options: RunOptions) {
 		fts: ftsSearch(db),
 		vector,
 		history: loadHistory(db),
-		cardText: new Map(cards.map((c) => [c.id, { title: c.title, summary: c.summary }])),
+		cardText: new Map(
+			cards.map((c) => [c.id, { title: c.title, summary: c.summary }]),
+		),
 	};
 	const all: CandidateCard[] = cards.map((c) => ({
 		id: c.id,
@@ -137,7 +139,9 @@ export function run(db: Database, options: RunOptions) {
 				(l) =>
 					l.status === "reviewed" &&
 					l.wrong &&
-					(options.feedbackFrom === "same" ? l.split === options.split : l.split !== options.split),
+					(options.feedbackFrom === "same"
+						? l.split === options.split
+						: l.split !== options.split),
 			)
 		: [];
 	const textOf = new Map(loadUtterances(db).map((u) => [u.id, u.text]));

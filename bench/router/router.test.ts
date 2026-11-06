@@ -242,13 +242,14 @@ test("labels: one conversation, one split; a reviewed label needs a gold id", as
 	).rejects.toThrow("label_missing_gold");
 });
 
-test("the review sheet lists only unlabeled utterances, with candidates", async () => {
+test("the diagnostic sheet explicitly shows candidates", async () => {
 	const db = await fresh("sheet");
 	const out = join(dir, "sheet.jsonl");
 	await main(
 		[
 			"label",
 			"export",
+			"--diagnostic",
 			"--db",
 			db,
 			"--model",
@@ -268,6 +269,57 @@ test("the review sheet lists only unlabeled utterances, with candidates", async 
 	expect(rows[0]!.candidates.length).toBeGreaterThan(0);
 });
 
+test("normal review export hides predictions even when a model and past choices exist", async () => {
+	const db = await fresh("blind-sheet");
+	const out = join(dir, "blind.jsonl");
+	const md = join(dir, "blind.md");
+	await main(
+		["label", "export", "--db", db, "--model", MODEL, "--out", out, "--md", md],
+		quiet,
+	);
+	const rows = readFileSync(out, "utf8")
+		.trim()
+		.split("\n")
+		.map((s) => JSON.parse(s));
+	expect(rows.length).toBeGreaterThan(0);
+	for (const row of rows) {
+		expect(Object.keys(row)).not.toContain("candidates");
+		expect(Object.keys(row)).not.toContain("pastChoice");
+		expect(Object.keys(row)).not.toContain("priority");
+		expect(row.label.gold).toBeNull();
+	}
+	expect(readFileSync(md, "utf8")).not.toContain("- 候補:");
+	expect(readFileSync(md, "utf8")).not.toContain("- 過去の選択:");
+	await main(["label", "export", "--recheck", "--db", db, "--out", out], quiet);
+	const recheck = readFileSync(out, "utf8")
+		.trim()
+		.split("\n")
+		.map((s) => JSON.parse(s));
+	expect(recheck.length).toBeGreaterThan(rows.length);
+	for (const row of recheck)
+		expect(row.label).toMatchObject({ gold: null, status: "hold" });
+});
+
+test("label audit reports counts and fails when one conversation spans dev and test", async () => {
+	const db = await fresh("audit");
+	const connection = openBench(db);
+	try {
+		connection
+			.query("UPDATE bench_labels SET split='test' WHERE utterance_id='ex01'")
+			.run();
+	} finally {
+		connection.close();
+	}
+	const printed: string[] = [];
+	await expect(
+		main(["label", "audit", "--db", db], (line) => printed.push(line)),
+	).rejects.toThrow("dataset_split_audit_failed");
+	const result = JSON.parse(printed[0]!);
+	expect(result.ok).toBe(false);
+	expect(result.crossSplitConversations).toBeGreaterThan(0);
+	expect(printed[0]).not.toContain("ex01");
+});
+
 test("a trigram query quotes grams and is empty under three characters", () => {
 	expect(trigramQuery("ab")).toBeNull();
 	expect(trigramQuery('a"bc')).toBe('"a""b" OR """bc"');
@@ -275,13 +327,31 @@ test("a trigram query quotes grams and is empty under three characters", () => {
 
 test("past, recorded-embed and sr-weighted variants run deterministically on the fixture", async () => {
 	const db = await fresh("sr");
-	for (const algo of ["past", "recorded-embed", "sr-weighted", "sr-weighted-noembed", "sr-weighted-nohist"]) {
+	for (const algo of [
+		"past",
+		"recorded-embed",
+		"sr-weighted",
+		"sr-weighted-noembed",
+		"sr-weighted-nohist",
+	]) {
 		const runs: Array<Record<string, unknown>> = [];
 		for (const k of [1, 2])
 			runs.push(
 				strip(
 					(await main(
-						["run", "--db", db, "--algo", algo, "--model", MODEL, "--split", "any", "--out", join(dir, `${algo}-${k}`)],
+						[
+							"run",
+							"--db",
+							db,
+							"--algo",
+							algo,
+							"--model",
+							MODEL,
+							"--split",
+							"any",
+							"--out",
+							join(dir, `${algo}-${k}`),
+						],
 						quiet,
 					)) as Record<string, unknown>,
 				),
@@ -289,7 +359,21 @@ test("past, recorded-embed and sr-weighted variants run deterministically on the
 		expect(runs[0]).toEqual(runs[1]!);
 	}
 	const tuned = (await main(
-		["run", "--db", db, "--algo", "sr-x", "--sr", '{"weights":{"hist":0},"minCombined":0.9}', "--model", MODEL, "--split", "any", "--out", join(dir, "sr-x")],
+		[
+			"run",
+			"--db",
+			db,
+			"--algo",
+			"sr-x",
+			"--sr",
+			'{"weights":{"hist":0},"minCombined":0.9}',
+			"--model",
+			MODEL,
+			"--split",
+			"any",
+			"--out",
+			join(dir, "sr-x"),
+		],
 		quiet,
 	)) as { algo: string };
 	expect(tuned.algo).toBe("sr-x");
@@ -299,7 +383,11 @@ test("parseSplitRule: hash by default, time cut for one conversation", async () 
 	const { parseSplitRule } = await import("./data.ts");
 	const { isContextual } = await import("./round2.ts");
 	expect(parseSplitRule(undefined)).toEqual({ kind: "sha" });
-	expect(parseSplitRule("main:0.4")).toEqual({ kind: "time", conversation: "main", devShare: 0.4 });
+	expect(parseSplitRule("main:0.4")).toEqual({
+		kind: "time",
+		conversation: "main",
+		devShare: 0.4,
+	});
 	expect(() => parseSplitRule("main:1.5")).toThrow("split_rule_invalid");
 	expect(isContextual("それをもう一度")).toBe(true);
 	expect(isContextual("天気を教えて")).toBe(false);

@@ -1,6 +1,6 @@
 {
 	"name": "eumenes_router",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"private": true,
 	"license": "MIT",
 	"type": "module",
@@ -31,6 +31,8 @@
 		"format:check": "oxfmt --check",
 		"typecheck": "tsc --noEmit",
 		"test": "bun test",
+		"test:python": "bun bench/python.ts",
+		"verify:package": "bun scripts/verify-package.ts",
 		"bench:score": "bun bench/score.ts",
 		"router": "bun bench/router/main.ts",
 		"release": "bun scripts/pack.ts"

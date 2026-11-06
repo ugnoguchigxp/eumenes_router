@@ -75,3 +75,39 @@ test("routed texts: the whole utterance, the masked one, or the parts with a bor
 		}),
 	).toEqual(["曲を作って", "画像を作って"]);
 });
+
+test("masking protects the LLM's target occurrence, merges overlapping references and does not replace inserted words", () => {
+	for (const noun of ["画像", "文書", "🎵", "item"]) {
+		const text = `${noun}を元に${noun}を作って`;
+		const request = {
+			text: `${noun}を作って`,
+			target: noun,
+			inputs: [noun],
+			after: [],
+		};
+		const s = parseStructure(JSON.stringify({ requests: [request] }), text);
+		expect(s).not.toBeNull();
+		expect(routedTexts(text, s)).toEqual([`これを元に${noun}を作って`]);
+	}
+	const text = "この画像から画像を作って";
+	expect(
+		routedTexts(text, {
+			requests: [
+				{
+					text: "画像を作って",
+					target: "画像",
+					inputs: ["この画像", "画像", "これ"],
+					after: [],
+				},
+			],
+		}),
+	).toEqual(["これから画像を作って"]);
+	const ambiguous = "画像と画像を使って";
+	expect(
+		routedTexts(ambiguous, {
+			requests: [
+				{ text: ambiguous, target: "画像", inputs: ["画像"], after: [] },
+			],
+		}),
+	).toEqual([ambiguous]);
+});

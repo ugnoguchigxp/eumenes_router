@@ -12,6 +12,7 @@ import type { RouterCard } from "./db/retrieval.ts";
 import { correctProbabilities } from "./decision/correct.ts";
 import type {
 	DecisionCard,
+	DirectDecision,
 	Ranked,
 	RouteCandidate,
 	RouteDecision,
@@ -21,12 +22,13 @@ import { offerCandidates, type Skipped } from "./decision/offer.ts";
 import { rerankDocument } from "./retrieval/passages.ts";
 import { capByKind, srOffer, srRanking, srScores } from "./retrieval/sr.ts";
 import { scoreBestV2, type BestV2Model } from "./scoring/best-v2.ts";
+import { routedTexts, type Structure } from "./structure.ts";
 import {
-	parseStructure,
-	routedTexts,
-	structurePrompt,
-	type Structure,
-} from "./structure.ts";
+	parseTurnStructure,
+	turnStructurePrompt,
+	type PendingQuestion,
+	type TurnStructure,
+} from "./turn-structure.ts";
 import { head, tail } from "./text.ts";
 import type { VectorSpace } from "./vector.ts";
 import { assertVector } from "./vector.ts";
@@ -94,6 +96,8 @@ export type RouteTurn = {
 	 * for them may be given in `passages`. Search hits are not repeated here.
 	 */
 	dynamic: readonly RouteCandidate[];
+	/** Current, conversation-scoped questions validated by the host. */
+	pending?: readonly PendingQuestion[];
 	/** Sentences for the conversation and a memory request when the host writes them. */
 	passages?: { conversation: string; memory: string };
 	/**
@@ -120,7 +124,7 @@ export type RouteResult = {
 	answer: RouteAnswer | null;
 	/** The offer after best-v2 and the correction, best first. */
 	corrected: readonly Ranked[];
-	decision: RouteDecision;
+	decision: DirectDecision;
 	explain: {
 		/** sr-corr's offer (top 8 after the kind slots, the conversation included) with its probabilities. */
 		retrieval: ReadonlyArray<readonly [string, number]>;
@@ -138,7 +142,7 @@ export type RouteResult = {
 
 export type StructuredResult = {
 	/** The model's structure; null when the answer was not a structure of the utterance. */
-	structure: Structure | null;
+	structure: TurnStructure;
 	/** One routing per routed text: the whole utterance, the masked one, or each request part. */
 	parts: ReadonlyArray<{ text: string; result: RouteResult }>;
 	decision: RouteDecision;
@@ -411,9 +415,9 @@ export async function route(
  * (the host's `analyze` with this package's prompt), then the direct route on
  * what the structure says to route. No request: the conversation (row 1). One
  * request: the utterance, with its references masked as 「これ」 when it has
- * some (then without the resource hint). Several: each part; parts of two or
- * more tools go to the pipeline stage, of one tool to that tool. An answer that
- * is not a structure of the utterance routes the whole utterance (as route()).
+ * some (then without the resource hint). Multiple real actions go to the
+ * pipeline, including repeated uses of one tool. Answers bind to a finite host
+ * reference. Invalid structure fails before dispatch; it never routes a partial request.
  */
 export async function routeStructured(
 	ports: StructuredPorts,
@@ -421,11 +425,37 @@ export async function routeStructured(
 ): Promise<StructuredResult> {
 	const text = turn.state.text;
 	const raw = await ports.analyze(
-		structurePrompt(text, turn.state.previousAgent),
+		turnStructurePrompt(text, turn.state.previousAgent, turn.pending ?? []),
 	);
-	const structure = parseStructure(raw, text);
+	const structure = parseTurnStructure(raw, text, turn.pending ?? []);
+	if (!structure) throw new Error("structure_invalid");
+	if (structure.kind === "answer") {
+		const candidate = turn.dynamic.find(
+			(c) =>
+				c.id === structure.ref &&
+				c.kind === "pending" &&
+				c.operation === "answer",
+		);
+		if (!candidate) throw new Error("structure_reference_unavailable");
+		return {
+			structure,
+			parts: [],
+			decision: { row: 5, to: "run", candidate, announce: "none" },
+		};
+	}
+	if (structure.kind === "clarify")
+		return {
+			structure,
+			parts: [],
+			decision: {
+				row: 8,
+				to: "clarify",
+				question: structure.question,
+				unhandled: structure.unhandled,
+			},
+		};
 	const texts = routedTexts(text, structure);
-	if (structure && !texts.length) {
+	if (!texts.length) {
 		ports.log?.({
 			name: "router.structured",
 			fields: { requests: 0, parts: 0, row: 1 },
@@ -452,7 +482,7 @@ export async function routeStructured(
 	ports.log?.({
 		name: "router.structured",
 		fields: {
-			requests: structure ? structure.requests.length : -1,
+			requests: structure.requests.length,
 			parts: parts.length,
 			row: decision.row,
 		},
@@ -460,32 +490,44 @@ export async function routeStructured(
 	return { structure, parts, decision };
 }
 
-/** Several request parts: the pipeline stage when their tops are two or more tools, else that one tool or the conversation. */
+/** Aggregate decisions, not rankings. Questions block dispatch; pipeline steps keep the complete part decisions. */
 function several(
 	structure: Structure,
 	parts: ReadonlyArray<{ text: string; result: RouteResult }>,
 ): RouteDecision {
-	const tops = parts.map((p) => p.result.corrected[0]?.candidate ?? null);
-	const tools = [
-		...new Set(
-			tops.filter((c) => c && c.kind !== "conversation").map((c) => c!.id),
-		),
-	];
-	if (tools.length >= 2)
+	const decisions = parts.map((p) => p.result.decision);
+	const question = decisions.find((d) => d.to === "again" || d.to === "ask");
+	if (question) return question;
+	const actions = decisions.filter((d) => d.to === "run");
+	if (actions.length !== parts.length)
+		return {
+			row: 8,
+			to: "clarify",
+			question:
+				"全ての作業を安全に引き継ぐため、依頼の範囲を確認させてください。",
+			unhandled: structure.requests.map((r) => r.text),
+		};
+	if (actions.length >= 2)
 		return {
 			row: 9,
 			to: "pipeline",
-			steps: parts.map((p, i) => ({
-				text: p.text,
-				candidate: tops[i] ?? {
-					id: CONVERSATION_ID,
-					kind: "conversation",
-					passage: CONVERSATION_ID,
-				},
-				after: structure.requests[i]!.after,
-			})),
+			steps: parts.map((p, i) => {
+				const decision = decisions[i]!;
+				return {
+					text: p.text,
+					candidate:
+						decision.to === "run"
+							? decision.candidate
+							: {
+									id: CONVERSATION_ID,
+									kind: "conversation",
+									passage: CONVERSATION_ID,
+								},
+					decision,
+					after: structure.requests[i]!.after,
+				};
+			}),
 		};
-	if (tools.length === 1)
-		return parts[tops.findIndex((c) => c?.id === tools[0])]!.result.decision;
+	if (actions.length) return actions[0]!;
 	return { row: 1, to: "conversation" };
 }

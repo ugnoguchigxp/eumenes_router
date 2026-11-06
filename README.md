@@ -4,7 +4,15 @@ Eumenes の担当の振り分け（Toolchain Router）から、判断一式を�
 
 パッケージ名・リポジトリ・フォルダは `eumenes_router` です。作業の入口は [plan.md](plan.md)、作業規則は [AGENTS.md](AGENTS.md) です。
 
-## 状態（2026-11-03）
+## 現在の状態（2026-11-06）
+
+判断一式、best-v2、構造判断とA/Bの入口、SQLite、出荷機構は実装済みです。R0とオフライン改善を実施しています（[plan.md §13](plan.md#13-80点水準への改善計画2026-11-06利用者合意着手)）。ホストへの契約4の統合、人による正解確認、新規評価、live/本番機の測定と継続利用は残作業です。
+
+契約4では、複数依頼の集約に各部分の決定表の結果を使い、再確認・質問を優先します。パイプラインの各stepにも`decision`を保持します。参照置換はLLMが返した依頼部分と作成対象から対象の位置を保護し、曖昧なら元文を残します。構造契約2では保留質問の有限参照を入力に渡し、回答・依頼・会話・確認を区別します。構造が不正なら部分実行せず失敗し、複数の実作業は同じ担当でもパイプラインへ渡します（plan §13.9）。
+
+交差検証は分割ごとの学習側だけで近傍特徴を作るよう修正しました。配布する既存の学習値は再生成していません。以下の精度・費用・採否は過去の実測で、修正後の新しい精度ではありません。新しい学習手順での設定選択と人確認済み評価が必要です。
+
+### 2026-11-04までの状態・実測の記録
 
 | 項目 | 状態 |
 | --- | --- |
@@ -13,7 +21,8 @@ Eumenes の担当の振り分け（Toolchain Router）から、判断一式を�
 | M2 方式の比較 | 途中。オフラインの精度・言い換え・訂正は測った。本番機の速度と会話 LLM への干渉、新しい担当の cold start は未測定 |
 | 検証して採らなかった実装 | `archive/`（ARCHIVED。LLM による確認、LARM の文脈判定の単体利用、言い換えの意味の Haiku 判定、構造の判断、ruri の学習データの道具、round2・round3・algo4）。結論と実測は [docs/reports/router_verifications_2026-11-03.md](docs/reports/router_verifications_2026-11-03.md) |
 | 構造の判断 | 本流（LLM、S3）。作った対 186件で 90.3%（今の経路＋手がかり 47.3%）、参照の側 1.3%、複数 → パイプライン 84.5%、感想・質問 → 会話 100%。test 217件 88.5%（今の経路 87.1%）。1発言 約 900 トークン・p95 2.9 s。係り受け解析（S1）と候補 5 は `archive/structure-judgment/`。LARM の ruri は構造の学習の対を足して学習し直した（`ruri-conv20-structure-v1-s0-fp32-v1`） |
-| 正解付け（M1）、出荷（M3） | 未着手。bench の正解ラベルは grok-bot の推論由来で、人の確認はまだ |
+| 正解付け（M1） | 未完了。bench の正解ラベルはモデルの推論由来で、人の確認はまだ |
+| 出荷（M3） | A/Bと出荷機構は実装済み。ホスト統合と人確認済みの最終評価は別作業 |
 | 408件・58会話のスナップショット | `data/` にある（Git 管理外）。正解は 0件。予測に候補ごとの確率は無いので、決定の一致も精度もこのファイルだけでは出せない |
 | カード全文と、その回の仕事・確認待ち | 未了。書き出しは Eumenes のセッションで足す |
 
@@ -53,7 +62,7 @@ test 217件（評価は1回）と、test から作った言い換え 1,215件。
 
 ## 採用している方式
 
-本流は2つの構成（plan.md M3d）。A は「検索 → best-v2」。B は「構造の判断（LLM、`bench/router/experiments/structure/s3.py`）→ 送り先の規則（`decideStructure`）→ 依頼の部分ごとに best-v2」。構造の判断は、依頼の部分・作る物・参照（材料）・先に済ませる依頼を返す（担当は選ばない）。依頼なしは会話、依頼1つは参照を「これ」に伏せた文を振り分け、担当が2つ以上ならパイプラインの段へ送る。
+本流は2つの構成（plan.md M3d）。A は「検索 → best-v2」。Bは「発言全体の構造判断（`src/turn-structure.ts`の版付き指示文）→ 回答/確認/会話/依頼の区別 → 依頼の部分ごとにbest-v2」です。旧S3の比較値は履歴として扱います。構造の判断は、依頼の部分・作る物・参照（材料）・先に済ませる依頼を返す（担当は選ばない）。依頼なしは会話、依頼1つは参照を「これ」に伏せた文を振り分け、実作業が2つ以上ならパイプラインの段へ送る。
 
 メインの判断は **best-v2**（`src/scoring/best-v2.ts`）。劣る方式（best-v1、algo4、round2/3、LLM による確認、LARM の文脈判定の単体利用、検索と reranker の単純な融合）はパッケージに入れない。
 
@@ -66,13 +75,13 @@ test 217件（評価は1回）と、test から作った言い換え 1,215件。
 | 学習済みの数値 | `BEST_V2_PARAMS`（`src/scoring/best-v2.params.ts`、`best_v2.py export-package` が書く）。発話から作ったものは入っていない |
 | 記憶 | ホストが渡す（`BestV2Memory`: 正解の id ＋ float32 のベクトル）。dev の発話から作るので、パッケージにも Git にも入れない。数値と同じ `source` の記憶でないと拒む |
 
-`route()` は製品の新しい経路を写している（best-v2 はまだ組み込んでいない）。
+`route()` は検索（sr-corr）→ reranker → best-v2 → 訂正 → 決定表を実装済みです。下表の検索・採点は現行の経路を示します。
 
 | `route()` の段 | 今の実装 |
 | --- | --- |
-| 検索 | 発言の先頭 2000字を埋め込む。カードの文（「名前: 説明」、`useWhen`、`examples`）との内積の最大で順位を付ける。`route()` の枠は dedicated 10、pipeline 4、general 4。読む担当は dedicated の枠を使う。近いものだけに切らない。FTS は使わず、`ftsRank` は null。その空間にベクトルが無いときは、`read` 以外の有効なカードを id 順に返す |
+| 検索 | 発言の先頭2000字を埋め込み、全利用可能カードの意味・典型・全文検索・種類の手がかりをsr-corrで融合。種類の枠をかけた上位8件と全体順位を作り、ツールの上位10件までを採点に渡す |
 | 訂正の近傍と候補 | 採点の前に近い訂正を読み、その正解を `include` で候補に足す（枠の外でも。枠は使わない） |
-| 採点 | ホストが渡す1回の choice。このパッケージはモデルを持たない |
+| 採点 | ホストのrerankerが返す全候補の独立点数を必須として、best-v2で順位と自信を判定。このパッケージはモデルを持たない |
 | 訂正 | 類似度が θ 以上の訂正だけを使う（既定 0.95）。対数確率の移動は、1候補あたり β まで（既定 2）。正解の id が食い違う訂正は、どれも適用しない。e5 small の空間で測った値は θ 0.9177・β 1.5（ホストが `feedbackNear`・`feedbackWeight` で渡す） |
 | 決定 | 行 1〜9 の決定表。既定は accept 0.6、low 0.3、margin 0.15、approve 0.85、multi 0.5。空の候補は行 8（会話） |
 
@@ -85,7 +94,15 @@ bun install
 bun test
 bun run typecheck
 bun run lint
-bun run format
+bun run format:check
+```
+
+Pythonの数値・分割隔離検査は次の専用環境で再現します。モデル実行環境は含みません。別環境を使う場合は`BENCH_PYTHON`にPythonのパスを渡します。通常の`bun test`は環境がなければPython検査をskipしますが、出荷では必須です。
+
+```sh
+uv venv --python /usr/bin/python3 .venv
+uv pip sync --python .venv/bin/python --require-hashes bench/python-requirements.lock
+bun run test:python
 ```
 
 配布物は `bun run build` で `dist/` を作る。`prepack` も同じことをする。研究用の採点は `bun run bench:score`（`bench/score.ts`）で、予測をこのパッケージの `decide` に通す。
@@ -98,17 +115,19 @@ bun run format
 
 | import | 内容 |
 | --- | --- |
-| `eumenes_router` | `route`（A: direct）、`routeStructured`（B: structured）、`decide`、`correctProbabilities`、`predictionSet`、`offerCandidates`、`checkReachability`、`loadBestV2`・`scoreBestV2`・`BEST_V2_PARAMS`、`srScores`・`srOffer`・`srRanking`・`capByKind`、`rerankDocument`、`STRUCTURE_PROMPT`・`structurePrompt`・`parseStructure`・`routedTexts`。DB・時計・乱数・ネットワーク・モデルには触らない |
+| `eumenes_router` | `route`（A: direct）、`routeStructured`（B: structured）、`decide`、`correctProbabilities`、`predictionSet`、`offerCandidates`、`checkReachability`、`loadBestV2`・`scoreBestV2`・`BEST_V2_PARAMS`、`srScores`・`srOffer`・`srRanking`・`capByKind`、`rerankDocument`、`TURN_STRUCTURE_PROMPT`・`turnStructurePrompt`・`parseTurnStructure`・`routedTexts`（過去の構造の検査には`parseStructure`）。DB・時計・乱数・ネットワーク・モデルには触らない |
 | `eumenes_router/sqlite` | 表の SQL `migrations`（ホストが自分の migration で当てる）、借りた同期接続への `syncCardsInTransaction`、`saveVectorsInTransaction`、`srCardsInTransaction`、`lexicalInTransaction`、`importExamplesInTransaction`・`examplesInTransaction`（best-v2 の記憶）、`nearFeedback`、`recordFeedbackInTransaction`、`setFeedbackStateInTransaction`、`forgetInTransaction`。open/close・transaction はしない |
 
 | 入口 | ホストの口 | 流れ | 結果 |
 | --- | --- | --- | --- |
 | `route(ports, turn)` | `embed`、`rerank`（LARM の文脈判定。基準ごとの `scores` が要る）、`read.cards`・`read.lexical`・`read.nearFeedback`、`model`（`loadBestV2(BEST_V2_PARAMS, 記憶)`）、`settings` | 埋め込み → 近い訂正 → sr-corr（上位8件と全カードの順位）→ 上位 10件のツール・訂正の正解・動的な候補 → reranker → best-v2 → 訂正 → 決定表（best-v2 が回さないときが「自信あり」。自信なしでも1位を予告付きで実行し、聞き返しの行 8 にはしない） | `decision`・`corrected`・`answer`・`explain`（gate・defer・衝突した訂正の id） |
-| `routeStructured(ports, turn)` | `route` の口 ＋ `analyze`（`{ version, system, user }` を LLM に送り、答えの文字列を返す） | 構造の判断 → 検査（壊れていれば `route` と同じ）→ 依頼なしは会話、依頼1つは参照を「これ」に伏せた文（手がかりなし）、複数は依頼の部分ごとに `route` と同じ流れ → 担当が2つ以上ならパイプラインの段 | `decision`（行 9 の `to: "pipeline"` は依頼の部分ごとの担当と順番）・`structure`・`parts` |
+| `routeStructured(ports, turn)` | `route` の口 ＋ `analyze`（`{ version, system, user }` を LLM に送り、答えの文字列を返す） | 構造の判断 → 検査（不正なら実行せず失敗）→ 依頼なしは会話、依頼1つは参照を「これ」に伏せた文（手がかりなし）、複数は依頼の部分ごとに `route` と同じ流れ → 担当が2つ以上ならパイプラインの段 | `decision`（回答・確認・会話・実行・各部分の判断と順番）・`structure`・`parts` |
 
 reranker に渡すのは、本文の先頭 400字と、カードの文（`rerankDocument`: 1つ目の文と「例:」に続く5件）。会話の候補は reranker に送らない（best-v2 は会話の点数を使わない）。補正が衝突した訂正の id は `explain.conflicts` に入る。行を `conflict` にするのはホストである。会話と記憶はカードとして同期する（文は `passages` で差し替えられる）。記憶の候補は記憶のカードを同期したときだけ出る（会話のカードが無いときは、会話の候補だけをパッケージが足す）。best-v2 の記憶は発話から作るので tarball に入らない。ホストが `importExamplesInTransaction` で取り込む（`manifest.json` の `requires.memory`）。
 
-出荷物は `bun run release` で作る（型・lint・検査が通ったときだけ）。`release/eumenes_router-<版>-<sha256の先頭12>.tgz`、`.sha256`、`manifest.json`（Git 管理外）。
+出荷物は`bun run release`で作ります。型・lint・整形・必須Python回帰・非公開データを使う一致試験が通り、tarballだけを展開した別の利用側でA/BとSQLiteを試してから出力します。SHA256の不一致も拒否します。出力は`release/eumenes_router-<版>-<sha256の先頭12>.tgz`、`.sha256`、`manifest.json`（Git管理外）。`bun run verify:package release/manifest.json`で再検査できます。
+
+通常の`label export`は予測・過去の選択を表示せず、未確認・保留の発言を正解付け用に出力します。既存のモデル由来ラベルなども人が見直す場合は`--recheck`を付けます。既存のgoldを見せず、元のDBも変更しません。`--diagnostic`を明示したときだけ候補を表示する診断用の形式になります。`label audit --db … [--lineage data/lineage.jsonl] [--out data/audit.json]`は、会話・同文・明示した派生元系列の分割越えを件数で監査し、不整合なら失敗します。lineageは`{id, sourceId}`です。意味の同一性や人確認の出所を自動認定する機能ではありません。
 
 ## リポジトリ
 
@@ -133,10 +152,18 @@ Eumenes なしで、担当の選び方（アルゴリズム）を同じ物差し
 | コマンド | すること |
 | --- | --- |
 | `import --db b.db --cards … --utterances … --choices … --labels …` | カード・発言・過去の選択・正解を独立した SQLite に入れる（FTS5 trigram の索引も作る） |
-| `label export --db b.db --out sheet.jsonl --md sheet.md [--model m]` | 未ラベルの発言を、迷いやすい順に正解付けシートとして書き出す |
+| `label export --db b.db --out data/sheet.jsonl --md data/sheet.md` | 未確認・保留の発言を予測なしで正解付け用に書き出す。診断用は`--diagnostic [--model m]` |
 | `label import --db b.db --labels labels.jsonl` / `label stats` | 正解（`gold`・`acceptable`・`none`・`status: reviewed|hold`・`wrong`）を入れる。split は会話単位で決まる |
 | `embed --db b.db --provider http --url <base> --model <m>` | 利用者が動かしている OpenAI 互換 `/v1/embeddings` を呼ぶ。model＋本文の hash で SQLite にキャッシュ。`--provider fake` はテスト用の決定的なベクトル |
 | `run --db b.db --algo fts\|embed\|hybrid [--model m] [--split test] [--feedback]` | 共通の経路（候補 8 件＋会話、softmax、訂正、製品の決定表）で採点し、`out/<日時>-<algo>/` に `summary.json`・`report.md`・`predictions.jsonl` を書く |
 | `score --run <dir>` / `compare [--root out]` | 1 回分の要約／複数回の比較表 |
 
 アルゴリズムは `bench/router/algorithms.ts` の `Algorithm`（発言・文脈ヒント・候補 → 候補ごとの点数）を足すだけで差し込める。`bench/fixtures/example/` は配線確認用の合成データで、そこでの値は精度ではない。
+
+## 依存更新と復元の確認
+
+Routerの変更担当が依存変更の責任を持ち、固定版・出所・宣言されたライセンスを確認します。実行時の外部依存はありません。開発用JS依存はMIT/Apache-2.0の宣言を確認し、Pythonの数値検査環境は別のハッシュ付きlockで固定します。変更前に`bun audit --json`と、固定Python依存の既知脆弱性監査を行い、差分と到達する実行経路を確認します。監査で検出なしでも脆弱性が存在しない保証にはしません。
+
+更新時は`bun install --frozen-lockfile`と上記Python環境を別の作業用環境で再現し、`bun run release`で通し検査します。出荷manifestには検査対象ソースのdigestも記録し、検査中に変更があれば出荷しません。配布物のリンク等は展開前に拒否します。
+
+SQLiteはホストが接続・transaction・backupを所有します。書込み失敗はホストtransactionをrollbackしてからpendingを読み直します。再起動後は同じ空間とmemory sourceで読み込みます。古いbackupから復元する場合、ホストはbackup以降の忘却要求を再適用してから利用を再開してください。実ホストでの更新・復元はEumenes側のセッションで検証します。

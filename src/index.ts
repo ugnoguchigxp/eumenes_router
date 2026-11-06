@@ -43,6 +43,7 @@ export {
 export type {
 	Announce,
 	DecisionCard,
+	DirectDecision,
 	Ranked,
 	RouteCandidate,
 	RouteDecision,
@@ -103,3 +104,10 @@ export type { Structure, StructureRequest } from "./structure.ts";
 export { dot, packVector, unpackVector, vectorSpaceKey } from "./vector.ts";
 export type { VectorSpace } from "./vector.ts";
 export { head, tail } from "./text.ts";
+
+export {
+	parseTurnStructure,
+	turnStructurePrompt,
+	TURN_STRUCTURE_PROMPT,
+} from "./turn-structure.ts";
+export type { PendingQuestion, TurnStructure } from "./turn-structure.ts";

@@ -1,6 +1,6 @@
 import { Database } from "bun:sqlite";
 import { expect, test } from "bun:test";
-import { mkdtempSync, rmSync } from "node:fs";
+import { copyFileSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
@@ -8,6 +8,7 @@ import {
 	dbSchemaVersion,
 	type Card,
 	type VectorSpace,
+	BEST_V2_MEMORY_FORMAT,
 } from "../src/index.ts";
 import {
 	forgetInTransaction,
@@ -18,6 +19,9 @@ import {
 	srCardsInTransaction,
 	setFeedbackStateInTransaction,
 	syncCardsInTransaction,
+	importExamplesInTransaction,
+	examplesInTransaction,
+	lexicalInTransaction,
 } from "../src/sqlite.ts";
 
 const space: VectorSpace = {
@@ -54,6 +58,93 @@ function open() {
 		},
 	};
 }
+
+test("host reopen and backup restore preserve state; replayed forgetting removes restored corrections", () => {
+	const dir = mkdtempSync(join(tmpdir(), "router-recovery-"));
+	const path = join(dir, "state.db");
+	const backup = join(dir, "backup.db");
+	let db = new Database(path);
+	try {
+		for (const sql of migrations) db.exec(sql);
+		db.transaction(() => {
+			const pending = syncCardsInTransaction(
+				db,
+				[card("a", ["永続化の例"])],
+				space,
+			).pending;
+			saveVectorsInTransaction(
+				db,
+				space,
+				pending.map((p) => ({ ...p, vector: [1, 0] })),
+			);
+			importExamplesInTransaction(
+				db,
+				{
+					format: BEST_V2_MEMORY_FORMAT,
+					source: "persist",
+					dimension: 2,
+					labels: ["a"],
+					vectors: Buffer.from(new Float32Array([1, 0]).buffer).toString(
+						"base64",
+					),
+				},
+				space,
+			);
+			recordFeedbackInTransaction(db, {
+				id: "f",
+				conversationId: "c",
+				messageId: "m",
+				messageIds: ["related"],
+				runId: "r",
+				source: "review",
+				text: "合成の訂正",
+				space,
+				vector: [1, 0],
+				wrongId: null,
+				rightId: "a",
+				at: 1,
+			});
+		})();
+		db.close();
+		copyFileSync(path, backup);
+		db = new Database(path);
+		expect(
+			srCardsInTransaction(db, { space, available: () => true })[0]!.passages,
+		).toHaveLength(3);
+		expect(lexicalInTransaction(db, "永続化").has("a")).toBe(true);
+		expect(
+			examplesInTransaction(db, { source: "persist", space })!.labels,
+		).toEqual(["a"]);
+		expect(
+			nearFeedback(db, { space, vector: [1, 0], threshold: 0.9 }),
+		).toHaveLength(1);
+		expect(() =>
+			db.transaction(() => {
+				setFeedbackStateInTransaction(db, "f", "retracted", 2);
+				throw new Error("crash_before_commit");
+			})(),
+		).toThrow("crash_before_commit");
+		expect(
+			nearFeedback(db, { space, vector: [1, 0], threshold: 0.9 }),
+		).toHaveLength(1);
+		expect(forgetInTransaction(db, ["related"])).toBe(1);
+		db.close();
+		copyFileSync(backup, path);
+		db = new Database(path);
+		// A backup predates a forget request. The host must replay its deletion ledger before serving it.
+		expect(forgetInTransaction(db, ["related"])).toBe(1);
+		expect(forgetInTransaction(db, ["related"])).toBe(0);
+		expect(nearFeedback(db, { space, vector: [1, 0], threshold: 0.9 })).toEqual(
+			[],
+		);
+		expect(setFeedbackStateInTransaction(db, "missing", "retracted", 3)).toBe(
+			false,
+		);
+	} finally {
+		db.close();
+		rmSync(dir, { recursive: true, force: true });
+	}
+});
 
 test("changed passages are pending, saved vectors are read back, a disabled card leaves", () => {
 	const { db, close } = open();
@@ -96,6 +187,52 @@ test("changed passages are pending, saved vectors are read back, a disabled card
 				(row) => row.id,
 			),
 		).toEqual(["music.create"]);
+	} finally {
+		close();
+	}
+});
+
+test("late vectors are refused and host rollback leaves the pending work retryable", () => {
+	const { db, close } = open();
+	try {
+		const before = card("a");
+		const old = syncCardsInTransaction(db, [before], space).pending;
+		const changed = { ...before, revision: "next", examples: ["新しい文"] };
+		const next = { ...changed, digest: cardDigest(changed) };
+		const pending = db.transaction(
+			() => syncCardsInTransaction(db, [next], space).pending,
+		)();
+		saveVectorsInTransaction(
+			db,
+			space,
+			old.map((p) => ({ ...p, vector: [1, 0] })),
+		);
+		expect(
+			srCardsInTransaction(db, { space, available: () => true })[0]!.passages,
+		).toHaveLength(0);
+		expect(() =>
+			db.transaction(() =>
+				saveVectorsInTransaction(db, space, [
+					{ ...pending[0]!, vector: [1, 0] },
+					{ ...pending[1]!, vector: [NaN, 0] },
+				]),
+			)(),
+		).toThrow();
+		expect(
+			srCardsInTransaction(db, { space, available: () => true })[0]!.passages,
+		).toHaveLength(0);
+		const again = syncCardsInTransaction(db, [next], space).pending;
+		expect(again).toEqual(pending);
+		db.transaction(() =>
+			saveVectorsInTransaction(
+				db,
+				space,
+				again.map((p) => ({ ...p, vector: [1, 0] })),
+			),
+		)();
+		expect(syncCardsInTransaction(db, [next], space).pending).toEqual([]);
+		const hidden = srCardsInTransaction(db, { space, available: () => false });
+		expect(hidden).toEqual([]);
 	} finally {
 		close();
 	}

@@ -23,7 +23,11 @@
 import { Database } from "bun:sqlite";
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
-import { CONVERSATION_ID } from "../../src/index.ts";
+import {
+	CONVERSATION_ID,
+	parseStructure,
+	routedTexts as mainTexts,
+} from "../../src/index.ts";
 import { sha256Hex } from "../../src/digest.ts";
 import type { Utterance } from "./data.ts";
 
@@ -323,18 +327,14 @@ export function routedTexts(
 	s: Structure,
 	mode: PartMode = "span",
 ): string[] {
+	if (mode === "mask")
+		return mainTexts(text, parseStructure(JSON.stringify(s), text));
 	if (!s) return [text];
 	const [first, ...rest] = s.requests;
 	if (!first) return [];
 	if (!rest.length) {
 		if (!first.inputs?.length) return [text];
-		if (mode !== "mask") return [first.text];
-		// The whole utterance with its references masked: the request's wording stays, the referenced domain goes.
-		return [
-			[...first.inputs]
-				.sort((a, b) => b.length - a.length)
-				.reduce((t, input) => t.split(input).join("これ"), text),
-		];
+		return [first.text];
 	}
 	if (mode === "span") return s.requests.map((r) => r.text);
 	// A request that is only its object ("曲" in "曲と画像を作って") borrows the predicate of the next one that has one.

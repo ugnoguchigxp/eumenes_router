@@ -244,11 +244,8 @@ test.skipIf(!parity)(
 
 test("the memory goes into SQLite and comes back the same; another space or source is refused", async () => {
 	const { Database } = await import("bun:sqlite");
-	const {
-		examplesInTransaction,
-		importExamplesInTransaction,
-		migrations,
-	} = await import("../src/sqlite.ts");
+	const { examplesInTransaction, importExamplesInTransaction, migrations } =
+		await import("../src/sqlite.ts");
 	const db = new Database(":memory:");
 	for (const sql of migrations) db.exec(sql);
 	const space = {
@@ -327,11 +324,8 @@ test("inputs that are not finite, duplicate candidates, broken base64 or labels 
 
 test("one memory can live in two spaces of the same size", async () => {
 	const { Database } = await import("bun:sqlite");
-	const {
-		examplesInTransaction,
-		importExamplesInTransaction,
-		migrations,
-	} = await import("../src/sqlite.ts");
+	const { examplesInTransaction, importExamplesInTransaction, migrations } =
+		await import("../src/sqlite.ts");
 	const db = new Database(":memory:");
 	for (const sql of migrations) db.exec(sql);
 	const a = {

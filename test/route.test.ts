@@ -82,7 +82,7 @@ const CARDS = [
 type Calls = { embed: string[]; rerank: RouteInput[] };
 
 function ports(
-	scores: Record<string, number>,
+	scores: Record<string, number> | ((text: string) => Record<string, number>),
 	options: {
 		near?: NearFeedback[];
 		cards?: RouterCard[];
@@ -99,6 +99,8 @@ function ports(
 			},
 			rerank: async (input): Promise<RouteAnswer> => {
 				calls.rerank.push(input);
+				const values =
+					typeof scores === "function" ? scores(input.text) : scores;
 				const names = input.criteria.map((c) => c.name);
 				return {
 					choice: names[0]!,
@@ -108,7 +110,7 @@ function ports(
 					scores: options.withoutScores
 						? null
 						: Object.fromEntries(
-								names.map((name) => [name, scores[name] ?? 0]),
+								names.map((name) => [name, values[name] ?? 0]),
 							),
 					model: "test",
 					headRevision: null,
@@ -282,7 +284,11 @@ test("routeStructured: one request with a reference routes the masked utterance,
 		}),
 	);
 	expect(prompts).toEqual([
-		"直前のエージェントの発言: 曲を作りました。\n発言: この音楽に合う画像を作って",
+		JSON.stringify({
+			text: "この音楽に合う画像を作って",
+			previousAgent: "曲を作りました。",
+			pending: [],
+		}),
 	]);
 	expect(calls.embed).toEqual(["これに合う画像を作って"]);
 	expect(result.parts.map((part) => part.text)).toEqual([
@@ -340,21 +346,153 @@ test("routeStructured: requests of two tools go to the pipeline stage in order",
 		["曲を作って", "music.create", []],
 		["画像も作って", "image.create", [0]],
 	]);
+	expect(result.decision.steps.map((s) => s.decision)).toEqual(
+		result.parts.map((p) => p.result.decision),
+	);
 });
 
-test("routeStructured: an answer that is not a structure of the utterance routes the whole utterance, as route()", async () => {
-	const { ports: p, calls } = ports({ "music.create": 0.9 });
+test("structured decisions keep approval/cancellation questions before dispatch, and approved operations inside steps", async () => {
+	const operations: RouteTurn["dynamic"][number][] = [
+		{
+			id: "pending.approve",
+			kind: "pending",
+			operation: "approve",
+			confirmation: "c1",
+			toolchain: "music.create",
+			passage: "承認する",
+		},
+		{
+			id: "work.cancel",
+			kind: "work",
+			operation: "cancel",
+			todo: "t1",
+			title: "作業",
+			passage: "取り消す",
+		},
+		{
+			id: "work.redirect",
+			kind: "redirect",
+			todo: "t1",
+			title: "作業",
+			toolchainId: "music.create",
+			target: "image.create",
+			passage: "切り替える",
+		},
+	];
+	for (const candidate of operations) {
+		const p = ports((text) =>
+			text === "操作して"
+				? { [candidate.id]: candidate.kind === "pending" ? 0.3 : 0.05 }
+				: { "image.create": 0.9 },
+		).ports;
+		const request = turn("操作して、画像を作って", { dynamic: [candidate] });
+		const analyze = async () =>
+			JSON.stringify({
+				requests: [
+					{ text: "操作して", target: null, inputs: [], after: [] },
+					{ text: "画像を作って", target: "画像", inputs: [], after: [0] },
+				],
+			});
+		const blocked = await routeStructured({ ...p, analyze }, request);
+		expect(blocked.parts[0]!.result.decision.to).toBe("again");
+		expect(blocked.decision).toEqual(blocked.parts[0]!.result.decision);
+		const confirmed = await routeStructured(
+			{ ...p, analyze },
+			{ ...request, asked: candidate.id },
+		);
+		expect(confirmed.decision.to).toBe("pipeline");
+		if (confirmed.decision.to !== "pipeline")
+			throw new Error("expected pipeline");
+		expect(confirmed.decision.steps[0]!.decision).toMatchObject({
+			to: "run",
+			candidate: { id: candidate.id },
+		});
+		expect(confirmed.decision.steps[1]!.after).toEqual([0]);
+	}
+});
+
+test("structured aggregation uses the conversation decision rather than its raw memory top", async () => {
+	const p = ports(
+		(text) =>
+			text === "覚えて" ? { "memory.request": 0.05 } : { "image.create": 0.9 },
+		{
+			cards: [...CARDS, card("memory.request", "general", [1, 0], "none")],
+		},
+	).ports;
 	const result = await routeStructured(
 		{
 			...p,
 			analyze: async () =>
-				'{"requests":[{"text":"音楽を作って","target":null,"inputs":[],"after":[]}]}',
+				JSON.stringify({
+					requests: [
+						{ text: "覚えて", target: null, inputs: [], after: [] },
+						{ text: "画像を作って", target: "画像", inputs: [], after: [] },
+					],
+				}),
 		},
-		turn("曲を作って"),
+		turn("覚えて、画像を作って"),
 	);
-	expect(result.structure).toBeNull();
-	expect(calls.embed).toEqual(["曲を作って"]);
-	expect(result.decision).toMatchObject({ row: 2, to: "run" });
+	expect(result.parts[0]!.result.corrected[0]!.candidate.id).toBe(
+		"memory.request",
+	);
+	expect(result.parts[0]!.result.decision.to).toBe("conversation");
+	expect(result.decision).toMatchObject({
+		to: "clarify",
+		unhandled: ["覚えて", "画像を作って"],
+	});
+});
+
+test("port failures remain visible, do not log text, and a retry recomputes the same decision", async () => {
+	const { ports: p } = ports({ "music.create": 0.9 });
+	const request = turn("曲を作って");
+	const good = await route(p, request);
+	for (const stage of ["embed", "rerank"] as const) {
+		const events: unknown[] = [];
+		await expect(
+			route(
+				{
+					...p,
+					[stage]: async () => {
+						throw new Error("dependency_failed");
+					},
+					log: (event) => events.push(event),
+				},
+				request,
+			),
+		).rejects.toThrow("dependency_failed");
+		expect(events).toEqual([]);
+		expect((await route(p, request)).decision).toEqual(good.decision);
+	}
+	await expect(
+		routeStructured(
+			{
+				...p,
+				analyze: async () => {
+					throw new Error("structure_timeout");
+				},
+			},
+			request,
+		),
+	).rejects.toThrow("structure_timeout");
+	const events: unknown[] = [];
+	await route({ ...p, log: (event) => events.push(event) }, request);
+	expect(JSON.stringify(events)).not.toContain(request.state.text);
+});
+
+test("routeStructured: malformed or out-of-source structure fails before any routing", async () => {
+	const { ports: p, calls } = ports({ "music.create": 0.9 });
+	await expect(
+		routeStructured(
+			{
+				...p,
+				analyze: async () =>
+					'{"requests":[{"text":"音楽を作って","target":null,"inputs":[],"after":[]}]}',
+			},
+			turn("曲を作って"),
+		),
+	).rejects.toThrow("structure_invalid");
+	expect(calls.embed).toEqual([]);
+	expect(calls.rerank).toEqual([]);
 });
 
 test("route: a dynamic candidate is scored by the reranker and decided by its row (an asked approval runs, row 5)", async () => {

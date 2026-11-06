@@ -1,91 +1,88 @@
 {
-  "method": "S1",
-  "n": 217,
-  "todayTop1": 189,
-  "structuredTop1": 186,
-  "maskVsToday": {
-    "ci": [
-      -3.7,
-      0.9
-    ]
-  },
-  "better": 2,
-  "worse": 5,
-  "toPipeline": 7,
-  "fallback": 70,
-  "tokens": 0,
-  "moved": [
-    {
-      "id": "f55fdf6e-dba9-4f00-8160-0fd7522fcb2d",
-      "today": "conversation.respond",
-      "now": "pipeline:read_world+model3d.studio",
-      "right": false
-    },
-    {
-      "id": "40935146-63b1-409d-b8e8-1541c270cc39",
-      "today": "conversation.respond",
-      "now": "pipeline:task.execute+music.library",
-      "right": false
-    },
-    {
-      "id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
-      "today": "conversation.respond",
-      "now": "pipeline:task.execute+music.library",
-      "right": false
-    },
-    {
-      "id": "a3c89c6e-ef1d-411b-b469-1a674e575222",
-      "today": "image.create",
-      "now": "conversation.respond",
-      "right": true
-    },
-    {
-      "id": "b43e1438-ca0f-4fb9-9305-2bd45eb3d94c",
-      "today": "web.service-search",
-      "now": "music.library",
-      "right": false
-    },
-    {
-      "id": "b0172159-d918-40b2-abe5-e39594b228e1",
-      "today": "web.service-search",
-      "now": "pipeline:web.service-search+music.library",
-      "right": false
-    },
-    {
-      "id": "2c5eda76-a2ce-4364-83c0-8f4aace2143e",
-      "today": "web.service-search",
-      "now": "music.library",
-      "right": false
-    },
-    {
-      "id": "4267264a-ca01-420a-8d4f-e0f301fc148e",
-      "today": "ui.compose",
-      "now": "conversation.respond",
-      "right": false
-    },
-    {
-      "id": "03eb3a32-45bc-44a9-a46c-9c581f2c7c8e",
-      "today": "music.create",
-      "now": "image.create",
-      "right": true
-    },
-    {
-      "id": "0d65a8a8-2fca-49b0-b34a-5f7212f3ef67",
-      "today": "web.search",
-      "now": "pipeline:browser.operate+weather.forecast",
-      "right": false
-    },
-    {
-      "id": "27f3baf6-52e8-45c1-b3a8-52549d15dd1b",
-      "today": "web.search",
-      "now": "pipeline:browser.operate+weather.forecast",
-      "right": false
-    },
-    {
-      "id": "22a88b38-654e-4c9c-b9c2-35b9dc0f5190",
-      "today": "image.create",
-      "now": "pipeline:ui.compose+image.create",
-      "right": false
-    }
-  ]
+	"method": "S1",
+	"n": 217,
+	"todayTop1": 189,
+	"structuredTop1": 186,
+	"maskVsToday": {
+		"ci": [-3.7, 0.9]
+	},
+	"better": 2,
+	"worse": 5,
+	"toPipeline": 7,
+	"fallback": 70,
+	"tokens": 0,
+	"moved": [
+		{
+			"id": "f55fdf6e-dba9-4f00-8160-0fd7522fcb2d",
+			"today": "conversation.respond",
+			"now": "pipeline:read_world+model3d.studio",
+			"right": false
+		},
+		{
+			"id": "40935146-63b1-409d-b8e8-1541c270cc39",
+			"today": "conversation.respond",
+			"now": "pipeline:task.execute+music.library",
+			"right": false
+		},
+		{
+			"id": "0c865a29-3f0b-4113-ba63-eff433f7f470",
+			"today": "conversation.respond",
+			"now": "pipeline:task.execute+music.library",
+			"right": false
+		},
+		{
+			"id": "a3c89c6e-ef1d-411b-b469-1a674e575222",
+			"today": "image.create",
+			"now": "conversation.respond",
+			"right": true
+		},
+		{
+			"id": "b43e1438-ca0f-4fb9-9305-2bd45eb3d94c",
+			"today": "web.service-search",
+			"now": "music.library",
+			"right": false
+		},
+		{
+			"id": "b0172159-d918-40b2-abe5-e39594b228e1",
+			"today": "web.service-search",
+			"now": "pipeline:web.service-search+music.library",
+			"right": false
+		},
+		{
+			"id": "2c5eda76-a2ce-4364-83c0-8f4aace2143e",
+			"today": "web.service-search",
+			"now": "music.library",
+			"right": false
+		},
+		{
+			"id": "4267264a-ca01-420a-8d4f-e0f301fc148e",
+			"today": "ui.compose",
+			"now": "conversation.respond",
+			"right": false
+		},
+		{
+			"id": "03eb3a32-45bc-44a9-a46c-9c581f2c7c8e",
+			"today": "music.create",
+			"now": "image.create",
+			"right": true
+		},
+		{
+			"id": "0d65a8a8-2fca-49b0-b34a-5f7212f3ef67",
+			"today": "web.search",
+			"now": "pipeline:browser.operate+weather.forecast",
+			"right": false
+		},
+		{
+			"id": "27f3baf6-52e8-45c1-b3a8-52549d15dd1b",
+			"today": "web.search",
+			"now": "pipeline:browser.operate+weather.forecast",
+			"right": false
+		},
+		{
+			"id": "22a88b38-654e-4c9c-b9c2-35b9dc0f5190",
+			"today": "image.create",
+			"now": "pipeline:ui.compose+image.create",
+			"right": false
+		}
+	]
 }

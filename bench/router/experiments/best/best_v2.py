@@ -24,7 +24,7 @@ import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import best_v1 as B
 C, W, CONV, M = B.C, B.W, B.CONV, 10
-VERSION = 'best-v2/2026-11-03'
+VERSION = 'best-v2/2026-11-06'
 FN2 = ['sr_p', 'sr_rank', 'sr_score', 'rr', 'rr_rank', 'rr_gap', 'fused_p', 'fused_rank', 'is_conv', 'knn', 'tbl', 'tbl_hit']
 CFGS = {
     'best-v2':      dict(knn=True, tbl=False),
@@ -80,21 +80,33 @@ def featurize(x, mem, cfg, tau, EXTRA, loo):
     tbl = B.tbl_scores(x, mem, tau, loo=loo) if cfg['tbl'] else {}
     ex = {c: EXTRA[(x['text'], c)] for c in tbl if (x['text'], c) in EXTRA}
     return cand_matrix(x, x['rr'], votes, tbl, cfg, ex)
+def fold_features(train, valid, cfg, tau, EXTRA):
+    """The memory and table threshold belong to the training side of this fold only."""
+    fold_tau = B.tune_tau([dict(key=x['key'], gold=x['gold']) for x in train]) if cfg['tbl'] else tau
+    tr = {x['id']: featurize(x, train, cfg, fold_tau, EXTRA, loo=True) for x in train}
+    va = {x['id']: featurize(x, train, cfg, fold_tau, EXTRA, loo=False) for x in valid}
+    return tr, va
+
 def fit(train, cfg, tau, EXTRA, inner_seed=0, Cfix=None):
-    X = {x['id']: featurize(x, train, cfg, tau, EXTRA, loo=True) for x in train}
-    folds = B.gkfold(train, 5, inner_seed); res = {}
+    groups = {x['grp'] for x in train}
+    if len(groups) < 2: raise ValueError('grouped CV needs at least two training groups')
+    folds = B.gkfold(train, min(5, len(groups)), inner_seed); res = {}; prepared = []
+    for f in folds:
+        fs = set(f); tr = [r for j, r in enumerate(train) if j not in fs]; va = [train[j] for j in f]
+        Xt, Xv = fold_features(tr, va, cfg, tau, EXTRA)
+        prepared.append((tr, va, Xt, Xv))
     for Cc in ((Cfix,) if Cfix else CGRID):
         ll = 0; gsc = {}; top = 0
-        for f in folds:
-            fs = set(f); tr = [r for j, r in enumerate(train) if j not in fs]
-            m = Ranker.from_sk(fit_sk(np.vstack([X[r['id']][1] for r in tr]), np.concatenate([[float(ok(r, c)) for c in X[r['id']][0]] for r in tr]), Cc))
-            for j in f:
-                r = train[j]; cs, F = X[r['id']]; p = m.proba(F)
+        for tr, va, Xt, Xv in prepared:
+            m = Ranker.from_sk(fit_sk(np.vstack([Xt[r['id']][1] for r in tr]), np.concatenate([[float(ok(r, c)) for c in Xt[r['id']][0]] for r in tr]), Cc))
+            for r in va:
+                cs, F = Xv[r['id']]; p = m.proba(F)
                 d = np.log(p + 1e-12) - np.log(1 - p + 1e-12); sm = np.exp(d - d.max()); sm /= sm.sum()   # item softmax of the decision values
                 ll += -math.log(max([sm[i] for i, c in enumerate(cs) if ok(r, c)] + [1e-6]))
                 gsc[r['id']] = route(cs, F, m)[1]; top += float(ok(r, cs[int(np.argmax(p))]))
         res[Cc] = (ll, gsc, top / len(train))
     bestC = min(res, key=lambda c: res[c][0]); gsc = res[bestC][1]
+    X = {x['id']: featurize(x, train, cfg, tau, EXTRA, loo=True) for x in train}
     model = Ranker.from_sk(fit_sk(np.vstack([X[r['id']][1] for r in train]), np.concatenate([[float(ok(r, c)) for c in X[r['id']][0]] for r in train]), bestC))
     s = sorted(gsc.values()); th = s[max(int(len(s) * 0.2) - 1, 0)] + 1e-9
     return dict(model=model, C=bestC, th=th, cv_ll={str(k): round(v[0], 2) for k, v in res.items()}, cv_top1=round(100 * res[bestC][2], 1))

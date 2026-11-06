@@ -44,6 +44,8 @@ import { openBench } from "./db.ts";
 import { fakeProvider, fillCache, httpProvider } from "./embed.ts";
 import { jsonl } from "./io.ts";
 import { reviewSheet, sheetMarkdown } from "./label.ts";
+import { auditDataset, type Lineage } from "./audit.ts";
+import { readRecords } from "./io.ts";
 import { RUN_DEFAULTS, run } from "./run.ts";
 import { registerSr, SR_DEFAULTS, type SrOptions } from "./algorithms.ts";
 
@@ -58,6 +60,9 @@ const OPTIONS = {
 	out: { type: "string" },
 	md: { type: "string" },
 	model: { type: "string" },
+	diagnostic: { type: "boolean" },
+	recheck: { type: "boolean" },
+	lineage: { type: "string" },
 	provider: { type: "string" },
 	url: { type: "string" },
 	dimension: { type: "string" },
@@ -144,6 +149,18 @@ export async function main(
 		}
 		case "label": {
 			const bench = db();
+			if (sub === "audit") {
+				const result = auditDataset(
+					loadUtterances(bench),
+					loadLabels(bench),
+					v.lineage ? readRecords<Lineage>(v.lineage) : [],
+				);
+				const text = JSON.stringify(result, null, 2);
+				if (v.out) writeFileSync(v.out, `${text}\n`);
+				print(text);
+				if (!result.ok) throw new Error("dataset_split_audit_failed");
+				return result;
+			}
 			if (sub === "import") {
 				const counts = importLabels(
 					bench,
@@ -158,6 +175,8 @@ export async function main(
 					model: v.model ?? null,
 					limit: Number(v.limit ?? 100),
 					top: 5,
+					diagnostic: v.diagnostic ?? false,
+					recheck: v.recheck ?? false,
 				});
 				writeFileSync(need(v.out, "out"), jsonl(rows));
 				if (v.md) writeFileSync(v.md, sheetMarkdown(rows));
@@ -189,7 +208,7 @@ export async function main(
 				print(JSON.stringify(stats, null, 2));
 				return stats;
 			}
-			throw new Error("usage: label export|import|stats");
+			throw new Error("usage: label export|import|stats|audit");
 		}
 		case "embed": {
 			const bench = db();

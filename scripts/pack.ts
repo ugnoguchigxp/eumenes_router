@@ -19,12 +19,16 @@ import {
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
+import { checkPython } from "../bench/python.ts";
+import { verifyPackage } from "./verify-package.ts";
+import { sourceSnapshot } from "./source-snapshot.ts";
+import { requiredTestResults } from "./test-results.ts";
 import {
 	BEST_V2_MEMORY_FORMAT,
 	BEST_V2_PARAMS,
 	contractVersions,
 	dbSchemaVersion,
-	STRUCTURE_PROMPT,
+	TURN_STRUCTURE_PROMPT,
 } from "../src/index.ts";
 
 const { values } = parseArgs({
@@ -51,15 +55,16 @@ function run(command: string[]): string {
 	return text;
 }
 
+const treeDigest = sourceSnapshot(root);
 run(["bun", "run", "typecheck"]);
 run(["bun", "run", "lint"]);
+run(["bun", "run", "format:check"]);
+checkPython();
 const tests = run(["bun", "test"]);
-const count = (what: string) =>
-	Number(new RegExp(`(\\d+) ${what}`).exec(tests)?.[1] ?? 0);
-if (count("fail") !== 0) throw new Error("tests failed");
+const counts = requiredTestResults(tests);
 // The mainline parity (both entries against the bench's records) must have run, not been skipped for want of data/.
 const parity = run(["bun", "test", "test/route-mainline.test.ts"]);
-if (!/\b2 pass\b/.test(parity) || /\b[1-9]\d* skip\b/.test(parity))
+if (requiredTestResults(parity).pass !== 2)
 	throw new Error("the mainline parity tests did not run (data/ missing?)");
 const commit = run(["git", "rev-parse", "HEAD"]).trim();
 // Changes (untracked files included) in what the package is built and checked from.
@@ -74,6 +79,9 @@ const dirty =
 		"scripts",
 		"bench",
 		"package.json",
+		"bun.lock",
+		".oxfmtrc.json",
+		".oxlintrc.json",
 		"tsconfig.json",
 		"tsconfig.build.json",
 	]).trim() !== "";
@@ -87,6 +95,19 @@ try {
 	const file = join(tmp, packed[0]!);
 	const bytes = readFileSync(file);
 	const sha256 = createHash("sha256").update(bytes).digest("hex");
+	verifyPackage(file, sha256);
+	// Negative control: an untrusted checksum must stop before extraction.
+	let refused = false;
+	try {
+		verifyPackage(file, "0".repeat(64));
+	} catch (error) {
+		if (error instanceof Error && error.message === "package_checksum_mismatch")
+			refused = true;
+		else throw error;
+	}
+	if (!refused) throw new Error("package_checksum_negative_control_failed");
+	if (sourceSnapshot(root) !== treeDigest)
+		throw new Error("source_changed_during_verification");
 	const artifact = `${pkg.name}-${pkg.version}-${sha256.slice(0, 12)}.tgz`;
 	mkdirSync(out, { recursive: true });
 	renameSync(file, join(out, artifact));
@@ -96,7 +117,7 @@ try {
 		version: pkg.version,
 		artifact,
 		sha256,
-		source: { commit, dirty },
+		source: { commit, dirty, treeDigest },
 		contractVersions,
 		dbSchemaVersion,
 		entries: {
@@ -124,7 +145,7 @@ try {
 					"model",
 					"settings",
 				],
-				structurePrompt: STRUCTURE_PROMPT.version,
+				structurePrompt: TURN_STRUCTURE_PROMPT.version,
 			},
 		},
 		bestV2: {
@@ -142,7 +163,7 @@ try {
 				note: "the host imports it (importExamplesInTransaction); made from utterances, it is not in the tarball",
 			},
 		},
-		verifiedWith: `eumenes_router: typecheck, lint, bun test ${count("pass")} pass / ${count("skip")} skip / 0 fail, the mainline parity tests ran (route and routeStructured against the bench records); ships built dist (JavaScript and declarations)`,
+		verifiedWith: `eumenes_router: typecheck, lint, format, required offline Python regressions, bun test ${counts.pass} pass / 0 skip / 0 todo / 0 fail, mainline parity ran; tarball checksum and isolated consumer on built JavaScript/SQLite passed; wrong checksum refused`,
 	};
 	writeFileSync(
 		join(out, "manifest.json"),

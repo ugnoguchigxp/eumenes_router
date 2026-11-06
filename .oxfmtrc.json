@@ -15,6 +15,9 @@
 	"ignorePatterns": [
 		"**/*.md",
 		"node_modules/**",
+		".venv/**",
+		".claude/**",
+		".serena/**",
 		"dist/**",
 		"data/**",
 		"bench/fixtures/eumenes/**"

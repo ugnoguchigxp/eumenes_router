@@ -147,11 +147,7 @@ export function routedTexts(text: string, s: Structure | null): string[] {
 	if (!first) return [];
 	if (!rest.length) {
 		if (!first.inputs.length) return [text];
-		return [
-			[...first.inputs]
-				.sort((a, b) => b.length - a.length)
-				.reduce((t, input) => t.split(input).join("これ"), text),
-		];
+		return [maskReferences(text, first)];
 	}
 	return s.requests.map((r, i) => {
 		if (!r.target || r.text !== r.target) return r.text;
@@ -162,4 +158,51 @@ export function routedTexts(text: string, s: Structure | null): string[] {
 			);
 		return next ? r.text + next.text.slice(next.target!.length) : r.text;
 	});
+}
+
+type Span = { start: number; end: number };
+
+function occurrences(text: string, part: string): Span[] {
+	if (!part) return [];
+	const spans: Span[] = [];
+	for (let at = text.indexOf(part); at >= 0; at = text.indexOf(part, at + 1))
+		spans.push({ start: at, end: at + part.length });
+	return spans;
+}
+
+/** Positions come from the LLM's literal part/target, never a language rule. */
+function maskReferences(text: string, request: StructureRequest): string {
+	let target: Span | null = null;
+	if (request.target) {
+		const parts = occurrences(text, request.text);
+		const targets = occurrences(request.text, request.target);
+		if (parts.length === 1 && targets.length === 1) {
+			target = {
+				start: parts[0]!.start + targets[0]!.start,
+				end: parts[0]!.start + targets[0]!.end,
+			};
+		} else {
+			const all = occurrences(text, request.target);
+			// The answer does not locate the target uniquely: keep the words, rather than guess.
+			if (all.length !== 1) return text;
+			target = all[0]!;
+		}
+	}
+	const spans = request.inputs
+		.flatMap((input) => occurrences(text, input))
+		.filter((s) => !target || s.end <= target.start || s.start >= target.end)
+		.sort((a, b) => a.start - b.start || b.end - a.end);
+	const merged: Span[] = [];
+	for (const span of spans) {
+		const last = merged.at(-1);
+		if (last && span.start < last.end) last.end = Math.max(last.end, span.end);
+		else merged.push({ ...span });
+	}
+	let at = 0;
+	let masked = "";
+	for (const span of merged) {
+		masked += text.slice(at, span.start) + "これ";
+		at = span.end;
+	}
+	return masked + text.slice(at);
 }

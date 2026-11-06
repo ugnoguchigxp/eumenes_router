@@ -204,8 +204,8 @@ const destination = (d: RouteDecision): string =>
 		? `pipeline:${[...new Set(d.steps.map((s) => s.candidate.id).filter((id) => id !== CONVERSATION_ID))].sort().join("+")}`
 		: d.to === "conversation"
 			? CONVERSATION_ID
-			: d.to === "ask"
-				? "ask"
+			: d.to === "ask" || d.to === "clarify"
+				? d.to
 				: d.candidate.id;
 
 test.skipIf(!ready)(
@@ -308,20 +308,49 @@ test.skipIf(!ready)(
 		for (const c of cases) {
 			const structure = c.structure as Parameters<typeof decideStructure>[1];
 			const routedTexts: string[] = [];
+			const expectedParts: string[] = [];
 			const expected = decideStructure(
 				c.text,
 				structure,
 				(t) => {
 					routedTexts.push(t);
-					return t === c.text ? c.whole : routed.get(t)!;
+					const expectedPart = t === c.text ? c.whole : routed.get(t)!;
+					expectedParts.push(expectedPart);
+					return expectedPart;
 				},
 				"mask",
 			);
 			if (!routedTexts.every((t) => s.scored(t) && s.every[t])) continue;
+			if (!c.text.trim() || Array.from(c.text).length > 2000) {
+				await expect(
+					routeStructured(
+						{ ...s.ports(), analyze: async () => JSON.stringify(structure) },
+						s.turnOf(c.text, {}, c.previousAgent),
+					),
+				).rejects.toThrow("structure_input_invalid");
+				compared++;
+				continue;
+			}
+			if (!structure) {
+				await expect(
+					routeStructured(
+						{ ...s.ports(), analyze: async () => "no structure" },
+						s.turnOf(c.text, {}, c.previousAgent),
+					),
+				).rejects.toThrow("structure_invalid");
+				compared++;
+				continue;
+			}
+			// Contract 4 keeps every real operation, including repeated tool IDs;
+			// a part whose recorded destination is conversation cannot be silently omitted.
 			const want =
-				expected.route === "pipeline"
-					? `pipeline:${[...expected.tools].sort().join("+")}`
-					: expected.tool!;
+				expectedParts.length > 1
+					? expectedParts.includes(CONVERSATION_ID)
+						? "clarify"
+						: `pipeline:${[...new Set(expectedParts)].sort().join("+")}`
+					: expected.route === "pipeline"
+						? `pipeline:${[...expected.tools].sort().join("+")}`
+						: expected.tool!;
 			const result = await routeStructured(
 				{
 					...s.ports(),

@@ -1,3919 +1,3919 @@
 {
- "model": "local:e5-small",
- "split": "dev",
- "theta": 0.95,
- "beta": 2,
- "thetaDev": 0.9177445652996856,
- "deferThreshold": {
-  "ruri": 0.1271141320076056,
-  "larm": 0.31152535759246675
- },
- "table": null,
- "counts": {
-  "test": 177,
-  "variants": 1215,
-  "controls": 40
- },
- "configs": {
-  "sr@β1": {
-   "corrections": 41,
-   "exactFront": {
-    "rate": 36.6,
-    "lo": 22,
-    "hi": 51.2,
-    "n": 41
-   },
-   "exact": {
-    "rate": 36.6,
-    "lo": 22,
-    "hi": 51.2,
-    "n": 41
-   },
-   "testTop1": {
-    "before": {
-     "rate": 76.8,
-     "lo": 70.1,
-     "hi": 83.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 85.3,
-     "lo": 79.7,
-     "hi": 90.4,
-     "n": 177
-    },
-    "diff": {
-     "d": 8.5,
-     "lo": 4,
-     "hi": 13
-    }
-   },
-   "rest": {
-    "n": 136,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 136
-    },
-    "after": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 136
-    },
-    "misfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 136
-    },
-    "frontChanged": 0,
-    "frontMisfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 136
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 720
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 9,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 0,
-    "deferAfter": 0
-   },
-   "deferRate": {
-    "before": 0,
-    "after": 0
-   }
-  },
-  "sr@β1.5": {
-   "corrections": 41,
-   "exactFront": {
-    "rate": 43.9,
-    "lo": 29.3,
-    "hi": 58.5,
-    "n": 41
-   },
-   "exact": {
-    "rate": 43.9,
-    "lo": 29.3,
-    "hi": 58.5,
-    "n": 41
-   },
-   "testTop1": {
-    "before": {
-     "rate": 76.8,
-     "lo": 70.1,
-     "hi": 83.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 85.9,
-     "lo": 80.2,
-     "hi": 91,
-     "n": 177
-    },
-    "diff": {
-     "d": 9,
-     "lo": 4,
-     "hi": 14.1
-    }
-   },
-   "rest": {
-    "n": 136,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 136
-    },
-    "after": {
-     "rate": 98.5,
-     "lo": 95.6,
-     "hi": 100,
-     "n": 136
-    },
-    "misfire": {
-     "rate": 1.5,
-     "lo": 0,
-     "hi": 4.4,
-     "n": 136
-    },
-    "frontChanged": 2,
-    "frontMisfire": {
-     "rate": 1.5,
-     "lo": 0,
-     "hi": 4.4,
-     "n": 136
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 0.1,
-     "lo": 0,
-     "hi": 0.4,
-     "n": 720
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 9,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 0,
-    "deferAfter": 0
-   },
-   "deferRate": {
-    "before": 0,
-    "after": 0
-   }
-  },
-  "sr@β2": {
-   "corrections": 41,
-   "exactFront": {
-    "rate": 51.2,
-    "lo": 36.6,
-    "hi": 68.3,
-    "n": 41
-   },
-   "exact": {
-    "rate": 51.2,
-    "lo": 36.6,
-    "hi": 68.3,
-    "n": 41
-   },
-   "testTop1": {
-    "before": {
-     "rate": 76.8,
-     "lo": 70.1,
-     "hi": 83.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 85.3,
-     "lo": 78.5,
-     "hi": 89.3,
-     "n": 177
-    },
-    "diff": {
-     "d": 8.5,
-     "lo": 2.3,
-     "hi": 13.6
-    }
-   },
-   "rest": {
-    "n": 136,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 136
-    },
-    "after": {
-     "rate": 95.6,
-     "lo": 91.9,
-     "hi": 97.8,
-     "n": 136
-    },
-    "misfire": {
-     "rate": 4.4,
-     "lo": 2.2,
-     "hi": 8.1,
-     "n": 136
-    },
-    "frontChanged": 6,
-    "frontMisfire": {
-     "rate": 4.4,
-     "lo": 2.2,
-     "hi": 8.1,
-     "n": 136
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 0.1,
-     "lo": 0,
-     "hi": 0.4,
-     "n": 720
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 9,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 0,
-    "deferAfter": 0
-   },
-   "deferRate": {
-    "before": 0,
-    "after": 0
-   }
-  },
-  "sr@β3": {
-   "corrections": 41,
-   "exactFront": {
-    "rate": 51.2,
-    "lo": 36.6,
-    "hi": 68.3,
-    "n": 41
-   },
-   "exact": {
-    "rate": 51.2,
-    "lo": 36.6,
-    "hi": 68.3,
-    "n": 41
-   },
-   "testTop1": {
-    "before": {
-     "rate": 76.8,
-     "lo": 70.1,
-     "hi": 83.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 80.8,
-     "lo": 72.9,
-     "hi": 85.9,
-     "n": 177
-    },
-    "diff": {
-     "d": 4,
-     "lo": -3.4,
-     "hi": 10.7
-    }
-   },
-   "rest": {
-    "n": 136,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 136
-    },
-    "after": {
-     "rate": 89.7,
-     "lo": 84.6,
-     "hi": 94.1,
-     "n": 136
-    },
-    "misfire": {
-     "rate": 10.3,
-     "lo": 5.9,
-     "hi": 15.4,
-     "n": 136
-    },
-    "frontChanged": 14,
-    "frontMisfire": {
-     "rate": 10.3,
-     "lo": 5.9,
-     "hi": 15.4,
-     "n": 136
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 0.6,
-     "lo": 0.3,
-     "hi": 1,
-     "n": 720
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 9,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 0,
-    "deferAfter": 0
-   },
-   "deferRate": {
-    "before": 0,
-    "after": 0
-   }
-  },
-  "sr@β5": {
-   "corrections": 41,
-   "exactFront": {
-    "rate": 56.1,
-    "lo": 41.5,
-    "hi": 73.2,
-    "n": 41
-   },
-   "exact": {
-    "rate": 56.1,
-    "lo": 41.5,
-    "hi": 73.2,
-    "n": 41
-   },
-   "testTop1": {
-    "before": {
-     "rate": 76.8,
-     "lo": 70.1,
-     "hi": 83.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 81.4,
-     "lo": 74,
-     "hi": 87,
-     "n": 177
-    },
-    "diff": {
-     "d": 4.5,
-     "lo": -2.8,
-     "hi": 12.4
-    }
-   },
-   "rest": {
-    "n": 136,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 136
-    },
-    "after": {
-     "rate": 89,
-     "lo": 83.8,
-     "hi": 93.4,
-     "n": 136
-    },
-    "misfire": {
-     "rate": 11,
-     "lo": 6.6,
-     "hi": 16.2,
-     "n": 136
-    },
-    "frontChanged": 15,
-    "frontMisfire": {
-     "rate": 11,
-     "lo": 6.6,
-     "hi": 16.2,
-     "n": 136
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 0.7,
-     "lo": 0.3,
-     "hi": 1.3,
-     "n": 720
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 9,
-    "frontChanged": 3,
-    "frontMisfire": 2,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 0,
-    "deferAfter": 0
-   },
-   "deferRate": {
-    "before": 0,
-    "after": 0
-   }
-  },
-  "ruri@β1": {
-   "corrections": 33,
-   "exactFront": {
-    "rate": 46.4,
-    "lo": 28.6,
-    "hi": 64.3,
-    "n": 28
-   },
-   "exact": {
-    "rate": 51.5,
-    "lo": 36.4,
-    "hi": 69.7,
-    "n": 33
-   },
-   "testTop1": {
-    "before": {
-     "rate": 81.4,
-     "lo": 75.7,
-     "hi": 87.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 84.7,
-     "lo": 78,
-     "hi": 89.8,
-     "n": 177
-    },
-    "diff": {
-     "d": 3.4,
-     "lo": -3.4,
-     "hi": 9.6
-    }
-   },
-   "rest": {
-    "n": 144,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 144
-    },
-    "after": {
-     "rate": 92.4,
-     "lo": 88.9,
-     "hi": 95.8,
-     "n": 144
-    },
-    "misfire": {
-     "rate": 7.6,
-     "lo": 4.2,
-     "hi": 11.1,
-     "n": 144
-    },
-    "frontChanged": 3,
-    "frontMisfire": {
-     "rate": 2.3,
-     "lo": 0,
-     "hi": 4.5,
-     "n": 133
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 1.6,
-     "lo": 0.7,
-     "hi": 2.4,
-     "n": 877
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 12,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 6,
-    "deferAfter": 6
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 23.2
-   }
-  },
-  "ruri@β1.5": {
-   "corrections": 33,
-   "exactFront": {
-    "rate": 46.4,
-    "lo": 28.6,
-    "hi": 64.3,
-    "n": 28
-   },
-   "exact": {
-    "rate": 51.5,
-    "lo": 36.4,
-    "hi": 69.7,
-    "n": 33
-   },
-   "testTop1": {
-    "before": {
-     "rate": 81.4,
-     "lo": 75.7,
-     "hi": 87.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 80.8,
-     "lo": 72.3,
-     "hi": 85.9,
-     "n": 177
-    },
-    "diff": {
-     "d": -0.6,
-     "lo": -9.6,
-     "hi": 6.2
-    }
-   },
-   "rest": {
-    "n": 144,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 144
-    },
-    "after": {
-     "rate": 87.5,
-     "lo": 81.9,
-     "hi": 92.4,
-     "n": 144
-    },
-    "misfire": {
-     "rate": 12.5,
-     "lo": 8.3,
-     "hi": 18.1,
-     "n": 144
-    },
-    "frontChanged": 10,
-    "frontMisfire": {
-     "rate": 7.5,
-     "lo": 3.8,
-     "hi": 11.3,
-     "n": 133
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 1.8,
-     "lo": 0.8,
-     "hi": 2.7,
-     "n": 877
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 12,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 6,
-    "deferAfter": 6
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 22.6
-   }
-  },
-  "ruri@β2": {
-   "corrections": 33,
-   "exactFront": {
-    "rate": 46.4,
-    "lo": 28.6,
-    "hi": 64.3,
-    "n": 28
-   },
-   "exact": {
-    "rate": 51.5,
-    "lo": 36.4,
-    "hi": 69.7,
-    "n": 33
-   },
-   "testTop1": {
-    "before": {
-     "rate": 81.4,
-     "lo": 75.7,
-     "hi": 87.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 80.8,
-     "lo": 72.3,
-     "hi": 85.9,
-     "n": 177
-    },
-    "diff": {
-     "d": -0.6,
-     "lo": -9.6,
-     "hi": 6.2
-    }
-   },
-   "rest": {
-    "n": 144,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 144
-    },
-    "after": {
-     "rate": 87.5,
-     "lo": 81.9,
-     "hi": 92.4,
-     "n": 144
-    },
-    "misfire": {
-     "rate": 12.5,
-     "lo": 8.3,
-     "hi": 18.1,
-     "n": 144
-    },
-    "frontChanged": 10,
-    "frontMisfire": {
-     "rate": 7.5,
-     "lo": 3.8,
-     "hi": 11.3,
-     "n": 133
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 2.1,
-     "lo": 1,
-     "hi": 2.9,
-     "n": 877
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 12,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 6,
-    "deferAfter": 7
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 22.6
-   }
-  },
-  "ruri@β3": {
-   "corrections": 33,
-   "exactFront": {
-    "rate": 46.4,
-    "lo": 28.6,
-    "hi": 64.3,
-    "n": 28
-   },
-   "exact": {
-    "rate": 51.5,
-    "lo": 36.4,
-    "hi": 69.7,
-    "n": 33
-   },
-   "testTop1": {
-    "before": {
-     "rate": 81.4,
-     "lo": 75.7,
-     "hi": 87.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 80.8,
-     "lo": 72.3,
-     "hi": 85.9,
-     "n": 177
-    },
-    "diff": {
-     "d": -0.6,
-     "lo": -9.6,
-     "hi": 6.2
-    }
-   },
-   "rest": {
-    "n": 144,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 144
-    },
-    "after": {
-     "rate": 87.5,
-     "lo": 81.9,
-     "hi": 92.4,
-     "n": 144
-    },
-    "misfire": {
-     "rate": 12.5,
-     "lo": 8.3,
-     "hi": 18.1,
-     "n": 144
-    },
-    "frontChanged": 11,
-    "frontMisfire": {
-     "rate": 8.3,
-     "lo": 3.8,
-     "hi": 12,
-     "n": 133
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 2.4,
-     "lo": 1,
-     "hi": 3.2,
-     "n": 877
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 12,
-    "frontChanged": 3,
-    "frontMisfire": 1,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 6,
-    "deferAfter": 7
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 23.2
-   }
-  },
-  "ruri@β5": {
-   "corrections": 33,
-   "exactFront": {
-    "rate": 46.4,
-    "lo": 28.6,
-    "hi": 64.3,
-    "n": 28
-   },
-   "exact": {
-    "rate": 51.5,
-    "lo": 36.4,
-    "hi": 69.7,
-    "n": 33
-   },
-   "testTop1": {
-    "before": {
-     "rate": 81.4,
-     "lo": 75.7,
-     "hi": 87.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 79.7,
-     "lo": 71.2,
-     "hi": 85.3,
-     "n": 177
-    },
-    "diff": {
-     "d": -1.7,
-     "lo": -10.7,
-     "hi": 5.1
-    }
-   },
-   "rest": {
-    "n": 144,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 144
-    },
-    "after": {
-     "rate": 86.1,
-     "lo": 80.6,
-     "hi": 91,
-     "n": 144
-    },
-    "misfire": {
-     "rate": 13.9,
-     "lo": 9,
-     "hi": 19.4,
-     "n": 144
-    },
-    "frontChanged": 20,
-    "frontMisfire": {
-     "rate": 15,
-     "lo": 9.8,
-     "hi": 21.1,
-     "n": 133
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 2.7,
-     "lo": 1.4,
-     "hi": 3.8,
-     "n": 877
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 12,
-    "frontChanged": 3,
-    "frontMisfire": 1,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 6,
-    "deferAfter": 6
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 22.6
-   }
-  },
-  "larm@β1": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 50,
-    "lo": 27.8,
-    "hi": 72.2,
-    "n": 18
-   },
-   "exact": {
-    "rate": 57.1,
-    "lo": 38.1,
-    "hi": 81,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 94.9,
-     "lo": 91.5,
-     "hi": 97.7,
-     "n": 177
-    },
-    "diff": {
-     "d": 6.8,
-     "lo": 3.4,
-     "hi": 10.2
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 156
-    },
-    "frontChanged": 0,
-    "frontMisfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 0.7,
-     "lo": 0.3,
-     "hi": 1.1,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 14
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 18.1
-   }
-  },
-  "larm@β1.5": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 50,
-    "lo": 27.8,
-    "hi": 72.2,
-    "n": 18
-   },
-   "exact": {
-    "rate": 61.9,
-    "lo": 42.9,
-    "hi": 81,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 95.5,
-     "lo": 92.1,
-     "hi": 97.7,
-     "n": 177
-    },
-    "diff": {
-     "d": 7.3,
-     "lo": 4.5,
-     "hi": 10.7
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 156
-    },
-    "frontChanged": 0,
-    "frontMisfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 0.8,
-     "lo": 0.3,
-     "hi": 1.4,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 14
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 17.5
-   }
-  },
-  "larm@β2": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 50,
-    "lo": 27.8,
-    "hi": 72.2,
-    "n": 18
-   },
-   "exact": {
-    "rate": 61.9,
-    "lo": 42.9,
-    "hi": 81,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 94.4,
-     "lo": 91,
-     "hi": 97.2,
-     "n": 177
-    },
-    "diff": {
-     "d": 6.2,
-     "lo": 2.8,
-     "hi": 10.2
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 98.7,
-     "lo": 96.8,
-     "hi": 100,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 1.3,
-     "lo": 0,
-     "hi": 3.2,
-     "n": 156
-    },
-    "frontChanged": 0,
-    "frontMisfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 1.1,
-     "lo": 0.9,
-     "hi": 2.1,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 14
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 19.8
-   }
-  },
-  "larm@β3": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 50,
-    "lo": 27.8,
-    "hi": 72.2,
-    "n": 18
-   },
-   "exact": {
-    "rate": 61.9,
-    "lo": 42.9,
-    "hi": 81,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 93.2,
-     "lo": 89.3,
-     "hi": 96,
-     "n": 177
-    },
-    "diff": {
-     "d": 5.1,
-     "lo": 1.7,
-     "hi": 9.6
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 97.4,
-     "lo": 94.9,
-     "hi": 99.4,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 2.6,
-     "lo": 0.6,
-     "hi": 5.1,
-     "n": 156
-    },
-    "frontChanged": 3,
-    "frontMisfire": {
-     "rate": 2.1,
-     "lo": 0,
-     "hi": 4.3,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 1.5,
-     "lo": 1.1,
-     "hi": 2.9,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 2,
-    "frontMisfire": 1,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 14
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 19.8
-   }
-  },
-  "larm@β5": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 50,
-    "lo": 27.8,
-    "hi": 72.2,
-    "n": 18
-   },
-   "exact": {
-    "rate": 61.9,
-    "lo": 42.9,
-    "hi": 81,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 90.4,
-     "lo": 86.4,
-     "hi": 93.8,
-     "n": 177
-    },
-    "diff": {
-     "d": 2.3,
-     "lo": -2.3,
-     "hi": 7.3
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 94.2,
-     "lo": 89.7,
-     "hi": 98.1,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 5.8,
-     "lo": 1.9,
-     "hi": 10.3,
-     "n": 156
-    },
-    "frontChanged": 9,
-    "frontMisfire": {
-     "rate": 6.4,
-     "lo": 2.8,
-     "hi": 10.6,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 3,
-     "lo": 2,
-     "hi": 4.7,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 2,
-    "frontMisfire": 1,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 15
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 18.1
-   }
-  },
-  "ruri+pin@β1": {
-   "corrections": 33,
-   "exactFront": {
-    "rate": 46.4,
-    "lo": 28.6,
-    "hi": 64.3,
-    "n": 28
-   },
-   "exact": {
-    "rate": 54.5,
-    "lo": 39.4,
-    "hi": 72.7,
-    "n": 33
-   },
-   "testTop1": {
-    "before": {
-     "rate": 81.4,
-     "lo": 75.7,
-     "hi": 87.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 87.6,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "diff": {
-     "d": 6.2,
-     "lo": 0,
-     "hi": 11.3
-    }
-   },
-   "rest": {
-    "n": 144,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 144
-    },
-    "after": {
-     "rate": 95.1,
-     "lo": 90.3,
-     "hi": 97.9,
-     "n": 144
-    },
-    "misfire": {
-     "rate": 4.9,
-     "lo": 2.1,
-     "hi": 9.7,
-     "n": 144
-    },
-    "frontChanged": 3,
-    "frontMisfire": {
-     "rate": 2.3,
-     "lo": 0,
-     "hi": 4.5,
-     "n": 133
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 3.1,
-     "lo": 2.1,
-     "hi": 4,
-     "n": 877
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 12,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 6,
-    "deferAfter": 5
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 9.6
-   }
-  },
-  "ruri+pin@β1.5": {
-   "corrections": 33,
-   "exactFront": {
-    "rate": 46.4,
-    "lo": 28.6,
-    "hi": 64.3,
-    "n": 28
-   },
-   "exact": {
-    "rate": 54.5,
-    "lo": 39.4,
-    "hi": 72.7,
-    "n": 33
-   },
-   "testTop1": {
-    "before": {
-     "rate": 81.4,
-     "lo": 75.7,
-     "hi": 87.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 83.6,
-     "lo": 77.4,
-     "hi": 89.3,
-     "n": 177
-    },
-    "diff": {
-     "d": 2.3,
-     "lo": -4.5,
-     "hi": 8.5
-    }
-   },
-   "rest": {
-    "n": 144,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 144
-    },
-    "after": {
-     "rate": 90.3,
-     "lo": 85.4,
-     "hi": 94.4,
-     "n": 144
-    },
-    "misfire": {
-     "rate": 9.7,
-     "lo": 5.6,
-     "hi": 14.6,
-     "n": 144
-    },
-    "frontChanged": 10,
-    "frontMisfire": {
-     "rate": 7.5,
-     "lo": 3.8,
-     "hi": 11.3,
-     "n": 133
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 3.2,
-     "lo": 2.1,
-     "hi": 4.2,
-     "n": 877
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 12,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 6,
-    "deferAfter": 5
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 9.6
-   }
-  },
-  "ruri+pin@β2": {
-   "corrections": 33,
-   "exactFront": {
-    "rate": 46.4,
-    "lo": 28.6,
-    "hi": 64.3,
-    "n": 28
-   },
-   "exact": {
-    "rate": 54.5,
-    "lo": 39.4,
-    "hi": 72.7,
-    "n": 33
-   },
-   "testTop1": {
-    "before": {
-     "rate": 81.4,
-     "lo": 75.7,
-     "hi": 87.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 83.6,
-     "lo": 77.4,
-     "hi": 89.3,
-     "n": 177
-    },
-    "diff": {
-     "d": 2.3,
-     "lo": -4.5,
-     "hi": 8.5
-    }
-   },
-   "rest": {
-    "n": 144,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 144
-    },
-    "after": {
-     "rate": 90.3,
-     "lo": 85.4,
-     "hi": 94.4,
-     "n": 144
-    },
-    "misfire": {
-     "rate": 9.7,
-     "lo": 5.6,
-     "hi": 14.6,
-     "n": 144
-    },
-    "frontChanged": 10,
-    "frontMisfire": {
-     "rate": 7.5,
-     "lo": 3.8,
-     "hi": 11.3,
-     "n": 133
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 3.3,
-     "lo": 2.2,
-     "hi": 4.4,
-     "n": 877
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 12,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 6,
-    "deferAfter": 5
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 9.6
-   }
-  },
-  "ruri+pin@β3": {
-   "corrections": 33,
-   "exactFront": {
-    "rate": 46.4,
-    "lo": 28.6,
-    "hi": 64.3,
-    "n": 28
-   },
-   "exact": {
-    "rate": 54.5,
-    "lo": 39.4,
-    "hi": 72.7,
-    "n": 33
-   },
-   "testTop1": {
-    "before": {
-     "rate": 81.4,
-     "lo": 75.7,
-     "hi": 87.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 83.1,
-     "lo": 76.8,
-     "hi": 89.3,
-     "n": 177
-    },
-    "diff": {
-     "d": 1.7,
-     "lo": -5.1,
-     "hi": 8.5
-    }
-   },
-   "rest": {
-    "n": 144,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 144
-    },
-    "after": {
-     "rate": 89.6,
-     "lo": 84.7,
-     "hi": 93.8,
-     "n": 144
-    },
-    "misfire": {
-     "rate": 10.4,
-     "lo": 6.3,
-     "hi": 15.3,
-     "n": 144
-    },
-    "frontChanged": 11,
-    "frontMisfire": {
-     "rate": 8.3,
-     "lo": 3.8,
-     "hi": 12,
-     "n": 133
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 3.8,
-     "lo": 2.3,
-     "hi": 4.8,
-     "n": 877
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 12,
-    "frontChanged": 3,
-    "frontMisfire": 1,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 6,
-    "deferAfter": 5
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 9.6
-   }
-  },
-  "ruri+pin@β5": {
-   "corrections": 33,
-   "exactFront": {
-    "rate": 46.4,
-    "lo": 28.6,
-    "hi": 64.3,
-    "n": 28
-   },
-   "exact": {
-    "rate": 54.5,
-    "lo": 39.4,
-    "hi": 72.7,
-    "n": 33
-   },
-   "testTop1": {
-    "before": {
-     "rate": 81.4,
-     "lo": 75.7,
-     "hi": 87.6,
-     "n": 177
-    },
-    "after": {
-     "rate": 78,
-     "lo": 70.1,
-     "hi": 83.6,
-     "n": 177
-    },
-    "diff": {
-     "d": -3.4,
-     "lo": -12.4,
-     "hi": 3.4
-    }
-   },
-   "rest": {
-    "n": 144,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 144
-    },
-    "after": {
-     "rate": 83.3,
-     "lo": 77.1,
-     "hi": 88.2,
-     "n": 144
-    },
-    "misfire": {
-     "rate": 16.7,
-     "lo": 11.8,
-     "hi": 22.9,
-     "n": 144
-    },
-    "frontChanged": 20,
-    "frontMisfire": {
-     "rate": 15,
-     "lo": 9.8,
-     "hi": 21.1,
-     "n": 133
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 4.1,
-     "lo": 2.6,
-     "hi": 5.5,
-     "n": 877
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 12,
-    "frontChanged": 3,
-    "frontMisfire": 1,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 6,
-    "deferAfter": 5
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 9.6
-   }
-  },
-  "larm+pin@β1": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 50,
-    "lo": 27.8,
-    "hi": 72.2,
-    "n": 18
-   },
-   "exact": {
-    "rate": 57.1,
-    "lo": 38.1,
-    "hi": 76.2,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 93.2,
-     "lo": 89.3,
-     "hi": 96,
-     "n": 177
-    },
-    "diff": {
-     "d": 5.1,
-     "lo": 1.1,
-     "hi": 9
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 98.1,
-     "lo": 94.9,
-     "hi": 99.4,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 1.9,
-     "lo": 0.6,
-     "hi": 5.1,
-     "n": 156
-    },
-    "frontChanged": 0,
-    "frontMisfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 1.2,
-     "lo": 0.6,
-     "hi": 1.8,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 13
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 12.4
-   }
-  },
-  "larm+pin@β1.5": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 50,
-    "lo": 27.8,
-    "hi": 72.2,
-    "n": 18
-   },
-   "exact": {
-    "rate": 57.1,
-    "lo": 38.1,
-    "hi": 76.2,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 93.2,
-     "lo": 89.3,
-     "hi": 96,
-     "n": 177
-    },
-    "diff": {
-     "d": 5.1,
-     "lo": 1.1,
-     "hi": 9
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 98.1,
-     "lo": 94.9,
-     "hi": 99.4,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 1.9,
-     "lo": 0.6,
-     "hi": 5.1,
-     "n": 156
-    },
-    "frontChanged": 0,
-    "frontMisfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 1.3,
-     "lo": 0.8,
-     "hi": 2,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 13
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 12.4
-   }
-  },
-  "larm+pin@β2": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 50,
-    "lo": 27.8,
-    "hi": 72.2,
-    "n": 18
-   },
-   "exact": {
-    "rate": 57.1,
-    "lo": 38.1,
-    "hi": 76.2,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 93.2,
-     "lo": 89.3,
-     "hi": 96,
-     "n": 177
-    },
-    "diff": {
-     "d": 5.1,
-     "lo": 1.1,
-     "hi": 9
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 98.1,
-     "lo": 94.9,
-     "hi": 99.4,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 1.9,
-     "lo": 0.6,
-     "hi": 5.1,
-     "n": 156
-    },
-    "frontChanged": 0,
-    "frontMisfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 1.4,
-     "lo": 1,
-     "hi": 2.2,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 13
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 12.4
-   }
-  },
-  "larm+pin@β3": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 50,
-    "lo": 27.8,
-    "hi": 72.2,
-    "n": 18
-   },
-   "exact": {
-    "rate": 57.1,
-    "lo": 38.1,
-    "hi": 76.2,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 91.5,
-     "lo": 87.6,
-     "hi": 94.9,
-     "n": 177
-    },
-    "diff": {
-     "d": 3.4,
-     "lo": 0,
-     "hi": 7.9
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 96.2,
-     "lo": 92.3,
-     "hi": 98.7,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 3.8,
-     "lo": 1.3,
-     "hi": 7.7,
-     "n": 156
-    },
-    "frontChanged": 3,
-    "frontMisfire": {
-     "rate": 2.1,
-     "lo": 0,
-     "hi": 4.3,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 2.2,
-     "lo": 1.7,
-     "hi": 3.3,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 2,
-    "frontMisfire": 1,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 13
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 12.4
-   }
-  },
-  "larm+pin@β5": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 50,
-    "lo": 27.8,
-    "hi": 72.2,
-    "n": 18
-   },
-   "exact": {
-    "rate": 57.1,
-    "lo": 38.1,
-    "hi": 76.2,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 88.1,
-     "lo": 83.6,
-     "hi": 92.1,
-     "n": 177
-    },
-    "diff": {
-     "d": 0,
-     "lo": -4.5,
-     "hi": 5.6
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 92.3,
-     "lo": 87.2,
-     "hi": 96.2,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 7.7,
-     "lo": 3.8,
-     "hi": 12.8,
-     "n": 156
-    },
-    "frontChanged": 9,
-    "frontMisfire": {
-     "rate": 6.4,
-     "lo": 2.8,
-     "hi": 10.6,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 3.4,
-     "lo": 2.7,
-     "hi": 5,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 2,
-    "frontMisfire": 1,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 13
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 12.4
-   }
-  },
-  "larm+inj@β1": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 72.2,
-    "lo": 50,
-    "hi": 94.4,
-    "n": 18
-   },
-   "exact": {
-    "rate": 66.7,
-    "lo": 47.6,
-    "hi": 85.7,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 96,
-     "lo": 93.2,
-     "hi": 98.9,
-     "n": 177
-    },
-    "diff": {
-     "d": 7.9,
-     "lo": 4.5,
-     "hi": 11.9
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 156
-    },
-    "frontChanged": 3,
-    "frontMisfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 0.6,
-     "lo": 0.2,
-     "hi": 1.1,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 14
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 15.3
-   }
-  },
-  "larm+inj@β1.5": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 72.2,
-    "lo": 50,
-    "hi": 94.4,
-    "n": 18
-   },
-   "exact": {
-    "rate": 76.2,
-    "lo": 57.1,
-    "hi": 95.2,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 97.2,
-     "lo": 94.9,
-     "hi": 99.4,
-     "n": 177
-    },
-    "diff": {
-     "d": 9,
-     "lo": 5.1,
-     "hi": 13.6
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 156
-    },
-    "frontChanged": 3,
-    "frontMisfire": {
-     "rate": 0,
-     "lo": 0,
-     "hi": 0,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 0.7,
-     "lo": 0.3,
-     "hi": 1.3,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 14
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 13.6
-   }
-  },
-  "larm+inj@β2": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 72.2,
-    "lo": 50,
-    "hi": 94.4,
-    "n": 18
-   },
-   "exact": {
-    "rate": 76.2,
-    "lo": 57.1,
-    "hi": 95.2,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 95.5,
-     "lo": 92.7,
-     "hi": 98.3,
-     "n": 177
-    },
-    "diff": {
-     "d": 7.3,
-     "lo": 3.4,
-     "hi": 12.4
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 98.1,
-     "lo": 95.5,
-     "hi": 100,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 1.9,
-     "lo": 0,
-     "hi": 4.5,
-     "n": 156
-    },
-    "frontChanged": 4,
-    "frontMisfire": {
-     "rate": 0.7,
-     "lo": 0,
-     "hi": 2.8,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 1,
-     "lo": 0.7,
-     "hi": 2,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 1,
-    "frontMisfire": 0,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 14
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 16.4
-   }
-  },
-  "larm+inj@β3": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 72.2,
-    "lo": 50,
-    "hi": 94.4,
-    "n": 18
-   },
-   "exact": {
-    "rate": 76.2,
-    "lo": 57.1,
-    "hi": 95.2,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 94.9,
-     "lo": 92.1,
-     "hi": 97.7,
-     "n": 177
-    },
-    "diff": {
-     "d": 6.8,
-     "lo": 2.8,
-     "hi": 11.9
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 97.4,
-     "lo": 94.9,
-     "hi": 99.4,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 2.6,
-     "lo": 0.6,
-     "hi": 5.1,
-     "n": 156
-    },
-    "frontChanged": 8,
-    "frontMisfire": {
-     "rate": 3.5,
-     "lo": 0.7,
-     "hi": 6.4,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 1.5,
-     "lo": 1.1,
-     "hi": 2.8,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 2,
-    "frontMisfire": 1,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 15
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 15.3
-   }
-  },
-  "larm+inj@β5": {
-   "corrections": 21,
-   "exactFront": {
-    "rate": 72.2,
-    "lo": 50,
-    "hi": 94.4,
-    "n": 18
-   },
-   "exact": {
-    "rate": 76.2,
-    "lo": 57.1,
-    "hi": 95.2,
-    "n": 21
-   },
-   "testTop1": {
-    "before": {
-     "rate": 88.1,
-     "lo": 83.1,
-     "hi": 92.1,
-     "n": 177
-    },
-    "after": {
-     "rate": 87.6,
-     "lo": 83.6,
-     "hi": 91.5,
-     "n": 177
-    },
-    "diff": {
-     "d": -0.6,
-     "lo": -4.5,
-     "hi": 5.6
-    }
-   },
-   "rest": {
-    "n": 156,
-    "before": {
-     "rate": 100,
-     "lo": 100,
-     "hi": 100,
-     "n": 156
-    },
-    "after": {
-     "rate": 89.1,
-     "lo": 83.3,
-     "hi": 94.2,
-     "n": 156
-    },
-    "misfire": {
-     "rate": 10.9,
-     "lo": 5.8,
-     "hi": 16.7,
-     "n": 156
-    },
-    "frontChanged": 20,
-    "frontMisfire": {
-     "rate": 12.1,
-     "lo": 7.1,
-     "hi": 18.4,
-     "n": 141
-    }
-   },
-   "variants": {
-    "n": 0,
-    "sources": 0,
-    "misfireOther": {
-     "rate": 3,
-     "lo": 2.2,
-     "hi": 4.5,
-     "n": 1044
-    },
-    "before": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "after": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "fix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontBefore": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontAfter": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "frontFix": {
-     "rate": null,
-     "lo": null,
-     "hi": null,
-     "n": 0
-    },
-    "inCandidates": 0,
-    "wrongBefore": 0,
-    "nearHit": null,
-    "byType": {}
-   },
-   "controls": {
-    "n": 40,
-    "nearHit": 7,
-    "frontChanged": 3,
-    "frontMisfire": 2,
-    "frontBefore": {
-     "rate": 77.5,
-     "lo": 62.5,
-     "hi": 90,
-     "n": 40
-    },
-    "deferBefore": 14,
-    "deferAfter": 14
-   },
-   "deferRate": {
-    "before": 19.8,
-    "after": 13.6
-   }
-  }
- }
+	"model": "local:e5-small",
+	"split": "dev",
+	"theta": 0.95,
+	"beta": 2,
+	"thetaDev": 0.9177445652996856,
+	"deferThreshold": {
+		"ruri": 0.1271141320076056,
+		"larm": 0.31152535759246675
+	},
+	"table": null,
+	"counts": {
+		"test": 177,
+		"variants": 1215,
+		"controls": 40
+	},
+	"configs": {
+		"sr@β1": {
+			"corrections": 41,
+			"exactFront": {
+				"rate": 36.6,
+				"lo": 22,
+				"hi": 51.2,
+				"n": 41
+			},
+			"exact": {
+				"rate": 36.6,
+				"lo": 22,
+				"hi": 51.2,
+				"n": 41
+			},
+			"testTop1": {
+				"before": {
+					"rate": 76.8,
+					"lo": 70.1,
+					"hi": 83.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 85.3,
+					"lo": 79.7,
+					"hi": 90.4,
+					"n": 177
+				},
+				"diff": {
+					"d": 8.5,
+					"lo": 4,
+					"hi": 13
+				}
+			},
+			"rest": {
+				"n": 136,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 136
+				},
+				"after": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 136
+				},
+				"misfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 136
+				},
+				"frontChanged": 0,
+				"frontMisfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 136
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 720
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 9,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 0,
+				"deferAfter": 0
+			},
+			"deferRate": {
+				"before": 0,
+				"after": 0
+			}
+		},
+		"sr@β1.5": {
+			"corrections": 41,
+			"exactFront": {
+				"rate": 43.9,
+				"lo": 29.3,
+				"hi": 58.5,
+				"n": 41
+			},
+			"exact": {
+				"rate": 43.9,
+				"lo": 29.3,
+				"hi": 58.5,
+				"n": 41
+			},
+			"testTop1": {
+				"before": {
+					"rate": 76.8,
+					"lo": 70.1,
+					"hi": 83.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 85.9,
+					"lo": 80.2,
+					"hi": 91,
+					"n": 177
+				},
+				"diff": {
+					"d": 9,
+					"lo": 4,
+					"hi": 14.1
+				}
+			},
+			"rest": {
+				"n": 136,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 136
+				},
+				"after": {
+					"rate": 98.5,
+					"lo": 95.6,
+					"hi": 100,
+					"n": 136
+				},
+				"misfire": {
+					"rate": 1.5,
+					"lo": 0,
+					"hi": 4.4,
+					"n": 136
+				},
+				"frontChanged": 2,
+				"frontMisfire": {
+					"rate": 1.5,
+					"lo": 0,
+					"hi": 4.4,
+					"n": 136
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 0.1,
+					"lo": 0,
+					"hi": 0.4,
+					"n": 720
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 9,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 0,
+				"deferAfter": 0
+			},
+			"deferRate": {
+				"before": 0,
+				"after": 0
+			}
+		},
+		"sr@β2": {
+			"corrections": 41,
+			"exactFront": {
+				"rate": 51.2,
+				"lo": 36.6,
+				"hi": 68.3,
+				"n": 41
+			},
+			"exact": {
+				"rate": 51.2,
+				"lo": 36.6,
+				"hi": 68.3,
+				"n": 41
+			},
+			"testTop1": {
+				"before": {
+					"rate": 76.8,
+					"lo": 70.1,
+					"hi": 83.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 85.3,
+					"lo": 78.5,
+					"hi": 89.3,
+					"n": 177
+				},
+				"diff": {
+					"d": 8.5,
+					"lo": 2.3,
+					"hi": 13.6
+				}
+			},
+			"rest": {
+				"n": 136,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 136
+				},
+				"after": {
+					"rate": 95.6,
+					"lo": 91.9,
+					"hi": 97.8,
+					"n": 136
+				},
+				"misfire": {
+					"rate": 4.4,
+					"lo": 2.2,
+					"hi": 8.1,
+					"n": 136
+				},
+				"frontChanged": 6,
+				"frontMisfire": {
+					"rate": 4.4,
+					"lo": 2.2,
+					"hi": 8.1,
+					"n": 136
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 0.1,
+					"lo": 0,
+					"hi": 0.4,
+					"n": 720
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 9,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 0,
+				"deferAfter": 0
+			},
+			"deferRate": {
+				"before": 0,
+				"after": 0
+			}
+		},
+		"sr@β3": {
+			"corrections": 41,
+			"exactFront": {
+				"rate": 51.2,
+				"lo": 36.6,
+				"hi": 68.3,
+				"n": 41
+			},
+			"exact": {
+				"rate": 51.2,
+				"lo": 36.6,
+				"hi": 68.3,
+				"n": 41
+			},
+			"testTop1": {
+				"before": {
+					"rate": 76.8,
+					"lo": 70.1,
+					"hi": 83.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 80.8,
+					"lo": 72.9,
+					"hi": 85.9,
+					"n": 177
+				},
+				"diff": {
+					"d": 4,
+					"lo": -3.4,
+					"hi": 10.7
+				}
+			},
+			"rest": {
+				"n": 136,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 136
+				},
+				"after": {
+					"rate": 89.7,
+					"lo": 84.6,
+					"hi": 94.1,
+					"n": 136
+				},
+				"misfire": {
+					"rate": 10.3,
+					"lo": 5.9,
+					"hi": 15.4,
+					"n": 136
+				},
+				"frontChanged": 14,
+				"frontMisfire": {
+					"rate": 10.3,
+					"lo": 5.9,
+					"hi": 15.4,
+					"n": 136
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 0.6,
+					"lo": 0.3,
+					"hi": 1,
+					"n": 720
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 9,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 0,
+				"deferAfter": 0
+			},
+			"deferRate": {
+				"before": 0,
+				"after": 0
+			}
+		},
+		"sr@β5": {
+			"corrections": 41,
+			"exactFront": {
+				"rate": 56.1,
+				"lo": 41.5,
+				"hi": 73.2,
+				"n": 41
+			},
+			"exact": {
+				"rate": 56.1,
+				"lo": 41.5,
+				"hi": 73.2,
+				"n": 41
+			},
+			"testTop1": {
+				"before": {
+					"rate": 76.8,
+					"lo": 70.1,
+					"hi": 83.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 81.4,
+					"lo": 74,
+					"hi": 87,
+					"n": 177
+				},
+				"diff": {
+					"d": 4.5,
+					"lo": -2.8,
+					"hi": 12.4
+				}
+			},
+			"rest": {
+				"n": 136,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 136
+				},
+				"after": {
+					"rate": 89,
+					"lo": 83.8,
+					"hi": 93.4,
+					"n": 136
+				},
+				"misfire": {
+					"rate": 11,
+					"lo": 6.6,
+					"hi": 16.2,
+					"n": 136
+				},
+				"frontChanged": 15,
+				"frontMisfire": {
+					"rate": 11,
+					"lo": 6.6,
+					"hi": 16.2,
+					"n": 136
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 0.7,
+					"lo": 0.3,
+					"hi": 1.3,
+					"n": 720
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 9,
+				"frontChanged": 3,
+				"frontMisfire": 2,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 0,
+				"deferAfter": 0
+			},
+			"deferRate": {
+				"before": 0,
+				"after": 0
+			}
+		},
+		"ruri@β1": {
+			"corrections": 33,
+			"exactFront": {
+				"rate": 46.4,
+				"lo": 28.6,
+				"hi": 64.3,
+				"n": 28
+			},
+			"exact": {
+				"rate": 51.5,
+				"lo": 36.4,
+				"hi": 69.7,
+				"n": 33
+			},
+			"testTop1": {
+				"before": {
+					"rate": 81.4,
+					"lo": 75.7,
+					"hi": 87.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 84.7,
+					"lo": 78,
+					"hi": 89.8,
+					"n": 177
+				},
+				"diff": {
+					"d": 3.4,
+					"lo": -3.4,
+					"hi": 9.6
+				}
+			},
+			"rest": {
+				"n": 144,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 144
+				},
+				"after": {
+					"rate": 92.4,
+					"lo": 88.9,
+					"hi": 95.8,
+					"n": 144
+				},
+				"misfire": {
+					"rate": 7.6,
+					"lo": 4.2,
+					"hi": 11.1,
+					"n": 144
+				},
+				"frontChanged": 3,
+				"frontMisfire": {
+					"rate": 2.3,
+					"lo": 0,
+					"hi": 4.5,
+					"n": 133
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 1.6,
+					"lo": 0.7,
+					"hi": 2.4,
+					"n": 877
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 12,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 6,
+				"deferAfter": 6
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 23.2
+			}
+		},
+		"ruri@β1.5": {
+			"corrections": 33,
+			"exactFront": {
+				"rate": 46.4,
+				"lo": 28.6,
+				"hi": 64.3,
+				"n": 28
+			},
+			"exact": {
+				"rate": 51.5,
+				"lo": 36.4,
+				"hi": 69.7,
+				"n": 33
+			},
+			"testTop1": {
+				"before": {
+					"rate": 81.4,
+					"lo": 75.7,
+					"hi": 87.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 80.8,
+					"lo": 72.3,
+					"hi": 85.9,
+					"n": 177
+				},
+				"diff": {
+					"d": -0.6,
+					"lo": -9.6,
+					"hi": 6.2
+				}
+			},
+			"rest": {
+				"n": 144,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 144
+				},
+				"after": {
+					"rate": 87.5,
+					"lo": 81.9,
+					"hi": 92.4,
+					"n": 144
+				},
+				"misfire": {
+					"rate": 12.5,
+					"lo": 8.3,
+					"hi": 18.1,
+					"n": 144
+				},
+				"frontChanged": 10,
+				"frontMisfire": {
+					"rate": 7.5,
+					"lo": 3.8,
+					"hi": 11.3,
+					"n": 133
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 1.8,
+					"lo": 0.8,
+					"hi": 2.7,
+					"n": 877
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 12,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 6,
+				"deferAfter": 6
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 22.6
+			}
+		},
+		"ruri@β2": {
+			"corrections": 33,
+			"exactFront": {
+				"rate": 46.4,
+				"lo": 28.6,
+				"hi": 64.3,
+				"n": 28
+			},
+			"exact": {
+				"rate": 51.5,
+				"lo": 36.4,
+				"hi": 69.7,
+				"n": 33
+			},
+			"testTop1": {
+				"before": {
+					"rate": 81.4,
+					"lo": 75.7,
+					"hi": 87.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 80.8,
+					"lo": 72.3,
+					"hi": 85.9,
+					"n": 177
+				},
+				"diff": {
+					"d": -0.6,
+					"lo": -9.6,
+					"hi": 6.2
+				}
+			},
+			"rest": {
+				"n": 144,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 144
+				},
+				"after": {
+					"rate": 87.5,
+					"lo": 81.9,
+					"hi": 92.4,
+					"n": 144
+				},
+				"misfire": {
+					"rate": 12.5,
+					"lo": 8.3,
+					"hi": 18.1,
+					"n": 144
+				},
+				"frontChanged": 10,
+				"frontMisfire": {
+					"rate": 7.5,
+					"lo": 3.8,
+					"hi": 11.3,
+					"n": 133
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 2.1,
+					"lo": 1,
+					"hi": 2.9,
+					"n": 877
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 12,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 6,
+				"deferAfter": 7
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 22.6
+			}
+		},
+		"ruri@β3": {
+			"corrections": 33,
+			"exactFront": {
+				"rate": 46.4,
+				"lo": 28.6,
+				"hi": 64.3,
+				"n": 28
+			},
+			"exact": {
+				"rate": 51.5,
+				"lo": 36.4,
+				"hi": 69.7,
+				"n": 33
+			},
+			"testTop1": {
+				"before": {
+					"rate": 81.4,
+					"lo": 75.7,
+					"hi": 87.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 80.8,
+					"lo": 72.3,
+					"hi": 85.9,
+					"n": 177
+				},
+				"diff": {
+					"d": -0.6,
+					"lo": -9.6,
+					"hi": 6.2
+				}
+			},
+			"rest": {
+				"n": 144,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 144
+				},
+				"after": {
+					"rate": 87.5,
+					"lo": 81.9,
+					"hi": 92.4,
+					"n": 144
+				},
+				"misfire": {
+					"rate": 12.5,
+					"lo": 8.3,
+					"hi": 18.1,
+					"n": 144
+				},
+				"frontChanged": 11,
+				"frontMisfire": {
+					"rate": 8.3,
+					"lo": 3.8,
+					"hi": 12,
+					"n": 133
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 2.4,
+					"lo": 1,
+					"hi": 3.2,
+					"n": 877
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 12,
+				"frontChanged": 3,
+				"frontMisfire": 1,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 6,
+				"deferAfter": 7
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 23.2
+			}
+		},
+		"ruri@β5": {
+			"corrections": 33,
+			"exactFront": {
+				"rate": 46.4,
+				"lo": 28.6,
+				"hi": 64.3,
+				"n": 28
+			},
+			"exact": {
+				"rate": 51.5,
+				"lo": 36.4,
+				"hi": 69.7,
+				"n": 33
+			},
+			"testTop1": {
+				"before": {
+					"rate": 81.4,
+					"lo": 75.7,
+					"hi": 87.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 79.7,
+					"lo": 71.2,
+					"hi": 85.3,
+					"n": 177
+				},
+				"diff": {
+					"d": -1.7,
+					"lo": -10.7,
+					"hi": 5.1
+				}
+			},
+			"rest": {
+				"n": 144,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 144
+				},
+				"after": {
+					"rate": 86.1,
+					"lo": 80.6,
+					"hi": 91,
+					"n": 144
+				},
+				"misfire": {
+					"rate": 13.9,
+					"lo": 9,
+					"hi": 19.4,
+					"n": 144
+				},
+				"frontChanged": 20,
+				"frontMisfire": {
+					"rate": 15,
+					"lo": 9.8,
+					"hi": 21.1,
+					"n": 133
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 2.7,
+					"lo": 1.4,
+					"hi": 3.8,
+					"n": 877
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 12,
+				"frontChanged": 3,
+				"frontMisfire": 1,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 6,
+				"deferAfter": 6
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 22.6
+			}
+		},
+		"larm@β1": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 50,
+				"lo": 27.8,
+				"hi": 72.2,
+				"n": 18
+			},
+			"exact": {
+				"rate": 57.1,
+				"lo": 38.1,
+				"hi": 81,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 94.9,
+					"lo": 91.5,
+					"hi": 97.7,
+					"n": 177
+				},
+				"diff": {
+					"d": 6.8,
+					"lo": 3.4,
+					"hi": 10.2
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 156
+				},
+				"frontChanged": 0,
+				"frontMisfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 0.7,
+					"lo": 0.3,
+					"hi": 1.1,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 14
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 18.1
+			}
+		},
+		"larm@β1.5": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 50,
+				"lo": 27.8,
+				"hi": 72.2,
+				"n": 18
+			},
+			"exact": {
+				"rate": 61.9,
+				"lo": 42.9,
+				"hi": 81,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 95.5,
+					"lo": 92.1,
+					"hi": 97.7,
+					"n": 177
+				},
+				"diff": {
+					"d": 7.3,
+					"lo": 4.5,
+					"hi": 10.7
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 156
+				},
+				"frontChanged": 0,
+				"frontMisfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 0.8,
+					"lo": 0.3,
+					"hi": 1.4,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 14
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 17.5
+			}
+		},
+		"larm@β2": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 50,
+				"lo": 27.8,
+				"hi": 72.2,
+				"n": 18
+			},
+			"exact": {
+				"rate": 61.9,
+				"lo": 42.9,
+				"hi": 81,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 94.4,
+					"lo": 91,
+					"hi": 97.2,
+					"n": 177
+				},
+				"diff": {
+					"d": 6.2,
+					"lo": 2.8,
+					"hi": 10.2
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 98.7,
+					"lo": 96.8,
+					"hi": 100,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 1.3,
+					"lo": 0,
+					"hi": 3.2,
+					"n": 156
+				},
+				"frontChanged": 0,
+				"frontMisfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 1.1,
+					"lo": 0.9,
+					"hi": 2.1,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 14
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 19.8
+			}
+		},
+		"larm@β3": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 50,
+				"lo": 27.8,
+				"hi": 72.2,
+				"n": 18
+			},
+			"exact": {
+				"rate": 61.9,
+				"lo": 42.9,
+				"hi": 81,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 93.2,
+					"lo": 89.3,
+					"hi": 96,
+					"n": 177
+				},
+				"diff": {
+					"d": 5.1,
+					"lo": 1.7,
+					"hi": 9.6
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 97.4,
+					"lo": 94.9,
+					"hi": 99.4,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 2.6,
+					"lo": 0.6,
+					"hi": 5.1,
+					"n": 156
+				},
+				"frontChanged": 3,
+				"frontMisfire": {
+					"rate": 2.1,
+					"lo": 0,
+					"hi": 4.3,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 1.5,
+					"lo": 1.1,
+					"hi": 2.9,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 2,
+				"frontMisfire": 1,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 14
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 19.8
+			}
+		},
+		"larm@β5": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 50,
+				"lo": 27.8,
+				"hi": 72.2,
+				"n": 18
+			},
+			"exact": {
+				"rate": 61.9,
+				"lo": 42.9,
+				"hi": 81,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 90.4,
+					"lo": 86.4,
+					"hi": 93.8,
+					"n": 177
+				},
+				"diff": {
+					"d": 2.3,
+					"lo": -2.3,
+					"hi": 7.3
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 94.2,
+					"lo": 89.7,
+					"hi": 98.1,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 5.8,
+					"lo": 1.9,
+					"hi": 10.3,
+					"n": 156
+				},
+				"frontChanged": 9,
+				"frontMisfire": {
+					"rate": 6.4,
+					"lo": 2.8,
+					"hi": 10.6,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 3,
+					"lo": 2,
+					"hi": 4.7,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 2,
+				"frontMisfire": 1,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 15
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 18.1
+			}
+		},
+		"ruri+pin@β1": {
+			"corrections": 33,
+			"exactFront": {
+				"rate": 46.4,
+				"lo": 28.6,
+				"hi": 64.3,
+				"n": 28
+			},
+			"exact": {
+				"rate": 54.5,
+				"lo": 39.4,
+				"hi": 72.7,
+				"n": 33
+			},
+			"testTop1": {
+				"before": {
+					"rate": 81.4,
+					"lo": 75.7,
+					"hi": 87.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 87.6,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"diff": {
+					"d": 6.2,
+					"lo": 0,
+					"hi": 11.3
+				}
+			},
+			"rest": {
+				"n": 144,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 144
+				},
+				"after": {
+					"rate": 95.1,
+					"lo": 90.3,
+					"hi": 97.9,
+					"n": 144
+				},
+				"misfire": {
+					"rate": 4.9,
+					"lo": 2.1,
+					"hi": 9.7,
+					"n": 144
+				},
+				"frontChanged": 3,
+				"frontMisfire": {
+					"rate": 2.3,
+					"lo": 0,
+					"hi": 4.5,
+					"n": 133
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 3.1,
+					"lo": 2.1,
+					"hi": 4,
+					"n": 877
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 12,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 6,
+				"deferAfter": 5
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 9.6
+			}
+		},
+		"ruri+pin@β1.5": {
+			"corrections": 33,
+			"exactFront": {
+				"rate": 46.4,
+				"lo": 28.6,
+				"hi": 64.3,
+				"n": 28
+			},
+			"exact": {
+				"rate": 54.5,
+				"lo": 39.4,
+				"hi": 72.7,
+				"n": 33
+			},
+			"testTop1": {
+				"before": {
+					"rate": 81.4,
+					"lo": 75.7,
+					"hi": 87.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 83.6,
+					"lo": 77.4,
+					"hi": 89.3,
+					"n": 177
+				},
+				"diff": {
+					"d": 2.3,
+					"lo": -4.5,
+					"hi": 8.5
+				}
+			},
+			"rest": {
+				"n": 144,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 144
+				},
+				"after": {
+					"rate": 90.3,
+					"lo": 85.4,
+					"hi": 94.4,
+					"n": 144
+				},
+				"misfire": {
+					"rate": 9.7,
+					"lo": 5.6,
+					"hi": 14.6,
+					"n": 144
+				},
+				"frontChanged": 10,
+				"frontMisfire": {
+					"rate": 7.5,
+					"lo": 3.8,
+					"hi": 11.3,
+					"n": 133
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 3.2,
+					"lo": 2.1,
+					"hi": 4.2,
+					"n": 877
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 12,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 6,
+				"deferAfter": 5
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 9.6
+			}
+		},
+		"ruri+pin@β2": {
+			"corrections": 33,
+			"exactFront": {
+				"rate": 46.4,
+				"lo": 28.6,
+				"hi": 64.3,
+				"n": 28
+			},
+			"exact": {
+				"rate": 54.5,
+				"lo": 39.4,
+				"hi": 72.7,
+				"n": 33
+			},
+			"testTop1": {
+				"before": {
+					"rate": 81.4,
+					"lo": 75.7,
+					"hi": 87.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 83.6,
+					"lo": 77.4,
+					"hi": 89.3,
+					"n": 177
+				},
+				"diff": {
+					"d": 2.3,
+					"lo": -4.5,
+					"hi": 8.5
+				}
+			},
+			"rest": {
+				"n": 144,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 144
+				},
+				"after": {
+					"rate": 90.3,
+					"lo": 85.4,
+					"hi": 94.4,
+					"n": 144
+				},
+				"misfire": {
+					"rate": 9.7,
+					"lo": 5.6,
+					"hi": 14.6,
+					"n": 144
+				},
+				"frontChanged": 10,
+				"frontMisfire": {
+					"rate": 7.5,
+					"lo": 3.8,
+					"hi": 11.3,
+					"n": 133
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 3.3,
+					"lo": 2.2,
+					"hi": 4.4,
+					"n": 877
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 12,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 6,
+				"deferAfter": 5
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 9.6
+			}
+		},
+		"ruri+pin@β3": {
+			"corrections": 33,
+			"exactFront": {
+				"rate": 46.4,
+				"lo": 28.6,
+				"hi": 64.3,
+				"n": 28
+			},
+			"exact": {
+				"rate": 54.5,
+				"lo": 39.4,
+				"hi": 72.7,
+				"n": 33
+			},
+			"testTop1": {
+				"before": {
+					"rate": 81.4,
+					"lo": 75.7,
+					"hi": 87.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 83.1,
+					"lo": 76.8,
+					"hi": 89.3,
+					"n": 177
+				},
+				"diff": {
+					"d": 1.7,
+					"lo": -5.1,
+					"hi": 8.5
+				}
+			},
+			"rest": {
+				"n": 144,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 144
+				},
+				"after": {
+					"rate": 89.6,
+					"lo": 84.7,
+					"hi": 93.8,
+					"n": 144
+				},
+				"misfire": {
+					"rate": 10.4,
+					"lo": 6.3,
+					"hi": 15.3,
+					"n": 144
+				},
+				"frontChanged": 11,
+				"frontMisfire": {
+					"rate": 8.3,
+					"lo": 3.8,
+					"hi": 12,
+					"n": 133
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 3.8,
+					"lo": 2.3,
+					"hi": 4.8,
+					"n": 877
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 12,
+				"frontChanged": 3,
+				"frontMisfire": 1,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 6,
+				"deferAfter": 5
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 9.6
+			}
+		},
+		"ruri+pin@β5": {
+			"corrections": 33,
+			"exactFront": {
+				"rate": 46.4,
+				"lo": 28.6,
+				"hi": 64.3,
+				"n": 28
+			},
+			"exact": {
+				"rate": 54.5,
+				"lo": 39.4,
+				"hi": 72.7,
+				"n": 33
+			},
+			"testTop1": {
+				"before": {
+					"rate": 81.4,
+					"lo": 75.7,
+					"hi": 87.6,
+					"n": 177
+				},
+				"after": {
+					"rate": 78,
+					"lo": 70.1,
+					"hi": 83.6,
+					"n": 177
+				},
+				"diff": {
+					"d": -3.4,
+					"lo": -12.4,
+					"hi": 3.4
+				}
+			},
+			"rest": {
+				"n": 144,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 144
+				},
+				"after": {
+					"rate": 83.3,
+					"lo": 77.1,
+					"hi": 88.2,
+					"n": 144
+				},
+				"misfire": {
+					"rate": 16.7,
+					"lo": 11.8,
+					"hi": 22.9,
+					"n": 144
+				},
+				"frontChanged": 20,
+				"frontMisfire": {
+					"rate": 15,
+					"lo": 9.8,
+					"hi": 21.1,
+					"n": 133
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 4.1,
+					"lo": 2.6,
+					"hi": 5.5,
+					"n": 877
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 12,
+				"frontChanged": 3,
+				"frontMisfire": 1,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 6,
+				"deferAfter": 5
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 9.6
+			}
+		},
+		"larm+pin@β1": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 50,
+				"lo": 27.8,
+				"hi": 72.2,
+				"n": 18
+			},
+			"exact": {
+				"rate": 57.1,
+				"lo": 38.1,
+				"hi": 76.2,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 93.2,
+					"lo": 89.3,
+					"hi": 96,
+					"n": 177
+				},
+				"diff": {
+					"d": 5.1,
+					"lo": 1.1,
+					"hi": 9
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 98.1,
+					"lo": 94.9,
+					"hi": 99.4,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 1.9,
+					"lo": 0.6,
+					"hi": 5.1,
+					"n": 156
+				},
+				"frontChanged": 0,
+				"frontMisfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 1.2,
+					"lo": 0.6,
+					"hi": 1.8,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 13
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 12.4
+			}
+		},
+		"larm+pin@β1.5": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 50,
+				"lo": 27.8,
+				"hi": 72.2,
+				"n": 18
+			},
+			"exact": {
+				"rate": 57.1,
+				"lo": 38.1,
+				"hi": 76.2,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 93.2,
+					"lo": 89.3,
+					"hi": 96,
+					"n": 177
+				},
+				"diff": {
+					"d": 5.1,
+					"lo": 1.1,
+					"hi": 9
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 98.1,
+					"lo": 94.9,
+					"hi": 99.4,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 1.9,
+					"lo": 0.6,
+					"hi": 5.1,
+					"n": 156
+				},
+				"frontChanged": 0,
+				"frontMisfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 1.3,
+					"lo": 0.8,
+					"hi": 2,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 13
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 12.4
+			}
+		},
+		"larm+pin@β2": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 50,
+				"lo": 27.8,
+				"hi": 72.2,
+				"n": 18
+			},
+			"exact": {
+				"rate": 57.1,
+				"lo": 38.1,
+				"hi": 76.2,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 93.2,
+					"lo": 89.3,
+					"hi": 96,
+					"n": 177
+				},
+				"diff": {
+					"d": 5.1,
+					"lo": 1.1,
+					"hi": 9
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 98.1,
+					"lo": 94.9,
+					"hi": 99.4,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 1.9,
+					"lo": 0.6,
+					"hi": 5.1,
+					"n": 156
+				},
+				"frontChanged": 0,
+				"frontMisfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 1.4,
+					"lo": 1,
+					"hi": 2.2,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 13
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 12.4
+			}
+		},
+		"larm+pin@β3": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 50,
+				"lo": 27.8,
+				"hi": 72.2,
+				"n": 18
+			},
+			"exact": {
+				"rate": 57.1,
+				"lo": 38.1,
+				"hi": 76.2,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 91.5,
+					"lo": 87.6,
+					"hi": 94.9,
+					"n": 177
+				},
+				"diff": {
+					"d": 3.4,
+					"lo": 0,
+					"hi": 7.9
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 96.2,
+					"lo": 92.3,
+					"hi": 98.7,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 3.8,
+					"lo": 1.3,
+					"hi": 7.7,
+					"n": 156
+				},
+				"frontChanged": 3,
+				"frontMisfire": {
+					"rate": 2.1,
+					"lo": 0,
+					"hi": 4.3,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 2.2,
+					"lo": 1.7,
+					"hi": 3.3,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 2,
+				"frontMisfire": 1,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 13
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 12.4
+			}
+		},
+		"larm+pin@β5": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 50,
+				"lo": 27.8,
+				"hi": 72.2,
+				"n": 18
+			},
+			"exact": {
+				"rate": 57.1,
+				"lo": 38.1,
+				"hi": 76.2,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 88.1,
+					"lo": 83.6,
+					"hi": 92.1,
+					"n": 177
+				},
+				"diff": {
+					"d": 0,
+					"lo": -4.5,
+					"hi": 5.6
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 92.3,
+					"lo": 87.2,
+					"hi": 96.2,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 7.7,
+					"lo": 3.8,
+					"hi": 12.8,
+					"n": 156
+				},
+				"frontChanged": 9,
+				"frontMisfire": {
+					"rate": 6.4,
+					"lo": 2.8,
+					"hi": 10.6,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 3.4,
+					"lo": 2.7,
+					"hi": 5,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 2,
+				"frontMisfire": 1,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 13
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 12.4
+			}
+		},
+		"larm+inj@β1": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 72.2,
+				"lo": 50,
+				"hi": 94.4,
+				"n": 18
+			},
+			"exact": {
+				"rate": 66.7,
+				"lo": 47.6,
+				"hi": 85.7,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 96,
+					"lo": 93.2,
+					"hi": 98.9,
+					"n": 177
+				},
+				"diff": {
+					"d": 7.9,
+					"lo": 4.5,
+					"hi": 11.9
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 156
+				},
+				"frontChanged": 3,
+				"frontMisfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 0.6,
+					"lo": 0.2,
+					"hi": 1.1,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 14
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 15.3
+			}
+		},
+		"larm+inj@β1.5": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 72.2,
+				"lo": 50,
+				"hi": 94.4,
+				"n": 18
+			},
+			"exact": {
+				"rate": 76.2,
+				"lo": 57.1,
+				"hi": 95.2,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 97.2,
+					"lo": 94.9,
+					"hi": 99.4,
+					"n": 177
+				},
+				"diff": {
+					"d": 9,
+					"lo": 5.1,
+					"hi": 13.6
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 156
+				},
+				"frontChanged": 3,
+				"frontMisfire": {
+					"rate": 0,
+					"lo": 0,
+					"hi": 0,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 0.7,
+					"lo": 0.3,
+					"hi": 1.3,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 14
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 13.6
+			}
+		},
+		"larm+inj@β2": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 72.2,
+				"lo": 50,
+				"hi": 94.4,
+				"n": 18
+			},
+			"exact": {
+				"rate": 76.2,
+				"lo": 57.1,
+				"hi": 95.2,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 95.5,
+					"lo": 92.7,
+					"hi": 98.3,
+					"n": 177
+				},
+				"diff": {
+					"d": 7.3,
+					"lo": 3.4,
+					"hi": 12.4
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 98.1,
+					"lo": 95.5,
+					"hi": 100,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 1.9,
+					"lo": 0,
+					"hi": 4.5,
+					"n": 156
+				},
+				"frontChanged": 4,
+				"frontMisfire": {
+					"rate": 0.7,
+					"lo": 0,
+					"hi": 2.8,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 1,
+					"lo": 0.7,
+					"hi": 2,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 1,
+				"frontMisfire": 0,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 14
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 16.4
+			}
+		},
+		"larm+inj@β3": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 72.2,
+				"lo": 50,
+				"hi": 94.4,
+				"n": 18
+			},
+			"exact": {
+				"rate": 76.2,
+				"lo": 57.1,
+				"hi": 95.2,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 94.9,
+					"lo": 92.1,
+					"hi": 97.7,
+					"n": 177
+				},
+				"diff": {
+					"d": 6.8,
+					"lo": 2.8,
+					"hi": 11.9
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 97.4,
+					"lo": 94.9,
+					"hi": 99.4,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 2.6,
+					"lo": 0.6,
+					"hi": 5.1,
+					"n": 156
+				},
+				"frontChanged": 8,
+				"frontMisfire": {
+					"rate": 3.5,
+					"lo": 0.7,
+					"hi": 6.4,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 1.5,
+					"lo": 1.1,
+					"hi": 2.8,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 2,
+				"frontMisfire": 1,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 15
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 15.3
+			}
+		},
+		"larm+inj@β5": {
+			"corrections": 21,
+			"exactFront": {
+				"rate": 72.2,
+				"lo": 50,
+				"hi": 94.4,
+				"n": 18
+			},
+			"exact": {
+				"rate": 76.2,
+				"lo": 57.1,
+				"hi": 95.2,
+				"n": 21
+			},
+			"testTop1": {
+				"before": {
+					"rate": 88.1,
+					"lo": 83.1,
+					"hi": 92.1,
+					"n": 177
+				},
+				"after": {
+					"rate": 87.6,
+					"lo": 83.6,
+					"hi": 91.5,
+					"n": 177
+				},
+				"diff": {
+					"d": -0.6,
+					"lo": -4.5,
+					"hi": 5.6
+				}
+			},
+			"rest": {
+				"n": 156,
+				"before": {
+					"rate": 100,
+					"lo": 100,
+					"hi": 100,
+					"n": 156
+				},
+				"after": {
+					"rate": 89.1,
+					"lo": 83.3,
+					"hi": 94.2,
+					"n": 156
+				},
+				"misfire": {
+					"rate": 10.9,
+					"lo": 5.8,
+					"hi": 16.7,
+					"n": 156
+				},
+				"frontChanged": 20,
+				"frontMisfire": {
+					"rate": 12.1,
+					"lo": 7.1,
+					"hi": 18.4,
+					"n": 141
+				}
+			},
+			"variants": {
+				"n": 0,
+				"sources": 0,
+				"misfireOther": {
+					"rate": 3,
+					"lo": 2.2,
+					"hi": 4.5,
+					"n": 1044
+				},
+				"before": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"after": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"fix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontBefore": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontAfter": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"frontFix": {
+					"rate": null,
+					"lo": null,
+					"hi": null,
+					"n": 0
+				},
+				"inCandidates": 0,
+				"wrongBefore": 0,
+				"nearHit": null,
+				"byType": {}
+			},
+			"controls": {
+				"n": 40,
+				"nearHit": 7,
+				"frontChanged": 3,
+				"frontMisfire": 2,
+				"frontBefore": {
+					"rate": 77.5,
+					"lo": 62.5,
+					"hi": 90,
+					"n": 40
+				},
+				"deferBefore": 14,
+				"deferAfter": 14
+			},
+			"deferRate": {
+				"before": 19.8,
+				"after": 13.6
+			}
+		}
+	}
 }

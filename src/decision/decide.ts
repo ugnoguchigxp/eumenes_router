@@ -64,7 +64,7 @@ export type Ranked = {
 };
 
 export type Announce = "fixed" | "try" | "partial" | "none";
-export type RouteDecision =
+export type DirectDecision =
 	| { row: 1 | 7 | 8; to: "conversation" }
 	| { row: 8; to: "ask"; options: [RouteCandidate, RouteCandidate] }
 	| {
@@ -74,7 +74,11 @@ export type RouteDecision =
 			announce: Announce;
 	  }
 	/** Not sure enough to do it (a yes, a cancellation): the host asks once more instead. */
-	| { row: 5 | 6; to: "again"; candidate: RouteCandidate }
+	| { row: 5 | 6; to: "again"; candidate: RouteCandidate };
+
+export type RouteDecision =
+	| DirectDecision
+	| { row: 8; to: "clarify"; question: string; unhandled: readonly string[] }
 	/** Requests of two or more tools (the structured route): the pipeline stage takes them, in this order. */
 	| {
 			row: 9;
@@ -82,6 +86,8 @@ export type RouteDecision =
 			steps: ReadonlyArray<{
 				text: string;
 				candidate: RouteCandidate;
+				/** The part's decision, including its notice/confirmation and conversation outcome. */
+				decision: DirectDecision;
 				after: readonly number[];
 			}>;
 	  };
@@ -106,7 +112,7 @@ export function decide(
 	asked: string | null = null,
 	/** Whether the top is sure, when the scorer decides it (best-v2's gate); else from `accept` and `margin`. */
 	confident?: boolean,
-): RouteDecision {
+): DirectDecision {
 	const top = ranked[0];
 	const next = ranked[1];
 	if (!top) return { row: 8, to: "conversation" };
@@ -210,6 +216,7 @@ export function decidedId(decision: RouteDecision): string | null {
 		case "conversation":
 			return CONVERSATION_ID;
 		case "ask":
+		case "clarify":
 		case "pipeline":
 			return null;
 		default:

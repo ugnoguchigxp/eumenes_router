@@ -1,35 +1,26 @@
 {
- "scenario": "tool-routing-v1",
- "network": "ruri-conv20-s0-fp32-v1",
- "precision": "fp32",
- "candidates": 8,
- "fitted_on": "dev",
- "minScore": 0.2524934902351428,
- "minMargin": 0.0,
- "dev": {
-  "n": 177,
-  "judged": 176,
-  "not_judged": {
-   "text_over_limit": 1
-  },
-  "top1": 82.4,
-  "top1_ci": [
-   76.7,
-   87.5
-  ],
-  "misfire": 10.9,
-  "miss": 10.8,
-  "wrong_tool": 10.0,
-  "choice_top1_tools": 83.8,
-  "cand_recall_tools": 90.0,
-  "http_ms_p50_p95": [
-   154.6,
-   185.7
-  ],
-  "inference_ms_p50_p95": [
-   131.3,
-   156.7
-  ]
- },
- "note": "provider calibration is not fitted; this rule is the bench's dev-fitted fallback to conversation"
+	"scenario": "tool-routing-v1",
+	"network": "ruri-conv20-s0-fp32-v1",
+	"precision": "fp32",
+	"candidates": 8,
+	"fitted_on": "dev",
+	"minScore": 0.2524934902351428,
+	"minMargin": 0.0,
+	"dev": {
+		"n": 177,
+		"judged": 176,
+		"not_judged": {
+			"text_over_limit": 1
+		},
+		"top1": 82.4,
+		"top1_ci": [76.7, 87.5],
+		"misfire": 10.9,
+		"miss": 10.8,
+		"wrong_tool": 10.0,
+		"choice_top1_tools": 83.8,
+		"cand_recall_tools": 90.0,
+		"http_ms_p50_p95": [154.6, 185.7],
+		"inference_ms_p50_p95": [131.3, 156.7]
+	},
+	"note": "provider calibration is not fitted; this rule is the bench's dev-fitted fallback to conversation"
 }

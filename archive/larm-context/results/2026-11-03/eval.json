@@ -1,100 +1,91 @@
 {
- "scenario": "tool-routing-v1",
- "network": "ruri-conv20-s0-fp32-v1",
- "precision": "fp32",
- "candidates": 8,
- "rule": {
-  "minScore": 0.2524934902351428,
-  "minMargin": 0.0
- },
- "test": {
-  "n": 217,
-  "judged": 214,
-  "not_judged": {
-   "text_over_limit": 3
-  },
-  "top1": 83.2,
-  "top1_ci": [
-   78.5,
-   87.9
-  ],
-  "misfire": 8.4,
-  "miss": 17.6,
-  "wrong_tool": 6.7,
-  "choice_top1_tools": 83.2,
-  "cand_recall_tools": 87.4,
-  "http_ms_p50_p95": [
-   148.0,
-   187.2
-  ],
-  "inference_ms_p50_p95": [
-   123.2,
-   156.1
-  ]
- },
- "variants": {
-  "all": {
-   "n": 1215,
-   "top1": 74.5,
-   "source_top1": 81.1,
-   "broke": 13.6,
-   "to_conversation": 47.7
-  },
-  "asr": {
-   "n": 152,
-   "top1": 66.4,
-   "source_top1": 80.9,
-   "broke": 25.2,
-   "to_conversation": 69.1
-  },
-  "casual": {
-   "n": 153,
-   "top1": 79.7,
-   "source_top1": 81.0,
-   "broke": 8.9,
-   "to_conversation": 38.6
-  },
-  "fragment": {
-   "n": 149,
-   "top1": 71.1,
-   "source_top1": 81.9,
-   "broke": 16.4,
-   "to_conversation": 51.0
-  },
-  "indirect": {
-   "n": 151,
-   "top1": 69.5,
-   "source_top1": 80.8,
-   "broke": 18.0,
-   "to_conversation": 39.1
-  },
-  "keigo": {
-   "n": 153,
-   "top1": 81.0,
-   "source_top1": 81.0,
-   "broke": 7.3,
-   "to_conversation": 42.5
-  },
-  "mixed": {
-   "n": 152,
-   "top1": 73.0,
-   "source_top1": 80.9,
-   "broke": 15.4,
-   "to_conversation": 56.6
-  },
-  "paraphrase": {
-   "n": 153,
-   "top1": 78.4,
-   "source_top1": 81.0,
-   "broke": 7.3,
-   "to_conversation": 38.6
-  },
-  "verbose": {
-   "n": 152,
-   "top1": 76.3,
-   "source_top1": 80.9,
-   "broke": 10.6,
-   "to_conversation": 46.1
-  }
- }
+	"scenario": "tool-routing-v1",
+	"network": "ruri-conv20-s0-fp32-v1",
+	"precision": "fp32",
+	"candidates": 8,
+	"rule": {
+		"minScore": 0.2524934902351428,
+		"minMargin": 0.0
+	},
+	"test": {
+		"n": 217,
+		"judged": 214,
+		"not_judged": {
+			"text_over_limit": 3
+		},
+		"top1": 83.2,
+		"top1_ci": [78.5, 87.9],
+		"misfire": 8.4,
+		"miss": 17.6,
+		"wrong_tool": 6.7,
+		"choice_top1_tools": 83.2,
+		"cand_recall_tools": 87.4,
+		"http_ms_p50_p95": [148.0, 187.2],
+		"inference_ms_p50_p95": [123.2, 156.1]
+	},
+	"variants": {
+		"all": {
+			"n": 1215,
+			"top1": 74.5,
+			"source_top1": 81.1,
+			"broke": 13.6,
+			"to_conversation": 47.7
+		},
+		"asr": {
+			"n": 152,
+			"top1": 66.4,
+			"source_top1": 80.9,
+			"broke": 25.2,
+			"to_conversation": 69.1
+		},
+		"casual": {
+			"n": 153,
+			"top1": 79.7,
+			"source_top1": 81.0,
+			"broke": 8.9,
+			"to_conversation": 38.6
+		},
+		"fragment": {
+			"n": 149,
+			"top1": 71.1,
+			"source_top1": 81.9,
+			"broke": 16.4,
+			"to_conversation": 51.0
+		},
+		"indirect": {
+			"n": 151,
+			"top1": 69.5,
+			"source_top1": 80.8,
+			"broke": 18.0,
+			"to_conversation": 39.1
+		},
+		"keigo": {
+			"n": 153,
+			"top1": 81.0,
+			"source_top1": 81.0,
+			"broke": 7.3,
+			"to_conversation": 42.5
+		},
+		"mixed": {
+			"n": 152,
+			"top1": 73.0,
+			"source_top1": 80.9,
+			"broke": 15.4,
+			"to_conversation": 56.6
+		},
+		"paraphrase": {
+			"n": 153,
+			"top1": 78.4,
+			"source_top1": 81.0,
+			"broke": 7.3,
+			"to_conversation": 38.6
+		},
+		"verbose": {
+			"n": 152,
+			"top1": 76.3,
+			"source_top1": 80.9,
+			"broke": 10.6,
+			"to_conversation": 46.1
+		}
+	}
 }

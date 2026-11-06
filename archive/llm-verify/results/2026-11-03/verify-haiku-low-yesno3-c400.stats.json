@@ -1,49 +1,40 @@
 {
- "mode": {
-  "yesno": 85
- },
- "items": 56,
- "calls": 85,
- "calls_per_item": 1.518,
- "tokens_per_call": 300,
- "tokens_per_item": 455.4,
- "tokens_per_item_ci": [
-  378.2,
-  541.3
- ],
- "false_yes_rate": 28.6,
- "false_no_rate": 11.1,
- "accepted_correct": 32,
- "all_no": 10,
- "invalid_answers": 0,
- "finish": {
-  "end_turn": 85
- },
- "totals": {
-  "prompt": 24768,
-  "completion": 732,
-  "reasoning": 314
- },
- "reasoning_per_item": 5.6,
- "tokens_per_item_p50_p95": [
-  351.5,
-  919.8
- ],
- "seconds_per_item_p50_p95": [
-  1.76,
-  5.03
- ],
- "outcome": {
-  "accepted_wrong": 14,
-  "correct_if_all_no": {
-   "ask": 32,
-   "top1": 35,
-   "past": 40
-  },
-  "reference": {
-   "ranker_top1": 30,
-   "past": 47,
-   "gold_in_top3": 40
-  }
- }
+	"mode": {
+		"yesno": 85
+	},
+	"items": 56,
+	"calls": 85,
+	"calls_per_item": 1.518,
+	"tokens_per_call": 300,
+	"tokens_per_item": 455.4,
+	"tokens_per_item_ci": [378.2, 541.3],
+	"false_yes_rate": 28.6,
+	"false_no_rate": 11.1,
+	"accepted_correct": 32,
+	"all_no": 10,
+	"invalid_answers": 0,
+	"finish": {
+		"end_turn": 85
+	},
+	"totals": {
+		"prompt": 24768,
+		"completion": 732,
+		"reasoning": 314
+	},
+	"reasoning_per_item": 5.6,
+	"tokens_per_item_p50_p95": [351.5, 919.8],
+	"seconds_per_item_p50_p95": [1.76, 5.03],
+	"outcome": {
+		"accepted_wrong": 14,
+		"correct_if_all_no": {
+			"ask": 32,
+			"top1": 35,
+			"past": 40
+		},
+		"reference": {
+			"ranker_top1": 30,
+			"past": 47,
+			"gold_in_top3": 40
+		}
+	}
 }

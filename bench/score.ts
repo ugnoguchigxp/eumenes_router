@@ -169,8 +169,6 @@ export function decisionOf(
 	if (decision.to === "conversation")
 		return { row: decision.row, id: CONVERSATION_ID, asked: false };
 	if (decision.to === "ask") return { row: decision.row, id: ASK, asked: true };
-	if (decision.to === "pipeline")
-		throw new Error("the choice scorer never decides a pipeline stage");
 	return {
 		row: decision.row,
 		id: genericId(decision.candidate.id),

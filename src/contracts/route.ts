@@ -66,28 +66,40 @@ export function assertRouteAnswer(
 	answer: RouteAnswer,
 	criteria: readonly RouteCriterion[],
 ): void {
+	if (!answer || typeof answer !== "object" || Array.isArray(answer))
+		throw new Error(routeErrors.invalidResponse);
 	const names = criteria.map((criterion) => criterion.name);
 	if (typeof answer.choice !== "string" || !names.includes(answer.choice))
 		throw new Error(routeErrors.invalidResponse);
 	const probabilities = answer.probabilities;
-	if (!probabilities || typeof probabilities !== "object")
+	if (
+		!probabilities ||
+		typeof probabilities !== "object" ||
+		Array.isArray(probabilities)
+	)
 		throw new Error(routeErrors.invalidResponse);
 	if (Object.keys(probabilities).length !== names.length)
 		throw new Error(routeErrors.invalidResponse);
 	let sum = 0;
 	for (const name of names) {
+		if (!Object.hasOwn(probabilities, name))
+			throw new Error(routeErrors.invalidResponse);
 		const score = probabilities[name];
 		if (!unit(score)) throw new Error(routeErrors.invalidResponse);
 		sum += score;
 	}
 	if (Math.abs(sum - 1) > 0.01) throw new Error(routeErrors.invalidResponse);
 	if (answer.scores !== null) {
-		if (!answer.scores || typeof answer.scores !== "object")
+		if (
+			!answer.scores ||
+			typeof answer.scores !== "object" ||
+			Array.isArray(answer.scores)
+		)
 			throw new Error(routeErrors.invalidResponse);
 		if (Object.keys(answer.scores).length !== names.length)
 			throw new Error(routeErrors.invalidResponse);
 		for (const name of names)
-			if (!unit(answer.scores[name]))
+			if (!Object.hasOwn(answer.scores, name) || !unit(answer.scores[name]))
 				throw new Error(routeErrors.invalidResponse);
 	}
 	if (typeof answer.model !== "string")

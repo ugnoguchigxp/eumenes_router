@@ -1,18 +1,18 @@
 {
- "source": "data/larm-context/corr-larm",
- "scores": "data/larm-context/rerank-larm2-all.json",
- "binding": {
-  "model": "eumenes-ruri-context-v1",
-  "scenario": "tool-routing-v1",
-  "network": "ruri-conv20-structure-v1-s0-fp32-v1",
-  "precision": "fp32"
- },
- "rerank-ruri.json": {
-  "replaced": 1543,
-  "kept_original": 4
- },
- "rerank-ruri-extra.json": {
-  "replaced": 727,
-  "kept_original": 2
- }
+	"source": "data/larm-context/corr-larm",
+	"scores": "data/larm-context/rerank-larm2-all.json",
+	"binding": {
+		"model": "eumenes-ruri-context-v1",
+		"scenario": "tool-routing-v1",
+		"network": "ruri-conv20-structure-v1-s0-fp32-v1",
+		"precision": "fp32"
+	},
+	"rerank-ruri.json": {
+		"replaced": 1543,
+		"kept_original": 4
+	},
+	"rerank-ruri-extra.json": {
+		"replaced": 727,
+		"kept_original": 2
+	}
 }
