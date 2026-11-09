@@ -115,13 +115,14 @@ bun run test:python
 
 | import | 内容 |
 | --- | --- |
-| `eumenes_router` | `route`（A: direct）、`routeStructured`（B: structured）、`decide`、`correctProbabilities`、`predictionSet`、`offerCandidates`、`checkReachability`、`loadBestV2`・`scoreBestV2`・`BEST_V2_PARAMS`、`srScores`・`srOffer`・`srRanking`・`capByKind`、`rerankDocument`、`TURN_STRUCTURE_PROMPT`・`turnStructurePrompt`・`parseTurnStructure`・`routedTexts`（過去の構造の検査には`parseStructure`）。DB・時計・乱数・ネットワーク・モデルには触らない |
+| `eumenes_router` | `route`（A: direct）、`routeStructured`（B: structured）、`routeWithFallback`（Aで迷ったときだけB）、`decide`、`correctProbabilities`、`predictionSet`、`offerCandidates`、`checkReachability`、`loadBestV2`・`scoreBestV2`・`BEST_V2_PARAMS`、`srScores`・`srOffer`・`srRanking`・`capByKind`、`rerankDocument`、`TURN_STRUCTURE_PROMPT`・`turnStructurePrompt`・`parseTurnStructure`・`routedTexts`（過去の構造の検査には`parseStructure`）。DB・時計・乱数・ネットワーク・モデルには触らない |
 | `eumenes_router/sqlite` | 表の SQL `migrations`（ホストが自分の migration で当てる）、借りた同期接続への `syncCardsInTransaction`、`saveVectorsInTransaction`、`srCardsInTransaction`、`lexicalInTransaction`、`importExamplesInTransaction`・`examplesInTransaction`（best-v2 の記憶）、`nearFeedback`、`recordFeedbackInTransaction`、`setFeedbackStateInTransaction`、`forgetInTransaction`。open/close・transaction はしない |
 
 | 入口 | ホストの口 | 流れ | 結果 |
 | --- | --- | --- | --- |
 | `route(ports, turn)` | `embed`、`rerank`（LARM の文脈判定。基準ごとの `scores` が要る）、`read.cards`・`read.lexical`・`read.nearFeedback`、`model`（`loadBestV2(BEST_V2_PARAMS, 記憶)`）、`settings` | 埋め込み → 近い訂正 → sr-corr（上位8件と全カードの順位）→ 上位 10件のツール・訂正の正解・動的な候補 → reranker → best-v2 → 訂正 → 決定表（best-v2 が回さないときが「自信あり」。自信なしでも1位を予告付きで実行し、聞き返しの行 8 にはしない） | `decision`・`corrected`・`answer`・`explain`（gate・defer・衝突した訂正の id） |
 | `routeStructured(ports, turn)` | `route` の口と `analyze({ version, system, user, outputSchema })`。ホストは指示とschemaを構造化出力に渡し、応答をJSON文字列で返す | 構造判断と受信検査の後、回答・取消・会話・確認は直接返す。依頼は各部分を採点し、複数の実作業はパイプラインへ渡す | `decision`（各部分の判断・依存順を含む）・`structure`・`parts` |
+| `routeWithFallback(ports, turn, beginStructured, signal?)` | `route` の口、B用のポートと期限を必要になってから作る `beginStructured`、任意のターン取消シグナル | Aを1回。`explain.defer === true` の回だけBを1回。Bで期限切れ・受信失敗・判定不能なら実行を保留 | 実行・会話に使う `decision` と、観測用の `direct`・`structured` |
 
 ホストは `requestStructuredOutput` に渡される `messages` と `schema` で厳密な構造化出力を要求します。`turn.pending` と `turn.controls` には現在有効な参照を渡し、`turn.dynamic` に対応する回答・取消候補を含めます。実行権限と状態はホストが実行直前に確認します。
 
@@ -149,6 +150,12 @@ export function routeWithStructure(ports, turn, requestStructuredOutput) {
 ```
 
 応答の外枠は `{"decision": ...}` です。中には `answer`、`control`（取消）、`requests`（新規依頼）、空の `requests`（会話）、`clarify`（確認）のいずれか一つを入れます。各依頼は `text`・`target`・`inputs`・`after` を必須とし、材料や依存がない場合は空配列、対象がない場合は `null` を使います。依存は前にある依頼の0始まりの番号です。応答は65,536 UTF-16コード単位まで、依頼は8件まで、参照は1依頼あたり32件まで受け付けます。外枠のない旧形式、項目の欠落・追加、上限超過は `structure_invalid` になります。
+
+### Eumenesから条件付きの経路を使う場合
+
+ホストは `routeWithFallback` を呼び、`beginStructured` の中で `AbortSignal.timeout(構造判断の制限時間)` を作って `{ ports, deadline }` を返します。Bの `analyze`・`embed`・`rerank` に期限とターン取消の両方を接続します。質問後のAに以前の依頼を連結して渡す場合は、Bの原文・参照検査用に `beginStructured` の戻り値の `turn` に現在の発言のターンを渡します。
+
+ホストが動作に使うのは最上位の `decision` です。`direct` と `structured` は採点・記録用の途中結果です。`decision.to === "unresolved"` の場合はツール実行を止め、各 `requests` の候補をホストで再確認した上で、会話エージェントに次の情報を渡します。`options` が空なら、その依頼に対応する候補が見つからなかったことを伝えます。候補が残っていれば、依頼内容や対象を絞る質問を返し、次の発言を既存の聞き返し経路につなぎます。複数依頼の場合も質問への回答を受けるまでは全体を保留します。`decision.to === "clarify"` はBが返した質問として既存の経路で扱います。
 
 reranker に渡すのは、本文の先頭 400字と、カードの文（`rerankDocument`: 1つ目の文と「例:」に続く5件）。会話の候補は reranker に送らない（best-v2 は会話の点数を使わない）。補正が衝突した訂正の id は `explain.conflicts` に入る。行を `conflict` にするのはホストである。会話と記憶はカードとして同期する（文は `passages` で差し替えられる）。記憶の候補は記憶のカードを同期したときだけ出る（会話のカードが無いときは、会話の候補だけをパッケージが足す）。best-v2 の記憶は発話から作るので tarball に入らない。ホストが `importExamplesInTransaction` で取り込む（`manifest.json` の `requires.memory`）。
 

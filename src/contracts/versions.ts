@@ -1,8 +1,8 @@
 /** Versions a manifest publishes. Bump a key when that contract changes. */
 export const contractVersions = {
 	cards: 1,
-	/** 7: native structured output with an exclusive decision envelope. */
-	route: 7,
+	/** 8: conditional structured fallback with explicit non-dispatch outcomes. */
+	route: 8,
 	feedback: 1,
 	/** 6: strict native request fields and bounded responses. The prompt is versioned separately. */
 	structure: 6,

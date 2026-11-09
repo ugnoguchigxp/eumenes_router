@@ -8,12 +8,15 @@ import {
 	rerankDocument,
 	route,
 	routeErrors,
+	routeWithFallback,
+	type Analyze,
 	type BestV2Params,
 	type NearFeedback,
 	type RouteAnswer,
 	type RouteInput,
 	type RoutePorts,
 	type RouteTurn,
+	type StructuredPorts,
 	type VectorSpace,
 } from "../src/index.ts";
 import { routeStructuredFixture as routeStructured } from "./turn-response.fixture.ts";
@@ -185,6 +188,256 @@ test("route: an unsure top is still run with a notice (row 3), never asked about
 	expect(result.explain.defer).toBe(true);
 	expect(result.decision).toMatchObject({ row: 3, to: "run", announce: "try" });
 });
+
+const closeScores = { "music.create": 0.45, "image.create": 0.44 };
+const sureScores = { "music.create": 0.9, "image.create": 0.1 };
+const begin = (p: RoutePorts, analyze: Analyze) => () => ({
+	ports: { ...p, analyze },
+	deadline: new AbortController().signal,
+});
+const request = (text: string, after: number[] = []) => ({
+	text,
+	target: null,
+	inputs: [],
+	after,
+});
+
+test("conditional route: a sure A does exactly the same work, with no B setup", async () => {
+	const { ports: p, calls } = ports(sureScores);
+	const input = turn("曲を作って");
+	const direct = await route(ports(sureScores).ports, input);
+	const result = await routeWithFallback(p, input, () => {
+		throw new Error("unexpected B setup");
+	});
+	expect(result).toEqual({
+		direct,
+		structured: null,
+		decision: direct.decision,
+	});
+	expect(calls.embed).toEqual([input.state.text]);
+	expect(calls.rerank).toHaveLength(1);
+});
+
+test("conditional route: no offered candidate goes to the conversation without calling B", async () => {
+	const { ports: p, calls } = ports({}, { cards: [CARDS[0]!] });
+	const input = turn("歌って");
+	const result = await routeWithFallback(p, input, () => {
+		throw new Error("unexpected B setup");
+	});
+	expect(result.decision).toEqual({
+		row: 8,
+		to: "unresolved",
+		reason: "no_candidate",
+		requests: [{ text: input.state.text, options: [] }],
+	});
+	expect(calls.rerank).toEqual([]);
+});
+
+test("conditional route: B resolves a cancellation after A defers, using the original turn", async () => {
+	const { ports: p, calls } = ports(closeScores);
+	const candidate = {
+		id: "t1.cancel",
+		kind: "work",
+		operation: "cancel",
+		todo: "todo-1",
+		title: "曲の生成",
+		passage: "生成を取り消す",
+	} as const;
+	const latest = turn("やめて", {
+		dynamic: [candidate],
+		controls: [{ ref: candidate.id, title: candidate.title }],
+	});
+	const expanded = {
+		...latest,
+		state: { ...latest.state, text: "作成中\nやめて" },
+	};
+	let analyzes = 0;
+	const result = await routeWithFallback(p, expanded, () => ({
+		...begin(p, async (prompt) => {
+			analyzes++;
+			expect(JSON.parse(prompt.user).text).toBe(latest.state.text);
+			return JSON.stringify({
+				decision: { control: { ref: candidate.id, text: latest.state.text } },
+			});
+		})(),
+		turn: latest,
+	}));
+	expect(analyzes).toBe(1);
+	expect(result.direct.explain.defer).toBe(true);
+	expect(result.decision).toEqual({
+		row: 6,
+		to: "run",
+		candidate,
+		announce: "none",
+	});
+	expect(calls.embed).toEqual([expanded.state.text]);
+	expect(calls.rerank).toHaveLength(1);
+});
+
+test.each([
+	["conversation", { requests: [] }],
+	[
+		"clarify",
+		{
+			clarify: { question: "曲と画像のどちらですか？", unhandled: ["作って"] },
+		},
+	],
+] as const)(
+	"conditional route: honors B's explicit %s",
+	async (to, decision) => {
+		const { ports: p, calls } = ports(closeScores);
+		const result = await routeWithFallback(
+			p,
+			turn("作って"),
+			begin(p, async () => JSON.stringify({ decision })),
+		);
+		expect(result.decision.to).toBe(to);
+		expect(calls.rerank).toHaveLength(1);
+	},
+);
+
+test.each(["invalid", "rejected"])(
+	"conditional route: %s B cannot restore A's tentative tool",
+	async (failure) => {
+		const { ports: p, calls } = ports(closeScores);
+		const result = await routeWithFallback(
+			p,
+			turn("作って"),
+			begin(p, async () => {
+				if (failure === "rejected") throw new Error("unavailable");
+				return '{"requests":[]}';
+			}),
+		);
+		expect(result.direct.decision).toMatchObject({
+			to: "run",
+			announce: "try",
+		});
+		expect(result.structured).toBeNull();
+		expect(result.decision).toMatchObject({
+			to: "unresolved",
+			reason: "structure_failed",
+			requests: [
+				{
+					text: "作って",
+					options: [
+						{ id: "music.create" },
+						{ id: "image.create" },
+						{ id: "timers.manage" },
+					],
+				},
+			],
+		});
+		expect(calls.rerank).toHaveLength(1);
+	},
+);
+
+test.each(["analyze", "rerank"] as const)(
+	"conditional route: deadline stops B during %s and discards its late result",
+	async (stage) => {
+		const { ports: a } = ports(closeScores);
+		const { ports: b, calls } = ports(sureScores);
+		const deadline = new AbortController();
+		const text = "曲を作って、画像も作って";
+		const raw = JSON.stringify({
+			decision: {
+				requests: [request("曲を作って"), request("画像も作って", [0])],
+			},
+		});
+		const late: Array<() => void> = [];
+		const delay = <T>(value: T) =>
+			new Promise<T>((resolve) => {
+				late.push(() => resolve(value));
+				deadline.abort();
+			});
+		const bPorts: StructuredPorts = {
+			...b,
+			analyze: async () => (stage === "analyze" ? delay(raw) : raw),
+			rerank: async (input) => delay(await b.rerank(input)),
+		};
+		const result = await routeWithFallback(a, turn(text), () => ({
+			ports: bPorts,
+			deadline: deadline.signal,
+		}));
+		expect(result.decision).toMatchObject({
+			to: "unresolved",
+			reason: "structure_timeout",
+		});
+		expect(result.structured).toBeNull();
+		expect(late).toHaveLength(1);
+		late[0]!();
+		await Bun.sleep(0);
+		expect(calls.embed).toEqual(stage === "analyze" ? [] : ["曲を作って"]);
+		expect(calls.rerank).toHaveLength(stage === "analyze" ? 0 : 1);
+	},
+);
+
+test("conditional route: caller cancellation propagates instead of asking the user", async () => {
+	const { ports: p } = ports(closeScores);
+	const stop = new AbortController();
+	const reason = new Error("turn_cancelled");
+	const result = routeWithFallback(
+		p,
+		turn("作って"),
+		begin(p, async () => {
+			stop.abort(reason);
+			return '{"decision":{"requests":[]}}';
+		}),
+		stop.signal,
+	);
+	await expect(result).rejects.toBe(reason);
+});
+
+test.each(["sure", "ambiguous", "empty"])(
+	"conditional route: B with a %s second part never runs just the first",
+	async (second) => {
+		const { ports: a } = ports(closeScores);
+		const { ports: b } = ports((text) =>
+			text === "曲を作って"
+				? sureScores
+				: second === "sure"
+					? { "music.create": 0.1, "image.create": 0.9 }
+					: closeScores,
+		);
+		const input = turn("曲を作って、画像も作って");
+		const raw = JSON.stringify({
+			decision: {
+				requests: [request("曲を作って"), request("画像も作って", [0])],
+			},
+		});
+		let part = 0;
+		const bPorts: RoutePorts = {
+			...b,
+			read: {
+				...b.read,
+				cards: () => (second === "empty" && part++ > 0 ? [CARDS[0]!] : CARDS),
+			},
+		};
+		const result = await routeWithFallback(
+			a,
+			input,
+			begin(bPorts, async () => raw),
+		);
+		if (second === "sure") {
+			if (result.decision.to !== "pipeline")
+				throw new Error("expected pipeline");
+			expect(
+				result.decision.steps.map((step) => [step.candidate.id, step.after]),
+			).toEqual([
+				["music.create", []],
+				["image.create", [0]],
+			]);
+		} else {
+			if (result.decision.to !== "unresolved")
+				throw new Error("expected no dispatch");
+			expect(result.decision.requests.map((r) => r.text)).toEqual([
+				"画像も作って",
+			]);
+			const ids = result.decision.requests[0]!.options.map((c) => c.id);
+			if (second === "empty") expect(ids).toEqual([]);
+			else expect(ids).toContain("image.create");
+		}
+	},
+);
 
 test("route: a near correction moves the top and makes it unsure; disagreeing ones do not move anything", async () => {
 	const scores = { "music.create": 0.45, "image.create": 0.3 };

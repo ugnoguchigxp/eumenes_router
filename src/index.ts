@@ -57,6 +57,12 @@ export type {
 	ReachabilityReport,
 } from "./reachability.ts";
 export { route, routeStructured } from "./route.ts";
+export { routeWithFallback } from "./route-fallback.ts";
+export type {
+	BeginStructured,
+	FallbackDecision,
+	FallbackResult,
+} from "./route-fallback.ts";
 export {
 	BEST_V2_FEATURES,
 	BEST_V2_FORMAT,

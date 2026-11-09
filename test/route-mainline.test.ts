@@ -13,6 +13,7 @@ import {
 	loadBestV2,
 	ROUTE_LIMITS,
 	route,
+	routeWithFallback,
 	unpackVector,
 	type Card,
 	type RouteAnswer,
@@ -224,9 +225,12 @@ test.skipIf(!ready)(
 		}>(files.rows);
 		const wrong: string[] = [];
 		let compared = 0;
+		let unchanged = 0;
 		for (const r of rows) {
 			if (!s.scored(r.text)) continue;
-			const result = await route(s.ports(), s.turnOf(r.text, r.hints ?? {}));
+			const ports = s.ports();
+			const turn = s.turnOf(r.text, r.hints ?? {});
+			const result = await route(ports, turn);
 			const w = want.get(r.id)!;
 			const gate = w[0]![1] - (w[1]?.[1] ?? -9);
 			compared++;
@@ -235,9 +239,21 @@ test.skipIf(!ready)(
 				result.explain.defer !== gate < BEST_V2_PARAMS.gate.deferBelow
 			)
 				wrong.push(r.id);
+			if (result.explain.defer === false) {
+				const conditional = await routeWithFallback(ports, turn, () => {
+					throw new Error("unexpected B setup");
+				});
+				expect(conditional).toEqual({
+					direct: result,
+					structured: null,
+					decision: result.decision,
+				});
+				unchanged++;
+			}
 		}
 		s.close();
 		expect(compared).toBeGreaterThan(210);
+		expect(unchanged).toBeGreaterThan(0);
 		expect(wrong).toEqual([]);
 	},
 );

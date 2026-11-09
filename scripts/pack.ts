@@ -3,8 +3,8 @@
  * Runs the typecheck, the lint and the tests (any failure stops it), builds and packs the package, names the
  * tarball `eumenes_router-<version>-<sha256 head 12>.tgz`, and writes `<artifact>.sha256` and `manifest.json`
  * beside it (the form of Eumenes' vendored packages), with the commit it was built from and whether the tree had
- * uncommitted changes. The mainline parity tests must run (they need the local evaluation data in data/). One tarball holds both mainline entries (plan §10 M3d):
- * `route` (direct) and `routeStructured` (structured); the host chooses by which one it calls.
+ * uncommitted changes. The mainline parity tests must run (they need the local evaluation data in data/).
+ * One tarball holds the direct, structured and conditional fallback entries.
  */
 import { createHash } from "node:crypto";
 import {
@@ -144,6 +144,20 @@ try {
 					"read.nearFeedback",
 					"model",
 					"settings",
+				],
+				structurePrompt: TURN_STRUCTURE_PROMPT.version,
+			},
+			routeWithFallback: {
+				flavor: "conditional-structured",
+				ports: [
+					"embed",
+					"rerank",
+					"read.cards",
+					"read.lexical",
+					"read.nearFeedback",
+					"model",
+					"settings",
+					"beginStructured",
 				],
 				structurePrompt: TURN_STRUCTURE_PROMPT.version,
 			},

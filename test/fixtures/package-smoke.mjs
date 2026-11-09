@@ -9,6 +9,7 @@ import {
 	cardDigest,
 	loadBestV2,
 	route,
+	routeWithFallback,
 	contractVersions,
 } from "eumenes_router";
 import {
@@ -22,7 +23,7 @@ import {
 	examplesInTransaction,
 } from "eumenes_router/sqlite";
 
-assert.equal(contractVersions.route, 7);
+assert.equal(contractVersions.route, 8);
 assert.equal(contractVersions.structure, 6);
 const readme = await Bun.file(
 	new URL("./node_modules/eumenes_router/README.md", import.meta.url),
@@ -125,7 +126,27 @@ try {
 		available: () => true,
 		instructions: "",
 	};
-	assert.equal((await route(ports, turn)).decision.candidate.id, "a");
+	const direct = await route(ports, turn);
+	assert.equal(direct.decision.candidate.id, "a");
+	assert.deepEqual(
+		await routeWithFallback(ports, turn, () => assert.fail("unexpected B")),
+		{ decision: direct.decision, direct, structured: null },
+	);
+	const deadline = new AbortController();
+	deadline.abort();
+	const deferred = {
+		...ports,
+		model: loadBestV2({ ...params, gate: { deferBelow: 1 } }, loaded),
+	};
+	const stopped = await routeWithFallback(deferred, turn, () => ({
+		ports: { ...ports, analyze: async () => assert.fail("expired B") },
+		deadline: deadline.signal,
+	}));
+	assert.equal(stopped.direct.explain.defer, true);
+	assert.equal(stopped.structured, null);
+	assert.equal(stopped.decision.to, "unresolved");
+	assert.equal(stopped.decision.reason, "structure_timeout");
+	assert.ok(stopped.decision.requests[0].options.length > 0);
 	assert.equal(
 		(
 			await routeWithStructure(
