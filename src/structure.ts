@@ -23,6 +23,10 @@ export const STRUCTURE_LIMITS = {
 	text: 2000,
 	/** The previous agent turn sent, in code points. */
 	previous: 400,
+	/** Native response length, in UTF-16 code units before JSON decoding. */
+	response: 65_536,
+	/** Literal references in one request of a native response. */
+	references: 32,
 } as const;
 
 /**
@@ -98,12 +102,27 @@ export function parseStructure(raw: string, text: string): Structure | null {
 		value && typeof value === "object" && !Array.isArray(value)
 			? (value as { requests?: unknown }).requests
 			: undefined;
+	return structureFromRequests(list, text);
+}
+
+/** Reuse literal and order checks for both recorded and native request objects. */
+export function structureFromRequests(
+	list: unknown,
+	text: string,
+	requiredFields?: readonly string[],
+): Structure | null {
 	if (!Array.isArray(list) || list.length > STRUCTURE_LIMITS.requests)
 		return null;
 	const requests: StructureRequest[] = [];
 	for (const [i, item] of list.entries()) {
 		if (!item || typeof item !== "object" || Array.isArray(item)) return null;
 		const r = item as Record<string, unknown>;
+		if (
+			requiredFields &&
+			(Object.keys(r).length !== requiredFields.length ||
+				!requiredFields.every((key) => Object.hasOwn(r, key)))
+		)
+			return null;
 		const part = r["text"];
 		if (typeof part !== "string" || !part.trim() || !text.includes(part))
 			return null;
@@ -114,7 +133,11 @@ export function parseStructure(raw: string, text: string): Structure | null {
 		)
 			return null;
 		const inputs = "inputs" in r ? r["inputs"] : [];
-		if (!strings(inputs) || inputs.some((x) => !x.trim() || !text.includes(x)))
+		if (
+			!strings(inputs) ||
+			(requiredFields && inputs.length > STRUCTURE_LIMITS.references) ||
+			inputs.some((x) => !x.trim() || !text.includes(x))
+		)
 			return null;
 		const after = "after" in r ? r["after"] : [];
 		if (
@@ -188,7 +211,7 @@ function maskReferences(text: string, request: StructureRequest): string {
 			target = all[0]!;
 		}
 	}
-	const spans = request.inputs
+	const spans = [...new Set(request.inputs)]
 		.flatMap((input) => occurrences(text, input))
 		.filter((s) => !target || s.end <= target.start || s.start >= target.end)
 		.sort((a, b) => a.start - b.start || b.end - a.end);

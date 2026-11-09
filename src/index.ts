@@ -110,4 +110,8 @@ export {
 	turnStructurePrompt,
 	TURN_STRUCTURE_PROMPT,
 } from "./turn-structure.ts";
-export type { PendingQuestion, TurnStructure } from "./turn-structure.ts";
+export type {
+	PendingQuestion,
+	WorkControl,
+	TurnStructure,
+} from "./turn-structure.ts";

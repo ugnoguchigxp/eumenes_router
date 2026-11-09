@@ -8,7 +8,6 @@ import {
 	rerankDocument,
 	route,
 	routeErrors,
-	routeStructured,
 	type BestV2Params,
 	type NearFeedback,
 	type RouteAnswer,
@@ -17,6 +16,7 @@ import {
 	type RouteTurn,
 	type VectorSpace,
 } from "../src/index.ts";
+import { routeStructuredFixture as routeStructured } from "./turn-response.fixture.ts";
 import type { RouterCard } from "../src/sqlite.ts";
 
 const space: VectorSpace = {
@@ -288,6 +288,7 @@ test("routeStructured: one request with a reference routes the masked utterance,
 			text: "この音楽に合う画像を作って",
 			previousAgent: "曲を作りました。",
 			pending: [],
+			controls: [],
 		}),
 	]);
 	expect(calls.embed).toEqual(["これに合う画像を作って"]);
@@ -349,6 +350,47 @@ test("routeStructured: requests of two tools go to the pipeline stage in order",
 	expect(result.decision.steps.map((s) => s.decision)).toEqual(
 		result.parts.map((p) => p.result.decision),
 	);
+});
+
+test("shared predicates keep two operations of the same tool as two pipeline steps", async () => {
+	const { ports: p, calls } = ports({ "timers.manage": 0.95 });
+	const text =
+		"10秒のタイマーと25秒のタイマーをそれぞれ1つずつ作ってください。";
+	const result = await routeStructured(
+		{
+			...p,
+			analyze: async () =>
+				JSON.stringify({
+					requests: [
+						{
+							text: "10秒のタイマー",
+							target: "10秒のタイマー",
+							inputs: [],
+							after: [],
+						},
+						{
+							text: "25秒のタイマーをそれぞれ1つずつ作ってください",
+							target: "25秒のタイマー",
+							inputs: [],
+							after: [],
+						},
+					],
+				}),
+		},
+		turn(text),
+	);
+	expect(calls.rerank.map((call) => call.text)).toEqual([
+		"10秒のタイマーをそれぞれ1つずつ作ってください",
+		"25秒のタイマーをそれぞれ1つずつ作ってください",
+	]);
+	expect(result.decision.to).toBe("pipeline");
+	if (result.decision.to !== "pipeline") throw new Error("pipeline_required");
+	expect(
+		result.decision.steps.map((step) => [step.candidate.id, step.after]),
+	).toEqual([
+		["timers.manage", []],
+		["timers.manage", []],
+	]);
 });
 
 test("structured decisions keep approval/cancellation questions before dispatch, and approved operations inside steps", async () => {

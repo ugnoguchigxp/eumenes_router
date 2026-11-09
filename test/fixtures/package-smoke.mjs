@@ -9,7 +9,6 @@ import {
 	cardDigest,
 	loadBestV2,
 	route,
-	routeStructured,
 	contractVersions,
 } from "eumenes_router";
 import {
@@ -23,7 +22,22 @@ import {
 	examplesInTransaction,
 } from "eumenes_router/sqlite";
 
-assert.equal(contractVersions.route, 4);
+assert.equal(contractVersions.route, 7);
+assert.equal(contractVersions.structure, 6);
+const readme = await Bun.file(
+	new URL("./node_modules/eumenes_router/README.md", import.meta.url),
+).text();
+const example =
+	/<!-- route-structured-example -->\r?\n```js\r?\n([\s\S]+?)\r?\n```/.exec(
+		readme,
+	)?.[1];
+assert.ok(
+	example,
+	"packaged README must contain the structured consumer example",
+);
+const exampleFile = new URL("./readme-route.mjs", import.meta.url);
+await Bun.write(exampleFile, example);
+const { routeWithStructure } = await import(exampleFile.href);
 const space = {
 	modelId: "synthetic",
 	revision: "1",
@@ -114,27 +128,38 @@ try {
 	assert.equal((await route(ports, turn)).decision.candidate.id, "a");
 	assert.equal(
 		(
-			await routeStructured(
-				{ ...ports, analyze: async () => '{"requests":[]}' },
+			await routeWithStructure(
+				ports,
 				turn,
+				async ({ version, messages, schema }) => {
+					assert.equal(version, "turn-structure-v8");
+					assert.equal(messages[0].role, "system");
+					assert.equal(messages[1].role, "user");
+					assert.equal(JSON.parse(messages[1].content).text, turn.state.text);
+					assert.deepEqual(schema.required, ["decision"]);
+					assert.deepEqual(
+						schema.properties.decision.anyOf[0].properties.requests.items
+							.required,
+						["text", "target", "inputs", "after"],
+					);
+					return '{"decision":{"requests":[]}}';
+				},
 			)
 		).decision.to,
 		"conversation",
 	);
-	await assert.rejects(
-		routeStructured({ ...ports, analyze: async () => "invalid" }, turn),
-		/structure_invalid/,
-	);
-	const compound = await routeStructured(
+	for (const invalid of [
+		'{"requests":[]}',
+		'{"decision":{"requests":[{"text":"作って","target":null,"inputs":[]}]}}',
+	]) {
+		await assert.rejects(
+			routeWithStructure(ports, turn, async () => invalid),
+			/structure_invalid/,
+		);
+	}
+	const compound = await routeWithStructure(
 		{
 			...ports,
-			analyze: async () =>
-				JSON.stringify({
-					requests: [
-						{ text: "aを作って", target: "a", inputs: [], after: [] },
-						{ text: "bを作って", target: "b", inputs: [], after: [0] },
-					],
-				}),
 			rerank: async (input) => {
 				const result = await ports.rerank(input);
 				if (input.text === "bを作って") result.scores = { a: 0.1, b: 0.9 };
@@ -142,6 +167,15 @@ try {
 			},
 		},
 		{ ...turn, state: { ...turn.state, text: "aを作って、bを作って" } },
+		async () =>
+			JSON.stringify({
+				decision: {
+					requests: [
+						{ text: "aを作って", target: "a", inputs: [], after: [] },
+						{ text: "bを作って", target: "b", inputs: [], after: [0] },
+					],
+				},
+			}),
 	);
 	assert.equal(compound.decision.to, "pipeline");
 	assert.deepEqual(

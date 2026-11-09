@@ -13,7 +13,6 @@ import {
 	loadBestV2,
 	ROUTE_LIMITS,
 	route,
-	routeStructured,
 	unpackVector,
 	type Card,
 	type RouteAnswer,
@@ -22,6 +21,7 @@ import {
 	type RouteTurn,
 	type VectorSpace,
 } from "../src/index.ts";
+import { routeStructuredFixture as routeStructured } from "./turn-response.fixture.ts";
 import {
 	examplesInTransaction,
 	importExamplesInTransaction,

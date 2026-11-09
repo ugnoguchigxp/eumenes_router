@@ -24,9 +24,10 @@ import { capByKind, srOffer, srRanking, srScores } from "./retrieval/sr.ts";
 import { scoreBestV2, type BestV2Model } from "./scoring/best-v2.ts";
 import { routedTexts, type Structure } from "./structure.ts";
 import {
-	parseTurnStructure,
+	parseTurnResponse,
 	turnStructurePrompt,
 	type PendingQuestion,
+	type WorkControl,
 	type TurnStructure,
 } from "./turn-structure.ts";
 import { head, tail } from "./text.ts";
@@ -45,6 +46,7 @@ export type Analyze = (prompt: {
 	version: string;
 	system: string;
 	user: string;
+	outputSchema: Record<string, unknown>;
 }) => Promise<string>;
 
 export type FeedbackQuery = {
@@ -98,6 +100,8 @@ export type RouteTurn = {
 	dynamic: readonly RouteCandidate[];
 	/** Current, conversation-scoped questions validated by the host. */
 	pending?: readonly PendingQuestion[];
+	/** Finite references to currently cancellable work. */
+	controls?: readonly WorkControl[];
 	/** Sentences for the conversation and a memory request when the host writes them. */
 	passages?: { conversation: string; memory: string };
 	/**
@@ -425,10 +429,32 @@ export async function routeStructured(
 ): Promise<StructuredResult> {
 	const text = turn.state.text;
 	const raw = await ports.analyze(
-		turnStructurePrompt(text, turn.state.previousAgent, turn.pending ?? []),
+		turnStructurePrompt(
+			text,
+			turn.state.previousAgent,
+			turn.pending ?? [],
+			turn.controls ?? [],
+		),
 	);
-	const structure = parseTurnStructure(raw, text, turn.pending ?? []);
+	const structure = parseTurnResponse(
+		raw,
+		text,
+		turn.pending ?? [],
+		turn.controls ?? [],
+	);
 	if (!structure) throw new Error("structure_invalid");
+	if (structure.kind === "control") {
+		const candidate = turn.dynamic.find(
+			(c) =>
+				c.id === structure.ref && c.kind === "work" && c.operation === "cancel",
+		);
+		if (!candidate) throw new Error("structure_reference_unavailable");
+		return {
+			structure,
+			parts: [],
+			decision: { row: 6, to: "run", candidate, announce: "none" },
+		};
+	}
 	if (structure.kind === "answer") {
 		const candidate = turn.dynamic.find(
 			(c) =>

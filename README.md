@@ -4,11 +4,11 @@ Eumenes の担当の振り分け（Toolchain Router）から、判断一式を�
 
 パッケージ名・リポジトリ・フォルダは `eumenes_router` です。作業の入口は [plan.md](plan.md)、作業規則は [AGENTS.md](AGENTS.md) です。
 
-## 現在の状態（2026-11-06）
+## 現在の状態（2026-11-09）
 
-判断一式、best-v2、構造判断とA/Bの入口、SQLite、出荷機構は実装済みです。R0とオフライン改善を実施しています（[plan.md §13](plan.md#13-80点水準への改善計画2026-11-06利用者合意着手)）。ホストへの契約4の統合、人による正解確認、新規評価、live/本番機の測定と継続利用は残作業です。
+判断一式、best-v2、構造判断とA/Bの入口、SQLite、出荷機構を実装しています。現行候補はroute契約7、構造契約6、構造指示 `turn-structure-v8` です。オフラインの検証範囲は [plan.md §13.13](plan.md#1313-構造応答の受信と配布手順の修正2026-11-09) にあります。
 
-契約4では、複数依頼の集約に各部分の決定表の結果を使い、再確認・質問を優先します。パイプラインの各stepにも`decision`を保持します。参照置換はLLMが返した依頼部分と作成対象から対象の位置を保護し、曖昧なら元文を残します。構造契約2では保留質問の有限参照を入力に渡し、回答・依頼・会話・確認を区別します。構造が不正なら部分実行せず失敗し、複数の実作業は同じ担当でもパイプラインへ渡します（plan §13.9）。
+構造入口は、ホストが提示する保留質問・取消可能な仕事の有限参照を使い、回答・取消・依頼・会話・確認を区別します。複数依頼の集約では再確認・質問を優先し、各パイプライン段に判断と依存順を保持します。同じ担当の複数操作もパイプラインへ渡します。構造応答が不正なら、検索・採点の前に失敗します。
 
 交差検証は分割ごとの学習側だけで近傍特徴を作るよう修正しました。配布する既存の学習値は再生成していません。以下の精度・費用・採否は過去の実測で、修正後の新しい精度ではありません。新しい学習手順での設定選択と人確認済み評価が必要です。
 
@@ -62,7 +62,7 @@ test 217件（評価は1回）と、test から作った言い換え 1,215件。
 
 ## 採用している方式
 
-本流は2つの構成（plan.md M3d）。A は「検索 → best-v2」。Bは「発言全体の構造判断（`src/turn-structure.ts`の版付き指示文）→ 回答/確認/会話/依頼の区別 → 依頼の部分ごとにbest-v2」です。旧S3の比較値は履歴として扱います。構造の判断は、依頼の部分・作る物・参照（材料）・先に済ませる依頼を返す（担当は選ばない）。依頼なしは会話、依頼1つは参照を「これ」に伏せた文を振り分け、実作業が2つ以上ならパイプラインの段へ送る。
+本流は2つの構成（plan.md M3d）。Aは検索からbest-v2へ進みます。Bは発言全体の構造を判断し、回答・取消・会話・確認を処理します。新規依頼の場合は、LLMが原文の依頼部分・作る物・参照・先に済ませる依頼を返し、依頼ごとにbest-v2で担当を判定します。単一の依頼では参照を「これ」に置き換える際に作成対象を保護し、対象位置が曖昧な場合は元文を使います。旧S3の比較値は過去の記録です。
 
 メインの判断は **best-v2**（`src/scoring/best-v2.ts`）。劣る方式（best-v1、algo4、round2/3、LLM による確認、LARM の文脈判定の単体利用、検索と reranker の単純な融合）はパッケージに入れない。
 
@@ -121,7 +121,34 @@ bun run test:python
 | 入口 | ホストの口 | 流れ | 結果 |
 | --- | --- | --- | --- |
 | `route(ports, turn)` | `embed`、`rerank`（LARM の文脈判定。基準ごとの `scores` が要る）、`read.cards`・`read.lexical`・`read.nearFeedback`、`model`（`loadBestV2(BEST_V2_PARAMS, 記憶)`）、`settings` | 埋め込み → 近い訂正 → sr-corr（上位8件と全カードの順位）→ 上位 10件のツール・訂正の正解・動的な候補 → reranker → best-v2 → 訂正 → 決定表（best-v2 が回さないときが「自信あり」。自信なしでも1位を予告付きで実行し、聞き返しの行 8 にはしない） | `decision`・`corrected`・`answer`・`explain`（gate・defer・衝突した訂正の id） |
-| `routeStructured(ports, turn)` | `route` の口 ＋ `analyze`（`{ version, system, user }` を LLM に送り、答えの文字列を返す） | 構造の判断 → 検査（不正なら実行せず失敗）→ 依頼なしは会話、依頼1つは参照を「これ」に伏せた文（手がかりなし）、複数は依頼の部分ごとに `route` と同じ流れ → 担当が2つ以上ならパイプラインの段 | `decision`（回答・確認・会話・実行・各部分の判断と順番）・`structure`・`parts` |
+| `routeStructured(ports, turn)` | `route` の口と `analyze({ version, system, user, outputSchema })`。ホストは指示とschemaを構造化出力に渡し、応答をJSON文字列で返す | 構造判断と受信検査の後、回答・取消・会話・確認は直接返す。依頼は各部分を採点し、複数の実作業はパイプラインへ渡す | `decision`（各部分の判断・依存順を含む）・`structure`・`parts` |
+
+ホストは `requestStructuredOutput` に渡される `messages` と `schema` で厳密な構造化出力を要求します。`turn.pending` と `turn.controls` には現在有効な参照を渡し、`turn.dynamic` に対応する回答・取消候補を含めます。実行権限と状態はホストが実行直前に確認します。
+
+<!-- route-structured-example -->
+```js
+import { routeStructured } from "eumenes_router";
+
+export function routeWithStructure(ports, turn, requestStructuredOutput) {
+	return routeStructured(
+		{
+			...ports,
+			analyze: ({ version, system, user, outputSchema }) =>
+				requestStructuredOutput({
+					version,
+					messages: [
+						{ role: "system", content: system },
+						{ role: "user", content: user },
+					],
+					schema: outputSchema,
+				}),
+		},
+		turn,
+	);
+}
+```
+
+応答の外枠は `{"decision": ...}` です。中には `answer`、`control`（取消）、`requests`（新規依頼）、空の `requests`（会話）、`clarify`（確認）のいずれか一つを入れます。各依頼は `text`・`target`・`inputs`・`after` を必須とし、材料や依存がない場合は空配列、対象がない場合は `null` を使います。依存は前にある依頼の0始まりの番号です。応答は65,536 UTF-16コード単位まで、依頼は8件まで、参照は1依頼あたり32件まで受け付けます。外枠のない旧形式、項目の欠落・追加、上限超過は `structure_invalid` になります。
 
 reranker に渡すのは、本文の先頭 400字と、カードの文（`rerankDocument`: 1つ目の文と「例:」に続く5件）。会話の候補は reranker に送らない（best-v2 は会話の点数を使わない）。補正が衝突した訂正の id は `explain.conflicts` に入る。行を `conflict` にするのはホストである。会話と記憶はカードとして同期する（文は `passages` で差し替えられる）。記憶の候補は記憶のカードを同期したときだけ出る（会話のカードが無いときは、会話の候補だけをパッケージが足す）。best-v2 の記憶は発話から作るので tarball に入らない。ホストが `importExamplesInTransaction` で取り込む（`manifest.json` の `requires.memory`）。
 
