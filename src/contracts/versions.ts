@@ -3,7 +3,8 @@ export const contractVersions = {
 	cards: 1,
 	/** 8: conditional structured fallback with explicit non-dispatch outcomes. */
 	route: 8,
-	feedback: 1,
+	/** 2: SQLite operations for feedback inputs already checked by the host. */
+	feedback: 2,
 	/** 6: strict native request fields and bounded responses. The prompt is versioned separately. */
 	structure: 6,
 } as const;

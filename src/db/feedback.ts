@@ -1,6 +1,7 @@
 import {
 	feedbackSources,
 	feedbackStates,
+	type FeedbackInsert,
 	type FeedbackState,
 	type FeedbackWrite,
 	type NearFeedback,
@@ -9,6 +10,7 @@ import { routerErrors } from "../contracts/errors.ts";
 import type { FeedbackQuery } from "../route.ts";
 import {
 	assertVector,
+	dot,
 	packVector,
 	unpackVector,
 	vectorSpaceKey,
@@ -23,7 +25,7 @@ const states = new Set<string>(feedbackStates);
 
 const cap = (text: string) => text.slice(0, TEXT_MAX);
 
-function messageIdsJson(primary: string, more: readonly string[]) {
+function messageIdsJson(primary: string, more: readonly string[] = []) {
 	return JSON.stringify([...new Set([primary, ...more])]);
 }
 
@@ -55,6 +57,14 @@ export function recordFeedbackInTransaction(
 	input: FeedbackWrite,
 ): void {
 	assertWrite(input);
+	insertFeedbackInTransaction(db, input);
+}
+
+/** Inserts an active correction using inputs already checked by the host. */
+export function insertFeedbackInTransaction(
+	db: RouterDb,
+	input: FeedbackInsert,
+): void {
 	db.query(
 		`INSERT INTO router_feedback(
  id, conversation_id, message_id, message_ids_json, run_id, source, query_text,
@@ -88,9 +98,17 @@ export function nearFeedback(
 	assertVector(input.space, input.vector);
 	if (typeof input.threshold !== "number" || !Number.isFinite(input.threshold))
 		throw new Error(routerErrors.invalidFeedback);
-	const limit = input.limit ?? NEAR_LIMIT;
-	if (!Number.isInteger(limit) || limit < 1)
+	const limit = input.limit;
+	if (limit != null && (!Number.isInteger(limit) || limit < 1))
 		throw new Error(routerErrors.invalidFeedback);
+	return searchFeedback(db, input);
+}
+
+/** Searches the newest 500 active corrections in the same space using a host-checked query. */
+export function searchFeedback(
+	db: RouterDb,
+	input: FeedbackQuery,
+): NearFeedback[] {
 	const rows = db
 		.query(
 			`SELECT id, wrong_id, right_id, query_vector FROM router_feedback
@@ -106,22 +124,19 @@ export function nearFeedback(
 	return rows
 		.map((row) => {
 			const values = unpackVector(row.query_vector);
-			let similarity = Number.NEGATIVE_INFINITY;
-			if (values.length === input.vector.length) {
-				similarity = 0;
-				for (let i = 0; i < values.length; i++)
-					similarity += values[i]! * input.vector[i]!;
-			}
 			return {
 				id: row.id,
 				wrongId: row.wrong_id,
 				rightId: row.right_id,
-				similarity,
+				similarity:
+					values.length === input.vector.length
+						? dot(values, input.vector)
+						: Number.NEGATIVE_INFINITY,
 			};
 		})
 		.filter((row) => row.similarity >= input.threshold)
 		.sort((a, b) => b.similarity - a.similarity)
-		.slice(0, limit);
+		.slice(0, input.limit ?? NEAR_LIMIT);
 }
 
 /** Sets a correction's state. `at` is the host's clock. Returns whether a row changed. */
@@ -133,6 +148,16 @@ export function setFeedbackStateInTransaction(
 ): boolean {
 	if (!states.has(state) || !Number.isInteger(at) || at < 0)
 		throw new Error(routerErrors.invalidFeedback);
+	return updateFeedbackStateInTransaction(db, id, state, at);
+}
+
+/** Updates a correction using host-checked inputs. Returns whether a row changed. */
+export function updateFeedbackStateInTransaction(
+	db: RouterDb,
+	id: string,
+	state: FeedbackState,
+	at: number,
+): boolean {
 	const changed = db
 		.query("UPDATE router_feedback SET state=?, updated_at=? WHERE id=?")
 		.run(state, at, id).changes;

@@ -845,3 +845,19 @@ Eumenes採用検証の追加: v7の厳密送信で既知6件は期待経路に�
 | 配布 | `bun scripts/pack.ts --out release/conditional-structure-2026-11-09` で129件成功、失敗・省略0。型・lint・整形・必須Python・保存済みデータとの一致・独立した利用側でのtarball検証も成功。route8 / structure6 / 指示v8。`release/conditional-structure-2026-11-09/manifest.json` にSHA256と対象ソースのdigestを記録。 |
 
 残作業はEumenesセッションでの配布物採用と会話エージェントへの接続。READMEにポートと期限の作り方、`unresolved` の扱い、既存の聞き返し経路への接続を記載した。意味判断の指示・採点は再利用し、差分は呼出し条件・期限・実行を許す条件・未決定の受渡しに限定した。
+
+### 13.15 訂正履歴の共通化
+
+| 作業 | 方針と完了条件 |
+| --- | --- |
+| Router の SQLite 公開口 | 検証済みの入力を受ける `insertFeedbackInTransaction`・`searchFeedback`・`updateFeedbackStateInTransaction` を公開する。従来の `recordFeedbackInTransaction`・`nearFeedback`・`setFeedbackStateInTransaction` は既存の検証を通して同じ処理を呼ぶ。`forgetInTransaction` は既存のまま使う。表の変更は不要。 |
+| 保存・検索・状態更新 | 出典 ID の省略は空配列として扱い、主 ID を先頭に置いて重複を除く。同じ空間の有効な最新500件を調べ、閾値以上を類似度順に返す。同点は作成時刻と rowid の降順、既定は5件。検索では既存行を再検証しない。Eumenes 側の ID・時刻発行、入力検証、訂正の採用判断、レビュー一覧、評価用書き出し、ログは従来の経路を使う。 |
+| Eumenes の接続と忘却 | Eumenes セッションで配布物と呼び出し先を同時に切り替える。本体の忘却処理はホストの同一トランザクションでトレースを先に削除し、`forgetInTransaction` で訂正を削除する。主 ID と副出典 ID を250 IDずつ処理し、件数の合計とログを維持する。失敗時は例外を伝えてホストのトランザクションをロールバックする。 |
+| 検証 | 変更前後の SQLite 試験と、両入口の保存行・検索順・戻り値・エラーを確認する。新規表と既存表、出典 ID の省略、不正なベクトル、閾値と件数の境界を含める。Router で独立した利用側から tarball を検証する。Eumenes セッションで4領域の `verify`、会話・レビュー・実際の忘却フックを通し、副出典のみの一致、250件超、再実行、失敗時のロールバックを確認する。 |
+
+| オフラインで確認済み | 結果 |
+| --- | --- |
+| 部分検証 | Router の既存5件と追加3件が成功。Eumenes の現行履歴試験12件も成功。現行本体と共通処理に同じ合成入力を渡し、保存行6件、検索31条件、状態更新2回、忘却2回で一致。現行本体の保存・状態変更・忘却のログを確認した。 |
+| 配布 | `release/shared-feedback/manifest.json`。feedback 契約2、DB スキーマ1。全132件成功、失敗・省略0。型・lint・整形・必須 Python 回帰・A/B の一致試験と、独立した利用側での tarball 検証が成功した。 |
+
+Eumenes セッションに残る作業は、配布物・manifest・ロックファイルと呼び出し先の切り替え、および切り替え後のログ・レビュー API・会話での訂正反映・忘却フックの検証。

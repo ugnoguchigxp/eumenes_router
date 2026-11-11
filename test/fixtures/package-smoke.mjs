@@ -18,13 +18,18 @@ import {
 	saveVectorsInTransaction,
 	srCardsInTransaction,
 	lexicalInTransaction,
+	forgetInTransaction,
+	insertFeedbackInTransaction,
 	nearFeedback,
+	searchFeedback,
+	updateFeedbackStateInTransaction,
 	importExamplesInTransaction,
 	examplesInTransaction,
 } from "eumenes_router/sqlite";
 
 assert.equal(contractVersions.route, 8);
 assert.equal(contractVersions.structure, 6);
+assert.equal(contractVersions.feedback, 2);
 const readme = await Bun.file(
 	new URL("./node_modules/eumenes_router/README.md", import.meta.url),
 ).text();
@@ -222,6 +227,32 @@ try {
 			turn,
 		),
 	);
+	db.transaction(() => {
+		insertFeedbackInTransaction(db, {
+			id: "f",
+			conversationId: "c",
+			messageId: "m",
+			runId: "r",
+			source: "review",
+			text: "fixture",
+			space,
+			vector: [1, 0],
+			wrongId: null,
+			rightId: "a",
+			at: 1,
+		});
+		const query = { space, vector: [1, 0], threshold: 1 };
+		assert.deepEqual(searchFeedback(db, query), [
+			{ id: "f", wrongId: null, rightId: "a", similarity: 1 },
+		]);
+		assert.deepEqual(searchFeedback(db, { ...query, limit: 0 }), []);
+		assert.equal(
+			updateFeedbackStateInTransaction(db, "f", "retracted", 2),
+			true,
+		);
+		assert.deepEqual(nearFeedback(db, query), []);
+		assert.equal(forgetInTransaction(db, ["m"]), 1);
+	})();
 } finally {
 	db.close();
 }

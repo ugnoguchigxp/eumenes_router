@@ -9,19 +9,24 @@ import {
 	type Card,
 	type VectorSpace,
 	BEST_V2_MEMORY_FORMAT,
+	routerErrors,
 } from "../src/index.ts";
 import {
 	forgetInTransaction,
+	insertFeedbackInTransaction,
 	migrations,
 	nearFeedback,
 	recordFeedbackInTransaction,
+	searchFeedback,
 	saveVectorsInTransaction,
 	srCardsInTransaction,
 	setFeedbackStateInTransaction,
+	updateFeedbackStateInTransaction,
 	syncCardsInTransaction,
 	importExamplesInTransaction,
 	examplesInTransaction,
 	lexicalInTransaction,
+	type FeedbackInsert,
 } from "../src/sqlite.ts";
 
 const space: VectorSpace = {
@@ -335,5 +340,160 @@ CREATE INDEX router_feedback_message ON router_feedback(message_id);`);
 		).toEqual(["kept"]);
 	} finally {
 		db.close();
+	}
+});
+
+const correction = {
+	id: "f",
+	conversationId: "c",
+	messageId: "primary",
+	runId: "run",
+	source: "review",
+	text: "x".repeat(2001),
+	space,
+	vector: [1, 0],
+	wrongId: null,
+	rightId: "a",
+	at: 1,
+} satisfies FeedbackInsert;
+
+test("feedback entry points share storage and state updates while keeping their validation", () => {
+	const { db, close } = open();
+	try {
+		const strict = { ...correction, id: "strict", messageIds: ["primary"] };
+		insertFeedbackInTransaction(db, correction);
+		recordFeedbackInTransaction(db, strict);
+		insertFeedbackInTransaction(db, {
+			...correction,
+			id: "related",
+			messageIds: ["also", "primary", "also"],
+		});
+		const rows = db
+			.query<Record<string, unknown>, []>(
+				"SELECT * FROM router_feedback ORDER BY rowid",
+			)
+			.all();
+		expect(rows[0]).toEqual({ ...rows[1], id: "f" });
+		expect(rows[0]).toMatchObject({
+			message_ids_json: '["primary"]',
+			query_text: "x".repeat(2000),
+			state: "active",
+			created_at: 1,
+			updated_at: 1,
+		});
+		expect(rows[2]).toMatchObject({ message_ids_json: '["primary","also"]' });
+
+		expect(() =>
+			recordFeedbackInTransaction(db, { ...strict, id: "" }),
+		).toThrow(routerErrors.invalidFeedback);
+		expect(() =>
+			recordFeedbackInTransaction(db, { ...strict, vector: [1] }),
+		).toThrow(routerErrors.invalidEmbedding);
+		expect(() =>
+			recordFeedbackInTransaction(db, { ...strict, vector: [NaN, 0] }),
+		).toThrow(routerErrors.invalidEmbedding);
+		expect(() => setFeedbackStateInTransaction(db, "f", "stale", -1)).toThrow(
+			routerErrors.invalidFeedback,
+		);
+		expect(updateFeedbackStateInTransaction(db, "f", "stale", -1)).toBe(true);
+		expect(setFeedbackStateInTransaction(db, "strict", "stale", 2)).toBe(true);
+		expect(updateFeedbackStateInTransaction(db, "missing", "stale", 2)).toBe(
+			false,
+		);
+		expect(
+			db
+				.query("SELECT state,updated_at FROM router_feedback ORDER BY rowid")
+				.all(),
+		).toEqual([
+			{ state: "stale", updated_at: -1 },
+			{ state: "stale", updated_at: 2 },
+			{ state: "active", updated_at: 1 },
+		]);
+	} finally {
+		close();
+	}
+});
+
+test("feedback searches preserve the scan limit, tie order and host query boundaries", () => {
+	const { db, close } = open();
+	try {
+		db.transaction(() => {
+			insertFeedbackInTransaction(db, {
+				...correction,
+				id: "outside-scan",
+				vector: [2, 0],
+			});
+			for (let i = 0; i < 499; i++)
+				insertFeedbackInTransaction(db, { ...correction, id: `f${i}`, at: 2 });
+			// The host can store vectors whose length differs from the space.
+			insertFeedbackInTransaction(db, {
+				...correction,
+				id: "legacy",
+				vector: [1],
+				at: 3,
+			});
+			insertFeedbackInTransaction(db, {
+				...correction,
+				id: "other",
+				space: { ...space, revision: "2" },
+				at: 4,
+			});
+		})();
+		const query = { space, vector: [1, 0], threshold: 1 };
+		const shared = searchFeedback(db, query);
+		expect(nearFeedback(db, query)).toEqual(shared);
+		expect(shared.map((f) => f.id)).toEqual([
+			"f498",
+			"f497",
+			"f496",
+			"f495",
+			"f494",
+		]);
+		expect(searchFeedback(db, { ...query, limit: 501 })).toHaveLength(499);
+		expect(searchFeedback(db, { ...query, threshold: 1.01 })).toEqual([]);
+		expect(searchFeedback(db, { ...query, limit: 0 })).toEqual([]);
+		expect(searchFeedback(db, { ...query, limit: 1.9 })).toEqual(
+			shared.slice(0, 1),
+		);
+		expect(searchFeedback(db, { ...query, vector: [1] })).toEqual([
+			{ id: "legacy", wrongId: null, rightId: "a", similarity: 1 },
+		]);
+		expect(() => nearFeedback(db, { ...query, vector: [1] })).toThrow(
+			routerErrors.invalidEmbedding,
+		);
+		for (const limit of [0, 1.9])
+			expect(() => nearFeedback(db, { ...query, limit })).toThrow(
+				routerErrors.invalidFeedback,
+			);
+		expect(() => nearFeedback(db, { ...query, threshold: Infinity })).toThrow(
+			routerErrors.invalidFeedback,
+		);
+	} finally {
+		close();
+	}
+});
+
+test("forgetting rolls back earlier chunks on failure and can be retried", () => {
+	const { db, close } = open();
+	try {
+		const ids = Array.from({ length: 251 }, (_, i) => `source-${i}`);
+		for (const messageId of [ids[0]!, ids[250]!])
+			insertFeedbackInTransaction(db, {
+				...correction,
+				id: messageId,
+				messageIds: [messageId],
+			});
+		db.exec(`CREATE TRIGGER reject_delete BEFORE DELETE ON router_feedback
+ WHEN OLD.id = 'source-250' BEGIN SELECT RAISE(ABORT, 'delete failed'); END;`);
+		const forget = db.transaction(() => forgetInTransaction(db, ids));
+		expect(forget).toThrow("delete failed");
+		expect(
+			db.query("SELECT id FROM router_feedback ORDER BY rowid").all(),
+		).toEqual([{ id: "source-0" }, { id: "source-250" }]);
+		db.exec("DROP TRIGGER reject_delete");
+		expect(forget()).toBe(2);
+		expect(forget()).toBe(0);
+	} finally {
+		close();
 	}
 });

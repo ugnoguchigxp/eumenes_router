@@ -28,11 +28,11 @@ export type NearFeedback = {
  * One correction to store. The host chooses `id` and `at` (this package has no clock
  * and no random source). `messageIds` are every message the text was made from.
  */
-export type FeedbackWrite = {
+export type FeedbackInsert = {
 	id: string;
 	conversationId: string;
 	messageId: string;
-	messageIds: readonly string[];
+	messageIds?: readonly string[] | undefined;
 	runId: string;
 	source: FeedbackSource;
 	text: string;
@@ -41,4 +41,8 @@ export type FeedbackWrite = {
 	wrongId: string | null;
 	rightId: string;
 	at: number;
+};
+
+export type FeedbackWrite = FeedbackInsert & {
+	messageIds: readonly string[];
 };

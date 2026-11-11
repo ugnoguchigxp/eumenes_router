@@ -118,6 +118,8 @@ bun run test:python
 | `eumenes_router` | `route`（A: direct）、`routeStructured`（B: structured）、`routeWithFallback`（Aで迷ったときだけB）、`decide`、`correctProbabilities`、`predictionSet`、`offerCandidates`、`checkReachability`、`loadBestV2`・`scoreBestV2`・`BEST_V2_PARAMS`、`srScores`・`srOffer`・`srRanking`・`capByKind`、`rerankDocument`、`TURN_STRUCTURE_PROMPT`・`turnStructurePrompt`・`parseTurnStructure`・`routedTexts`（過去の構造の検査には`parseStructure`）。DB・時計・乱数・ネットワーク・モデルには触らない |
 | `eumenes_router/sqlite` | 表の SQL `migrations`（ホストが自分の migration で当てる）、借りた同期接続への `syncCardsInTransaction`、`saveVectorsInTransaction`、`srCardsInTransaction`、`lexicalInTransaction`、`importExamplesInTransaction`・`examplesInTransaction`（best-v2 の記憶）、`nearFeedback`、`recordFeedbackInTransaction`、`setFeedbackStateInTransaction`、`forgetInTransaction`。open/close・transaction はしない |
 
+入力を検証するホストは、検証後に `insertFeedbackInTransaction(db, input)`、`searchFeedback(db, query)`、`updateFeedbackStateInTransaction(db, id, state, at)` を呼べます。従来の3つの入口も、それぞれの入力を検証したうえで同じ処理を呼びます。`insertFeedbackInTransaction` に渡す `FeedbackInsert` は `messageIds` を省略でき、保存する出典 ID は主メッセージ ID から始まります。`searchFeedback` の既定上限は5件です。既存の `router_feedback` を使い、ホストが書き込みをトランザクションで囲みます。
+
 | 入口 | ホストの口 | 流れ | 結果 |
 | --- | --- | --- | --- |
 | `route(ports, turn)` | `embed`、`rerank`（LARM の文脈判定。基準ごとの `scores` が要る）、`read.cards`・`read.lexical`・`read.nearFeedback`、`model`（`loadBestV2(BEST_V2_PARAMS, 記憶)`）、`settings` | 埋め込み → 近い訂正 → sr-corr（上位8件と全カードの順位）→ 上位 10件のツール・訂正の正解・動的な候補 → reranker → best-v2 → 訂正 → 決定表（best-v2 が回さないときが「自信あり」。自信なしでも1位を予告付きで実行し、聞き返しの行 8 にはしない） | `decision`・`corrected`・`answer`・`explain`（gate・defer・衝突した訂正の id） |

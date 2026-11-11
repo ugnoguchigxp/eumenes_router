@@ -18,14 +18,18 @@ export {
 } from "./db/retrieval.ts";
 export {
 	forgetInTransaction,
+	insertFeedbackInTransaction,
 	nearFeedback,
 	recordFeedbackInTransaction,
+	searchFeedback,
 	setFeedbackStateInTransaction,
+	updateFeedbackStateInTransaction,
 } from "./db/feedback.ts";
 export type { FeedbackQuery } from "./route.ts";
 export type { RouterCard } from "./db/retrieval.ts";
 export type { Card, Passage } from "./contracts/cards.ts";
 export type {
+	FeedbackInsert,
 	FeedbackState,
 	FeedbackWrite,
 	NearFeedback,
