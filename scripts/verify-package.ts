@@ -41,6 +41,14 @@ export function verifyPackage(artifact: string, sha256: string): void {
 		)
 	)
 		throw new Error("package_unexpected_content");
+	if (
+		names.some((name) =>
+			/\/(?:scoring\/|route(?:-fallback)?\.[^/]+$|best-v2[^/]*$|(?:decide|correct|offer|example-memory)\.[^/]+$)/.test(
+				name,
+			),
+		)
+	)
+		throw new Error("package_retired_routing_content");
 	// Even a trusted checksum must not authorize a link that redirects extraction outside the consumer.
 	const entries = run(["tar", "-tvzf", artifact]).trim().split("\n");
 	if (entries.some((entry) => !entry.startsWith("-") && !entry.startsWith("d")))

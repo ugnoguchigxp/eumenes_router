@@ -8,9 +8,9 @@ import {
 	dbSchemaVersion,
 	type Card,
 	type VectorSpace,
-	BEST_V2_MEMORY_FORMAT,
 	routerErrors,
 } from "../src/index.ts";
+import { BEST_V2_MEMORY_FORMAT } from "../bench/legacy/scoring/best-v2.ts";
 import {
 	forgetInTransaction,
 	insertFeedbackInTransaction,
@@ -23,11 +23,13 @@ import {
 	setFeedbackStateInTransaction,
 	updateFeedbackStateInTransaction,
 	syncCardsInTransaction,
-	importExamplesInTransaction,
-	examplesInTransaction,
 	lexicalInTransaction,
 	type FeedbackInsert,
 } from "../src/sqlite.ts";
+import {
+	importExamplesInTransaction,
+	examplesInTransaction,
+} from "../bench/legacy/db/example-memory.ts";
 
 const space: VectorSpace = {
 	modelId: "embed",

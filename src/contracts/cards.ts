@@ -1,6 +1,7 @@
 import { canonicalJson, sha256Hex } from "../digest.ts";
-import { routeCriterionName } from "./route.ts";
 import { routerErrors } from "./errors.ts";
+
+export const routeCandidateId = /^[A-Za-z][A-Za-z0-9._:-]{0,95}$/;
 
 export const cardKinds = ["dedicated", "pipeline", "general", "read"] as const;
 export type CardKind = (typeof cardKinds)[number];
@@ -78,7 +79,7 @@ export function parseCard(value: Card): Card {
 	const examples = strings(value.examples);
 	if (
 		typeof value.id !== "string" ||
-		!routeCriterionName.test(value.id) ||
+		!routeCandidateId.test(value.id) ||
 		typeof value.revision !== "string" ||
 		value.revision.length < 1 ||
 		!kindSet.has(value.kind) ||

@@ -1,23 +1,22 @@
 import { Database } from "bun:sqlite";
 import { expect, test } from "bun:test";
 import { existsSync, readFileSync } from "node:fs";
+import { BEST_V2_PARAMS } from "../bench/legacy/scoring/best-v2.params.ts";
 import {
-	BEST_V2_PARAMS,
 	CONVERSATION_ID,
 	capByKind,
-	loadBestV2,
-	scoreBestV2,
-	srOffer,
-	srRanking,
-	srScores,
 	unpackVector,
 	type Card,
 	type VectorSpace,
 } from "../src/index.ts";
+import { loadBestV2, scoreBestV2 } from "../bench/legacy/scoring/best-v2.ts";
+import { srOffer, srRanking, srScores } from "../bench/legacy/retrieval/sr.ts";
 import { sha256Hex } from "../src/digest.ts";
 import {
 	examplesInTransaction,
 	importExamplesInTransaction,
+} from "../bench/legacy/db/example-memory.ts";
+import {
 	lexicalInTransaction,
 	migrations,
 	saveVectorsInTransaction,

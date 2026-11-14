@@ -12,14 +12,15 @@ import { parseArgs } from "node:util";
 import {
 	CONVERSATION_ID,
 	MEMORY_ID,
-	decide,
-	routeSettings,
 	type DecisionCard,
 	type Impact,
-	type Ranked,
 	type RouteCandidate,
-	type RouteSettings,
 } from "../src/index.ts";
+import { decide, type Ranked } from "./legacy/decision/decide.ts";
+import {
+	routeSettings,
+	type RouteSettings,
+} from "./legacy/contracts/settings.ts";
 
 export type Item = {
 	id: string;

@@ -136,6 +136,13 @@ test("archive verification refuses checksum mismatch, unexpected data and symlin
 			"package_unexpected_content",
 		);
 		rmSync(join(pkg, "dist", ".env"));
+		const retired = join(pkg, "dist", "route-fallback.js");
+		writeFileSync(retired, "export {};");
+		hash = pack();
+		expect(() => verifyPackage(artifact, hash)).toThrow(
+			"package_retired_routing_content",
+		);
+		rmSync(retired);
 		symlinkSync("../../outside", join(pkg, "dist", "link.js"));
 		hash = pack();
 		expect(() => verifyPackage(artifact, hash)).toThrow(

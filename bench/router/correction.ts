@@ -28,8 +28,8 @@ import {
 	nearFeedback,
 	recordFeedbackInTransaction,
 } from "../../src/db/feedback.ts";
-import { correctProbabilities } from "../../src/decision/correct.ts";
-import { routeSettings } from "../../src/contracts/settings.ts";
+import { correctProbabilities } from "../legacy/decision/correct.ts";
+import { routeSettings } from "../legacy/contracts/settings.ts";
 import type { VectorSpace } from "../../src/vector.ts";
 import {
 	CONVERSATION,

@@ -5,14 +5,11 @@ import {
 	BEST_V2_FEATURES,
 	BEST_V2_FORMAT,
 	BEST_V2_MEMORY_FORMAT,
-	DEFAULT_ROUTE_SETTINGS,
-	cardDigest,
 	loadBestV2,
-	route,
-	type Card,
-	type RoutePorts,
-	type RouteTurn,
-} from "../../src/index.ts";
+} from "../legacy/scoring/best-v2.ts";
+import { DEFAULT_ROUTE_SETTINGS } from "../legacy/contracts/settings.ts";
+import { cardDigest, type Card } from "../../src/index.ts";
+import { route, type RoutePorts, type RouteTurn } from "../legacy/route.ts";
 import {
 	migrations,
 	syncCardsInTransaction,

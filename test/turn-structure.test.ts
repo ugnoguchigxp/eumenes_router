@@ -1,11 +1,10 @@
 import { expect, test } from "bun:test";
+import { parseTurnStructure, turnStructurePrompt } from "../src/index.ts";
 import {
-	parseTurnStructure,
-	turnStructurePrompt,
 	routeStructured as nativeRouteStructured,
 	type RoutePorts,
 	type RouteTurn,
-} from "../src/index.ts";
+} from "../bench/legacy/route.ts";
 import { routeStructuredFixture as routeStructured } from "./turn-response.fixture.ts";
 import { parseTurnResponse } from "../src/turn-structure.ts";
 

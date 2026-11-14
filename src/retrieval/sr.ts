@@ -1,28 +1,9 @@
 import type { CardKind } from "../contracts/cards.ts";
-import { CONVERSATION_ID } from "../decision/decide.ts";
+import { CONVERSATION_ID } from "../decision/result.ts";
 import { dot } from "../vector.ts";
 import { ROUTER_SLOTS, slotKind, type Slots } from "./rank.ts";
 
-/**
- * sr-corr: the retrieval score best-v2 was trained on. Per card, the mean of four
- * features: meaning (best inner product of the utterance with the card's
- * passages), prototype (0.7·best + 0.3·mean of the top three), lexical (bm25 of
- * shared character trigrams, divided by the best hit) and the referenced
- * resource's kind. Meaning and prototype are stretched to 0..1 within the
- * candidates, so the candidates must be every available card, as in training.
- * The conversation is fixed at 0.7. The offer is the top 8 (the conversation
- * always in), divided by the best score and turned into probabilities by a
- * softmax at temperature 0.1; probabilities and scores are rounded to six
- * decimals, as the trained numbers expect. Pure. Same numbers as
- * `bench/router/algorithms.ts` `srWeighted` with `SR_CAL` and `bench/router/run.ts`.
- */
-export const SR = {
-	conversation: 0.7,
-	prototypeWeight: 0.7,
-	prototypeTop: 3,
-	offer: 8,
-	temperature: 0.1,
-} as const;
+const SR = { prototypeWeight: 0.7, prototypeTop: 3 } as const;
 
 /** Resource kinds a host may pass, and words on cards that serve them. */
 const RESOURCE_WORDS: Readonly<Record<string, readonly string[]>> = {
@@ -41,13 +22,6 @@ export type SrCard = {
 	summary: string;
 	/** The card's passage vectors, in the utterance's space. */
 	passages: readonly ArrayLike<number>[];
-};
-
-export type SrOffer = {
-	/** The offered candidates and their probabilities (the conversation included), best first. */
-	retrieval: Array<[string, number]>;
-	/** Each offered candidate's score divided by the best. */
-	scores: Record<string, number>;
 };
 
 /** The utterance's character trigrams as an FTS5 OR query; null under three characters. NUL is dropped (SQLite ends a string there). */
@@ -76,7 +50,6 @@ const band = (m: ReadonlyMap<string, number>) => {
 		[...m].map(([k, v]) => [k, hi > lo ? (v - lo) / (hi - lo) : 0]),
 	);
 };
-const round = (v: number) => Number(v.toFixed(6));
 
 /**
  * Scores of the candidates. `cards` are the available tool cards; `lexical` is
@@ -87,7 +60,6 @@ export function srScores(input: {
 	cards: readonly SrCard[];
 	lexical: ReadonlyMap<string, number>;
 	resource?: string | null;
-	conversation: boolean;
 }): Map<string, number> {
 	const tools = input.cards.filter((card) => card.id !== CONVERSATION_ID);
 	const lexical = unit(input.lexical);
@@ -126,7 +98,6 @@ export function srScores(input: {
 			prior;
 		out.set(card.id, f / 4);
 	}
-	if (input.conversation) out.set(CONVERSATION_ID, SR.conversation);
 	return out;
 }
 
@@ -151,50 +122,13 @@ export function capByKind(
 	});
 }
 
-/** The top of the scores as the offer best-v2 takes (the conversation always in). */
-export function srOffer(
+/** Rank search candidates by score, breaking ties by ID before applying kind slots. */
+export function rankSearch(
 	scores: ReadonlyMap<string, number>,
 	cap?: (ranked: readonly string[]) => string[],
-): SrOffer {
+): string[] {
 	const sorted = [...scores]
 		.sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))
 		.map(([id]) => id);
-	const order = (cap ? cap(sorted) : sorted).slice(0, SR.offer);
-	if (!order.includes(CONVERSATION_ID) && scores.has(CONVERSATION_ID)) {
-		if (order.length >= SR.offer) order.pop();
-		order.push(CONVERSATION_ID);
-	}
-	const best = Math.max(0, ...order.map((id) => scores.get(id) ?? 0));
-	const scaled = order.map((id) =>
-		best > 0 ? Math.max(0, scores.get(id) ?? 0) / best : 0,
-	);
-	const top = Math.max(...scaled);
-	const exp = scaled.map((v) => Math.exp((v - top) / SR.temperature));
-	const total = exp.reduce((s, v) => s + v, 0);
-	return {
-		retrieval: order.map((id, i) => [id, round(exp[i]! / total)]),
-		scores: Object.fromEntries(order.map((id, i) => [id, round(scaled[i]!)])),
-	};
-}
-
-/**
- * Every available tool in sr-corr's order (kind slots applied, the
- * conversation left out), with its score over the best, rounded as the offer
- * is: best-v2's extra candidates beyond the offer come from it.
- */
-export function srRanking(
-	scores: ReadonlyMap<string, number>,
-	cap?: (ranked: readonly string[]) => string[],
-): Array<[string, number]> {
-	const sorted = [...scores]
-		.sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))
-		.map(([id]) => id);
-	let best = 0;
-	for (const v of scores.values()) if (v > best) best = v;
-	return (cap ? cap(sorted) : sorted)
-		.filter((id) => id !== CONVERSATION_ID)
-		.map((id) => [
-			id,
-			round(best > 0 ? Math.max(0, scores.get(id) ?? 0) / best : 0),
-		]);
+	return cap ? cap(sorted) : sorted;
 }

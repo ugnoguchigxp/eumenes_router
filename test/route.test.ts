@@ -3,22 +3,28 @@ import {
 	BEST_V2_FEATURES,
 	BEST_V2_FORMAT,
 	BEST_V2_MEMORY_FORMAT,
-	CONVERSATION_ID,
 	loadBestV2,
-	rerankDocument,
-	route,
-	routeErrors,
-	routeWithFallback,
-	type Analyze,
 	type BestV2Params,
+} from "../bench/legacy/scoring/best-v2.ts";
+import {
+	CONVERSATION_ID,
+	type Analyze,
 	type NearFeedback,
-	type RouteAnswer,
-	type RouteInput,
+	type VectorSpace,
+} from "../src/index.ts";
+import { candidateDocument } from "../src/retrieval/passages.ts";
+import {
+	route,
 	type RoutePorts,
 	type RouteTurn,
 	type StructuredPorts,
-	type VectorSpace,
-} from "../src/index.ts";
+} from "../bench/legacy/route.ts";
+import {
+	routeErrors,
+	type RouteAnswer,
+	type RouteInput,
+} from "../bench/legacy/contracts/route.ts";
+import { routeWithFallback } from "../bench/legacy/route-fallback.ts";
 import { routeStructuredFixture as routeStructured } from "./turn-response.fixture.ts";
 import type { RouterCard } from "../src/sqlite.ts";
 
@@ -173,7 +179,7 @@ test("route: the reranker's scores through best-v2; a sure top runs (row 2), the
 		"timers.manage",
 	]);
 	expect(sent.find((c) => c.name === "music.create")!.description).toBe(
-		rerankDocument(CARDS[1]!),
+		candidateDocument(CARDS[1]!),
 	);
 	expect(calls.embed).toEqual(["曲を作って"]);
 });

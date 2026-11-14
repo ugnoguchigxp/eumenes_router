@@ -1,4 +1,8 @@
 import {
+	parseBoundedJson,
+	strictObject,
+} from "./contracts/structured-output.ts";
+import {
 	structureFromRequests,
 	STRUCTURE_LIMITS,
 	type Structure,
@@ -106,41 +110,29 @@ function turnOutputSchema(
 	pending: readonly PendingQuestion[],
 	controls: readonly WorkControl[],
 ): Record<string, unknown> {
-	const object = (properties: Record<string, unknown>) => ({
-		type: "object",
-		properties,
-		required: Object.keys(properties),
-		additionalProperties: false,
-	});
 	const string = { type: "string" };
 	const array = (items: unknown) => ({ type: "array", items });
 	const reference = (refs: readonly { ref: string }[]) =>
-		object({
+		strictObject({
 			ref: { type: "string", enum: refs.map((entry) => entry.ref) },
 			text: { type: "string", enum: [text] },
 		});
-	return object({
+	return strictObject({
 		decision: {
 			anyOf: [
-				object({ requests: array(object(requestProperties())) }),
-				...(pending.length ? [object({ answer: reference(pending) })] : []),
-				...(controls.length ? [object({ control: reference(controls) })] : []),
-				object({
-					clarify: object({ question: string, unhandled: array(string) }),
+				strictObject({ requests: array(strictObject(requestProperties())) }),
+				...(pending.length
+					? [strictObject({ answer: reference(pending) })]
+					: []),
+				...(controls.length
+					? [strictObject({ control: reference(controls) })]
+					: []),
+				strictObject({
+					clarify: strictObject({ question: string, unhandled: array(string) }),
 				}),
 			],
 		},
 	});
-}
-
-function parseBoundedJson(raw: string): unknown {
-	if (typeof raw !== "string" || raw.length > STRUCTURE_LIMITS.response)
-		return null;
-	try {
-		return JSON.parse(raw);
-	} catch {
-		return null;
-	}
 }
 
 /** Native structured-output transport: exactly one outer field, no legacy wire fallback. */
@@ -150,7 +142,7 @@ export function parseTurnResponse(
 	pending: readonly PendingQuestion[],
 	controls: readonly WorkControl[] = [],
 ): TurnStructure | null {
-	const envelope = parseBoundedJson(raw);
+	const envelope = parseBoundedJson(raw, STRUCTURE_LIMITS.response);
 	if (
 		!envelope ||
 		typeof envelope !== "object" ||
@@ -174,7 +166,12 @@ export function parseTurnStructure(
 	pending: readonly PendingQuestion[],
 	controls: readonly WorkControl[] = [],
 ): TurnStructure | null {
-	return turnStructureOf(parseBoundedJson(raw), text, pending, controls);
+	return turnStructureOf(
+		parseBoundedJson(raw, STRUCTURE_LIMITS.response),
+		text,
+		pending,
+		controls,
+	);
 }
 
 function turnStructureOf(

@@ -2,10 +2,10 @@ import { expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import {
 	parseStructure,
-	routedTexts,
 	STRUCTURE_PROMPT,
 	structurePrompt,
-} from "../src/index.ts";
+} from "../bench/legacy/structure.ts";
+import { routedTexts } from "../src/index.ts";
 
 test("the prompt is the one the structure was measured with (s3.py), to the character", () => {
 	const source = readFileSync(

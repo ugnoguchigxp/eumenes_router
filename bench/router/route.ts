@@ -39,7 +39,8 @@ import {
 } from "./algorithms.ts";
 import { loadHistory } from "./data.ts";
 import { SR_CAL } from "./correction.ts";
-import { capByKind, srRanking } from "../../src/index.ts";
+import { capByKind } from "../../src/index.ts";
+import { srRanking } from "../legacy/retrieval/sr.ts";
 
 export type RouteRow = {
 	id?: string;

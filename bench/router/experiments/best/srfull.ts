@@ -10,12 +10,11 @@ import { writeFileSync } from "node:fs";
 import {
 	CONVERSATION_ID,
 	capByKind,
-	srRanking,
-	srScores,
 	unpackVector,
 	type Card,
 	type VectorSpace,
 } from "../../../../src/index.ts";
+import { srRanking, srScores } from "../../../legacy/retrieval/sr.ts";
 import { sha256Hex } from "../../../../src/digest.ts";
 import {
 	lexicalInTransaction,

@@ -9,10 +9,9 @@ export function cardPassages(card: {
 }
 
 /**
- * A card as the reranker reads it: its first passage and the next five after
- * 「例:」, as the reranker was trained and measured (the bench's card document).
+ * A card description for model selection: its first passage and five examples.
  */
-export function rerankDocument(card: {
+export function candidateDocument(card: {
 	title: string;
 	summary: string;
 	useWhen: readonly string[];

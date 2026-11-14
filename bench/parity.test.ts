@@ -4,13 +4,13 @@ import {
 	type CatalogEntry,
 	type Prediction,
 } from "./score.ts";
+import { correctProbabilities as ourCorrect } from "./legacy/decision/correct.ts";
 import {
-	correctProbabilities as ourCorrect,
 	decide as ourDecide,
 	predictionSet as ourSet,
 	type Ranked,
-	type RouteCandidate,
-} from "../src/index.ts";
+} from "./legacy/decision/decide.ts";
+import { type RouteCandidate } from "../src/index.ts";
 
 // Copies of the Eumenes files (bench/fixtures/eumenes/README.md), so the test needs no checkout.
 import * as eumenesScoreModule from "./fixtures/eumenes/score.ts";

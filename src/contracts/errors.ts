@@ -6,6 +6,4 @@ export const routerErrors = {
 	invalidEmbedding: "invalid_embedding_result",
 	/** A correction row breaks the contract. */
 	invalidFeedback: "router_feedback_invalid",
-	/** A scorer's trained parameters break the contract. */
-	invalidModel: "router_model_invalid",
 } as const;

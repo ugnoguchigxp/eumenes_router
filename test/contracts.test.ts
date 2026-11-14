@@ -3,7 +3,7 @@ import {
 	assertRouteAnswer,
 	routeErrors,
 	type RouteAnswer,
-} from "../src/index.ts";
+} from "../bench/legacy/contracts/route.ts";
 
 const criteria = [
 	{ name: "a", description: "first" },

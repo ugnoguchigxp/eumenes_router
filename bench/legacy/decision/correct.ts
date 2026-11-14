@@ -1,4 +1,4 @@
-import type { NearFeedback } from "../contracts/feedback.ts";
+import type { NearFeedback } from "../../../src/contracts/feedback.ts";
 
 /** A probability of zero must still be a log. */
 const FLOOR = 1e-9;

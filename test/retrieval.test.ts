@@ -1,12 +1,10 @@
+import { candidateDocument } from "../src/retrieval/passages.ts";
 import { expect, test } from "bun:test";
+import { cardDigest, parseCard, type RouteCandidate } from "../src/index.ts";
 import {
-	cardDigest,
 	offerCandidates,
-	parseCard,
-	rerankDocument,
-	type RouteCandidate,
 	type Skipped,
-} from "../src/index.ts";
+} from "../bench/legacy/decision/offer.ts";
 
 test("a card digest follows the card text, and the reranker reads the first passage and five more", () => {
 	const body = {
@@ -23,7 +21,7 @@ test("a card digest follows the card text, and the reranker reads the first pass
 	expect(cardDigest({ ...body, examples: ["別の例"] })).not.toBe(
 		cardDigest(body),
 	);
-	expect(rerankDocument(body)).toBe(
+	expect(candidateDocument(body)).toBe(
 		"作曲: 曲を作る 例: 作曲の依頼 / BGM / 静かな曲を作って",
 	);
 	expect(() => parseCard({ ...body, digest: "sha256:nope" })).toThrow(

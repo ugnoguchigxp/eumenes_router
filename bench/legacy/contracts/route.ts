@@ -18,7 +18,7 @@ export const ROUTE_LIMITS = {
 } as const;
 
 /** A letter, then letters, digits and `.`, `:`, `_`, `-`. */
-export const routeCriterionName = /^[A-Za-z][A-Za-z0-9._:-]{0,95}$/;
+export { routeCandidateId as routeCriterionName } from "../../../src/contracts/cards.ts";
 
 export type RouteCriterion = { name: string; description: string };
 

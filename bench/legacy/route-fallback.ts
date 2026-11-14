@@ -1,3 +1,4 @@
+import { untilAborted } from "../../src/abort.ts";
 import type { RouteCandidate, RouteDecision } from "./decision/decide.ts";
 import {
 	route,
@@ -59,30 +60,6 @@ function unresolved(
 				.map(({ candidate }) => candidate),
 		})),
 	};
-}
-
-/** Stop waiting even if a host port fails to honor the supplied signal. */
-async function untilAborted<T>(
-	signal: AbortSignal,
-	operation: () => Promise<T>,
-): Promise<T> {
-	signal.throwIfAborted();
-	let abort!: () => void;
-	const aborted = new Promise<never>((_, reject) => {
-		abort = () => reject(signal.reason);
-		signal.addEventListener("abort", abort, { once: true });
-	});
-	try {
-		return await Promise.race([
-			aborted,
-			Promise.resolve().then(() => {
-				signal.throwIfAborted();
-				return operation();
-			}),
-		]);
-	} finally {
-		signal.removeEventListener("abort", abort);
-	}
 }
 
 /** A first. B only on its measured defer signal, with no tentative dispatch on failure. */

@@ -1,18 +1,19 @@
+import { migrations } from "../src/sqlite.ts";
 import { expect, test } from "bun:test";
 import { existsSync, readFileSync } from "node:fs";
 import {
 	BEST_V2_FEATURES,
 	BEST_V2_FORMAT,
 	BEST_V2_MEMORY_FORMAT,
-	BEST_V2_PARAMS,
-	CONVERSATION_ID,
 	loadBestV2,
-	routeErrors,
-	routerErrors,
 	scoreBestV2,
 	type BestV2Memory,
 	type BestV2Params,
-} from "../src/index.ts";
+} from "../bench/legacy/scoring/best-v2.ts";
+import { invalidModel } from "../bench/legacy/scoring/best-v2.ts";
+import { BEST_V2_PARAMS } from "../bench/legacy/scoring/best-v2.params.ts";
+import { CONVERSATION_ID, routerErrors } from "../src/index.ts";
+import { routeErrors } from "../bench/legacy/contracts/route.ts";
 
 const n = BEST_V2_FEATURES.length;
 const base64 = (values: number[]) =>
@@ -164,7 +165,7 @@ test("with the conversation alone, the gap is p + 9 and nothing defers", () => {
 test("broken numbers, another memory, or a vector of another size are refused", () => {
 	const good = params(only("rr", 1));
 	const refused = (p: BestV2Params, m: BestV2Memory) =>
-		expect(() => loadBestV2(p, m)).toThrow(routerErrors.invalidModel);
+		expect(() => loadBestV2(p, m)).toThrow(invalidModel);
 	refused({ ...good, format: "other" as never }, memory);
 	refused({ ...good, features: [...BEST_V2_FEATURES].reverse() }, memory);
 	refused(
@@ -244,8 +245,8 @@ test.skipIf(!parity)(
 
 test("the memory goes into SQLite and comes back the same; another space or source is refused", async () => {
 	const { Database } = await import("bun:sqlite");
-	const { examplesInTransaction, importExamplesInTransaction, migrations } =
-		await import("../src/sqlite.ts");
+	const { examplesInTransaction, importExamplesInTransaction } =
+		await import("../bench/legacy/db/example-memory.ts");
 	const db = new Database(":memory:");
 	for (const sql of migrations) db.exec(sql);
 	const space = {
@@ -261,7 +262,7 @@ test("the memory goes into SQLite and comes back the same; another space or sour
 	expect(examplesInTransaction(db, { source: "other", space })).toBeNull();
 	expect(() =>
 		importExamplesInTransaction(db, memory, { ...space, dimension: 3 }),
-	).toThrow(routerErrors.invalidModel);
+	).toThrow(invalidModel);
 	expect(
 		scoreBestV2(loadBestV2(params(only("knn", 5)), back!), {
 			retrieval: [
@@ -307,25 +308,25 @@ test("inputs that are not finite, duplicate candidates, broken base64 or labels 
 	).toThrow(routerErrors.invalidEmbedding);
 	expect(() =>
 		loadBestV2(params(only("rr", 1)), { ...memory, vectors: "not base64!" }),
-	).toThrow(routerErrors.invalidModel);
+	).toThrow(invalidModel);
 	expect(() =>
 		loadBestV2(params(only("rr", 1)), {
 			...memory,
 			labels: "music.create" as never,
 		}),
-	).toThrow(routerErrors.invalidModel);
+	).toThrow(invalidModel);
 	expect(() =>
 		loadBestV2(params(only("rr", 1)), {
 			...memory,
 			vectors: base64([1, 0, Number.NaN, 1]),
 		}),
-	).toThrow(routerErrors.invalidModel);
+	).toThrow(invalidModel);
 });
 
 test("one memory can live in two spaces of the same size", async () => {
 	const { Database } = await import("bun:sqlite");
-	const { examplesInTransaction, importExamplesInTransaction, migrations } =
-		await import("../src/sqlite.ts");
+	const { examplesInTransaction, importExamplesInTransaction } =
+		await import("../bench/legacy/db/example-memory.ts");
 	const db = new Database(":memory:");
 	for (const sql of migrations) db.exec(sql);
 	const a = {

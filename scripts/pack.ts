@@ -3,8 +3,8 @@
  * Runs the typecheck, the lint and the tests (any failure stops it), builds and packs the package, names the
  * tarball `eumenes_router-<version>-<sha256 head 12>.tgz`, and writes `<artifact>.sha256` and `manifest.json`
  * beside it (the form of Eumenes' vendored packages), with the commit it was built from and whether the tree had
- * uncommitted changes. The mainline parity tests must run (they need the local evaluation data in data/).
- * One tarball holds the direct, structured and conditional fallback entries.
+ * uncommitted changes. The historical parity tests must run (they need the local evaluation data in data/).
+ * One tarball holds selector routing in both modes.
  */
 import { createHash } from "node:crypto";
 import {
@@ -24,12 +24,11 @@ import { verifyPackage } from "./verify-package.ts";
 import { sourceSnapshot } from "./source-snapshot.ts";
 import { requiredTestResults } from "./test-results.ts";
 import {
-	BEST_V2_MEMORY_FORMAT,
-	BEST_V2_PARAMS,
 	contractVersions,
 	dbSchemaVersion,
 	TURN_STRUCTURE_PROMPT,
 } from "../src/index.ts";
+import { SELECTION_PROMPT_VERSION } from "../src/route-selection.ts";
 
 const { values } = parseArgs({
 	args: Bun.argv.slice(2),
@@ -62,10 +61,10 @@ run(["bun", "run", "format:check"]);
 checkPython();
 const tests = run(["bun", "test"]);
 const counts = requiredTestResults(tests);
-// The mainline parity (both entries against the bench's records) must have run, not been skipped for want of data/.
+// The historical parity (both entries against the bench's records) must have run, not been skipped for want of data/.
 const parity = run(["bun", "test", "test/route-mainline.test.ts"]);
 if (requiredTestResults(parity).pass !== 2)
-	throw new Error("the mainline parity tests did not run (data/ missing?)");
+	throw new Error("the historical parity tests did not run (data/ missing?)");
 const commit = run(["git", "rev-parse", "HEAD"]).trim();
 // Changes (untracked files included) in what the package is built and checked from.
 const dirty =
@@ -84,6 +83,9 @@ const dirty =
 		".oxlintrc.json",
 		"tsconfig.json",
 		"tsconfig.build.json",
+		"README.md",
+		"LICENSE",
+		".gitignore",
 	]).trim() !== "";
 
 const tmp = mkdtempSync(join(tmpdir(), "router-pack-"));
@@ -121,63 +123,21 @@ try {
 		contractVersions,
 		dbSchemaVersion,
 		entries: {
-			route: {
-				flavor: "direct",
+			routeWithSelection: {
+				modes: ["conversation", "tools-only"],
+				defaultMode: "conversation",
 				ports: [
 					"embed",
-					"rerank",
 					"read.cards",
 					"read.lexical",
 					"read.nearFeedback",
-					"model",
-					"settings",
+					"select",
 				],
-			},
-			routeStructured: {
-				flavor: "structured",
-				ports: [
-					"analyze",
-					"embed",
-					"rerank",
-					"read.cards",
-					"read.lexical",
-					"read.nearFeedback",
-					"model",
-					"settings",
-				],
-				structurePrompt: TURN_STRUCTURE_PROMPT.version,
-			},
-			routeWithFallback: {
-				flavor: "conditional-structured",
-				ports: [
-					"embed",
-					"rerank",
-					"read.cards",
-					"read.lexical",
-					"read.nearFeedback",
-					"model",
-					"settings",
-					"beginStructured",
-				],
+				selectionPrompt: SELECTION_PROMPT_VERSION,
 				structurePrompt: TURN_STRUCTURE_PROMPT.version,
 			},
 		},
-		bestV2: {
-			format: BEST_V2_PARAMS.format,
-			version: BEST_V2_PARAMS.version,
-			source: BEST_V2_PARAMS.source,
-			deferBelow: BEST_V2_PARAMS.gate.deferBelow,
-			extraTools: BEST_V2_PARAMS.extra.tools,
-		},
-		requires: {
-			memory: {
-				format: BEST_V2_MEMORY_FORMAT,
-				source: BEST_V2_PARAMS.source,
-				dimension: BEST_V2_PARAMS.knn.dimension,
-				note: "the host imports it (importExamplesInTransaction); made from utterances, it is not in the tarball",
-			},
-		},
-		verifiedWith: `eumenes_router: typecheck, lint, format, required offline Python regressions, bun test ${counts.pass} pass / 0 skip / 0 todo / 0 fail, mainline parity ran; tarball checksum and isolated consumer on built JavaScript/SQLite passed; wrong checksum refused`,
+		verifiedWith: `eumenes_router: typecheck, lint, format, required offline Python regressions, bun test ${counts.pass} pass / 0 skip / 0 todo / 0 fail, historical parity ran; tarball checksum and isolated consumer on built JavaScript/SQLite passed; wrong checksum refused`,
 	};
 	writeFileSync(
 		join(out, "manifest.json"),

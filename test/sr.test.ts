@@ -3,15 +3,13 @@ import { expect, test } from "bun:test";
 import { existsSync, readFileSync } from "node:fs";
 import {
 	CONVERSATION_ID,
-	SR,
 	capByKind,
-	srOffer,
-	srScores,
 	trigramQuery,
 	unpackVector,
 	type Card,
 	type VectorSpace,
 } from "../src/index.ts";
+import { SR, srOffer, srScores } from "../bench/legacy/retrieval/sr.ts";
 import { sha256Hex } from "../src/digest.ts";
 import { cardDigest } from "../src/index.ts";
 import {

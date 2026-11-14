@@ -1,4 +1,9 @@
-import type { NearFeedback } from "./contracts/feedback.ts";
+import type { Analyze } from "../../src/contracts/selection.ts";
+import {
+	analyzeTurn,
+	structuredControlDecision,
+} from "../../src/decision/structure.ts";
+import type { NearFeedback } from "../../src/contracts/feedback.ts";
 import {
 	assertRouteAnswer,
 	ROUTE_LIMITS,
@@ -8,7 +13,7 @@ import {
 	type RouteInput,
 } from "./contracts/route.ts";
 import { routeSettings, type RouteSettings } from "./contracts/settings.ts";
-import type { RouterCard } from "./db/retrieval.ts";
+import type { RouterCard } from "../../src/db/retrieval.ts";
 import { correctProbabilities } from "./decision/correct.ts";
 import type {
 	DecisionCard,
@@ -19,20 +24,18 @@ import type {
 } from "./decision/decide.ts";
 import { CONVERSATION_ID, decide, MEMORY_ID } from "./decision/decide.ts";
 import { offerCandidates, type Skipped } from "./decision/offer.ts";
-import { rerankDocument } from "./retrieval/passages.ts";
+import { candidateDocument } from "../../src/retrieval/passages.ts";
 import { capByKind, srOffer, srRanking, srScores } from "./retrieval/sr.ts";
 import { scoreBestV2, type BestV2Model } from "./scoring/best-v2.ts";
-import { routedTexts, type Structure } from "./structure.ts";
+import { routedTexts, type Structure } from "../../src/structure.ts";
 import {
-	parseTurnResponse,
-	turnStructurePrompt,
 	type PendingQuestion,
 	type WorkControl,
 	type TurnStructure,
-} from "./turn-structure.ts";
-import { head, tail } from "./text.ts";
-import type { VectorSpace } from "./vector.ts";
-import { assertVector } from "./vector.ts";
+} from "../../src/turn-structure.ts";
+import { head, tail } from "../../src/text.ts";
+import type { VectorSpace } from "../../src/vector.ts";
+import { assertVector } from "../../src/vector.ts";
 
 export type Embed = (
 	texts: readonly string[],
@@ -42,12 +45,7 @@ export type Embed = (
 export type Score = (input: RouteInput) => Promise<RouteAnswer>;
 
 /** The structure model: the package's prompt in, the model's text out (structured route only). */
-export type Analyze = (prompt: {
-	version: string;
-	system: string;
-	user: string;
-	outputSchema: Record<string, unknown>;
-}) => Promise<string>;
+export type { Analyze } from "../../src/contracts/selection.ts";
 
 export type FeedbackQuery = {
 	vector: readonly number[];
@@ -171,7 +169,7 @@ function cardCandidate(
 	passages: RouteTurn["passages"],
 ): RouteCandidate {
 	// A card's document is cut at the reranker's limit rather than dropped from the offer.
-	const passage = head(rerankDocument(card), ROUTE_LIMITS.description);
+	const passage = head(candidateDocument(card), ROUTE_LIMITS.description);
 	if (card.id === CONVERSATION_ID)
 		return {
 			id: card.id,
@@ -222,20 +220,14 @@ function assertSendable(offered: readonly RouteCandidate[]): void {
 	}
 }
 
-/**
- * One text through the direct route: embedding, near corrections, sr-corr
- * (offer and ranking), the reranker on the offered and extra tools, best-v2,
- * the correction, the decision table with best-v2's gate as "sure".
- */
-async function routeText(
-	ports: RoutePorts,
-	turn: RouteTurn,
+/** Read the same search and correction inputs for both decision paths. */
+async function searchTurn(
+	ports: Pick<RoutePorts, "embed" | "read">,
+	turn: Pick<RouteTurn, "available" | "retained">,
+	settings: Pick<RouteSettings, "feedbackNear" | "feedbackWeight">,
 	text: string,
 	resource: string | null,
-): Promise<RouteResult> {
-	const settings = routeSettings(ports.settings);
-	const intentChat = intentOf(turn.signals);
-	const model = ports.model;
+) {
 	const embedText = head(text, ROUTE_LIMITS.text);
 	const embedded = await ports.embed([embedText]);
 	const vector = embedded.vectors[0];
@@ -270,6 +262,30 @@ async function routeText(
 		resource,
 		conversation: true,
 	});
+	return { vector, near, byId, include, scores, cap };
+}
+
+/**
+ * One text through the direct route: embedding, near corrections, sr-corr
+ * (offer and ranking), the reranker on the offered and extra tools, best-v2,
+ * the correction, the decision table with best-v2's gate as "sure".
+ */
+async function routeText(
+	ports: RoutePorts,
+	turn: RouteTurn,
+	text: string,
+	resource: string | null,
+): Promise<RouteResult> {
+	const settings = routeSettings(ports.settings);
+	const intentChat = intentOf(turn.signals);
+	const model = ports.model;
+	const { vector, near, byId, include, scores, cap } = await searchTurn(
+		ports,
+		turn,
+		settings,
+		text,
+		resource,
+	);
 	const offer = srOffer(scores, cap);
 	const ranking = srRanking(scores, cap);
 	const offeredIds = offer.retrieval.map(([id]) => id);
@@ -428,58 +444,9 @@ export async function routeStructured(
 	turn: RouteTurn,
 ): Promise<StructuredResult> {
 	const text = turn.state.text;
-	const raw = await ports.analyze(
-		turnStructurePrompt(
-			text,
-			turn.state.previousAgent,
-			turn.pending ?? [],
-			turn.controls ?? [],
-		),
-	);
-	const structure = parseTurnResponse(
-		raw,
-		text,
-		turn.pending ?? [],
-		turn.controls ?? [],
-	);
-	if (!structure) throw new Error("structure_invalid");
-	if (structure.kind === "control") {
-		const candidate = turn.dynamic.find(
-			(c) =>
-				c.id === structure.ref && c.kind === "work" && c.operation === "cancel",
-		);
-		if (!candidate) throw new Error("structure_reference_unavailable");
-		return {
-			structure,
-			parts: [],
-			decision: { row: 6, to: "run", candidate, announce: "none" },
-		};
-	}
-	if (structure.kind === "answer") {
-		const candidate = turn.dynamic.find(
-			(c) =>
-				c.id === structure.ref &&
-				c.kind === "pending" &&
-				c.operation === "answer",
-		);
-		if (!candidate) throw new Error("structure_reference_unavailable");
-		return {
-			structure,
-			parts: [],
-			decision: { row: 5, to: "run", candidate, announce: "none" },
-		};
-	}
-	if (structure.kind === "clarify")
-		return {
-			structure,
-			parts: [],
-			decision: {
-				row: 8,
-				to: "clarify",
-				question: structure.question,
-				unhandled: structure.unhandled,
-			},
-		};
+	const structure = await analyzeTurn(ports.analyze, turn);
+	const control = structuredControlDecision(structure, turn.dynamic);
+	if (control) return { structure, parts: [], decision: control };
 	const texts = routedTexts(text, structure);
 	if (!texts.length) {
 		ports.log?.({
@@ -524,7 +491,9 @@ function several(
 	const decisions = parts.map((p) => p.result.decision);
 	const question = decisions.find((d) => d.to === "again" || d.to === "ask");
 	if (question) return question;
-	const actions = decisions.filter((d) => d.to === "run");
+	const actions = parts.flatMap(({ text, result: { decision } }) =>
+		decision.to === "run" ? [{ text, decision }] : [],
+	);
 	if (actions.length !== parts.length)
 		return {
 			row: 8,
@@ -537,23 +506,13 @@ function several(
 		return {
 			row: 9,
 			to: "pipeline",
-			steps: parts.map((p, i) => {
-				const decision = decisions[i]!;
-				return {
-					text: p.text,
-					candidate:
-						decision.to === "run"
-							? decision.candidate
-							: {
-									id: CONVERSATION_ID,
-									kind: "conversation",
-									passage: CONVERSATION_ID,
-								},
-					decision,
-					after: structure.requests[i]!.after,
-				};
-			}),
+			steps: actions.map(({ text, decision }, i) => ({
+				text,
+				candidate: decision.candidate,
+				decision,
+				after: structure.requests[i]!.after,
+			})),
 		};
-	if (actions.length) return actions[0]!;
+	if (actions.length) return actions[0]!.decision;
 	return { row: 1, to: "conversation" };
 }

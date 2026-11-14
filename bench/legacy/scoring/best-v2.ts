@@ -1,7 +1,7 @@
-import { routerErrors } from "../contracts/errors.ts";
 import { routeErrors } from "../contracts/route.ts";
 import { CONVERSATION_ID } from "../decision/decide.ts";
-import { decodeVectors, dot } from "../vector.ts";
+import { dot } from "../../../src/vector.ts";
+import { decodeVectors } from "./memory-vectors.ts";
 
 /**
  * best-v2, the main decision's scorer. The candidates are the retrieval's top
@@ -104,7 +104,8 @@ export type BestV2Result = {
 	defer: boolean;
 };
 
-const invalid = () => new Error(routerErrors.invalidModel);
+export const invalidModel = "router_model_invalid";
+const invalid = () => new Error(invalidModel);
 const finite = (xs: readonly number[]) => xs.every(Number.isFinite);
 
 export function loadBestV2(
@@ -277,3 +278,4 @@ export function scoreBestV2(
 	// Written so that a NaN gate defers (it is never confident).
 	return { ranked, gate, defer: !(gate >= a.gate.deferBelow) };
 }
+import { routerErrors } from "../../../src/contracts/errors.ts";

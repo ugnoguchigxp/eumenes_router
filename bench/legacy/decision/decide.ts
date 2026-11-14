@@ -1,57 +1,19 @@
-import type { Impact } from "../contracts/cards.ts";
+import {
+	CONVERSATION_ID,
+	type RouteCandidate,
+} from "../../../src/decision/result.ts";
+export {
+	CONVERSATION_ID,
+	DISCARD_ID,
+	MEMORY_ID,
+} from "../../../src/decision/result.ts";
+export type {
+	DecisionCard,
+	RouteCandidate,
+} from "../../../src/decision/result.ts";
 
-export const CONVERSATION_ID = "conversation.respond";
-export const MEMORY_ID = "memory.request";
-export const DISCARD_ID = "switch.discard";
-
-/** The prediction set: the best candidates until this probable together, at most this many. */
 const SET_MASS = 0.9;
 const SET_SIZE = 3;
-
-/** What the decision table reads of a toolchain or a read tool. */
-export type DecisionCard = {
-	id: string;
-	title: string;
-	general?: true;
-	execution?: string;
-	minImpact?: Impact;
-	score: {
-		rank: number;
-		ftsRank: number | null;
-		similarity: number | null;
-		fromHistory: boolean;
-	};
-};
-
-export type ChoiceRef = { id: string; title: string };
-
-type Tool = { card: DecisionCard; choice: ChoiceRef };
-type Confirmation = { confirmation: string; toolchain: string };
-
-/** One thing the router may send the turn to. */
-export type RouteCandidate = { id: string; passage: string } & (
-	| { kind: "conversation" }
-	| ({ kind: "toolchain" } & Tool)
-	| ({ kind: "read" } & Tool)
-	| { kind: "memory" }
-	| {
-			kind: "work";
-			todo: string;
-			operation: "check" | "amend" | "cancel";
-			title: string;
-	  }
-	| {
-			kind: "redirect";
-			todo: string;
-			title: string;
-			toolchainId: string;
-			target: string;
-	  }
-	| ({ kind: "pending"; operation: "approve" } & Confirmation)
-	| ({ kind: "pending"; operation: "decline" } & Confirmation)
-	| { kind: "pending"; operation: "answer"; todo: string; title: string }
-	| { kind: "pending"; operation: "discard"; toolchain: string; title: string }
-);
 
 /** A candidate scored: the raw probability, the correction added to its log, and the probability after it. */
 export type Ranked = {

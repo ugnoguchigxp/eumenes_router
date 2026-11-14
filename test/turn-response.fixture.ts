@@ -1,4 +1,4 @@
-import { routeStructured } from "../src/index.ts";
+import { routeStructured } from "../bench/legacy/route.ts";
 
 /** Scripts describe canonical decisions; malformed wire text stays literal for negative tests. */
 export function routeStructuredFixture(

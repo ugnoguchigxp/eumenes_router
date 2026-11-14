@@ -8,7 +8,9 @@
 import type { Database } from "bun:sqlite";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { correctProbabilities, dot, routeSettings } from "../../src/index.ts";
+import { correctProbabilities } from "../legacy/decision/correct.ts";
+import { dot } from "../../src/index.ts";
+import { routeSettings } from "../legacy/contracts/settings.ts";
 import { sha256Hex } from "../../src/digest.ts";
 import {
 	reportOf,

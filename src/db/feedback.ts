@@ -7,7 +7,7 @@ import {
 	type NearFeedback,
 } from "../contracts/feedback.ts";
 import { routerErrors } from "../contracts/errors.ts";
-import type { FeedbackQuery } from "../route.ts";
+import type { FeedbackQuery } from "../contracts/selection.ts";
 import {
 	assertVector,
 	dot,

@@ -23,11 +23,8 @@
 import { Database } from "bun:sqlite";
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
-import {
-	CONVERSATION_ID,
-	parseStructure,
-	routedTexts as mainTexts,
-} from "../../src/index.ts";
+import { CONVERSATION_ID, routedTexts as mainTexts } from "../../src/index.ts";
+import { parseStructure } from "../legacy/structure.ts";
 import { sha256Hex } from "../../src/digest.ts";
 import type { Utterance } from "./data.ts";
 

@@ -6,26 +6,32 @@ import {
 	type StructureItem,
 } from "../bench/router/structure.ts";
 import { sha256Hex } from "../src/digest.ts";
+import { BEST_V2_PARAMS } from "../bench/legacy/scoring/best-v2.params.ts";
 import {
-	BEST_V2_PARAMS,
 	CONVERSATION_ID,
 	head,
-	loadBestV2,
-	ROUTE_LIMITS,
-	route,
-	routeWithFallback,
 	unpackVector,
 	type Card,
-	type RouteAnswer,
-	type RouteDecision,
-	type RoutePorts,
-	type RouteTurn,
 	type VectorSpace,
 } from "../src/index.ts";
+import { loadBestV2 } from "../bench/legacy/scoring/best-v2.ts";
+import {
+	ROUTE_LIMITS,
+	type RouteAnswer,
+} from "../bench/legacy/contracts/route.ts";
+import {
+	route,
+	type RoutePorts,
+	type RouteTurn,
+} from "../bench/legacy/route.ts";
+import { routeWithFallback } from "../bench/legacy/route-fallback.ts";
+import { type RouteDecision } from "../bench/legacy/decision/decide.ts";
 import { routeStructuredFixture as routeStructured } from "./turn-response.fixture.ts";
 import {
 	examplesInTransaction,
 	importExamplesInTransaction,
+} from "../bench/legacy/db/example-memory.ts";
+import {
 	lexicalInTransaction,
 	migrations,
 	saveVectorsInTransaction,

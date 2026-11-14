@@ -10,12 +10,7 @@ export {
 	syncCardsInTransaction,
 } from "./db/cards.ts";
 export type { VectorRow } from "./db/cards.ts";
-export {
-	examplesInTransaction,
-	importExamplesInTransaction,
-	lexicalInTransaction,
-	srCardsInTransaction,
-} from "./db/retrieval.ts";
+export { lexicalInTransaction, srCardsInTransaction } from "./db/retrieval.ts";
 export {
 	forgetInTransaction,
 	insertFeedbackInTransaction,
@@ -25,7 +20,7 @@ export {
 	setFeedbackStateInTransaction,
 	updateFeedbackStateInTransaction,
 } from "./db/feedback.ts";
-export type { FeedbackQuery } from "./route.ts";
+export type { FeedbackQuery } from "./contracts/selection.ts";
 export type { RouterCard } from "./db/retrieval.ts";
 export type { Card, Passage } from "./contracts/cards.ts";
 export type {

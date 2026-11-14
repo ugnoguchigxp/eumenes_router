@@ -1,14 +1,16 @@
 import { expect, test } from "bun:test";
 import {
 	CONVERSATION_ID,
-	correctProbabilities,
-	decide,
-	predictionSet,
 	type DecisionCard,
 	type Impact,
-	type Ranked,
 	type RouteCandidate,
 } from "../src/index.ts";
+import { correctProbabilities } from "../bench/legacy/decision/correct.ts";
+import {
+	decide,
+	predictionSet,
+	type Ranked,
+} from "../bench/legacy/decision/decide.ts";
 
 const SETTINGS = {
 	accept: 0.6,
